@@ -3,6 +3,7 @@ class AuthConfig {
   final String authClientId;
   final String loginRedirectUri;
   final String logoutRedirectUri;
+  final List<String> scopes;
   final String? audience;
 
   AuthConfig({
@@ -10,6 +11,7 @@ class AuthConfig {
     required this.authClientId,
     required this.loginRedirectUri,
     required this.logoutRedirectUri,
+    required this.scopes,
     this.audience
   });
 }
