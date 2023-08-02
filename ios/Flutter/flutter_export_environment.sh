@@ -1,6 +1,6 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=/Users/vu.do/Documents/sdk/flutter 3.10.1"
+export "FLUTTER_ROOT=/Users/vu.do/Documents/sdk/flutter 3.7.3"
 export "FLUTTER_APPLICATION_PATH=/Users/vu.do/Documents/workspace/kinde-flutter-sdk"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_TARGET=lib/main.dart"
