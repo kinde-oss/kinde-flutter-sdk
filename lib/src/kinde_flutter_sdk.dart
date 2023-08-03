@@ -130,7 +130,11 @@ class KindeFlutterSDK with TokenUtils {
     }
   }
 
-  Future<String?> login(
+  Future<String?> login({AuthFlowType? type, String? orgCode}) async {
+    return _login(type: type, orgCode: orgCode);
+  }
+
+  Future<String?> _login(
       {AuthFlowType? type,
         String? orgCode,
         Map<String, String> additionalParams = const {}}) async {
@@ -143,14 +147,14 @@ class KindeFlutterSDK with TokenUtils {
     }
 
     if (type == AuthFlowType.pkce) {
-      return _loginPKCE(orgCode, params);
+      return _pkceLogin(params);
     } else {
-      return _login(type, orgCode, params);
+      return _normalLogin(params);
     }
   }
 
   Future register({AuthFlowType? type, String? orgCode}) async {
-    login(type: type, orgCode: orgCode, additionalParams: {
+    _login(type: type, orgCode: orgCode, additionalParams: {
       _registrationPageParamName: _registrationPageParamValue
     });
   }
@@ -168,7 +172,7 @@ class KindeFlutterSDK with TokenUtils {
   }
 
   Future createOrg({required String orgName, AuthFlowType? type}) async {
-    await login(type: type, orgCode: null, additionalParams: {
+    await _login(type: type, orgCode: null, additionalParams: {
       _registrationPageParamName: _registrationPageParamValue,
       _createOrgParamName: "true",
       _orgNameParamName: orgName
@@ -196,10 +200,10 @@ class KindeFlutterSDK with TokenUtils {
   Future<bool> isAuthenticate() async =>
       authState != null && !authState!.isExpired() && await _checkToken();
 
-  Future<String?> _login(AuthFlowType? type, String? orgCode,
-      Map<String, String> additionalParams) async {
+  Future<String?> _normalLogin(Map<String, String> additionalParams) async {
     const appAuth = FlutterAppAuth();
-    return await appAuth.authorizeAndExchangeCode(
+    return await appAuth
+        .authorizeAndExchangeCode(
       AuthorizationTokenRequest(
         _config!.authClientId,
         _config!.loginRedirectUri,
@@ -216,8 +220,7 @@ class KindeFlutterSDK with TokenUtils {
     });
   }
 
-  Future<String?> _loginPKCE(
-      String? orgCode, Map<String, String> additionalParams) async {
+  Future<String?> _pkceLogin(Map<String, String> additionalParams) async {
     const appAuth = FlutterAppAuth();
     try {
       final result = await appAuth.authorize(
@@ -244,7 +247,7 @@ class KindeFlutterSDK with TokenUtils {
       );
       _saveState(token);
       return token?.accessToken ?? '';
-    } catch(ex) {
+    } catch (ex) {
       return null;
     }
   }
@@ -279,7 +282,8 @@ class KindeFlutterSDK with TokenUtils {
         idToken: tokenResponse?.idToken,
         accessTokenExpirationDateTime:
         tokenResponse?.accessTokenExpirationDateTime,
-        refreshToken: tokenResponse?.refreshToken, scope: tokenResponse?.scopes?.join(' '));
+        refreshToken: tokenResponse?.refreshToken,
+        scope: tokenResponse?.scopes?.join(' '));
     _kindeApi.setBearerAuth(_bearerAuth, tokenResponse?.accessToken ?? '');
   }
 
