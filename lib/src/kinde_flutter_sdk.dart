@@ -3,7 +3,7 @@ import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart'
@@ -17,9 +17,12 @@ import 'package:kinde_flutter_sdk/src/model/auth_flow_type.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:kinde_flutter_sdk/src/store/store.dart';
 import 'package:kinde_flutter_sdk/src/token/auth_state.dart';
+import 'package:kinde_flutter_sdk/src/token/token_api.dart';
 import 'package:kinde_flutter_sdk/src/token/token_utils.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:pubspec_parse/pubspec_parse.dart';
 import 'auth_config.dart';
+import 'package:yaml/yaml.dart';
 
 class KindeFlutterSDK with TokenUtils {
   static const _orgCodeParamName = 'org_code';
@@ -35,6 +38,7 @@ class KindeFlutterSDK with TokenUtils {
   static const _logoutPath = '/logout';
   static const _defaultScopes = ['openid', 'profile', 'email', 'offline'];
   static const _bearerAuth = 'kindeBearerAuth';
+  static const _clientIdParamName = 'client_id';
 
   // Singleton
   static KindeFlutterSDK? _instance;
@@ -45,6 +49,7 @@ class KindeFlutterSDK with TokenUtils {
   static AuthConfig? _config;
   late KindeApi _kindeApi;
   late KeysApi _keysApi;
+  late TokenApi _tokenApi;
   late AuthorizationServiceConfiguration _serviceConfiguration;
 
   static KindeFlutterSDK get instance {
@@ -62,6 +67,7 @@ class KindeFlutterSDK with TokenUtils {
         endSessionEndpoint: 'https://${_config!.authDomain}$_logoutPath');
     _kindeApi = KindeApi(basePathOverride: 'https://${_config!.authDomain}');
     _keysApi = KeysApi(_kindeApi.dio);
+    _tokenApi = TokenApi(_kindeApi.dio);
 
     if (_store.keys == null) {
       _keysApi.getKeys().then((value) {
@@ -80,13 +86,12 @@ class KindeFlutterSDK with TokenUtils {
       List<String> scopes = _defaultScopes,
       String? audience}) async {
     _config = AuthConfig(
-      authDomain: authDomain,
-      authClientId: authClientId,
-      loginRedirectUri: loginRedirectUri,
-      logoutRedirectUri: logoutRedirectUri,
-      scopes: scopes,
-      audience: audience
-    );
+        authDomain: authDomain,
+        authClientId: authClientId,
+        loginRedirectUri: loginRedirectUri,
+        logoutRedirectUri: logoutRedirectUri,
+        scopes: scopes,
+        audience: audience);
 
     secure_store.FlutterSecureStorage secureStorage =
         const secure_store.FlutterSecureStorage(
@@ -129,18 +134,18 @@ class KindeFlutterSDK with TokenUtils {
       {AuthFlowType? type,
       String? orgCode,
       Map<String, String> additionalParams = const {}}) async {
+    final params = HashMap<String, String>.from(additionalParams);
     if (orgCode != null) {
-      additionalParams.putIfAbsent(_orgCodeParamName, () => orgCode);
+      params.putIfAbsent(_orgCodeParamName, () => orgCode);
     }
     if (_config?.audience != null) {
-      additionalParams.putIfAbsent(
-          _audienceParamName, () => _config!.audience!);
+      params.putIfAbsent(_audienceParamName, () => _config!.audience!);
     }
 
     if (type == AuthFlowType.pkce) {
-      return _loginPKCE(orgCode, additionalParams);
+      return _loginPKCE(orgCode, params);
     } else {
-      return _login(type, orgCode, additionalParams);
+      return _login(type, orgCode, params);
     }
   }
 
@@ -168,6 +173,24 @@ class KindeFlutterSDK with TokenUtils {
       _createOrgParamName: "true",
       _orgNameParamName: orgName
     });
+  }
+
+  Future<String?> getToken() async {
+    if (await isAuthenticate()) {
+      return _store.authState?.accessToken;
+    }
+    final version = await _getVersion();
+    final versionParam = 'Dart/$version';
+    try {
+      final data = await _tokenApi.retrieveToken(
+          versionParam,
+          _store.authState!.createRequestTokenParam()
+            ..putIfAbsent(_clientIdParamName, () => _config!.authClientId));
+      _store.authState = AuthState.fromJson(data as Map<String, dynamic>);
+      return _store.authState?.accessToken;
+    } catch (ex) {
+      return null;
+    }
   }
 
   Future<bool> isAuthenticate() async =>
@@ -210,7 +233,6 @@ class KindeFlutterSDK with TokenUtils {
         codeVerifier: result!.codeVerifier,
         authorizationCode: result.authorizationCode,
         serviceConfiguration: _serviceConfiguration,
-        grantType: GrantType.authorizationCode,
         nonce: result.nonce,
         scopes: _config!.scopes,
         additionalParameters: additionalParams,
@@ -250,7 +272,19 @@ class KindeFlutterSDK with TokenUtils {
         idToken: tokenResponse?.idToken,
         accessTokenExpirationDateTime:
             tokenResponse?.accessTokenExpirationDateTime,
-        refreshToken: tokenResponse?.refreshToken);
+        refreshToken: tokenResponse?.refreshToken, scope: tokenResponse?.scopes?.join(' '));
     _kindeApi.setBearerAuth(_bearerAuth, tokenResponse?.accessToken ?? '');
+  }
+
+  Future<String> _getVersion() async {
+    try {
+      final fileContent = await rootBundle.loadString(
+        "packages/kinde_flutter_sdk/pubspec.yaml",
+      );
+      final pubspec = Pubspec.parse(fileContent);
+      return pubspec.version?.canonicalizedVersion ?? '';
+    } catch (exception) {
+      return '';
+    }
   }
 }
