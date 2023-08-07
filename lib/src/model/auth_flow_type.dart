@@ -1,0 +1,1 @@
+enum AuthFlowType { none, pkce }
