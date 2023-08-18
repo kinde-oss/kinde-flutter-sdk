@@ -11,12 +11,29 @@ void main() {
     // String type
     test('to test the property `type`', () async {
       // TODO
+      final type = instance.type;
+      expect(type, isNull);
+      instance.type = 'type';
+      final result = instance.build();
+      expect(result, isA<UserIdentity>());
+      expect(result.type, isNotNull);
+      expect(result.type, isA<String>());
+      expect(result.type, equals('type'));
     });
 
     // UserIdentityResult result
     test('to test the property `result`', () async {
       // TODO
+      final result = instance.result;
+      expect(result, isA<UserIdentityResultBuilder>());
+      UserIdentityResultBuilder userIdentityResultBuilder =
+          UserIdentityResultBuilder();
+      userIdentityResultBuilder.created = true;
+      instance.result = userIdentityResultBuilder;
+      final instanceResult = instance.build();
+      expect(instanceResult.result, isNotNull);
+      expect(instanceResult.result, isA<UserIdentityResult?>());
+      expect(instanceResult.result?.created, isTrue);
     });
-
   });
 }

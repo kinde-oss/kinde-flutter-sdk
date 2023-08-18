@@ -11,7 +11,14 @@ void main() {
     // bool created
     test('to test the property `created`', () async {
       // TODO
+      final created = instance.created;
+      expect(created, isNull);
+      instance.created = true;
+      final result = instance.build();
+      expect(result, isA<UserIdentityResult>());
+      expect(result.created, isNotNull);
+      expect(result.created, isA<bool>());
+      expect(result.created, isTrue);
     });
-
   });
 }

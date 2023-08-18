@@ -11,7 +11,14 @@ void main() {
     // String email
     test('to test the property `email`', () async {
       // TODO
+      final email = instance.email;
+      expect(email, isNull);
+      instance.email = 'email';
+      final result = instance.build();
+      expect(result, isA<CreateUserRequestIdentitiesInnerDetails>());
+      expect(result.email, isA<String>());
+      expect(result.email, isNotNull);
+      expect(result.email, equals('email'));
     });
-
   });
 }

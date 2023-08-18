@@ -11,13 +11,28 @@ void main() {
     // String givenName
     test('to test the property `givenName`', () async {
       // TODO
+      final givenName = instance.givenName;
+      expect(givenName, isNull);
+      instance.givenName = 'givenName';
+      final result = instance.build();
+      expect(result, isA<CreateUserRequestProfile>());
+      expect(result.givenName, isA<String>());
+      expect(result.givenName, isNotNull);
+      expect(result.givenName, equals('givenName'));
     });
 
     // User's last name.
     // String familyName
     test('to test the property `familyName`', () async {
       // TODO
+      final familyName = instance.familyName;
+      expect(familyName, isNull);
+      instance.familyName = 'familyName';
+      final result = instance.build();
+      expect(result, isA<CreateUserRequestProfile>());
+      expect(result.familyName, isA<String>());
+      expect(result.familyName, isNotNull);
+      expect(result.familyName, equals('familyName'));
     });
-
   });
 }

@@ -11,7 +11,13 @@ void main() {
     // String result
     test('to test the property `result`', () async {
       // TODO
+      final result = instance.result;
+      expect(result, isNull);
+      instance.result = 'result';
+      final newResult = instance.build();
+      expect(newResult, isA<ApiResult>());
+      expect(newResult.result, isNotEmpty);
+      expect(newResult.result, contains('result'));
     });
-
   });
 }

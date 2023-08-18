@@ -11,7 +11,13 @@ void main() {
     // String roleId
     test('to test the property `roleId`', () async {
       // TODO
+      final roleId = instance.roleId;
+      expect(roleId, isNull);
+      instance.roleId = "roleId";
+      final result = instance.build();
+      expect(result.roleId, isA<String>());
+      expect(result.roleId, isNotNull);
+      expect(result.roleId, equals('roleId'));
     });
-
   });
 }

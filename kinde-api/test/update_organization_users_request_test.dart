@@ -1,5 +1,6 @@
 import 'package:test/test.dart';
 import 'package:kinde_api/kinde_api.dart';
+import 'package:built_collection/built_collection.dart';
 
 // tests for UpdateOrganizationUsersRequest
 void main() {
@@ -11,7 +12,16 @@ void main() {
     // BuiltList<UpdateOrganizationUsersRequestUsersInner> users
     test('to test the property `users`', () async {
       // TODO
+      final users = instance.users;
+      expect(users.length, isZero);
+      UpdateOrganizationUsersRequestUsersInner
+          updateOrganizationUsersRequestUsersInner =
+          UpdateOrganizationUsersRequestUsersInner();
+      instance.users.add(updateOrganizationUsersRequestUsersInner);
+      final result = instance.build();
+      expect(result, isA<UpdateOrganizationUsersRequest>());
+      expect(result.users, isNotNull);
+      expect(result.users?.length, isNonZero);
     });
-
   });
 }
