@@ -39,6 +39,7 @@ void main() {
       // TODO
       final permissionsAdded = instance.permissionsAdded;
       expect(permissionsAdded, isA<ListBuilder<String>>());
+      expect(permissionsAdded.length, isZero);
       instance.permissionsAdded.add('permission1');
       instance.permissionsAdded.add('permission2');
       final result = instance.build();
@@ -55,6 +56,7 @@ void main() {
       // TODO
       final permissionsRemoved = instance.permissionsRemoved;
       expect(permissionsRemoved, isA<ListBuilder<String>>());
+      expect(permissionsRemoved.length, isZero);
       instance.permissionsRemoved.add('permission1');
       instance.permissionsRemoved.add('permission2');
       final result = instance.build();

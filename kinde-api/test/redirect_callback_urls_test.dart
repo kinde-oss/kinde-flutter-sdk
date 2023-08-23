@@ -12,7 +12,7 @@ void main() {
     test('to test the property `redirectUrls`', () async {
       // TODO
       final redirectUrls = instance.redirectUrls;
-      expect(redirectUrls, isNotNull);
+      expect(redirectUrls.length, isZero);
       instance.redirectUrls.add('redirectUrl1');
       instance.redirectUrls.add('redirectUrl2');
       final result = instance.build();

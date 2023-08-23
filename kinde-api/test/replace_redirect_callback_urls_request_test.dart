@@ -14,6 +14,7 @@ void main() {
       // TODO
       final urls = instance.urls;
       expect(urls, isA<ListBuilder<String>>());
+      expect(urls.length, isZero);
       instance.urls.add('url1');
       instance.urls.add('url2');
       final result = instance.build();

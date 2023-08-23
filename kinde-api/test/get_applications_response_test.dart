@@ -41,6 +41,7 @@ void main() {
       // TODO
       final message = instance.organizations;
       expect(message, isA<ListBuilder<Application>>());
+      expect(message.length, isZero);
       ListBuilder<Application> _organizations = ListBuilder<Application>();
       var app = Application((builder) {
         builder.name = 'name';

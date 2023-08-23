@@ -46,6 +46,7 @@ void main() {
     test('to test the property `key`', () async {
       // TODO
       final key = instance.key;
+      final name = instance.name;
       instance.key = 'key';
       instance.name = 'name';
       final result = instance.build();

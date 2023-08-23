@@ -40,7 +40,7 @@ void main() {
     test('to test the property `users`', () async {
       // TODO
       final users = instance.users;
-      expect(users, isA<ListBuilder<User>>());
+      expect(users.length, isZero);
       User user1 = User();
       User user2 = User();
       instance.users.add(user1);

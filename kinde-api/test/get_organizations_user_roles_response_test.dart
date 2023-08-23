@@ -40,6 +40,7 @@ void main() {
       // TODO
       final roles = instance.roles;
       expect(roles, isA<ListBuilder<OrganizationUserRole>>());
+      expect(roles.length, isZero);
       OrganizationUserRole _role = OrganizationUserRole();
       instance.roles.add(_role);
       final result = instance.build();

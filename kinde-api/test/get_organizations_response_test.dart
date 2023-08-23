@@ -40,6 +40,7 @@ void main() {
       // TODO
       final roles = instance.roles;
       expect(roles, isA<ListBuilder<Role>>());
+      expect(roles.length, isZero);
       Role _role = Role();
       instance.roles.add(_role);
       final result = instance.build();

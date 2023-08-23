@@ -13,6 +13,7 @@ void main() {
       // TODO
       final errors = instance.errors;
       expect(errors, isA<ListBuilder<Error>>());
+      expect(errors.length, isZero);
       Error _error = Error();
       instance.errors.add(_error);
       final result = instance.build();

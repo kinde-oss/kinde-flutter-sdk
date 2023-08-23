@@ -41,6 +41,7 @@ void main() {
       // TODO
       final identities = instance.identities;
       expect(identities, isA<ListBuilder<UserIdentity>>());
+      expect(identities.length, isZero);
       UserIdentity userIdentity = UserIdentity();
       instance.identities.add(userIdentity);
       final result = instance.build();

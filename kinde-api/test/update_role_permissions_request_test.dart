@@ -15,6 +15,7 @@ void main() {
       final permissions = instance.permissions;
       expect(permissions,
           isA<ListBuilder<UpdateRolePermissionsRequestPermissionsInner>>());
+      expect(permissions.length, isZero);
       instance.permissions.add(UpdateRolePermissionsRequestPermissionsInner());
       final result = instance.build();
       expect(result, isA<UpdateRolePermissionsRequest>());

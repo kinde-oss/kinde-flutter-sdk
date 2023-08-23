@@ -26,6 +26,7 @@ void main() {
       // TODO
       final result = instance.result;
       expect(result, isA<UserIdentityResultBuilder>());
+      expect(result.created, isNull);
       UserIdentityResultBuilder userIdentityResultBuilder =
           UserIdentityResultBuilder();
       userIdentityResultBuilder.created = true;

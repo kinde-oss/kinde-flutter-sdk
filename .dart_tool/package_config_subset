@@ -322,14 +322,6 @@ yaml
 2.19
 file:///Users/abdullahihsan/.pub-cache/hosted/pub.dev/yaml-3.1.2/
 file:///Users/abdullahihsan/.pub-cache/hosted/pub.dev/yaml-3.1.2/lib/
-kinde_flutter_sdk
-2.15
-file:///Users/abdullahihsan/Documents/Kinde-new/kinde-flutter-sdk/
-file:///Users/abdullahihsan/Documents/Kinde-new/kinde-flutter-sdk/lib/
-kinde_api
-2.15
-file:///Users/abdullahihsan/Documents/Kinde-new/kinde-flutter-sdk/kinde-api/
-file:///Users/abdullahihsan/Documents/Kinde-new/kinde-flutter-sdk/kinde-api/lib/
 sky_engine
 3.0
 file:///Users/abdullahihsan/Documents/flutter/bin/cache/pkg/sky_engine/
@@ -346,4 +338,12 @@ flutter_web_plugins
 3.0
 file:///Users/abdullahihsan/Documents/flutter/packages/flutter_web_plugins/
 file:///Users/abdullahihsan/Documents/flutter/packages/flutter_web_plugins/lib/
+kinde_flutter_sdk
+2.15
+file:///Users/abdullahihsan/kinde-flutter-sdk/
+file:///Users/abdullahihsan/kinde-flutter-sdk/lib/
+kinde_api
+2.15
+file:///Users/abdullahihsan/kinde-flutter-sdk/kinde-api/
+file:///Users/abdullahihsan/kinde-flutter-sdk/kinde-api/lib/
 2
