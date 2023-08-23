@@ -11,7 +11,13 @@ void main() {
     // String value
     test('to test the property `value`', () async {
       // TODO
+      final value = instance.value;
+      expect(value, isNull);
+      instance.value = 'value';
+      final result = instance.build();
+      expect(result, isA<UpdateEnvironementFeatureFlagOverrideRequest>());
+      expect(result.value, isNotNull);
+      expect(result.value, equals('value'));
     });
-
   });
 }

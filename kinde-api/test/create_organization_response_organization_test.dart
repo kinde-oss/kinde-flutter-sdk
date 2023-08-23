@@ -11,7 +11,14 @@ void main() {
     // String code
     test('to test the property `code`', () async {
       // TODO
+      final code = instance.code;
+      expect(code, isNull);
+      instance.code = "code";
+      final result = instance.build();
+      expect(result, isA<CreateOrganizationResponseOrganization>());
+      expect(result.code, isA<String>());
+      expect(result.code, isNotNull);
+      expect(result.code, equals('code'));
     });
-
   });
 }

@@ -1,10 +1,13 @@
 import 'package:test/test.dart';
 import 'package:kinde_api/kinde_api.dart';
-
+import 'package:dio/dio.dart';
+import '../test/test_helpers/dio_mock.dart';
 
 /// tests for ConnectedAppsApi
 void main() {
-  final instance = KindeApi().getConnectedAppsApi();
+  Dio dio = DioAdapterMock();
+  ConnectedAppsApi instance = KindeApi(dio: dio).getConnectedAppsApi();
+  //final instance = KindeApi().getConnectedAppsApi();
 
   group(ConnectedAppsApi, () {
     // Get Connected App URL
@@ -14,6 +17,11 @@ void main() {
     //Future<ConnectedAppsAuthUrl> getConnectedAppAuthUrl(String keyCodeRef, String userId) async
     test('test getConnectedAppAuthUrl', () async {
       // TODO
+      final responseData = await instance.getConnectedAppAuthUrl(
+        keyCodeRef: 'test_keyCodeRef',
+        userId: 'test_userId',
+      );
+      expect(responseData, isNotNull);
     });
 
     // Get Connected App Token
@@ -23,6 +31,10 @@ void main() {
     //Future<ConnectedAppsAccessToken> getConnectedAppToken(String sessionId) async
     test('test getConnectedAppToken', () async {
       // TODO
+      final responseData = await instance.getConnectedAppToken(
+        sessionId: 'test_sessionId',
+      );
+      expect(responseData, isNotNull);
     });
 
     // Revoke Connected App Token
@@ -32,7 +44,10 @@ void main() {
     //Future<SuccessResponse> revokeConnectedAppToken(String sessionId) async
     test('test revokeConnectedAppToken', () async {
       // TODO
+      final responseData = await instance.revokeConnectedAppToken(
+        sessionId: 'test_sessionId',
+      );
+      expect(responseData, isNotNull);
     });
-
   });
 }

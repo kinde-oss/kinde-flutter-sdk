@@ -11,7 +11,14 @@ void main() {
     // String subscriberId
     test('to test the property `subscriberId`', () async {
       // TODO
+      final subscriberId = instance.subscriberId;
+      expect(subscriberId, isNull);
+      instance.subscriberId = 'subscriberId';
+      final result = instance.build();
+      expect(result, isA<CreateSubscriberSuccessResponseSubscriber>());
+      expect(result.subscriberId, isA<String>());
+      expect(result.subscriberId, isNotNull);
+      expect(result.subscriberId, equals('subscriberId'));
     });
-
   });
 }

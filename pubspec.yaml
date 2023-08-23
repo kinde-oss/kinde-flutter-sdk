@@ -5,7 +5,7 @@ homepage:
 
 environment:
   sdk: '>=2.15.0 <3.0.0'
-  flutter: ">=2.5.0"
+  flutter: '>=2.5.0'
 
 dependencies:
   flutter:
@@ -27,6 +27,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
+  mockito: ^5.4.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
