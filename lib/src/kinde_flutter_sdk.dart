@@ -3,11 +3,12 @@ import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart'
-as secure_store;
+    as secure_store;
 import 'package:hive/hive.dart';
 import 'package:jose/jose.dart';
 import 'package:kinde_api/kinde_api.dart';
@@ -17,6 +18,7 @@ import 'package:kinde_flutter_sdk/src/model/auth_flow_type.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:kinde_flutter_sdk/src/store/store.dart';
 import 'package:kinde_flutter_sdk/src/token/auth_state.dart';
+import 'package:kinde_flutter_sdk/src/token/refresh_token_interceptor.dart';
 import 'package:kinde_flutter_sdk/src/token/token_api.dart';
 import 'package:kinde_flutter_sdk/src/token/token_utils.dart';
 import 'package:path_provider/path_provider.dart';
@@ -64,7 +66,20 @@ class KindeFlutterSDK with TokenUtils {
         authorizationEndpoint: 'https://${_config!.authDomain}$_authPath',
         tokenEndpoint: 'https://${_config!.authDomain}$_tokenPath',
         endSessionEndpoint: 'https://${_config!.authDomain}$_logoutPath');
-    _kindeApi = KindeApi(basePathOverride: 'https://${_config!.authDomain}');
+
+    Dio dio = Dio(BaseOptions(
+      baseUrl: 'https://${_config!.authDomain}',
+      connectTimeout: const Duration(milliseconds: 5000),
+      receiveTimeout: const Duration(milliseconds: 3000),
+    ));
+
+    _kindeApi = KindeApi(dio: dio, interceptors: [
+      BearerAuthInterceptor(),
+      RefreshTokenInterceptor(
+        dio: dio,
+        refreshToken: getToken,
+      ),
+    ]);
     _keysApi = KeysApi(_kindeApi.dio);
     _tokenApi = TokenApi(_kindeApi.dio);
 
@@ -75,7 +90,7 @@ class KindeFlutterSDK with TokenUtils {
     }
 
     var token = authState?.accessToken;
-    if(token != null) {
+    if (token != null) {
       _kindeApi.setBearerAuth(_bearerAuth, token ?? '');
     }
   }
@@ -84,11 +99,11 @@ class KindeFlutterSDK with TokenUtils {
 
   static Future<void> initializeSDK(
       {required String authDomain,
-        required String authClientId,
-        required String loginRedirectUri,
-        required String logoutRedirectUri,
-        List<String> scopes = _defaultScopes,
-        String? audience}) async {
+      required String authClientId,
+      required String loginRedirectUri,
+      required String logoutRedirectUri,
+      List<String> scopes = _defaultScopes,
+      String? audience}) async {
     _config = AuthConfig(
         authDomain: authDomain,
         authClientId: authClientId,
@@ -98,13 +113,13 @@ class KindeFlutterSDK with TokenUtils {
         audience: audience);
 
     secure_store.FlutterSecureStorage secureStorage =
-    const secure_store.FlutterSecureStorage(
-        aOptions: secure_store.AndroidOptions());
+        const secure_store.FlutterSecureStorage(
+            aOptions: secure_store.AndroidOptions());
 
     Future<List<int>> getSecureKey(
         secure_store.FlutterSecureStorage secureStorage) async {
       var containsEncryptionKey =
-      await secureStorage.containsKey(key: 'encryptionKey');
+          await secureStorage.containsKey(key: 'encryptionKey');
       if (!containsEncryptionKey) {
         var key = Hive.generateSecureKey();
         await secureStorage.write(
@@ -140,8 +155,8 @@ class KindeFlutterSDK with TokenUtils {
 
   Future<String?> _login(
       {AuthFlowType? type,
-        String? orgCode,
-        Map<String, String> additionalParams = const {}}) async {
+      String? orgCode,
+      Map<String, String> additionalParams = const {}}) async {
     final params = HashMap<String, String>.from(additionalParams);
     if (orgCode != null) {
       params.putIfAbsent(_orgCodeParamName, () => orgCode);
@@ -195,6 +210,7 @@ class KindeFlutterSDK with TokenUtils {
           _store.authState!.createRequestTokenParam()
             ..putIfAbsent(_clientIdParamName, () => _config!.authClientId));
       _store.authState = AuthState.fromJson(data as Map<String, dynamic>);
+      _kindeApi.setBearerAuth(_bearerAuth, _store.authState?.accessToken ?? '');
       return _store.authState?.accessToken;
     } catch (ex) {
       return null;
@@ -216,7 +232,8 @@ class KindeFlutterSDK with TokenUtils {
         promptValues: ['login'],
         additionalParameters: additionalParams,
       ),
-    ).then((value) {
+    )
+        .then((value) {
       _saveState(value);
       return value?.accessToken;
     }).catchError((ex) {
@@ -285,7 +302,7 @@ class KindeFlutterSDK with TokenUtils {
         accessToken: tokenResponse?.accessToken,
         idToken: tokenResponse?.idToken,
         accessTokenExpirationDateTime:
-        tokenResponse?.accessTokenExpirationDateTime,
+            tokenResponse?.accessTokenExpirationDateTime,
         refreshToken: tokenResponse?.refreshToken,
         scope: tokenResponse?.scopes?.join(' '));
     _kindeApi.setBearerAuth(_bearerAuth, tokenResponse?.accessToken ?? '');
