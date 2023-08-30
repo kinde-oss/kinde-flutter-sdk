@@ -147,6 +147,8 @@ class KindeFlutterSDK with TokenUtils {
     } else {
       await launch(_buildEndSessionUrl().toString());
     }
+    _kindeApi.setBearerAuth(_bearerAuth, '');
+    await Store.instance.clear();
   }
 
   Future<String?> login({AuthFlowType? type, String? orgCode}) async {
