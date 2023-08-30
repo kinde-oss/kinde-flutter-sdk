@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart'
@@ -73,6 +72,11 @@ class KindeFlutterSDK with TokenUtils {
       _keysApi.getKeys().then((value) {
         _store.keys = value;
       });
+    }
+
+    var token = authState?.accessToken;
+    if(token != null) {
+      _kindeApi.setBearerAuth(_bearerAuth, token ?? '');
     }
   }
 
