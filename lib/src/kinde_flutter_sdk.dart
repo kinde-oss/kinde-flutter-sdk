@@ -152,10 +152,10 @@ class KindeFlutterSDK with TokenUtils {
   }
 
   Future<String?> login({AuthFlowType? type, String? orgCode}) async {
-    return _login(type: type, orgCode: orgCode);
+    return _redirectToKinde(type: type, orgCode: orgCode);
   }
 
-  Future<String?> _login(
+  Future<String?> _redirectToKinde(
       {AuthFlowType? type,
       String? orgCode,
       Map<String, String> additionalParams = const {}}) async {
@@ -174,8 +174,8 @@ class KindeFlutterSDK with TokenUtils {
     }
   }
 
-  Future register({AuthFlowType? type, String? orgCode}) async {
-    _login(type: type, orgCode: orgCode, additionalParams: {
+  Future<void> register({AuthFlowType? type, String? orgCode}) async {
+    await _redirectToKinde(type: type, orgCode: orgCode, additionalParams: {
       _registrationPageParamName: _registrationPageParamValue
     });
   }
@@ -192,8 +192,8 @@ class KindeFlutterSDK with TokenUtils {
     });
   }
 
-  Future createOrg({required String orgName, AuthFlowType? type}) async {
-    await _login(type: type, orgCode: null, additionalParams: {
+  Future<void> createOrg({required String orgName, AuthFlowType? type}) async {
+    await _redirectToKinde(type: type, orgCode: null, additionalParams: {
       _registrationPageParamName: _registrationPageParamValue,
       _createOrgParamName: "true",
       _orgNameParamName: orgName
