@@ -108,20 +108,37 @@ void main() async {
 ## Overriding scope
 By default the KindeSDK requests the following scopes:
 
-- profile
-- email
-- offline
-- openid
+- profile: Perform an OpenID connect sign-in.
+- email: Retrieve the user’s profile.
+- offline: Retrieve a Refresh Token for offline access from the application.
+- openid: Retrieve the user’s email.
 
 You can override this by passing scope into the initializeSDK() function
 ````
     await KindeFlutterSDK.initializeSDK(
         ...
-        scopes = ["openid", "offline", "email", "profile"], 
+        scopes = ["email", "profile"], 
         ...
     )
 
 ````
+
+## Audience
+
+An `audience` is the intended recipient of an access token - for example the API for your application. The audience
+argument can be passed to the Kinde client to request an audience be added to the provided token.
+
+The audience of a token is the intended recipient of the token.
+
+```
+    await KindeFlutterSDK.initializeSDK(
+        ...
+        audience: 'myapp.kinde.com/api',
+        ...
+    )
+```
+
+For details on how to connect, see [Register an API](https://kinde.com/docs/developer-tools/register-an-api/)
 
 ## Kinde Client
 
@@ -353,14 +370,14 @@ There are two helper functions you can use to extract information:
 Once the user has successfully authenticated, you’ll have a JWT and possibly a refresh token that should be stored securely. To achieve this Kinde SDK stores this data at the app's private folder.
 
 ## SDK API Reference
-| Property       | Type                                                            | Is required | Default description                                            |
-|----------------|-----------------------------------------------------------------|-------------|----------------------------------------------------------------|
-| authDomain     | String                                                          | Yes         | your Kinde domain                                              |
-| authClientId   | String                                                          | Yes         | you can find this on the App Keys page                         |
-| loginRedirect  | String                                                          | Yes         | The url that the user will be returned to after authentication |
-| logoutRedirect | String                                                          | Yes         | Where your user will be redirected upon logout                 |
-| audience       | String                                                          | No          | API are connected to this application                          |
-| scopes         | List<Sting>                                                     | No          | List of scopes to override the default ones                    |      
+| Property       | Type         | Is required | Default description                                            |
+|----------------|--------------|-------------|----------------------------------------------------------------|
+| authDomain     | String       | Yes         | your Kinde domain                                              |
+| authClientId   | String       | Yes         | you can find this on the App Keys page                         |
+| loginRedirect  | String       | Yes         | The url that the user will be returned to after authentication |
+| logoutRedirect | String       | Yes         | Where your user will be redirected upon logout                 |
+| audience       | String       | No          | API are connected to this application                          |
+| scopes         | List<String> | No          | List of scope to override the default ones                     |      
 
 ## KindeSDK methods
 | Method                 | Description                                                                            | Arguments                                                                      | Usage                                                                                                                               | Sample output                                                                                                                  |
