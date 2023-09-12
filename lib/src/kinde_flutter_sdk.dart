@@ -205,7 +205,7 @@ class KindeFlutterSDK with TokenUtils {
       return _store.authState?.accessToken;
     }
     final version = await _getVersion();
-    final versionParam = 'Dart/$version';
+    final versionParam = 'Flutter/$version';
     try {
       final data = await _tokenApi.retrieveToken(
           versionParam,

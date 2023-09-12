@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:kinde_flutter_sdk/src/kinde_error.dart';
 import 'package:kinde_flutter_sdk/src/model/claim/claim.dart';
 import 'package:kinde_flutter_sdk/src/model/claim/flag.dart';
 import 'package:kinde_flutter_sdk/src/model/claim/claim_organization.dart';
@@ -69,19 +70,24 @@ mixin TokenUtils implements ClaimApi {
 
   @override
   Flag? getFlag({required String code, defaultValue, FlagType? type}) {
-    final flagClaim = _getClaim(_featureFlagsClaim) as Map<String, dynamic>;
-    if (!flagClaim.containsKey(code) && defaultValue != null) {
-      return Flag(code, null, defaultValue, true);
-    }
-    if (flagClaim.containsKey(code)) {
-      final flagObj = flagClaim[code];
-      if (type != null && type.character != flagObj[_flagType]) {
-        return null;
+
+    Map<String, dynamic>? flagObj;
+    FlagType? flagType;
+
+    final flagClaim = _getClaim(_featureFlagsClaim) as Map<String, dynamic>?;
+    if (flagClaim == null || !flagClaim.containsKey(code)) {
+      if(defaultValue == null) {
+        throw KindeError('Flag $code was not found, and no default value has been provided');
       }
-      return Flag(code, _flagTypeFromString(flagObj[_flagType]),
-          flagObj[_flagValue], false);
+    } else {
+      flagObj = flagClaim[code];
+      flagType = _flagTypeFromString(flagObj?[_flagType]);
+      if (type != null && flagType != null && type.character != flagType.character) {
+        throw KindeError('Flag $code is type $flagType - requested type $type');
+      }
     }
-    return null;
+    return Flag(code, flagType ?? type,
+        flagObj != null ? flagObj[_flagValue] : defaultValue, flagObj == null);
   }
 
   @override
