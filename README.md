@@ -1,4 +1,5 @@
 # Kinde Flutter SDK
+The Kinde SDK For Flutter
 
 ## Overview
 Integrate [Kinde](https://kinde.com) authentication with your Flutter app. Simply configure, register, log in, and log out, and the authentication state is securely stored across app restarts.
