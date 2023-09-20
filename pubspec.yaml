@@ -1,10 +1,10 @@
 name: kinde_flutter_sdk
-description: A new Flutter project.
+description: The Kinde SDK For Flutter.
 version: 0.0.1
 homepage:
 
 environment:
-  sdk: '>=2.15.0 <3.0.0'
+  sdk: '>=2.15.0 <4.0.0'
   flutter: '>=2.5.0'
 
 dependencies:
@@ -66,6 +66,11 @@ flutter:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
   #
+
+  assets:
+    - pubspec.yaml
+
+
   # For details regarding assets in packages, see
   # https://flutter.dev/assets-and-images/#from-packages
   #

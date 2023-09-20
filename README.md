@@ -1,7 +1,8 @@
 # Kinde Flutter SDK
+The Kinde SDK For Flutter
 
 ## Overview
-Integrate Kinde authentication with your Flutter app. Simply configure, register, log in, and log out, and the authentication state is securely stored across app restarts.
+Integrate [Kinde](https://kinde.com) authentication with your Flutter app. Simply configure, register, log in, and log out, and the authentication state is securely stored across app restarts.
 
 These instructions assume you already have a Kinde account. You can register for free [here](https://app.kinde.com/register) (no credit card required).
 
@@ -11,7 +12,12 @@ KindeSDK is available through [pub.dev](https://pub.dev). To install it, simply 
     kinde_flutter_sdk: <last-version>
 
 ## Configure Kinde
+
+To get started you will need a Kinde domain, to do this you will first need to
+[register for a Kinde account](http://app.kinde.com/register).
+
 ### Set callback URLs
+
 In Kinde, go to <b>Settings</b> > <b>Applications</b>.
 
 View the application details. This is where you get app keys and set the callback URLs.
@@ -61,13 +67,15 @@ Go to the `Info.plist` for your iOS/macOS app to specify the custom scheme so th
 ```
 
 ## Integrate with your app
-Within the main function, ensure WidgetsFlutterBinding is initialized and then `initializeSDK` KindeFlutterSDK
+Within the main function, ensure WidgetsFlutterBinding is initialized and then call `initializeSDK` function of KindeFlutterSDK
+KindeFlutterSDK.initializeSDK() must be called before using the SDK
 
 - `authDomain`: your Kinde domain
 - `authClientId`: you can find this on the App Keys page
 - `loginRedirectUri`: callback URL
 - `logoutRedirectUri`: logout callback URL
 - `audience`: (Optional) An audience is the intended recipient of an access token - for example the API for your application
+- `scopes`: (Optional) Scope List
 
 ````
 void main() async {
@@ -78,6 +86,7 @@ void main() async {
     loginRedirectUri: <login_callback>,
     logoutRedirectUri: <logout_callback>,
     audience: '<audience>',
+    scopes = <scope_list>,
   );
 
   runApp(const MyApp());
@@ -95,11 +104,47 @@ void main() async {
     loginRedirectUri: 'com.kinde.myapp://kinde_callback',
     logoutRedirectUri: 'com.kinde.myapp://kinde_logoutcallback',
     audience: 'myapp.kinde.com/api',
+    scopes: ["openid", "offline", "email", "profile"],
   );
 
   runApp(const MyApp());
 }
 ````
+
+## Overriding scope
+By default the KindeSDK requests the following scopes:
+
+- profile: Perform an OpenID connect sign-in.
+- email: Retrieve the user’s profile.
+- offline: Retrieve a Refresh Token for offline access from the application.
+- openid: Retrieve the user’s email.
+
+You can override this by passing scope into the initializeSDK() function
+````
+    await KindeFlutterSDK.initializeSDK(
+        ...
+        scopes = ["email", "profile"], 
+        ...
+    )
+
+````
+
+## Audience
+
+An `audience` is the intended recipient of an access token - for example the API for your application. The audience
+argument can be passed to the Kinde client to request an audience be added to the provided token.
+
+The audience of a token is the intended recipient of the token.
+
+```
+    await KindeFlutterSDK.initializeSDK(
+        ...
+        audience: 'myapp.kinde.com/api',
+        ...
+    )
+```
+
+For details on how to connect, see [Register an API](https://kinde.com/docs/developer-tools/register-an-api/)
 
 ## Kinde Client
 
@@ -254,23 +299,6 @@ We provide helper functions to more easily access feature flags:
   */
   getIntegerFlag(code, defaultValue);
   ````
-## Overriding scope
-By default the KindeSDK requests the following scopes:
-
-- profile
-- email
-- offline
-- openid
-
-You can override this by passing scope into the KindeSDK
-````
-    await KindeFlutterSDK.initializeSDK(
-        ...
-        scopes = ["openid", "offline", "email", "profile"], 
-        ...
-    )
-
-````
 ## Getting claims
 We have provided a helper to grab any claim from your id or access tokens. The helper defaults to access tokens:
 ````
@@ -348,14 +376,14 @@ There are two helper functions you can use to extract information:
 Once the user has successfully authenticated, you’ll have a JWT and possibly a refresh token that should be stored securely. To achieve this Kinde SDK stores this data at the app's private folder.
 
 ## SDK API Reference
-| Property       | Type                                                            | Is required | Default description                                            |
-|----------------|-----------------------------------------------------------------|-------------|----------------------------------------------------------------|
-| authDomain     | String                                                          | Yes         | your Kinde domain                                              |
-| authClientId   | String                                                          | Yes         | you can find this on the App Keys page                         |
-| loginRedirect  | String                                                          | Yes         | The url that the user will be returned to after authentication |
-| logoutRedirect | String                                                          | Yes         | Where your user will be redirected upon logout                 |
-| audience       | String                                                          | No          | API are connected to this application                          |
-| scopes         | List<Sting>                                                     | No          | List of scopes to override the default ones                    |      
+| Property       | Type         | Is required | Default description                                            |
+|----------------|--------------|-------------|----------------------------------------------------------------|
+| authDomain     | String       | Yes         | your Kinde domain                                              |
+| authClientId   | String       | Yes         | you can find this on the App Keys page                         |
+| loginRedirect  | String       | Yes         | The url that the user will be returned to after authentication |
+| logoutRedirect | String       | Yes         | Where your user will be redirected upon logout                 |
+| audience       | String       | No          | API are connected to this application                          |
+| scopes         | List<String> | No          | List of scope to override the default ones                     |      
 
 ## KindeSDK methods
 | Method                 | Description                                                                            | Arguments                                                                      | Usage                                                                                                                               | Sample output                                                                                                                  |
@@ -371,3 +399,20 @@ Once the user has successfully authenticated, you’ll have a JWT and possibly a
 | `getPermission`        | Returns the state of a given permission                                                | `permission`: String                                                           | `sdk.getPermission("read:todos")`                                                                                                   | `{orgCode: "org_1234", isGranted: true}`                                                                                       |
 | `getUserOrganizations` | Gets an array of all organizations the user has access to                              |                                                                                | `sdk.getUserOrganizations()`                                                                                                        | `{orgCodes: ["org_1234", "org_5678""org1_234","org_5678"]}`                                                                    |
 | `getOrganization`      | Get details for the organization your user is logged into                              |                                                                                | `sdk.getOrganization()`                                                                                                             | `{orgCode: "org_1234"}`                                                                                                        |
+
+## Kinde API
+KindeSDK includes a client for the [Kinde API](kinde-api/README.md).
+This client is generated by the [OpenApi Genenerator](https://openapi-generator.tech/docs/generators/dart/).
+
+## Author
+
+Kinde, kinde.com
+
+## Contributing
+Please refer to Kinde’s [contributing guidelines](https://github.com/kinde-oss/.github/blob/489e2ca9c3307c2b2e098a885e22f2239116394a/CONTRIBUTING.md).
+
+## License
+
+KindeSDK is available under the MIT license. See the LICENSE file for more info.
+
+If you need help connecting to Kinde, please contact us at [support@kinde.com](mailto:support@kinde.com).
