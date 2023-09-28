@@ -1,9 +1,7 @@
-import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kinde_flutter_sdk/kinde_sdk.dart';
+import 'package:kinde_flutter_sdk/kinde_flutter_sdk.dart';
 import 'package:kinde_flutter_sdk/src/keys/keys.dart';
 import 'package:kinde_flutter_sdk/src/store/store.dart';
-import 'package:mockito/mockito.dart';
 
 import 'mock_channels.dart';
 
