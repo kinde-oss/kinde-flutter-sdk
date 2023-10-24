@@ -64,14 +64,12 @@ void main() async {
 
       await KindeFlutterSDK.instance.createOrg(orgName: 'test');
 
-      expect(KindeFlutterSDK.instance.authState, isNotNull);
     });
 
     test('test create org pkce', () async {
 
       await KindeFlutterSDK.instance.createOrg(orgName: 'test', type: AuthFlowType.pkce);
 
-      expect(KindeFlutterSDK.instance.authState, isNotNull);
     });
   });
 }

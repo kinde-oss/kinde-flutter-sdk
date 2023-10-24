@@ -30,7 +30,10 @@ mixin TokenUtils implements ClaimApi {
   AuthState? authState;
 
   @override
-  UserDetails getUserDetails() {
+  UserDetails? getUserDetails() {
+    if (authState?.idToken == null) {
+      return null;
+    }
     return UserDetails(
       _getClaim<String>(_subClaim, tokenType: TokenType.idToken) ?? '',
       _getClaim<String>(_givenNameClaim, tokenType: TokenType.idToken) ?? '',
@@ -48,8 +51,10 @@ mixin TokenUtils implements ClaimApi {
 
   @override
   ClaimPermission getPermission(String permission) {
-    return ClaimPermission(_getClaim<String>(_orgCodeClaim) ?? '',
-        (_getClaim<List<String>>(_permissionsClaim) ?? []).contains(permission));
+    return ClaimPermission(
+        _getClaim<String>(_orgCodeClaim) ?? '',
+        (_getClaim<List<String>>(_permissionsClaim) ?? [])
+            .contains(permission));
   }
 
   @override
@@ -60,7 +65,9 @@ mixin TokenUtils implements ClaimApi {
 
   @override
   ClaimOrganizations getUserOrganizations() {
-    return ClaimOrganizations(_getClaim<List<String>>(_orgCodesClaim, tokenType: TokenType.idToken) ?? []);
+    return ClaimOrganizations(
+        _getClaim<List<String>>(_orgCodesClaim, tokenType: TokenType.idToken) ??
+            []);
   }
 
   @override
@@ -70,19 +77,21 @@ mixin TokenUtils implements ClaimApi {
 
   @override
   Flag? getFlag({required String code, defaultValue, FlagType? type}) {
-
     Map<String, dynamic>? flagObj;
     FlagType? flagType;
 
     final flagClaim = _getClaim(_featureFlagsClaim) as Map<String, dynamic>?;
     if (flagClaim == null || !flagClaim.containsKey(code)) {
-      if(defaultValue == null) {
-        throw KindeError('Flag $code was not found, and no default value has been provided');
+      if (defaultValue == null) {
+        throw KindeError(
+            'Flag $code was not found, and no default value has been provided');
       }
     } else {
       flagObj = flagClaim[code];
       flagType = _flagTypeFromString(flagObj?[_flagType]);
-      if (type != null && flagType != null && type.character != flagType.character) {
+      if (type != null &&
+          flagType != null &&
+          type.character != flagType.character) {
         throw KindeError('Flag $code is type $flagType - requested type $type');
       }
     }
@@ -92,8 +101,7 @@ mixin TokenUtils implements ClaimApi {
 
   @override
   bool? getBooleanFlag({required String code, bool? defaultValue}) {
-    return getFlag(
-            code: code, defaultValue: defaultValue, type: FlagType.bool)
+    return getFlag(code: code, defaultValue: defaultValue, type: FlagType.bool)
         ?.value as bool?;
   }
 
@@ -122,7 +130,7 @@ mixin TokenUtils implements ClaimApi {
     if (token != null) {
       final decoded = parseToken(token);
       if (decoded.containsKey(claim)) {
-        if(decoded[claim] is List) {
+        if (decoded[claim] is List) {
           return decoded[claim].cast<String>() as T?;
         }
         return decoded[claim] as T?;
@@ -146,7 +154,7 @@ mixin TokenUtils implements ClaimApi {
 }
 
 abstract class ClaimApi {
-  UserDetails getUserDetails();
+  UserDetails? getUserDetails();
 
   Claim getClaim(
       {required String claim, TokenType tokenType = TokenType.accessToken});
@@ -159,8 +167,7 @@ abstract class ClaimApi {
 
   ClaimOrganization getOrganization();
 
-  Flag? getFlag(
-      {required String code, dynamic defaultValue, FlagType? type});
+  Flag? getFlag({required String code, dynamic defaultValue, FlagType? type});
 
   bool? getBooleanFlag({required String code, bool? defaultValue});
 

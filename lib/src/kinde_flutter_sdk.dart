@@ -205,6 +205,9 @@ class KindeFlutterSDK with TokenUtils {
     final version = await _getVersion();
     final versionParam = 'Flutter/$version';
     try {
+      if (authState?.refreshToken == null) {
+        throw KindeError("Session expired or invalid");
+      }
       final data = await _tokenApi.retrieveToken(
           versionParam,
           _store.authState!.createRequestTokenParam()
@@ -212,6 +215,8 @@ class KindeFlutterSDK with TokenUtils {
       _store.authState = AuthState.fromJson(data as Map<String, dynamic>);
       _kindeApi.setBearerAuth(_bearerAuth, _store.authState?.accessToken ?? '');
       return _store.authState?.accessToken;
+    } on KindeError catch (_) {
+      rethrow;
     } catch (ex) {
       return null;
     }
@@ -234,6 +239,9 @@ class KindeFlutterSDK with TokenUtils {
       ),
     )
         .then((value) {
+      if (additionalParams.containsKey(_orgNameParamName)) {
+        return additionalParams[_orgNameParamName];
+      }
       _saveState(value);
       return value?.accessToken;
     }).catchError((ex) {
@@ -266,6 +274,9 @@ class KindeFlutterSDK with TokenUtils {
           additionalParameters: additionalParams,
         ),
       );
+      if (additionalParams.containsKey(_orgNameParamName)) {
+        return additionalParams[_orgNameParamName];
+      }
       _saveState(token);
       return token?.accessToken ?? '';
     } catch (ex) {
