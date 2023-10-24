@@ -44,6 +44,8 @@ class MockChannels {
     });
 
     TestWidgetsFlutterBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(customTabs, (MethodCall methodCall) async {
+      return null;
+    
 
     });
   }

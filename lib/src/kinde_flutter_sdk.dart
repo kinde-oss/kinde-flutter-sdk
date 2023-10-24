@@ -6,16 +6,15 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
+import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart'
     as secure_store;
 import 'package:hive/hive.dart';
 import 'package:jose/jose.dart';
-import 'package:kinde_api/kinde_api.dart';
+import 'package:kinde_flutter_sdk/kinde_flutter_sdk.dart';
 import 'package:kinde_flutter_sdk/src/keys/keys_api.dart';
 import 'package:kinde_flutter_sdk/src/kinde_error.dart';
-import 'package:kinde_flutter_sdk/src/model/auth_flow_type.dart';
-import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:kinde_flutter_sdk/src/store/store.dart';
 import 'package:kinde_flutter_sdk/src/token/auth_state.dart';
 import 'package:kinde_flutter_sdk/src/token/refresh_token_interceptor.dart';
@@ -23,7 +22,6 @@ import 'package:kinde_flutter_sdk/src/token/token_api.dart';
 import 'package:kinde_flutter_sdk/src/token/token_utils.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pubspec_parse/pubspec_parse.dart';
-import 'auth_config.dart';
 
 class KindeFlutterSDK with TokenUtils {
   static const _orgCodeParamName = 'org_code';
@@ -91,7 +89,7 @@ class KindeFlutterSDK with TokenUtils {
 
     var token = authState?.accessToken;
     if (token != null) {
-      _kindeApi.setBearerAuth(_bearerAuth, token ?? '');
+      _kindeApi.setBearerAuth(_bearerAuth, token);
     }
   }
 
@@ -207,6 +205,9 @@ class KindeFlutterSDK with TokenUtils {
     final version = await _getVersion();
     final versionParam = 'Flutter/$version';
     try {
+      if (authState?.refreshToken == null) {
+        throw KindeError("Session expired or invalid");
+      }
       final data = await _tokenApi.retrieveToken(
           versionParam,
           _store.authState!.createRequestTokenParam()
@@ -214,6 +215,8 @@ class KindeFlutterSDK with TokenUtils {
       _store.authState = AuthState.fromJson(data as Map<String, dynamic>);
       _kindeApi.setBearerAuth(_bearerAuth, _store.authState?.accessToken ?? '');
       return _store.authState?.accessToken;
+    } on KindeError catch (_) {
+      rethrow;
     } catch (ex) {
       return null;
     }
@@ -236,6 +239,9 @@ class KindeFlutterSDK with TokenUtils {
       ),
     )
         .then((value) {
+      if (additionalParams.containsKey(_orgNameParamName)) {
+        return additionalParams[_orgNameParamName];
+      }
       _saveState(value);
       return value?.accessToken;
     }).catchError((ex) {
@@ -268,6 +274,9 @@ class KindeFlutterSDK with TokenUtils {
           additionalParameters: additionalParams,
         ),
       );
+      if (additionalParams.containsKey(_orgNameParamName)) {
+        return additionalParams[_orgNameParamName];
+      }
       _saveState(token);
       return token?.accessToken ?? '';
     } catch (ex) {

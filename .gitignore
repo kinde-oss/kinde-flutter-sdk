@@ -10,6 +10,7 @@ node_modules/
 dist/
 build/
 coverage/
+.dart_tool/
 
 # Generated at runtime
 *.log
