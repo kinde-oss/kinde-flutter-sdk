@@ -3,47 +3,45 @@
 //
 
 // ignore_for_file: unused_element
-import 'package:kinde_flutter_sdk/src/model/user_identity_result.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
-part 'user_identity.g.dart';
+part 'user_identities_inner.g.dart';
 
-/// UserIdentity
+/// UserIdentitiesInner
 ///
 /// Properties:
-/// * [type] - The type of identity object created.
-/// * [result] 
+/// * [type] 
+/// * [identity] 
 @BuiltValue()
-abstract class UserIdentity implements Built<UserIdentity, UserIdentityBuilder> {
-  /// The type of identity object created.
+abstract class UserIdentitiesInner implements Built<UserIdentitiesInner, UserIdentitiesInnerBuilder> {
   @BuiltValueField(wireName: r'type')
   String? get type;
 
-  @BuiltValueField(wireName: r'result')
-  UserIdentityResult? get result;
+  @BuiltValueField(wireName: r'identity')
+  String? get identity;
 
-  UserIdentity._();
+  UserIdentitiesInner._();
 
-  factory UserIdentity([void Function(UserIdentityBuilder b) updates]) = _$UserIdentity;
+  factory UserIdentitiesInner([void Function(UserIdentitiesInnerBuilder b) updates]) = _$UserIdentitiesInner;
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _defaults(UserIdentityBuilder b) => b;
+  static void _defaults(UserIdentitiesInnerBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<UserIdentity> get serializer => _$UserIdentitySerializer();
+  static Serializer<UserIdentitiesInner> get serializer => _$UserIdentitiesInnerSerializer();
 }
 
-class _$UserIdentitySerializer implements PrimitiveSerializer<UserIdentity> {
+class _$UserIdentitiesInnerSerializer implements PrimitiveSerializer<UserIdentitiesInner> {
   @override
-  final Iterable<Type> types = const [UserIdentity, _$UserIdentity];
+  final Iterable<Type> types = const [UserIdentitiesInner, _$UserIdentitiesInner];
 
   @override
-  final String wireName = r'UserIdentity';
+  final String wireName = r'UserIdentitiesInner';
 
   Iterable<Object?> _serializeProperties(
     Serializers serializers,
-    UserIdentity object, {
+    UserIdentitiesInner object, {
     FullType specifiedType = FullType.unspecified,
   }) sync* {
     if (object.type != null) {
@@ -53,11 +51,11 @@ class _$UserIdentitySerializer implements PrimitiveSerializer<UserIdentity> {
         specifiedType: const FullType(String),
       );
     }
-    if (object.result != null) {
-      yield r'result';
+    if (object.identity != null) {
+      yield r'identity';
       yield serializers.serialize(
-        object.result,
-        specifiedType: const FullType(UserIdentityResult),
+        object.identity,
+        specifiedType: const FullType(String),
       );
     }
   }
@@ -65,7 +63,7 @@ class _$UserIdentitySerializer implements PrimitiveSerializer<UserIdentity> {
   @override
   Object serialize(
     Serializers serializers,
-    UserIdentity object, {
+    UserIdentitiesInner object, {
     FullType specifiedType = FullType.unspecified,
   }) {
     return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
@@ -76,7 +74,7 @@ class _$UserIdentitySerializer implements PrimitiveSerializer<UserIdentity> {
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
     required List<Object?> serializedList,
-    required UserIdentityBuilder result,
+    required UserIdentitiesInnerBuilder result,
     required List<Object?> unhandled,
   }) {
     for (var i = 0; i < serializedList.length; i += 2) {
@@ -90,12 +88,12 @@ class _$UserIdentitySerializer implements PrimitiveSerializer<UserIdentity> {
           ) as String;
           result.type = valueDes;
           break;
-        case r'result':
+        case r'identity':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(UserIdentityResult),
-          ) as UserIdentityResult;
-          result.result.replace(valueDes);
+            specifiedType: const FullType(String),
+          ) as String;
+          result.identity = valueDes;
           break;
         default:
           unhandled.add(key);
@@ -106,12 +104,12 @@ class _$UserIdentitySerializer implements PrimitiveSerializer<UserIdentity> {
   }
 
   @override
-  UserIdentity deserialize(
+  UserIdentitiesInner deserialize(
     Serializers serializers,
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    final result = UserIdentityBuilder();
+    final result = UserIdentitiesInnerBuilder();
     final serializedList = (serialized as Iterable<Object?>).toList();
     final unhandled = <Object?>[];
     _deserializeProperties(

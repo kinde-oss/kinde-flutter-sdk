@@ -1,3 +1,4 @@
+import 'package:kinde_flutter_sdk/src/model/users_response_users_inner.dart';
 import 'package:test/test.dart';
 import 'package:kinde_flutter_sdk/kinde_api.dart';
 import 'package:built_collection/built_collection.dart';
@@ -41,14 +42,14 @@ void main() {
       // TODO
       final users = instance.users;
       expect(users.length, isZero);
-      User user1 = User();
-      User user2 = User();
+      UsersResponseUsersInner user1 = UsersResponseUsersInner();
+      UsersResponseUsersInner user2 = UsersResponseUsersInner();
       instance.users.add(user1);
       instance.users.add(user2);
       final result = instance.build();
       expect(result, isA<UsersResponse>());
       expect(result.users, isNotNull);
-      expect(result.users, isA<BuiltList<User>?>());
+      expect(result.users, isA<BuiltList<UsersResponseUsersInner>?>());
       expect(result.users, contains(user1));
       expect(result.users, contains(user2));
     });

@@ -6,11 +6,76 @@ part of 'create_application_request.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
+const CreateApplicationRequestTypeEnum _$createApplicationRequestTypeEnum_reg =
+    const CreateApplicationRequestTypeEnum._('reg');
+const CreateApplicationRequestTypeEnum _$createApplicationRequestTypeEnum_spa =
+    const CreateApplicationRequestTypeEnum._('spa');
+const CreateApplicationRequestTypeEnum _$createApplicationRequestTypeEnum_m2m =
+    const CreateApplicationRequestTypeEnum._('m2m');
+
+CreateApplicationRequestTypeEnum _$createApplicationRequestTypeEnumValueOf(
+    String name) {
+  switch (name) {
+    case 'reg':
+      return _$createApplicationRequestTypeEnum_reg;
+    case 'spa':
+      return _$createApplicationRequestTypeEnum_spa;
+    case 'm2m':
+      return _$createApplicationRequestTypeEnum_m2m;
+    default:
+      throw new ArgumentError(name);
+  }
+}
+
+final BuiltSet<CreateApplicationRequestTypeEnum>
+    _$createApplicationRequestTypeEnumValues = new BuiltSet<
+        CreateApplicationRequestTypeEnum>(const <CreateApplicationRequestTypeEnum>[
+  _$createApplicationRequestTypeEnum_reg,
+  _$createApplicationRequestTypeEnum_spa,
+  _$createApplicationRequestTypeEnum_m2m,
+]);
+
+Serializer<CreateApplicationRequestTypeEnum>
+    _$createApplicationRequestTypeEnumSerializer =
+    new _$CreateApplicationRequestTypeEnumSerializer();
+
+class _$CreateApplicationRequestTypeEnumSerializer
+    implements PrimitiveSerializer<CreateApplicationRequestTypeEnum> {
+  static const Map<String, Object> _toWire = const <String, Object>{
+    'reg': 'reg',
+    'spa': 'spa',
+    'm2m': 'm2m',
+  };
+  static const Map<Object, String> _fromWire = const <Object, String>{
+    'reg': 'reg',
+    'spa': 'spa',
+    'm2m': 'm2m',
+  };
+
+  @override
+  final Iterable<Type> types = const <Type>[CreateApplicationRequestTypeEnum];
+  @override
+  final String wireName = 'CreateApplicationRequestTypeEnum';
+
+  @override
+  Object serialize(
+          Serializers serializers, CreateApplicationRequestTypeEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
+
+  @override
+  CreateApplicationRequestTypeEnum deserialize(
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      CreateApplicationRequestTypeEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+}
+
 class _$CreateApplicationRequest extends CreateApplicationRequest {
   @override
   final String? name;
   @override
-  final String? type;
+  final CreateApplicationRequestTypeEnum? type;
 
   factory _$CreateApplicationRequest(
           [void Function(CreateApplicationRequestBuilder)? updates]) =>
@@ -62,9 +127,9 @@ class CreateApplicationRequestBuilder
   String? get name => _$this._name;
   set name(String? name) => _$this._name = name;
 
-  String? _type;
-  String? get type => _$this._type;
-  set type(String? type) => _$this._type = type;
+  CreateApplicationRequestTypeEnum? _type;
+  CreateApplicationRequestTypeEnum? get type => _$this._type;
+  set type(CreateApplicationRequestTypeEnum? type) => _$this._type = type;
 
   CreateApplicationRequestBuilder() {
     CreateApplicationRequest._defaults(this);

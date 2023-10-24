@@ -2,10 +2,10 @@
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
 
-import 'package:built_value/built_value.dart';
-import 'package:built_value/serializer.dart';
 // ignore_for_file: unused_element
 import 'package:kinde_flutter_sdk/src/model/get_application_response_application.dart';
+import 'package:built_value/built_value.dart';
+import 'package:built_value/serializer.dart';
 
 part 'get_application_response.g.dart';
 
@@ -14,7 +14,7 @@ part 'get_application_response.g.dart';
 /// Properties:
 /// * [code] - Response code.
 /// * [message] - Response message.
-/// * [application]
+/// * [application] 
 @BuiltValue()
 abstract class GetApplicationResponse implements Built<GetApplicationResponse, GetApplicationResponseBuilder> {
   /// Response code.

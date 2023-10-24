@@ -1,41 +1,45 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'users_response.dart';
+part of 'get_permissions_response.dart';
 
 // **************************************************************************
 // BuiltValueGenerator
 // **************************************************************************
 
-class _$UsersResponse extends UsersResponse {
+class _$GetPermissionsResponse extends GetPermissionsResponse {
   @override
   final String? code;
   @override
   final String? message;
   @override
-  final BuiltList<UsersResponseUsersInner>? users;
+  final BuiltList<Permissions>? permissions;
   @override
   final String? nextToken;
 
-  factory _$UsersResponse([void Function(UsersResponseBuilder)? updates]) =>
-      (new UsersResponseBuilder()..update(updates))._build();
+  factory _$GetPermissionsResponse(
+          [void Function(GetPermissionsResponseBuilder)? updates]) =>
+      (new GetPermissionsResponseBuilder()..update(updates))._build();
 
-  _$UsersResponse._({this.code, this.message, this.users, this.nextToken})
+  _$GetPermissionsResponse._(
+      {this.code, this.message, this.permissions, this.nextToken})
       : super._();
 
   @override
-  UsersResponse rebuild(void Function(UsersResponseBuilder) updates) =>
+  GetPermissionsResponse rebuild(
+          void Function(GetPermissionsResponseBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  UsersResponseBuilder toBuilder() => new UsersResponseBuilder()..replace(this);
+  GetPermissionsResponseBuilder toBuilder() =>
+      new GetPermissionsResponseBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is UsersResponse &&
+    return other is GetPermissionsResponse &&
         code == other.code &&
         message == other.message &&
-        users == other.users &&
+        permissions == other.permissions &&
         nextToken == other.nextToken;
   }
 
@@ -44,7 +48,7 @@ class _$UsersResponse extends UsersResponse {
     var _$hash = 0;
     _$hash = $jc(_$hash, code.hashCode);
     _$hash = $jc(_$hash, message.hashCode);
-    _$hash = $jc(_$hash, users.hashCode);
+    _$hash = $jc(_$hash, permissions.hashCode);
     _$hash = $jc(_$hash, nextToken.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
@@ -52,18 +56,18 @@ class _$UsersResponse extends UsersResponse {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'UsersResponse')
+    return (newBuiltValueToStringHelper(r'GetPermissionsResponse')
           ..add('code', code)
           ..add('message', message)
-          ..add('users', users)
+          ..add('permissions', permissions)
           ..add('nextToken', nextToken))
         .toString();
   }
 }
 
-class UsersResponseBuilder
-    implements Builder<UsersResponse, UsersResponseBuilder> {
-  _$UsersResponse? _$v;
+class GetPermissionsResponseBuilder
+    implements Builder<GetPermissionsResponse, GetPermissionsResponseBuilder> {
+  _$GetPermissionsResponse? _$v;
 
   String? _code;
   String? get code => _$this._code;
@@ -73,26 +77,26 @@ class UsersResponseBuilder
   String? get message => _$this._message;
   set message(String? message) => _$this._message = message;
 
-  ListBuilder<UsersResponseUsersInner>? _users;
-  ListBuilder<UsersResponseUsersInner> get users =>
-      _$this._users ??= new ListBuilder<UsersResponseUsersInner>();
-  set users(ListBuilder<UsersResponseUsersInner>? users) =>
-      _$this._users = users;
+  ListBuilder<Permissions>? _permissions;
+  ListBuilder<Permissions> get permissions =>
+      _$this._permissions ??= new ListBuilder<Permissions>();
+  set permissions(ListBuilder<Permissions>? permissions) =>
+      _$this._permissions = permissions;
 
   String? _nextToken;
   String? get nextToken => _$this._nextToken;
   set nextToken(String? nextToken) => _$this._nextToken = nextToken;
 
-  UsersResponseBuilder() {
-    UsersResponse._defaults(this);
+  GetPermissionsResponseBuilder() {
+    GetPermissionsResponse._defaults(this);
   }
 
-  UsersResponseBuilder get _$this {
+  GetPermissionsResponseBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
       _code = $v.code;
       _message = $v.message;
-      _users = $v.users?.toBuilder();
+      _permissions = $v.permissions?.toBuilder();
       _nextToken = $v.nextToken;
       _$v = null;
     }
@@ -100,36 +104,36 @@ class UsersResponseBuilder
   }
 
   @override
-  void replace(UsersResponse other) {
+  void replace(GetPermissionsResponse other) {
     ArgumentError.checkNotNull(other, 'other');
-    _$v = other as _$UsersResponse;
+    _$v = other as _$GetPermissionsResponse;
   }
 
   @override
-  void update(void Function(UsersResponseBuilder)? updates) {
+  void update(void Function(GetPermissionsResponseBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
   @override
-  UsersResponse build() => _build();
+  GetPermissionsResponse build() => _build();
 
-  _$UsersResponse _build() {
-    _$UsersResponse _$result;
+  _$GetPermissionsResponse _build() {
+    _$GetPermissionsResponse _$result;
     try {
       _$result = _$v ??
-          new _$UsersResponse._(
+          new _$GetPermissionsResponse._(
               code: code,
               message: message,
-              users: _users?.build(),
+              permissions: _permissions?.build(),
               nextToken: nextToken);
     } catch (_) {
       late String _$failedField;
       try {
-        _$failedField = 'users';
-        _users?.build();
+        _$failedField = 'permissions';
+        _permissions?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'UsersResponse', _$failedField, e.toString());
+            r'GetPermissionsResponse', _$failedField, e.toString());
       }
       rethrow;
     }

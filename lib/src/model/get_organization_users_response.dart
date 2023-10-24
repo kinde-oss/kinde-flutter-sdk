@@ -4,9 +4,9 @@
 
 // ignore_for_file: unused_element
 import 'package:built_collection/built_collection.dart';
+import 'package:kinde_flutter_sdk/src/model/organization_user.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:kinde_flutter_sdk/src/model/organization_user.dart';
 
 part 'get_organization_users_response.g.dart';
 
@@ -15,7 +15,7 @@ part 'get_organization_users_response.g.dart';
 /// Properties:
 /// * [code] - Response code.
 /// * [message] - Response message.
-/// * [organizationUsers]
+/// * [organizationUsers] 
 /// * [nextToken] - Pagination token.
 @BuiltValue()
 abstract class GetOrganizationUsersResponse implements Built<GetOrganizationUsersResponse, GetOrganizationUsersResponseBuilder> {

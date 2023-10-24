@@ -6,6 +6,7 @@ import 'dart:async';
 
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
+
 import 'package:kinde_flutter_sdk/src/api_util.dart';
 import 'package:kinde_flutter_sdk/src/model/get_environment_feature_flags_response.dart';
 import 'package:kinde_flutter_sdk/src/model/success_response.dart';
@@ -33,7 +34,7 @@ class EnvironmentsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> deleteEnvironementFeatureFlagOverride({
+  Future<Response<SuccessResponse>> deleteEnvironementFeatureFlagOverride({ 
     required String featureFlagKey,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -113,7 +114,7 @@ class EnvironmentsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> deleteEnvironementFeatureFlagOverrides({
+  Future<Response<SuccessResponse>> deleteEnvironementFeatureFlagOverrides({ 
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -192,7 +193,7 @@ class EnvironmentsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [GetEnvironmentFeatureFlagsResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<GetEnvironmentFeatureFlagsResponse>> getEnvironementFeatureFlags({
+  Future<Response<GetEnvironmentFeatureFlagsResponse>> getEnvironementFeatureFlags({ 
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -273,7 +274,7 @@ class EnvironmentsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> updateEnvironementFeatureFlagOverride({
+  Future<Response<SuccessResponse>> updateEnvironementFeatureFlagOverride({ 
     required String featureFlagKey,
     required UpdateEnvironementFeatureFlagOverrideRequest updateEnvironementFeatureFlagOverrideRequest,
     CancelToken? cancelToken,

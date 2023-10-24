@@ -2,12 +2,18 @@
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
 
+// ignore_for_file: unused_import
+
+import 'package:one_of_serializer/any_of_serializer.dart';
+import 'package:one_of_serializer/one_of_serializer.dart';
 import 'package:built_collection/built_collection.dart';
-import 'package:built_value/iso_8601_date_time_serializer.dart';
 import 'package:built_value/json_object.dart';
 import 'package:built_value/serializer.dart';
 import 'package:built_value/standard_json_plugin.dart';
+import 'package:built_value/iso_8601_date_time_serializer.dart';
 import 'package:kinde_flutter_sdk/src/date_serializer.dart';
+import 'package:kinde_flutter_sdk/src/model/date.dart';
+
 import 'package:kinde_flutter_sdk/src/model/add_apis_request.dart';
 import 'package:kinde_flutter_sdk/src/model/add_organization_users_request.dart';
 import 'package:kinde_flutter_sdk/src/model/add_organization_users_request_users_inner.dart';
@@ -37,7 +43,6 @@ import 'package:kinde_flutter_sdk/src/model/create_user_request_identities_inner
 import 'package:kinde_flutter_sdk/src/model/create_user_request_identities_inner_details.dart';
 import 'package:kinde_flutter_sdk/src/model/create_user_request_profile.dart';
 import 'package:kinde_flutter_sdk/src/model/create_user_response.dart';
-import 'package:kinde_flutter_sdk/src/model/date.dart';
 import 'package:kinde_flutter_sdk/src/model/error.dart';
 import 'package:kinde_flutter_sdk/src/model/error_response.dart';
 import 'package:kinde_flutter_sdk/src/model/get_application_response.dart';
@@ -50,6 +55,7 @@ import 'package:kinde_flutter_sdk/src/model/get_organization_users_response.dart
 import 'package:kinde_flutter_sdk/src/model/get_organizations_response.dart';
 import 'package:kinde_flutter_sdk/src/model/get_organizations_user_permissions_response.dart';
 import 'package:kinde_flutter_sdk/src/model/get_organizations_user_roles_response.dart';
+import 'package:kinde_flutter_sdk/src/model/get_permissions_response.dart';
 import 'package:kinde_flutter_sdk/src/model/get_redirect_callback_urls_response.dart';
 import 'package:kinde_flutter_sdk/src/model/get_roles_response.dart';
 import 'package:kinde_flutter_sdk/src/model/get_subscriber_response.dart';
@@ -87,16 +93,15 @@ import 'package:kinde_flutter_sdk/src/model/update_role_permissions_request_perm
 import 'package:kinde_flutter_sdk/src/model/update_role_permissions_response.dart';
 import 'package:kinde_flutter_sdk/src/model/update_roles_request.dart';
 import 'package:kinde_flutter_sdk/src/model/update_user_request.dart';
+import 'package:kinde_flutter_sdk/src/model/update_user_response.dart';
 import 'package:kinde_flutter_sdk/src/model/user.dart';
+import 'package:kinde_flutter_sdk/src/model/user_identities_inner.dart';
 import 'package:kinde_flutter_sdk/src/model/user_identity.dart';
 import 'package:kinde_flutter_sdk/src/model/user_identity_result.dart';
 import 'package:kinde_flutter_sdk/src/model/user_profile.dart';
 import 'package:kinde_flutter_sdk/src/model/user_profile_v2.dart';
 import 'package:kinde_flutter_sdk/src/model/users_response.dart';
-// ignore_for_file: unused_import
-
-import 'package:one_of_serializer/any_of_serializer.dart';
-import 'package:one_of_serializer/one_of_serializer.dart';
+import 'package:kinde_flutter_sdk/src/model/users_response_users_inner.dart';
 
 part 'serializers.g.dart';
 
@@ -142,6 +147,7 @@ part 'serializers.g.dart';
   GetOrganizationsResponse,
   GetOrganizationsUserPermissionsResponse,
   GetOrganizationsUserRolesResponse,
+  GetPermissionsResponse,
   GetRedirectCallbackUrlsResponse,
   GetRolesResponse,
   GetSubscriberResponse,
@@ -179,12 +185,15 @@ part 'serializers.g.dart';
   UpdateRolePermissionsResponse,
   UpdateRolesRequest,
   UpdateUserRequest,
+  UpdateUserResponse,
   User,
+  UserIdentitiesInner,
   UserIdentity,
   UserIdentityResult,
   UserProfile,
   UserProfileV2,
   UsersResponse,
+  UsersResponseUsersInner,
 ])
 Serializers serializers = (_$serializers.toBuilder()
       ..addBuilderFactory(

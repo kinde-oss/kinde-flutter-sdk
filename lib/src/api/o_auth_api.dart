@@ -6,6 +6,7 @@ import 'dart:async';
 
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
+
 import 'package:kinde_flutter_sdk/src/api_util.dart';
 import 'package:kinde_flutter_sdk/src/model/token_introspect.dart';
 import 'package:kinde_flutter_sdk/src/model/user_profile.dart';
@@ -20,7 +21,7 @@ class OAuthApi {
   const OAuthApi(this._dio, this._serializers);
 
   /// Get User Profile
-  /// Contains the id, names and email of the currently logged in user.
+  /// Contains the id, names and email of the currently logged in user. 
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -32,7 +33,7 @@ class OAuthApi {
   ///
   /// Returns a [Future] containing a [Response] with a [UserProfile] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<UserProfile>> getUser({
+  Future<Response<UserProfile>> getUser({ 
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -99,7 +100,7 @@ class OAuthApi {
   }
 
   /// Returns the details of the currently logged in user
-  /// Contains the id, names, profile picture URL and email of the currently logged in user.
+  /// Contains the id, names, profile picture URL and email of the currently logged in user. 
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -111,7 +112,7 @@ class OAuthApi {
   ///
   /// Returns a [Future] containing a [Response] with a [UserProfileV2] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<UserProfileV2>> getUserProfileV2({
+  Future<Response<UserProfileV2>> getUserProfileV2({ 
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -192,7 +193,7 @@ class OAuthApi {
   ///
   /// Returns a [Future] containing a [Response] with a [TokenIntrospect] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<TokenIntrospect>> tokenIntrospection({
+  Future<Response<TokenIntrospect>> tokenIntrospection({ 
     String? token,
     String? tokenType,
     CancelToken? cancelToken,
@@ -298,7 +299,7 @@ class OAuthApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> tokenRevocation({
+  Future<Response<void>> tokenRevocation({ 
     String? token,
     String? clientId,
     String? clientSecret,

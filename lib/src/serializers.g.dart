@@ -19,6 +19,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(ConnectedAppsAccessToken.serializer)
       ..add(ConnectedAppsAuthUrl.serializer)
       ..add(CreateApplicationRequest.serializer)
+      ..add(CreateApplicationRequestTypeEnum.serializer)
       ..add(CreateApplicationResponse.serializer)
       ..add(CreateApplicationResponseApplication.serializer)
       ..add(CreateFeatureFlagRequest.serializer)
@@ -54,6 +55,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(GetOrganizationsResponse.serializer)
       ..add(GetOrganizationsUserPermissionsResponse.serializer)
       ..add(GetOrganizationsUserRolesResponse.serializer)
+      ..add(GetPermissionsResponse.serializer)
       ..add(GetRedirectCallbackUrlsResponse.serializer)
       ..add(GetRolesResponse.serializer)
       ..add(GetSubscriberResponse.serializer)
@@ -91,12 +93,15 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(UpdateRolePermissionsResponse.serializer)
       ..add(UpdateRolesRequest.serializer)
       ..add(UpdateUserRequest.serializer)
+      ..add(UpdateUserResponse.serializer)
       ..add(User.serializer)
+      ..add(UserIdentitiesInner.serializer)
       ..add(UserIdentity.serializer)
       ..add(UserIdentityResult.serializer)
       ..add(UserProfile.serializer)
       ..add(UserProfileV2.serializer)
       ..add(UsersResponse.serializer)
+      ..add(UsersResponseUsersInner.serializer)
       ..addBuilderFactory(
           const FullType(BuiltList,
               const [const FullType(AddOrganizationUsersRequestUsersInner)]),
@@ -133,6 +138,9 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(
               BuiltList, const [const FullType(OrganizationUserRole)]),
           () => new ListBuilder<OrganizationUserRole>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(Permissions)]),
+          () => new ListBuilder<Permissions>())
       ..addBuilderFactory(
           const FullType(
               BuiltList, const [const FullType(RedirectCallbackUrls)]),
@@ -195,6 +203,20 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(BuiltList, const [const FullType(String)]),
           () => new ListBuilder<String>())
       ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(String)]),
+          () => new ListBuilder<String>())
+      ..addBuilderFactory(
+          const FullType(
+              BuiltList, const [const FullType(UserIdentitiesInner)]),
+          () => new ListBuilder<UserIdentitiesInner>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(String)]),
+          () => new ListBuilder<String>())
+      ..addBuilderFactory(
+          const FullType(
+              BuiltList, const [const FullType(UserIdentitiesInner)]),
+          () => new ListBuilder<UserIdentitiesInner>())
+      ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(Subscriber)]),
           () => new ListBuilder<Subscriber>())
       ..addBuilderFactory(
@@ -217,11 +239,12 @@ Serializers _$serializers = (new Serializers().toBuilder()
           ]),
           () => new ListBuilder<UpdateRolePermissionsRequestPermissionsInner>())
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(User)]),
-          () => new ListBuilder<User>())
-      ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(UserIdentity)]),
           () => new ListBuilder<UserIdentity>())
+      ..addBuilderFactory(
+          const FullType(
+              BuiltList, const [const FullType(UsersResponseUsersInner)]),
+          () => new ListBuilder<UsersResponseUsersInner>())
       ..addBuilderFactory(
           const FullType(BuiltMap, const [
             const FullType(String),

@@ -6,6 +6,7 @@ import 'dart:async';
 
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
+
 import 'package:kinde_flutter_sdk/src/api_util.dart';
 import 'package:kinde_flutter_sdk/src/model/create_feature_flag_request.dart';
 import 'package:kinde_flutter_sdk/src/model/success_response.dart';
@@ -32,7 +33,7 @@ class FeatureFlagsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> createFeatureFlag({
+  Future<Response<SuccessResponse>> createFeatureFlag({ 
     required CreateFeatureFlagRequest createFeatureFlagRequest,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -133,7 +134,7 @@ class FeatureFlagsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> deleteFeatureFlag({
+  Future<Response<SuccessResponse>> deleteFeatureFlag({ 
     required String featureFlagKey,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -219,7 +220,7 @@ class FeatureFlagsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> updateFeatureFlag({
+  Future<Response<SuccessResponse>> updateFeatureFlag({ 
     required String featureFlagKey,
     required String name,
     required String description,

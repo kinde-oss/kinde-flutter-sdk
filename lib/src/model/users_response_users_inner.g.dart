@@ -1,18 +1,18 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user.dart';
+part of 'users_response_users_inner.dart';
 
 // **************************************************************************
 // BuiltValueGenerator
 // **************************************************************************
 
-class _$User extends User {
+class _$UsersResponseUsersInner extends UsersResponseUsersInner {
   @override
   final String? id;
   @override
   final String? providedId;
   @override
-  final String? preferredEmail;
+  final String? email;
   @override
   final String? lastName;
   @override
@@ -34,13 +34,14 @@ class _$User extends User {
   @override
   final BuiltList<UserIdentitiesInner>? identities;
 
-  factory _$User([void Function(UserBuilder)? updates]) =>
-      (new UserBuilder()..update(updates))._build();
+  factory _$UsersResponseUsersInner(
+          [void Function(UsersResponseUsersInnerBuilder)? updates]) =>
+      (new UsersResponseUsersInnerBuilder()..update(updates))._build();
 
-  _$User._(
+  _$UsersResponseUsersInner._(
       {this.id,
       this.providedId,
-      this.preferredEmail,
+      this.email,
       this.lastName,
       this.firstName,
       this.isSuspended,
@@ -54,19 +55,21 @@ class _$User extends User {
       : super._();
 
   @override
-  User rebuild(void Function(UserBuilder) updates) =>
+  UsersResponseUsersInner rebuild(
+          void Function(UsersResponseUsersInnerBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  UserBuilder toBuilder() => new UserBuilder()..replace(this);
+  UsersResponseUsersInnerBuilder toBuilder() =>
+      new UsersResponseUsersInnerBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is User &&
+    return other is UsersResponseUsersInner &&
         id == other.id &&
         providedId == other.providedId &&
-        preferredEmail == other.preferredEmail &&
+        email == other.email &&
         lastName == other.lastName &&
         firstName == other.firstName &&
         isSuspended == other.isSuspended &&
@@ -84,7 +87,7 @@ class _$User extends User {
     var _$hash = 0;
     _$hash = $jc(_$hash, id.hashCode);
     _$hash = $jc(_$hash, providedId.hashCode);
-    _$hash = $jc(_$hash, preferredEmail.hashCode);
+    _$hash = $jc(_$hash, email.hashCode);
     _$hash = $jc(_$hash, lastName.hashCode);
     _$hash = $jc(_$hash, firstName.hashCode);
     _$hash = $jc(_$hash, isSuspended.hashCode);
@@ -101,10 +104,10 @@ class _$User extends User {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'User')
+    return (newBuiltValueToStringHelper(r'UsersResponseUsersInner')
           ..add('id', id)
           ..add('providedId', providedId)
-          ..add('preferredEmail', preferredEmail)
+          ..add('email', email)
           ..add('lastName', lastName)
           ..add('firstName', firstName)
           ..add('isSuspended', isSuspended)
@@ -119,8 +122,10 @@ class _$User extends User {
   }
 }
 
-class UserBuilder implements Builder<User, UserBuilder> {
-  _$User? _$v;
+class UsersResponseUsersInnerBuilder
+    implements
+        Builder<UsersResponseUsersInner, UsersResponseUsersInnerBuilder> {
+  _$UsersResponseUsersInner? _$v;
 
   String? _id;
   String? get id => _$this._id;
@@ -130,10 +135,9 @@ class UserBuilder implements Builder<User, UserBuilder> {
   String? get providedId => _$this._providedId;
   set providedId(String? providedId) => _$this._providedId = providedId;
 
-  String? _preferredEmail;
-  String? get preferredEmail => _$this._preferredEmail;
-  set preferredEmail(String? preferredEmail) =>
-      _$this._preferredEmail = preferredEmail;
+  String? _email;
+  String? get email => _$this._email;
+  set email(String? email) => _$this._email = email;
 
   String? _lastName;
   String? get lastName => _$this._lastName;
@@ -180,16 +184,16 @@ class UserBuilder implements Builder<User, UserBuilder> {
   set identities(ListBuilder<UserIdentitiesInner>? identities) =>
       _$this._identities = identities;
 
-  UserBuilder() {
-    User._defaults(this);
+  UsersResponseUsersInnerBuilder() {
+    UsersResponseUsersInner._defaults(this);
   }
 
-  UserBuilder get _$this {
+  UsersResponseUsersInnerBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
       _id = $v.id;
       _providedId = $v.providedId;
-      _preferredEmail = $v.preferredEmail;
+      _email = $v.email;
       _lastName = $v.lastName;
       _firstName = $v.firstName;
       _isSuspended = $v.isSuspended;
@@ -206,27 +210,27 @@ class UserBuilder implements Builder<User, UserBuilder> {
   }
 
   @override
-  void replace(User other) {
+  void replace(UsersResponseUsersInner other) {
     ArgumentError.checkNotNull(other, 'other');
-    _$v = other as _$User;
+    _$v = other as _$UsersResponseUsersInner;
   }
 
   @override
-  void update(void Function(UserBuilder)? updates) {
+  void update(void Function(UsersResponseUsersInnerBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
   @override
-  User build() => _build();
+  UsersResponseUsersInner build() => _build();
 
-  _$User _build() {
-    _$User _$result;
+  _$UsersResponseUsersInner _build() {
+    _$UsersResponseUsersInner _$result;
     try {
       _$result = _$v ??
-          new _$User._(
+          new _$UsersResponseUsersInner._(
               id: id,
               providedId: providedId,
-              preferredEmail: preferredEmail,
+              email: email,
               lastName: lastName,
               firstName: firstName,
               isSuspended: isSuspended,
@@ -246,7 +250,7 @@ class UserBuilder implements Builder<User, UserBuilder> {
         _identities?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'User', _$failedField, e.toString());
+            r'UsersResponseUsersInner', _$failedField, e.toString());
       }
       rethrow;
     }

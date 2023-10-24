@@ -6,11 +6,13 @@ import 'dart:async';
 
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
+
 import 'package:kinde_flutter_sdk/src/api_util.dart';
 import 'package:kinde_flutter_sdk/src/model/create_user_request.dart';
 import 'package:kinde_flutter_sdk/src/model/create_user_response.dart';
 import 'package:kinde_flutter_sdk/src/model/success_response.dart';
 import 'package:kinde_flutter_sdk/src/model/update_user_request.dart';
+import 'package:kinde_flutter_sdk/src/model/update_user_response.dart';
 import 'package:kinde_flutter_sdk/src/model/user.dart';
 import 'package:kinde_flutter_sdk/src/model/users_response.dart';
 
@@ -23,7 +25,7 @@ class UsersApi {
   const UsersApi(this._dio, this._serializers);
 
   /// Create User
-  /// Creates a user record and optionally zero or more identities for the user. An example identity could be the email address of the user.
+  /// Creates a user record and optionally zero or more identities for the user. An example identity could be the email address of the user. 
   ///
   /// Parameters:
   /// * [createUserRequest] - The details of the user to create.
@@ -36,7 +38,7 @@ class UsersApi {
   ///
   /// Returns a [Future] containing a [Response] with a [CreateUserResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<CreateUserResponse>> createUser({
+  Future<Response<CreateUserResponse>> createUser({ 
     CreateUserRequest? createUserRequest,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -124,7 +126,7 @@ class UsersApi {
   }
 
   /// Delete User
-  /// Delete a user record.
+  /// Delete a user record. 
   ///
   /// Parameters:
   /// * [id] - The user's id.
@@ -138,7 +140,7 @@ class UsersApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> deleteUser({
+  Future<Response<SuccessResponse>> deleteUser({ 
     required String id,
     bool? isDeleteProfile,
     CancelToken? cancelToken,
@@ -213,7 +215,7 @@ class UsersApi {
   }
 
   /// Get User
-  /// Retrieve a user record.
+  /// Retrieve a user record. 
   ///
   /// Parameters:
   /// * [id] - The user's id.
@@ -227,7 +229,7 @@ class UsersApi {
   ///
   /// Returns a [Future] containing a [Response] with a [User] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<User>> getUserData({
+  Future<Response<User>> getUserData({ 
     required String id,
     String? expand,
     CancelToken? cancelToken,
@@ -302,7 +304,7 @@ class UsersApi {
   }
 
   /// List Users
-  /// The returned list can be sorted by full name or email address in ascending or descending order. The number of records to return at a time can also be controlled using the &#x60;page_size&#x60; query string parameter.
+  /// The returned list can be sorted by full name or email address in ascending or descending order. The number of records to return at a time can also be controlled using the &#x60;page_size&#x60; query string parameter. 
   ///
   /// Parameters:
   /// * [sort] - Field and order to sort the result by.
@@ -320,7 +322,7 @@ class UsersApi {
   ///
   /// Returns a [Future] containing a [Response] with a [UsersResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<UsersResponse>> getUsers({
+  Future<Response<UsersResponse>> getUsers({ 
     String? sort,
     int? pageSize,
     String? userId,
@@ -403,7 +405,7 @@ class UsersApi {
   }
 
   /// Refresh User Claims and Invalidate Cache
-  /// Refreshes the user&#39;s claims and invalidates the current cache.
+  /// Refreshes the user&#39;s claims and invalidates the current cache. 
   ///
   /// Parameters:
   /// * [userId] - The id of the user whose claims needs to be updated.
@@ -416,7 +418,7 @@ class UsersApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> refreshUserClaims({
+  Future<Response<SuccessResponse>> refreshUserClaims({ 
     required String userId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -484,7 +486,7 @@ class UsersApi {
   }
 
   /// Update User
-  /// Update a user record.
+  /// Update a user record. 
   ///
   /// Parameters:
   /// * [updateUserRequest] - The user to update.
@@ -496,9 +498,9 @@ class UsersApi {
   /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
   /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
   ///
-  /// Returns a [Future] containing a [Response] with a [User] as data
+  /// Returns a [Future] containing a [Response] with a [UpdateUserResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<User>> updateUser({
+  Future<Response<UpdateUserResponse>> updateUser({ 
     required UpdateUserRequest updateUserRequest,
     String? id,
     CancelToken? cancelToken,
@@ -561,14 +563,14 @@ class UsersApi {
       onReceiveProgress: onReceiveProgress,
     );
 
-    User? responseData;
+    UpdateUserResponse? responseData;
 
     try {
       final rawResponse = response.data;
       responseData = rawResponse == null ? null : _serializers.deserialize(
         rawResponse,
-        specifiedType: const FullType(User),
-      ) as User;
+        specifiedType: const FullType(UpdateUserResponse),
+      ) as UpdateUserResponse;
 
     } catch (error, stackTrace) {
       throw DioException(
@@ -580,7 +582,7 @@ class UsersApi {
       );
     }
 
-    return Response<User>(
+    return Response<UpdateUserResponse>(
       data: responseData,
       headers: response.headers,
       isRedirect: response.isRedirect,

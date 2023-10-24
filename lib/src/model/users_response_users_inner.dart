@@ -8,14 +8,14 @@ import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
-part 'user.g.dart';
+part 'users_response_users_inner.g.dart';
 
-/// User
+/// UsersResponseUsersInner
 ///
 /// Properties:
 /// * [id] - Unique id of the user in Kinde.
 /// * [providedId] - External id for user.
-/// * [preferredEmail] - Default email address of the user in Kinde.
+/// * [email] - Default email address of the user in Kinde.
 /// * [lastName] - User's last name.
 /// * [firstName] - User's first name.
 /// * [isSuspended] - Whether the user is currently suspended or not.
@@ -27,7 +27,7 @@ part 'user.g.dart';
 /// * [organizations] - Array of organizations a user belongs to.
 /// * [identities] - Array of identities belonging to the user.
 @BuiltValue()
-abstract class User implements Built<User, UserBuilder> {
+abstract class UsersResponseUsersInner implements Built<UsersResponseUsersInner, UsersResponseUsersInnerBuilder> {
   /// Unique id of the user in Kinde.
   @BuiltValueField(wireName: r'id')
   String? get id;
@@ -37,8 +37,8 @@ abstract class User implements Built<User, UserBuilder> {
   String? get providedId;
 
   /// Default email address of the user in Kinde.
-  @BuiltValueField(wireName: r'preferred_email')
-  String? get preferredEmail;
+  @BuiltValueField(wireName: r'email')
+  String? get email;
 
   /// User's last name.
   @BuiltValueField(wireName: r'last_name')
@@ -80,27 +80,27 @@ abstract class User implements Built<User, UserBuilder> {
   @BuiltValueField(wireName: r'identities')
   BuiltList<UserIdentitiesInner>? get identities;
 
-  User._();
+  UsersResponseUsersInner._();
 
-  factory User([void Function(UserBuilder b) updates]) = _$User;
+  factory UsersResponseUsersInner([void Function(UsersResponseUsersInnerBuilder b) updates]) = _$UsersResponseUsersInner;
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _defaults(UserBuilder b) => b;
+  static void _defaults(UsersResponseUsersInnerBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<User> get serializer => _$UserSerializer();
+  static Serializer<UsersResponseUsersInner> get serializer => _$UsersResponseUsersInnerSerializer();
 }
 
-class _$UserSerializer implements PrimitiveSerializer<User> {
+class _$UsersResponseUsersInnerSerializer implements PrimitiveSerializer<UsersResponseUsersInner> {
   @override
-  final Iterable<Type> types = const [User, _$User];
+  final Iterable<Type> types = const [UsersResponseUsersInner, _$UsersResponseUsersInner];
 
   @override
-  final String wireName = r'User';
+  final String wireName = r'UsersResponseUsersInner';
 
   Iterable<Object?> _serializeProperties(
     Serializers serializers,
-    User object, {
+    UsersResponseUsersInner object, {
     FullType specifiedType = FullType.unspecified,
   }) sync* {
     if (object.id != null) {
@@ -117,10 +117,10 @@ class _$UserSerializer implements PrimitiveSerializer<User> {
         specifiedType: const FullType(String),
       );
     }
-    if (object.preferredEmail != null) {
-      yield r'preferred_email';
+    if (object.email != null) {
+      yield r'email';
       yield serializers.serialize(
-        object.preferredEmail,
+        object.email,
         specifiedType: const FullType(String),
       );
     }
@@ -199,7 +199,7 @@ class _$UserSerializer implements PrimitiveSerializer<User> {
   @override
   Object serialize(
     Serializers serializers,
-    User object, {
+    UsersResponseUsersInner object, {
     FullType specifiedType = FullType.unspecified,
   }) {
     return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
@@ -210,7 +210,7 @@ class _$UserSerializer implements PrimitiveSerializer<User> {
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
     required List<Object?> serializedList,
-    required UserBuilder result,
+    required UsersResponseUsersInnerBuilder result,
     required List<Object?> unhandled,
   }) {
     for (var i = 0; i < serializedList.length; i += 2) {
@@ -231,12 +231,12 @@ class _$UserSerializer implements PrimitiveSerializer<User> {
           ) as String;
           result.providedId = valueDes;
           break;
-        case r'preferred_email':
+        case r'email':
           final valueDes = serializers.deserialize(
             value,
             specifiedType: const FullType(String),
           ) as String;
-          result.preferredEmail = valueDes;
+          result.email = valueDes;
           break;
         case r'last_name':
           final valueDes = serializers.deserialize(
@@ -321,12 +321,12 @@ class _$UserSerializer implements PrimitiveSerializer<User> {
   }
 
   @override
-  User deserialize(
+  UsersResponseUsersInner deserialize(
     Serializers serializers,
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    final result = UserBuilder();
+    final result = UsersResponseUsersInnerBuilder();
     final serializedList = (serialized as Iterable<Object?>).toList();
     final unhandled = <Object?>[];
     _deserializeProperties(

@@ -3,6 +3,7 @@
 //
 
 // ignore_for_file: unused_element
+import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
@@ -21,7 +22,8 @@ abstract class CreateApplicationRequest implements Built<CreateApplicationReques
 
   /// The application's type.
   @BuiltValueField(wireName: r'type')
-  String? get type;
+  CreateApplicationRequestTypeEnum? get type;
+  // enum typeEnum {  reg,  spa,  m2m,  };
 
   CreateApplicationRequest._();
 
@@ -57,7 +59,7 @@ class _$CreateApplicationRequestSerializer implements PrimitiveSerializer<Create
       yield r'type';
       yield serializers.serialize(
         object.type,
-        specifiedType: const FullType(String),
+        specifiedType: const FullType(CreateApplicationRequestTypeEnum),
       );
     }
   }
@@ -93,8 +95,8 @@ class _$CreateApplicationRequestSerializer implements PrimitiveSerializer<Create
         case r'type':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(String),
-          ) as String;
+            specifiedType: const FullType(CreateApplicationRequestTypeEnum),
+          ) as CreateApplicationRequestTypeEnum;
           result.type = valueDes;
           break;
         default:
@@ -124,5 +126,25 @@ class _$CreateApplicationRequestSerializer implements PrimitiveSerializer<Create
     );
     return result.build();
   }
+}
+
+class CreateApplicationRequestTypeEnum extends EnumClass {
+
+  /// The application's type.
+  @BuiltValueEnumConst(wireName: r'reg')
+  static const CreateApplicationRequestTypeEnum reg = _$createApplicationRequestTypeEnum_reg;
+  /// The application's type.
+  @BuiltValueEnumConst(wireName: r'spa')
+  static const CreateApplicationRequestTypeEnum spa = _$createApplicationRequestTypeEnum_spa;
+  /// The application's type.
+  @BuiltValueEnumConst(wireName: r'm2m')
+  static const CreateApplicationRequestTypeEnum m2m = _$createApplicationRequestTypeEnum_m2m;
+
+  static Serializer<CreateApplicationRequestTypeEnum> get serializer => _$createApplicationRequestTypeEnumSerializer;
+
+  const CreateApplicationRequestTypeEnum._(String name): super(name);
+
+  static BuiltSet<CreateApplicationRequestTypeEnum> get values => _$createApplicationRequestTypeEnumValues;
+  static CreateApplicationRequestTypeEnum valueOf(String name) => _$createApplicationRequestTypeEnumValueOf(name);
 }
 

@@ -2,19 +2,19 @@
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
 
-import 'package:built_value/built_value.dart';
-import 'package:built_value/serializer.dart';
 // ignore_for_file: unused_element
 import 'package:kinde_flutter_sdk/src/model/organization_user_role_permissions_permissions.dart';
+import 'package:built_value/built_value.dart';
+import 'package:built_value/serializer.dart';
 
 part 'organization_user_role_permissions.g.dart';
 
 /// OrganizationUserRolePermissions
 ///
 /// Properties:
-/// * [id]
-/// * [role]
-/// * [permissions]
+/// * [id] 
+/// * [role] 
+/// * [permissions] 
 @BuiltValue()
 abstract class OrganizationUserRolePermissions implements Built<OrganizationUserRolePermissions, OrganizationUserRolePermissionsBuilder> {
   @BuiltValueField(wireName: r'id')

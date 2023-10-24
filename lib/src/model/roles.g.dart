@@ -8,6 +8,8 @@ part of 'roles.dart';
 
 class _$Roles extends Roles {
   @override
+  final String? id;
+  @override
   final String? key;
   @override
   final String? name;
@@ -17,7 +19,7 @@ class _$Roles extends Roles {
   factory _$Roles([void Function(RolesBuilder)? updates]) =>
       (new RolesBuilder()..update(updates))._build();
 
-  _$Roles._({this.key, this.name, this.description}) : super._();
+  _$Roles._({this.id, this.key, this.name, this.description}) : super._();
 
   @override
   Roles rebuild(void Function(RolesBuilder) updates) =>
@@ -30,6 +32,7 @@ class _$Roles extends Roles {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is Roles &&
+        id == other.id &&
         key == other.key &&
         name == other.name &&
         description == other.description;
@@ -38,6 +41,7 @@ class _$Roles extends Roles {
   @override
   int get hashCode {
     var _$hash = 0;
+    _$hash = $jc(_$hash, id.hashCode);
     _$hash = $jc(_$hash, key.hashCode);
     _$hash = $jc(_$hash, name.hashCode);
     _$hash = $jc(_$hash, description.hashCode);
@@ -48,6 +52,7 @@ class _$Roles extends Roles {
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'Roles')
+          ..add('id', id)
           ..add('key', key)
           ..add('name', name)
           ..add('description', description))
@@ -57,6 +62,10 @@ class _$Roles extends Roles {
 
 class RolesBuilder implements Builder<Roles, RolesBuilder> {
   _$Roles? _$v;
+
+  String? _id;
+  String? get id => _$this._id;
+  set id(String? id) => _$this._id = id;
 
   String? _key;
   String? get key => _$this._key;
@@ -77,6 +86,7 @@ class RolesBuilder implements Builder<Roles, RolesBuilder> {
   RolesBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
+      _id = $v.id;
       _key = $v.key;
       _name = $v.name;
       _description = $v.description;
@@ -100,8 +110,8 @@ class RolesBuilder implements Builder<Roles, RolesBuilder> {
   Roles build() => _build();
 
   _$Roles _build() {
-    final _$result =
-        _$v ?? new _$Roles._(key: key, name: name, description: description);
+    final _$result = _$v ??
+        new _$Roles._(id: id, key: key, name: name, description: description);
     replace(_$result);
     return _$result;
   }

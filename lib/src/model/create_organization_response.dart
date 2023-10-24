@@ -2,19 +2,19 @@
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
 
-import 'package:built_value/built_value.dart';
-import 'package:built_value/serializer.dart';
 // ignore_for_file: unused_element
 import 'package:kinde_flutter_sdk/src/model/create_organization_response_organization.dart';
+import 'package:built_value/built_value.dart';
+import 'package:built_value/serializer.dart';
 
 part 'create_organization_response.g.dart';
 
 /// CreateOrganizationResponse
 ///
 /// Properties:
-/// * [message]
-/// * [code]
-/// * [organization]
+/// * [message] 
+/// * [code] 
+/// * [organization] 
 @BuiltValue()
 abstract class CreateOrganizationResponse implements Built<CreateOrganizationResponse, CreateOrganizationResponseBuilder> {
   @BuiltValueField(wireName: r'message')

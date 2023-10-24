@@ -4,16 +4,16 @@
 
 // ignore_for_file: unused_element
 import 'package:built_collection/built_collection.dart';
+import 'package:kinde_flutter_sdk/src/model/update_api_applications_request_applications_inner.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:kinde_flutter_sdk/src/model/update_api_applications_request_applications_inner.dart';
 
 part 'update_api_applications_request.g.dart';
 
 /// UpdateAPIApplicationsRequest
 ///
 /// Properties:
-/// * [applications]
+/// * [applications] 
 @BuiltValue()
 abstract class UpdateAPIApplicationsRequest implements Built<UpdateAPIApplicationsRequest, UpdateAPIApplicationsRequestBuilder> {
   @BuiltValueField(wireName: r'applications')

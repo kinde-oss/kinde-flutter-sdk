@@ -2,11 +2,11 @@
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
 
+// ignore_for_file: unused_element
+import 'package:kinde_flutter_sdk/src/model/get_organization_feature_flags_response_feature_flags_value.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-// ignore_for_file: unused_element
-import 'package:kinde_flutter_sdk/src/model/get_organization_feature_flags_response_feature_flags_value.dart';
 
 part 'get_environment_feature_flags_response.g.dart';
 

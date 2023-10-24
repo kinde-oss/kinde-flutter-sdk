@@ -6,8 +6,10 @@ import 'dart:async';
 
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
+
 import 'package:kinde_flutter_sdk/src/api_util.dart';
 import 'package:kinde_flutter_sdk/src/model/create_permission_request.dart';
+import 'package:kinde_flutter_sdk/src/model/get_permissions_response.dart';
 import 'package:kinde_flutter_sdk/src/model/success_response.dart';
 
 class PermissionsApi {
@@ -32,7 +34,7 @@ class PermissionsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> createPermission({
+  Future<Response<SuccessResponse>> createPermission({ 
     CreatePermissionRequest? createPermissionRequest,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -133,7 +135,7 @@ class PermissionsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> deletePermission({
+  Future<Response<SuccessResponse>> deletePermission({ 
     required String permissionId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -201,7 +203,7 @@ class PermissionsApi {
   }
 
   /// List Permissions
-  /// The returned list can be sorted by permission name or permission ID in ascending or descending order. The number of records to return at a time can also be controlled using the &#x60;page_size&#x60; query string parameter.
+  /// The returned list can be sorted by permission name or permission ID in ascending or descending order. The number of records to return at a time can also be controlled using the &#x60;page_size&#x60; query string parameter. 
   ///
   /// Parameters:
   /// * [sort] - Field and order to sort the result by.
@@ -214,9 +216,9 @@ class PermissionsApi {
   /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
   /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
   ///
-  /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
+  /// Returns a [Future] containing a [Response] with a [GetPermissionsResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> getPermissions({
+  Future<Response<GetPermissionsResponse>> getPermissions({ 
     String? sort,
     int? pageSize,
     String? nextToken,
@@ -261,14 +263,14 @@ class PermissionsApi {
       onReceiveProgress: onReceiveProgress,
     );
 
-    SuccessResponse? responseData;
+    GetPermissionsResponse? responseData;
 
     try {
       final rawResponse = response.data;
       responseData = rawResponse == null ? null : _serializers.deserialize(
         rawResponse,
-        specifiedType: const FullType(SuccessResponse),
-      ) as SuccessResponse;
+        specifiedType: const FullType(GetPermissionsResponse),
+      ) as GetPermissionsResponse;
 
     } catch (error, stackTrace) {
       throw DioException(
@@ -280,7 +282,7 @@ class PermissionsApi {
       );
     }
 
-    return Response<SuccessResponse>(
+    return Response<GetPermissionsResponse>(
       data: responseData,
       headers: response.headers,
       isRedirect: response.isRedirect,
@@ -307,7 +309,7 @@ class PermissionsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> updatePermissions({
+  Future<Response<SuccessResponse>> updatePermissions({ 
     required int permissionId,
     CreatePermissionRequest? createPermissionRequest,
     CancelToken? cancelToken,

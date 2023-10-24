@@ -11,11 +11,16 @@ part 'roles.g.dart';
 /// Roles
 ///
 /// Properties:
+/// * [id] - The role's id.
 /// * [key] - The role identifier to use in code.
 /// * [name] - The role's name.
 /// * [description] - The role's description.
 @BuiltValue()
 abstract class Roles implements Built<Roles, RolesBuilder> {
+  /// The role's id.
+  @BuiltValueField(wireName: r'id')
+  String? get id;
+
   /// The role identifier to use in code.
   @BuiltValueField(wireName: r'key')
   String? get key;
@@ -51,6 +56,13 @@ class _$RolesSerializer implements PrimitiveSerializer<Roles> {
     Roles object, {
     FullType specifiedType = FullType.unspecified,
   }) sync* {
+    if (object.id != null) {
+      yield r'id';
+      yield serializers.serialize(
+        object.id,
+        specifiedType: const FullType(String),
+      );
+    }
     if (object.key != null) {
       yield r'key';
       yield serializers.serialize(
@@ -95,6 +107,13 @@ class _$RolesSerializer implements PrimitiveSerializer<Roles> {
       final key = serializedList[i] as String;
       final value = serializedList[i + 1];
       switch (key) {
+        case r'id':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
+          result.id = valueDes;
+          break;
         case r'key':
           final valueDes = serializers.deserialize(
             value,

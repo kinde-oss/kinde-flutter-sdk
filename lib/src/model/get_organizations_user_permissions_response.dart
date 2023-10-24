@@ -4,9 +4,9 @@
 
 // ignore_for_file: unused_element
 import 'package:built_collection/built_collection.dart';
+import 'package:kinde_flutter_sdk/src/model/organization_user_permission.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:kinde_flutter_sdk/src/model/organization_user_permission.dart';
 
 part 'get_organizations_user_permissions_response.g.dart';
 
@@ -15,7 +15,7 @@ part 'get_organizations_user_permissions_response.g.dart';
 /// Properties:
 /// * [code] - Response code.
 /// * [message] - Response message.
-/// * [permissions]
+/// * [permissions] 
 @BuiltValue()
 abstract class GetOrganizationsUserPermissionsResponse implements Built<GetOrganizationsUserPermissionsResponse, GetOrganizationsUserPermissionsResponseBuilder> {
   /// Response code.

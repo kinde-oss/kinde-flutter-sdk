@@ -4,9 +4,9 @@
 
 // ignore_for_file: unused_element
 import 'package:built_collection/built_collection.dart';
+import 'package:kinde_flutter_sdk/src/model/subscriber.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:kinde_flutter_sdk/src/model/subscriber.dart';
 
 part 'get_subscriber_response.g.dart';
 
@@ -15,7 +15,7 @@ part 'get_subscriber_response.g.dart';
 /// Properties:
 /// * [code] - Response code.
 /// * [message] - Response message.
-/// * [subscribers]
+/// * [subscribers] 
 @BuiltValue()
 abstract class GetSubscriberResponse implements Built<GetSubscriberResponse, GetSubscriberResponseBuilder> {
   /// Response code.

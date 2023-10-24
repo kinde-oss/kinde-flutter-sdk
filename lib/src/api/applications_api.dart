@@ -6,11 +6,13 @@ import 'dart:async';
 
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
+
 import 'package:kinde_flutter_sdk/src/api_util.dart';
 import 'package:kinde_flutter_sdk/src/model/create_application_request.dart';
 import 'package:kinde_flutter_sdk/src/model/create_application_response.dart';
 import 'package:kinde_flutter_sdk/src/model/get_application_response.dart';
 import 'package:kinde_flutter_sdk/src/model/get_applications_response.dart';
+import 'package:kinde_flutter_sdk/src/model/success_response.dart';
 import 'package:kinde_flutter_sdk/src/model/update_application_request.dart';
 
 class ApplicationsApi {
@@ -35,7 +37,7 @@ class ApplicationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [CreateApplicationResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<CreateApplicationResponse>> createApplication({
+  Future<Response<CreateApplicationResponse>> createApplication({ 
     CreateApplicationRequest? createApplicationRequest,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -122,8 +124,89 @@ class ApplicationsApi {
     );
   }
 
+  /// Delete Application
+  /// Delete application. 
+  ///
+  /// Parameters:
+  /// * [applicationId] - The identifier for the application.
+  /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
+  /// * [headers] - Can be used to add additional headers to the request
+  /// * [extras] - Can be used to add flags to the request
+  /// * [validateStatus] - A [ValidateStatus] callback that can be used to determine request success based on the HTTP status of the response
+  /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
+  /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
+  ///
+  /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
+  /// Throws [DioException] if API call or serialization fails
+  Future<Response<SuccessResponse>> deleteApplication({ 
+    required String applicationId,
+    CancelToken? cancelToken,
+    Map<String, dynamic>? headers,
+    Map<String, dynamic>? extra,
+    ValidateStatus? validateStatus,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+  }) async {
+    final path = r'/api/v1/applications/{application_id}'.replaceAll('{' r'application_id' '}', encodeQueryParameter(_serializers, applicationId, const FullType(String)).toString());
+    final options = Options(
+      method: r'DELETE',
+      headers: <String, dynamic>{
+        ...?headers,
+      },
+      extra: <String, dynamic>{
+        'secure': <Map<String, String>>[
+          {
+            'type': 'http',
+            'scheme': 'bearer',
+            'name': 'kindeBearerAuth',
+          },
+        ],
+        ...?extra,
+      },
+      validateStatus: validateStatus,
+    );
+
+    final response = await _dio.request<Object>(
+      path,
+      options: options,
+      cancelToken: cancelToken,
+      onSendProgress: onSendProgress,
+      onReceiveProgress: onReceiveProgress,
+    );
+
+    SuccessResponse? responseData;
+
+    try {
+      final rawResponse = response.data;
+      responseData = rawResponse == null ? null : _serializers.deserialize(
+        rawResponse,
+        specifiedType: const FullType(SuccessResponse),
+      ) as SuccessResponse;
+
+    } catch (error, stackTrace) {
+      throw DioException(
+        requestOptions: response.requestOptions,
+        response: response,
+        type: DioExceptionType.unknown,
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
+
+    return Response<SuccessResponse>(
+      data: responseData,
+      headers: response.headers,
+      isRedirect: response.isRedirect,
+      requestOptions: response.requestOptions,
+      redirects: response.redirects,
+      statusCode: response.statusCode,
+      statusMessage: response.statusMessage,
+      extra: response.extra,
+    );
+  }
+
   /// Get Application
-  /// Gets an application given the application&#39;s id.
+  /// Gets an application given the application&#39;s id. 
   ///
   /// Parameters:
   /// * [applicationId] - The identifier for the application.
@@ -136,7 +219,7 @@ class ApplicationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [GetApplicationResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<GetApplicationResponse>> getApplication({
+  Future<Response<GetApplicationResponse>> getApplication({ 
     required String applicationId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -204,7 +287,7 @@ class ApplicationsApi {
   }
 
   /// List Applications
-  /// Get a list of applications.
+  /// Get a list of applications. 
   ///
   /// Parameters:
   /// * [sort] - Field and order to sort the result by.
@@ -219,7 +302,7 @@ class ApplicationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [GetApplicationsResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<GetApplicationsResponse>> getApplications({
+  Future<Response<GetApplicationsResponse>> getApplications({ 
     String? sort,
     int? pageSize,
     String? nextToken,
@@ -310,7 +393,7 @@ class ApplicationsApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> updateApplication({
+  Future<Response<void>> updateApplication({ 
     required String applicationId,
     UpdateApplicationRequest? updateApplicationRequest,
     CancelToken? cancelToken,

@@ -2,11 +2,11 @@
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
 
+// ignore_for_file: unused_element
+import 'package:kinde_flutter_sdk/src/model/create_user_request_identities_inner_details.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-// ignore_for_file: unused_element
-import 'package:kinde_flutter_sdk/src/model/create_user_request_identities_inner_details.dart';
 
 part 'create_user_request_identities_inner.g.dart';
 
@@ -14,7 +14,7 @@ part 'create_user_request_identities_inner.g.dart';
 ///
 /// Properties:
 /// * [type] - The type of identity to create, for e.g. email.
-/// * [details]
+/// * [details] 
 @BuiltValue()
 abstract class CreateUserRequestIdentitiesInner implements Built<CreateUserRequestIdentitiesInner, CreateUserRequestIdentitiesInnerBuilder> {
   /// The type of identity to create, for e.g. email.

@@ -6,6 +6,7 @@ import 'dart:async';
 
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
+
 import 'package:kinde_flutter_sdk/src/api_util.dart';
 import 'package:kinde_flutter_sdk/src/model/add_apis_request.dart';
 import 'package:kinde_flutter_sdk/src/model/api.dart';

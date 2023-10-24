@@ -2,11 +2,11 @@
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
 
+// ignore_for_file: unused_element
+import 'package:kinde_flutter_sdk/src/model/users_response_users_inner.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-// ignore_for_file: unused_element
-import 'package:kinde_flutter_sdk/src/model/user.dart';
 
 part 'users_response.g.dart';
 
@@ -15,7 +15,7 @@ part 'users_response.g.dart';
 /// Properties:
 /// * [code] - Response code.
 /// * [message] - Response message.
-/// * [users]
+/// * [users] 
 /// * [nextToken] - Pagination token.
 @BuiltValue()
 abstract class UsersResponse implements Built<UsersResponse, UsersResponseBuilder> {
@@ -28,7 +28,7 @@ abstract class UsersResponse implements Built<UsersResponse, UsersResponseBuilde
   String? get message;
 
   @BuiltValueField(wireName: r'users')
-  BuiltList<User>? get users;
+  BuiltList<UsersResponseUsersInner>? get users;
 
   /// Pagination token.
   @BuiltValueField(wireName: r'next_token')
@@ -75,7 +75,7 @@ class _$UsersResponseSerializer implements PrimitiveSerializer<UsersResponse> {
       yield r'users';
       yield serializers.serialize(
         object.users,
-        specifiedType: const FullType(BuiltList, [FullType(User)]),
+        specifiedType: const FullType(BuiltList, [FullType(UsersResponseUsersInner)]),
       );
     }
     if (object.nextToken != null) {
@@ -125,8 +125,8 @@ class _$UsersResponseSerializer implements PrimitiveSerializer<UsersResponse> {
         case r'users':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(BuiltList, [FullType(User)]),
-          ) as BuiltList<User>;
+            specifiedType: const FullType(BuiltList, [FullType(UsersResponseUsersInner)]),
+          ) as BuiltList<UsersResponseUsersInner>;
           result.users.replace(valueDes);
           break;
         case r'next_token':

@@ -6,6 +6,7 @@ import 'dart:async';
 
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
+
 import 'package:kinde_flutter_sdk/src/api_util.dart';
 import 'package:kinde_flutter_sdk/src/model/success_response.dart';
 
@@ -38,7 +39,7 @@ class BusinessApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> getBusiness({
+  Future<Response<SuccessResponse>> getBusiness({ 
     required String code,
     required String name,
     required String email,
@@ -147,7 +148,7 @@ class BusinessApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> updateBusiness({
+  Future<Response<SuccessResponse>> updateBusiness({ 
     required String businessName,
     required String primaryEmail,
     String? primaryPhone,

@@ -4,21 +4,21 @@
 
 // ignore_for_file: unused_element
 import 'package:built_collection/built_collection.dart';
-import 'package:kinde_flutter_sdk/src/model/organization_user_role.dart';
+import 'package:kinde_flutter_sdk/src/model/permissions.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
-part 'get_organizations_user_roles_response.g.dart';
+part 'get_permissions_response.g.dart';
 
-/// GetOrganizationsUserRolesResponse
+/// GetPermissionsResponse
 ///
 /// Properties:
 /// * [code] - Response code.
 /// * [message] - Response message.
-/// * [roles] 
+/// * [permissions] 
 /// * [nextToken] - Pagination token.
 @BuiltValue()
-abstract class GetOrganizationsUserRolesResponse implements Built<GetOrganizationsUserRolesResponse, GetOrganizationsUserRolesResponseBuilder> {
+abstract class GetPermissionsResponse implements Built<GetPermissionsResponse, GetPermissionsResponseBuilder> {
   /// Response code.
   @BuiltValueField(wireName: r'code')
   String? get code;
@@ -27,34 +27,34 @@ abstract class GetOrganizationsUserRolesResponse implements Built<GetOrganizatio
   @BuiltValueField(wireName: r'message')
   String? get message;
 
-  @BuiltValueField(wireName: r'roles')
-  BuiltList<OrganizationUserRole>? get roles;
+  @BuiltValueField(wireName: r'permissions')
+  BuiltList<Permissions>? get permissions;
 
   /// Pagination token.
   @BuiltValueField(wireName: r'next_token')
   String? get nextToken;
 
-  GetOrganizationsUserRolesResponse._();
+  GetPermissionsResponse._();
 
-  factory GetOrganizationsUserRolesResponse([void Function(GetOrganizationsUserRolesResponseBuilder b) updates]) = _$GetOrganizationsUserRolesResponse;
+  factory GetPermissionsResponse([void Function(GetPermissionsResponseBuilder b) updates]) = _$GetPermissionsResponse;
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _defaults(GetOrganizationsUserRolesResponseBuilder b) => b;
+  static void _defaults(GetPermissionsResponseBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<GetOrganizationsUserRolesResponse> get serializer => _$GetOrganizationsUserRolesResponseSerializer();
+  static Serializer<GetPermissionsResponse> get serializer => _$GetPermissionsResponseSerializer();
 }
 
-class _$GetOrganizationsUserRolesResponseSerializer implements PrimitiveSerializer<GetOrganizationsUserRolesResponse> {
+class _$GetPermissionsResponseSerializer implements PrimitiveSerializer<GetPermissionsResponse> {
   @override
-  final Iterable<Type> types = const [GetOrganizationsUserRolesResponse, _$GetOrganizationsUserRolesResponse];
+  final Iterable<Type> types = const [GetPermissionsResponse, _$GetPermissionsResponse];
 
   @override
-  final String wireName = r'GetOrganizationsUserRolesResponse';
+  final String wireName = r'GetPermissionsResponse';
 
   Iterable<Object?> _serializeProperties(
     Serializers serializers,
-    GetOrganizationsUserRolesResponse object, {
+    GetPermissionsResponse object, {
     FullType specifiedType = FullType.unspecified,
   }) sync* {
     if (object.code != null) {
@@ -71,11 +71,11 @@ class _$GetOrganizationsUserRolesResponseSerializer implements PrimitiveSerializ
         specifiedType: const FullType(String),
       );
     }
-    if (object.roles != null) {
-      yield r'roles';
+    if (object.permissions != null) {
+      yield r'permissions';
       yield serializers.serialize(
-        object.roles,
-        specifiedType: const FullType(BuiltList, [FullType(OrganizationUserRole)]),
+        object.permissions,
+        specifiedType: const FullType(BuiltList, [FullType(Permissions)]),
       );
     }
     if (object.nextToken != null) {
@@ -90,7 +90,7 @@ class _$GetOrganizationsUserRolesResponseSerializer implements PrimitiveSerializ
   @override
   Object serialize(
     Serializers serializers,
-    GetOrganizationsUserRolesResponse object, {
+    GetPermissionsResponse object, {
     FullType specifiedType = FullType.unspecified,
   }) {
     return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
@@ -101,7 +101,7 @@ class _$GetOrganizationsUserRolesResponseSerializer implements PrimitiveSerializ
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
     required List<Object?> serializedList,
-    required GetOrganizationsUserRolesResponseBuilder result,
+    required GetPermissionsResponseBuilder result,
     required List<Object?> unhandled,
   }) {
     for (var i = 0; i < serializedList.length; i += 2) {
@@ -122,12 +122,12 @@ class _$GetOrganizationsUserRolesResponseSerializer implements PrimitiveSerializ
           ) as String;
           result.message = valueDes;
           break;
-        case r'roles':
+        case r'permissions':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(BuiltList, [FullType(OrganizationUserRole)]),
-          ) as BuiltList<OrganizationUserRole>;
-          result.roles.replace(valueDes);
+            specifiedType: const FullType(BuiltList, [FullType(Permissions)]),
+          ) as BuiltList<Permissions>;
+          result.permissions.replace(valueDes);
           break;
         case r'next_token':
           final valueDes = serializers.deserialize(
@@ -145,12 +145,12 @@ class _$GetOrganizationsUserRolesResponseSerializer implements PrimitiveSerializ
   }
 
   @override
-  GetOrganizationsUserRolesResponse deserialize(
+  GetPermissionsResponse deserialize(
     Serializers serializers,
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    final result = GetOrganizationsUserRolesResponseBuilder();
+    final result = GetPermissionsResponseBuilder();
     final serializedList = (serialized as Iterable<Object?>).toList();
     final unhandled = <Object?>[];
     _deserializeProperties(
