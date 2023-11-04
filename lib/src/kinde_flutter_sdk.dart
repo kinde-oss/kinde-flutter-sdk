@@ -13,6 +13,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart'
 import 'package:hive/hive.dart';
 import 'package:jose/jose.dart';
 import 'package:kinde_flutter_sdk/kinde_flutter_sdk.dart';
+import 'package:kinde_flutter_sdk/src/handle_network_error_mixin.dart';
 import 'package:kinde_flutter_sdk/src/keys/keys_api.dart';
 import 'package:kinde_flutter_sdk/src/kinde_error.dart';
 import 'package:kinde_flutter_sdk/src/store/store.dart';
@@ -23,7 +24,7 @@ import 'package:kinde_flutter_sdk/src/token/token_utils.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pubspec_parse/pubspec_parse.dart';
 
-class KindeFlutterSDK with TokenUtils {
+class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
   static const _orgCodeParamName = 'org_code';
   static const _orgNameParamName = 'org_name';
   static const _audienceParamName = 'audience';
@@ -60,15 +61,23 @@ class KindeFlutterSDK with TokenUtils {
     if (_config == null) {
       throw KindeError('KindeFlutterSDK have not been configured');
     }
+
+    var domainUrl = "";
+    if (_config!.authDomain.startsWith('https')) {
+      domainUrl = _config!.authDomain;
+    } else if (_config!.authDomain.startsWith('http')) {
+      domainUrl = _config!.authDomain.replaceFirst('http', "https");
+    } else {
+      domainUrl = 'https://${_config!.authDomain}';
+    }
+
     _serviceConfiguration = AuthorizationServiceConfiguration(
-        authorizationEndpoint: 'https://${_config!.authDomain}$_authPath',
-        tokenEndpoint: 'https://${_config!.authDomain}$_tokenPath',
-        endSessionEndpoint: 'https://${_config!.authDomain}$_logoutPath');
+        authorizationEndpoint: '$domainUrl$_authPath',
+        tokenEndpoint: '$domainUrl$_tokenPath',
+        endSessionEndpoint: '$domainUrl$_logoutPath');
 
     Dio dio = Dio(BaseOptions(
-      baseUrl: 'https://${_config!.authDomain}',
-      connectTimeout: const Duration(milliseconds: 5000),
-      receiveTimeout: const Duration(milliseconds: 3000),
+      baseUrl: domainUrl,
     ));
 
     _kindeApi = KindeApi(dio: dio, interceptors: [
@@ -181,12 +190,16 @@ class KindeFlutterSDK with TokenUtils {
   Future<UserProfileV2?> getUserProfileV2() async {
     return _kindeApi.getOAuthApi().getUserProfileV2().then((value) {
       return value.data;
+    }).catchError((error) {
+      throw handleError(error);
     });
   }
 
   Future<UserProfile?> getUser() async {
     return _kindeApi.getOAuthApi().getUser().then((value) {
       return value.data;
+    }).catchError((error) {
+      throw handleError(error);
     });
   }
 
@@ -217,8 +230,8 @@ class KindeFlutterSDK with TokenUtils {
       return _store.authState?.accessToken;
     } on KindeError catch (_) {
       rethrow;
-    } catch (ex) {
-      return null;
+    } on Exception catch (ex) {
+      throw handleError(ex);
     }
   }
 

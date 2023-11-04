@@ -1,4 +1,4 @@
-class KindeError extends Error {
+class KindeError implements Exception {
   final String message;
 
   KindeError(this.message);
