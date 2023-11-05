@@ -14,11 +14,7 @@ class RefreshTokenInterceptor<T> extends InterceptorsWrapper {
     if (err.response?.statusCode == HttpStatus.forbidden) {
       try {
         // If a 403 response is received, refresh the access token
-        var newToken = await refreshToken();
-
-        if(newToken == null) {
-          throw KindeError("Refresh token Expired");
-        }
+        await refreshToken();
 
         // Repeat the request with the updated header
         return handler.resolve(await dio.fetch(err.requestOptions));
