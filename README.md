@@ -16,6 +16,4 @@ Please refer to Kinde’s [contributing guidelines](https://github.com/kinde-os
 
 ## License
 
-KindeSDK is available under the MIT license. See the LICENSE file for more info.
-
-If you need help connecting to Kinde, please contact us at [support@kinde.com](mailto:support@kinde.com).
+By contributing to Kinde, you agree that your contributions will be licensed under its MIT License.
