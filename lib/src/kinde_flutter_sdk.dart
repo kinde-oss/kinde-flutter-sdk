@@ -363,18 +363,6 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
       return '';
     }
   }
-
-  Future<void> redirect(Uri authorizationUrl) async {
-    if (await canLaunchUrl(Uri.parse(authorizationUrl.toString()))) {
-      await launchUrl(Uri.parse(authorizationUrl.toString()));
-    }
-  }
-
-  listen(Uri redirectUrl) {
-
-
-  }
-
   Future<String> _webLogin(HashMap<String, String> params, BuildContext context) async {
     String accessToken = '';
     await OAuthWebScreen.start(
