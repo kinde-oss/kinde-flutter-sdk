@@ -2,11 +2,13 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
-
+import 'dart:math';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
-import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart'
     as secure_store;
@@ -21,8 +23,10 @@ import 'package:kinde_flutter_sdk/src/token/auth_state.dart';
 import 'package:kinde_flutter_sdk/src/token/refresh_token_interceptor.dart';
 import 'package:kinde_flutter_sdk/src/token/token_api.dart';
 import 'package:kinde_flutter_sdk/src/token/token_utils.dart';
+import 'package:oauth_webauth/oauth_webauth.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pubspec_parse/pubspec_parse.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
   static const _orgCodeParamName = 'org_code';
@@ -104,13 +108,12 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
 
   Store get _store => Store.instance;
 
-  static Future<void> initializeSDK(
-      {required String authDomain,
-      required String authClientId,
-      required String loginRedirectUri,
-      required String logoutRedirectUri,
-      List<String> scopes = _defaultScopes,
-      String? audience}) async {
+  static Future<void> initializeSDK({required String authDomain,
+    required String authClientId,
+    required String loginRedirectUri,
+    required String logoutRedirectUri,
+    List<String> scopes = _defaultScopes,
+    String? audience}) async {
     _config = AuthConfig(
         authDomain: authDomain,
         authClientId: authClientId,
@@ -120,13 +123,13 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
         audience: audience);
 
     secure_store.FlutterSecureStorage secureStorage =
-        const secure_store.FlutterSecureStorage(
-            aOptions: secure_store.AndroidOptions());
+    const secure_store.FlutterSecureStorage(
+        aOptions: secure_store.AndroidOptions());
 
     Future<List<int>> getSecureKey(
         secure_store.FlutterSecureStorage secureStorage) async {
       var containsEncryptionKey =
-          await secureStorage.containsKey(key: 'encryptionKey');
+      await secureStorage.containsKey(key: 'encryptionKey');
       if (!containsEncryptionKey) {
         var key = Hive.generateSecureKey();
         await secureStorage.write(
@@ -140,9 +143,14 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
 
     final secureKey = await getSecureKey(secureStorage);
 
-    final path = await getTemporaryDirectory();
+    var path = "/assets/db";
+    if (!kIsWeb) {
+      var appDocDir = await getTemporaryDirectory();
+      path = appDocDir.path;
+    }
 
-    await Store.init(HiveAesCipher(secureKey), path.path);
+
+    await Store.init(HiveAesCipher(secureKey), path);
   }
 
   Future<void> logout() async {
@@ -152,20 +160,19 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
         await browser.close();
       });
     } else {
-      await launch(_buildEndSessionUrl().toString());
+      await launchUrl(Uri.parse(_buildEndSessionUrl().toString()));
     }
     _kindeApi.setBearerAuth(_bearerAuth, '');
     await Store.instance.clear();
   }
 
-  Future<String?> login({AuthFlowType? type, String? orgCode}) async {
-    return _redirectToKinde(type: type, orgCode: orgCode);
+  Future<String?> login(BuildContext context,{AuthFlowType? type, String? orgCode}) async {
+    return _redirectToKinde(context,type: type, orgCode: orgCode);
   }
 
-  Future<String?> _redirectToKinde(
-      {AuthFlowType? type,
-      String? orgCode,
-      Map<String, String> additionalParams = const {}}) async {
+  Future<String?> _redirectToKinde(BuildContext context,{AuthFlowType? type,
+    String? orgCode,
+    Map<String, String> additionalParams = const {}}) async {
     final params = HashMap<String, String>.from(additionalParams);
     if (orgCode != null) {
       params.putIfAbsent(_orgCodeParamName, () => orgCode);
@@ -173,16 +180,20 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
     if (_config?.audience != null) {
       params.putIfAbsent(_audienceParamName, () => _config!.audience!);
     }
-
-    if (type == AuthFlowType.pkce) {
-      return _pkceLogin(params);
-    } else {
-      return _normalLogin(params);
+    if(kIsWeb){
+      _webLogin(params,context);
+    }
+    else {
+      if (type == AuthFlowType.pkce) {
+        return _pkceLogin(params);
+      } else {
+        return _normalLogin(params);
+      }
     }
   }
 
-  Future<void> register({AuthFlowType? type, String? orgCode}) async {
-    await _redirectToKinde(type: type, orgCode: orgCode, additionalParams: {
+  Future<void> register(BuildContext context,{AuthFlowType? type, String? orgCode}) async {
+    await _redirectToKinde(context, type: type, orgCode: orgCode, additionalParams: {
       _registrationPageParamName: _registrationPageParamValue
     });
   }
@@ -203,8 +214,8 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
     });
   }
 
-  Future<void> createOrg({required String orgName, AuthFlowType? type}) async {
-    await _redirectToKinde(type: type, orgCode: null, additionalParams: {
+  Future<void> createOrg(BuildContext context,{required String orgName, AuthFlowType? type}) async {
+    await _redirectToKinde(context,type: type, orgCode: null, additionalParams: {
       _registrationPageParamName: _registrationPageParamValue,
       _createOrgParamName: "true",
       _orgNameParamName: orgName
@@ -261,48 +272,56 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
       return null;
     });
   }
+  String generateRandomState({int length = 8}) {
+    final random = Random();
+    String generateRandomChar() {
+      int codePoint = random.nextInt(26) + 97; // Random lowercase letter (a-z)
+      return String.fromCharCode(codePoint);
+    }
+    return List.generate(length, (index) => generateRandomChar()).join();
+  }
 
   Future<String?> _pkceLogin(Map<String, String> additionalParams) async {
-    const appAuth = FlutterAppAuth();
-    try {
-      final result = await appAuth.authorize(
-        AuthorizationRequest(
-          _config!.authClientId,
-          _config!.loginRedirectUri,
-          serviceConfiguration: _serviceConfiguration,
-          scopes: _config!.scopes,
-          promptValues: ['login'],
-          additionalParameters: additionalParams,
-        ),
-      );
-      final token = await appAuth.token(
-        TokenRequest(
-          _config!.authClientId,
-          _config!.loginRedirectUri,
-          codeVerifier: result!.codeVerifier,
-          authorizationCode: result.authorizationCode,
-          serviceConfiguration: _serviceConfiguration,
-          nonce: result.nonce,
-          scopes: _config!.scopes,
-          additionalParameters: additionalParams,
-        ),
-      );
-      if (additionalParams.containsKey(_orgNameParamName)) {
-        return additionalParams[_orgNameParamName];
-      }
-      _saveState(token);
-      return token?.accessToken ?? '';
-    } catch (ex) {
-      return null;
+      const appAuth = FlutterAppAuth();
+      try {
+        final result = await appAuth.authorize(
+          AuthorizationRequest(
+            _config!.authClientId,
+            _config!.loginRedirectUri,
+            serviceConfiguration: _serviceConfiguration,
+            scopes: _config!.scopes,
+            promptValues: ['login'],
+            additionalParameters: additionalParams,
+          ),
+        );
+        final token = await appAuth.token(
+          TokenRequest(
+            _config!.authClientId,
+            _config!.loginRedirectUri,
+            codeVerifier: result!.codeVerifier,
+            authorizationCode: result.authorizationCode,
+            serviceConfiguration: _serviceConfiguration,
+            nonce: result.nonce,
+            scopes: _config!.scopes,
+            additionalParameters: additionalParams,
+          ),
+        );
+        if (additionalParams.containsKey(_orgNameParamName)) {
+          return additionalParams[_orgNameParamName];
+        }
+        _saveState(token);
+        return token?.accessToken ?? '';
+      } catch (ex) {
+        return null;
     }
   }
 
   Uri _buildEndSessionUrl() {
-    var uri = Uri.parse(_serviceConfiguration.endSessionEndpoint!)
+    var uri = (Uri.parse(_serviceConfiguration.endSessionEndpoint!)
         .replace(queryParameters: {
       _postLogoutRedirectParamName: _config!.logoutRedirectUri,
       _redirectParamName: _config!.logoutRedirectUri,
-    });
+    }));
     return uri;
   }
 
@@ -314,7 +333,8 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
 
       var jwk = JsonWebKey.fromJson(key.toJson());
 
-      var keyStore = JsonWebKeyStore()..addKey(jwk);
+      var keyStore = JsonWebKeyStore()
+        ..addKey(jwk);
 
       return await jwt.verify(keyStore);
     }
@@ -326,7 +346,7 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
         accessToken: tokenResponse?.accessToken,
         idToken: tokenResponse?.idToken,
         accessTokenExpirationDateTime:
-            tokenResponse?.accessTokenExpirationDateTime,
+        tokenResponse?.accessTokenExpirationDateTime,
         refreshToken: tokenResponse?.refreshToken,
         scope: tokenResponse?.scopes?.join(' '));
     _kindeApi.setBearerAuth(_bearerAuth, tokenResponse?.accessToken ?? '');
@@ -343,4 +363,48 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
       return '';
     }
   }
-}
+
+  Future<void> redirect(Uri authorizationUrl) async {
+    if (await canLaunchUrl(Uri.parse(authorizationUrl.toString()))) {
+      await launchUrl(Uri.parse(authorizationUrl.toString()));
+    }
+  }
+
+  listen(Uri redirectUrl) {
+
+
+  }
+
+  Future<String> _webLogin(HashMap<String, String> params, BuildContext context) async {
+    String accessToken = '';
+    await OAuthWebScreen.start(
+        context: context,
+        configuration: OAuthConfiguration(
+            baseUrl: _config!.authDomain,
+            authorizationEndpointUrl: _serviceConfiguration.authorizationEndpoint,
+            tokenEndpointUrl: _serviceConfiguration.tokenEndpoint,
+            clientId: _config!.authClientId,
+            redirectUrl: _config!.loginRedirectUri,
+            scopes: _config!.scopes,
+            promptValues: const ['login'],
+            loginHint: '',
+            onCertificateValidate: (certificate) {
+              return true;
+            },
+            refreshBtnVisible: false,
+            clearCacheBtnVisible: false,
+            onSuccessAuth: (credentials){
+              debugPrint("Access Token: ${credentials.accessToken}");
+              accessToken = credentials.accessToken;
+            },
+            onCancel: (){
+              debugPrint("User Cancelled Authentication");
+            },
+            onError: (e){
+              throw(e);
+            }
+        ));
+    return accessToken;
+  }
+
+  }
