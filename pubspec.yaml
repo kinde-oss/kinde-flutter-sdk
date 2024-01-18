@@ -1,55 +1,48 @@
 name: kinde_flutter_sdk
 description: The Kinde SDK For Flutter.
-version: 1.0.1
+version: 2.0.0
 homepage: https://github.com/kinde-oss/kinde-flutter-sdk
 
 environment:
-  sdk: '>=2.15.0 <4.0.0'
-  flutter: '>=2.5.0'
+  sdk: '>=3.2.5 <4.0.0'
 
+# Dependencies specify other packages that your package needs in order to work.
+# To automatically upgrade your package dependencies to the latest versions
+# consider running `flutter pub upgrade --major-versions`. Alternatively,
+# dependencies can be manually updated by changing the version numbers below to
+# the latest version available on pub.dev. To see which dependencies have newer
+# versions available, run `flutter pub outdated`.
 dependencies:
+  built_collection: ^5.1.1
+  built_value: ^8.8.1
+  cupertino_icons: ^1.0.6
+  dio: ^5.4.0
   flutter:
     sdk: flutter
-
-  pubspec_parse: ^1.2.1
-  flutter_appauth: ^6.0.1
-  flutter_custom_tabs: ^1.0.4
-  flutter_inappwebview: ^5.7.2+3
+  flutter_appauth: ^6.0.2
+  flutter_custom_tabs: ^1.2.1
+  flutter_inappwebview: ^6.0.0
+  flutter_secure_storage: ^9.0.0
   hive: ^2.2.3
-  flutter_secure_storage: ^8.0.0
-  path_provider: ^2.0.15
-  dio: ^5.0.0
-  jose: ^0.3.3
-  one_of: '>=1.5.0 <2.0.0'
-  one_of_serializer: '>=1.5.0 <2.0.0'
-  built_value: '>=8.4.0 <9.0.0'
-  built_collection: '>=5.1.1 <6.0.0'
-  mockito: ^5.4.2
+  jose: ^0.3.4
+  mockito: ^5.4.4
+  one_of: ^1.5.0
+  one_of_serializer: ^1.5.0
+  path_provider: ^2.1.2
+  pubspec_parse: ^1.2.3
 
 dev_dependencies:
+  build_runner: ^2.4.8
+  built_value_generator: ^8.8.1
+  flutter_lints: ^3.0.1
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
-
-  built_value_generator: '>=8.4.0 <9.0.0'
-  build_runner: any
-  test: ^1.16.0
+  test: ^1.24.9
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
 # The following section is specific to Flutter packages.
 flutter:
-  # This section identifies this Flutter project as a plugin project.
-  # The 'pluginClass' specifies the class (in Java, Kotlin, Swift, Objective-C, etc.)
-  # which should be registered in the plugin registry. This is required for
-  # using method channels.
-  # The Android 'package' specifies package in which the registered class is.
-  # This is required for using method channels on Android.
-  # The 'ffiPlugin' specifies that native code should be built and bundled.
-  # This is required for using `dart:ffi`.
-  # All these are used by the tooling to maintain consistency when
-  # adding or updating assets for this project.
   plugin:
     platforms:
       android:
@@ -66,24 +59,19 @@ flutter:
       web:
         pluginClass: KindeFlutterSdkWeb
         fileName: kinde_flutter_sdk_web.dart
-
-  # To add assets to your plugin package, add an assets section, like this:
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+  # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
-  #
-
-  assets:
-    - pubspec.yaml
-
-
-  # For details regarding assets in packages, see
-  # https://flutter.dev/assets-and-images/#from-packages
-  #
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
-
-  # To add custom fonts to your plugin package, add a fonts section here,
+  # For details regarding adding assets from package dependencies, see
+  # https://flutter.dev/assets-and-images/#from-packages
+  # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
@@ -100,5 +88,5 @@ flutter:
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
   #
-  # For details regarding fonts in packages, see
-  # https://flutter.dev/custom-fonts/#from-packages
+  # For details regarding fonts from package dependencies,
+  # see https://flutter.dev/custom-fonts/#from-packages

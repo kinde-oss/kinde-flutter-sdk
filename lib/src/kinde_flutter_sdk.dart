@@ -148,7 +148,9 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
   Future<void> logout() async {
     if (Platform.isIOS) {
       final browser = ChromeSafariBrowser();
-      await browser.open(url: _buildEndSessionUrl()).then((value) async {
+      await browser
+          .open(url: WebUri.uri(_buildEndSessionUrl()))
+          .then((value) async {
         await browser.close();
       });
     } else {
