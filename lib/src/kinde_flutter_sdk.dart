@@ -329,8 +329,6 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
   }
 
   Future<bool> isAuthenticate(BuildContext? context) async {
-    print("authState $authState");
-    print("code verifier ${OAuthWebAuth.instance.restoreCodeVerifier()}");
     if (context != null &&
         kIsWeb &&
         authState == null &&
@@ -402,7 +400,7 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
           additionalParameters: additionalParams,
         ),
       );
-      print("token $token");
+
       if (additionalParams.containsKey(_orgNameParamName)) {
         return additionalParams[_orgNameParamName];
       }
