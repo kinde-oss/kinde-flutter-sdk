@@ -13,7 +13,6 @@ import 'package:kinde_flutter_sdk/src/model/user_profile.dart';
 import 'package:kinde_flutter_sdk/src/model/user_profile_v2.dart';
 
 class OAuthApi {
-
   final Dio _dio;
 
   final Serializers _serializers;
@@ -21,7 +20,7 @@ class OAuthApi {
   const OAuthApi(this._dio, this._serializers);
 
   /// Get User Profile
-  /// Contains the id, names and email of the currently logged in user. 
+  /// Contains the id, names and email of the currently logged in user.
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -33,7 +32,7 @@ class OAuthApi {
   ///
   /// Returns a [Future] containing a [Response] with a [UserProfile] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<UserProfile>> getUser({ 
+  Future<Response<UserProfile>> getUser({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -72,11 +71,12 @@ class OAuthApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(UserProfile),
-      ) as UserProfile;
-
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+              rawResponse,
+              specifiedType: const FullType(UserProfile),
+            ) as UserProfile;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -99,8 +99,22 @@ class OAuthApi {
     );
   }
 
+  Future<bool> logout({required String url}) async {
+    const path = r'$url';
+    final options = Options(
+      method: r'GET',
+    );
+
+    final response = await Dio().request<Object>(
+      path,
+      options: options,
+    );
+
+    return response.statusCode == 200;
+  }
+
   /// Returns the details of the currently logged in user
-  /// Contains the id, names, profile picture URL and email of the currently logged in user. 
+  /// Contains the id, names, profile picture URL and email of the currently logged in user.
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -112,7 +126,7 @@ class OAuthApi {
   ///
   /// Returns a [Future] containing a [Response] with a [UserProfileV2] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<UserProfileV2>> getUserProfileV2({ 
+  Future<Response<UserProfileV2>> getUserProfileV2({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -151,11 +165,12 @@ class OAuthApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(UserProfileV2),
-      ) as UserProfileV2;
-
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+              rawResponse,
+              specifiedType: const FullType(UserProfileV2),
+            ) as UserProfileV2;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -193,7 +208,7 @@ class OAuthApi {
   ///
   /// Returns a [Future] containing a [Response] with a [TokenIntrospect] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<TokenIntrospect>> tokenIntrospection({ 
+  Future<Response<TokenIntrospect>> tokenIntrospection({
     String? token,
     String? tokenType,
     CancelToken? cancelToken,
@@ -227,13 +242,16 @@ class OAuthApi {
 
     try {
       bodyData = <String, dynamic>{
-        if (token != null) r'token': encodeQueryParameter(_serializers, token, const FullType(String)),
-        if (tokenType != null) r'token_type': encodeQueryParameter(_serializers, tokenType, const FullType(String)),
+        if (token != null)
+          r'token':
+              encodeQueryParameter(_serializers, token, const FullType(String)),
+        if (tokenType != null)
+          r'token_type': encodeQueryParameter(
+              _serializers, tokenType, const FullType(String)),
       };
-
-    } catch(error, stackTrace) {
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: options.compose(
+        requestOptions: options.compose(
           _dio.options,
           path,
         ),
@@ -256,11 +274,12 @@ class OAuthApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(TokenIntrospect),
-      ) as TokenIntrospect;
-
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+              rawResponse,
+              specifiedType: const FullType(TokenIntrospect),
+            ) as TokenIntrospect;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -299,7 +318,7 @@ class OAuthApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> tokenRevocation({ 
+  Future<Response<void>> tokenRevocation({
     String? token,
     String? clientId,
     String? clientSecret,
@@ -334,14 +353,19 @@ class OAuthApi {
 
     try {
       bodyData = <String, dynamic>{
-        if (token != null) r'token': encodeQueryParameter(_serializers, token, const FullType(String)),
-        if (clientId != null) r'client_id': encodeQueryParameter(_serializers, clientId, const FullType(String)),
-        if (clientSecret != null) r'client_secret': encodeQueryParameter(_serializers, clientSecret, const FullType(String)),
+        if (token != null)
+          r'token':
+              encodeQueryParameter(_serializers, token, const FullType(String)),
+        if (clientId != null)
+          r'client_id': encodeQueryParameter(
+              _serializers, clientId, const FullType(String)),
+        if (clientSecret != null)
+          r'client_secret': encodeQueryParameter(
+              _serializers, clientSecret, const FullType(String)),
       };
-
-    } catch(error, stackTrace) {
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: options.compose(
+        requestOptions: options.compose(
           _dio.options,
           path,
         ),
@@ -362,5 +386,4 @@ class OAuthApi {
 
     return response;
   }
-
 }

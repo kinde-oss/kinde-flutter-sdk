@@ -25,6 +25,12 @@ dependencies:
   built_value: '>=8.4.0 <9.0.0'
   built_collection: '>=5.1.1 <6.0.0'
   mockito: ^5.4.2
+  universal_html: ^2.2.4
+  oauth_webauth:
+    git:
+      url: https://github.com/saifr383/oauth_webauth.git
+      ref: custom
+
 
 dev_dependencies:
   flutter_test:
@@ -61,11 +67,13 @@ flutter:
         pluginClass: KindeFlutterSdkPlugin
       macos:
         pluginClass: KindeFlutterSdkPlugin
+        pluginPath: macos
       windows:
         pluginClass: KindeFlutterSdkPluginCApi
       web:
-        pluginClass: KindeFlutterSdkWeb
-        fileName: kinde_flutter_sdk_web.dart
+        pluginClass: KindeFlutterWebSDK
+        fileName: kinde_web_plugin.dart
+
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:
