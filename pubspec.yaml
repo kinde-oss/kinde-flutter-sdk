@@ -1,6 +1,6 @@
 name: kinde_flutter_sdk
 description: The Kinde SDK For Flutter.
-version: 1.0.1
+version: 1.0.2
 homepage: https://github.com/kinde-oss/kinde-flutter-sdk
 
 environment:
@@ -57,15 +57,6 @@ flutter:
         pluginClass: KindeFlutterSdkPlugin
       ios:
         pluginClass: KindeFlutterSdkPlugin
-      linux:
-        pluginClass: KindeFlutterSdkPlugin
-      macos:
-        pluginClass: KindeFlutterSdkPlugin
-      windows:
-        pluginClass: KindeFlutterSdkPluginCApi
-      web:
-        pluginClass: KindeFlutterSdkWeb
-        fileName: kinde_flutter_sdk_web.dart
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:
@@ -75,7 +66,6 @@ flutter:
 
   assets:
     - pubspec.yaml
-
 
   # For details regarding assets in packages, see
   # https://flutter.dev/assets-and-images/#from-packages
