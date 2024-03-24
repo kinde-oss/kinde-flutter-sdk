@@ -158,8 +158,16 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
     await Store.instance.clear();
   }
 
-  Future<String?> login({AuthFlowType? type, String? orgCode}) async {
-    return _redirectToKinde(type: type, orgCode: orgCode);
+  Future<String?> login({
+    AuthFlowType? type,
+    String? orgCode,
+    AuthUrlParams? authUrlParams,
+  }) async {
+    return _redirectToKinde(
+      type: type,
+      orgCode: orgCode,
+      additionalParams: authUrlParams?.toMap() ?? {},
+    );
   }
 
   Future<String?> _redirectToKinde(
@@ -181,10 +189,20 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
     }
   }
 
-  Future<void> register({AuthFlowType? type, String? orgCode}) async {
-    await _redirectToKinde(type: type, orgCode: orgCode, additionalParams: {
+  Future<void> register({
+    AuthFlowType? type,
+    String? orgCode,
+    AuthUrlParams? authUrlParams,
+  }) async {
+    final additionalParams = {
       _registrationPageParamName: _registrationPageParamValue
-    });
+    };
+    if (authUrlParams != null) {
+      additionalParams.addAll(authUrlParams.toMap());
+    }
+
+    await _redirectToKinde(
+        type: type, orgCode: orgCode, additionalParams: additionalParams);
   }
 
   Future<UserProfileV2?> getUserProfileV2() async {
