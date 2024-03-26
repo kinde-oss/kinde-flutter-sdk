@@ -158,14 +158,25 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
     await Store.instance.clear();
   }
 
-  Future<String?> login({AuthFlowType? type, String? orgCode}) async {
-    return _redirectToKinde(type: type, orgCode: orgCode);
+  Future<String?> login({
+    AuthFlowType? type,
+    String? orgCode,
+    String? loginHint,
+    AuthUrlParams? authUrlParams,
+  }) async {
+    return _redirectToKinde(
+      type: type,
+      orgCode: orgCode,
+      loginHint: loginHint,
+      additionalParams: authUrlParams?.toMap() ?? {},
+    );
   }
 
   Future<String?> _redirectToKinde(
       {AuthFlowType? type,
-      String? orgCode,
-      Map<String, String> additionalParams = const {}}) async {
+        String? orgCode,
+        String? loginHint,
+        Map<String, String> additionalParams = const {}}) async {
     final params = HashMap<String, String>.from(additionalParams);
     if (orgCode != null) {
       params.putIfAbsent(_orgCodeParamName, () => orgCode);
@@ -175,16 +186,30 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
     }
 
     if (type == AuthFlowType.pkce) {
-      return _pkceLogin(params);
+      return _pkceLogin(loginHint, params);
     } else {
-      return _normalLogin(params);
+      return _normalLogin(loginHint, params);
     }
   }
 
-  Future<void> register({AuthFlowType? type, String? orgCode}) async {
-    await _redirectToKinde(type: type, orgCode: orgCode, additionalParams: {
+  Future<void> register({
+    AuthFlowType? type,
+    String? orgCode,
+    String? loginHint,
+    AuthUrlParams? authUrlParams,
+  }) async {
+    final additionalParams = {
       _registrationPageParamName: _registrationPageParamValue
-    });
+    };
+    if (authUrlParams != null) {
+      additionalParams.addAll(authUrlParams.toMap());
+    }
+
+    await _redirectToKinde(
+        type: type,
+        orgCode: orgCode,
+        loginHint: loginHint,
+        additionalParams: additionalParams);
   }
 
   Future<UserProfileV2?> getUserProfileV2() async {
@@ -238,7 +263,8 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
   Future<bool> isAuthenticate() async =>
       authState != null && !authState!.isExpired() && await _checkToken();
 
-  Future<String?> _normalLogin(Map<String, String> additionalParams) async {
+  Future<String?> _normalLogin(
+      String? loginHint, Map<String, String> additionalParams) async {
     const appAuth = FlutterAppAuth();
     return await appAuth
         .authorizeAndExchangeCode(
@@ -248,6 +274,7 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
         serviceConfiguration: _serviceConfiguration,
         scopes: _config!.scopes,
         promptValues: ['login'],
+        loginHint: loginHint,
         additionalParameters: additionalParams,
       ),
     )
@@ -262,7 +289,8 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
     });
   }
 
-  Future<String?> _pkceLogin(Map<String, String> additionalParams) async {
+  Future<String?> _pkceLogin(
+      String? loginHint, Map<String, String> additionalParams) async {
     const appAuth = FlutterAppAuth();
     try {
       final result = await appAuth.authorize(
@@ -272,6 +300,7 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
           serviceConfiguration: _serviceConfiguration,
           scopes: _config!.scopes,
           promptValues: ['login'],
+          loginHint: loginHint,
           additionalParameters: additionalParams,
         ),
       );
