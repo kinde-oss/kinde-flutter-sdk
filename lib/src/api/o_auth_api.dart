@@ -99,13 +99,13 @@ class OAuthApi {
     );
   }
 
-  Future<bool> logout({required String url}) async {
+  Future<bool> logout({required String url, Dio? dio}) async {
     const path = r'$url';
     final options = Options(
       method: r'GET',
     );
-
-    final response = await Dio().request<Object>(
+    var dioClient = dio ?? Dio();
+    final response = await dioClient.request<Object>(
       path,
       options: options,
     );

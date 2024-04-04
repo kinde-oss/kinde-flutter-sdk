@@ -162,19 +162,23 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
     }
   }
 
-  Future<void> logout() async {
+  Future<void> logout({Dio? dio}) async {
     if (kIsWeb || Platform.isMacOS) {
       await _kindeApi
           .getOAuthApi()
-          .logout(url: _buildEndSessionUrl().toString());
+          .logout(url: _buildEndSessionUrl().toString(), dio: dio);
+
       OAuthWebAuth.instance.clearCodeVerifier();
-      OAuthWebAuth.instance.resetAppBaseUrl();
+      if (dio == null) {
+        OAuthWebAuth.instance.resetAppBaseUrl();
+      }
     } else if (Platform.isIOS) {
       final browser = ChromeSafariBrowser();
       await browser.open(url: _buildEndSessionUrl()).then((value) async {
         await browser.close();
       });
     } else {
+      print("logout other");
       await launch(_buildEndSessionUrl().toString());
     }
     _kindeApi.setBearerAuth(_bearerAuth, '');

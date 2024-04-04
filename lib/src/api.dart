@@ -56,25 +56,34 @@ class KindeApi {
 
   void setOAuthToken(String name, String token) {
     if (dio.interceptors.any((i) => i is OAuthInterceptor)) {
-      (dio.interceptors.firstWhere((i) => i is OAuthInterceptor) as OAuthInterceptor).tokens[name] = token;
+      (dio.interceptors.firstWhere((i) => i is OAuthInterceptor)
+              as OAuthInterceptor)
+          .tokens[name] = token;
     }
   }
 
   void setBearerAuth(String name, String token) {
     if (dio.interceptors.any((i) => i is BearerAuthInterceptor)) {
-      (dio.interceptors.firstWhere((i) => i is BearerAuthInterceptor) as BearerAuthInterceptor).tokens[name] = token;
+      (dio.interceptors.firstWhere((i) => i is BearerAuthInterceptor)
+              as BearerAuthInterceptor)
+          .tokens[name] = token;
     }
   }
 
   void setBasicAuth(String name, String username, String password) {
     if (dio.interceptors.any((i) => i is BasicAuthInterceptor)) {
-      (dio.interceptors.firstWhere((i) => i is BasicAuthInterceptor) as BasicAuthInterceptor).authInfo[name] = BasicAuthInfo(username, password);
+      (dio.interceptors.firstWhere((i) => i is BasicAuthInterceptor)
+              as BasicAuthInterceptor)
+          .authInfo[name] = BasicAuthInfo(username, password);
     }
   }
 
   void setApiKey(String name, String apiKey) {
     if (dio.interceptors.any((i) => i is ApiKeyAuthInterceptor)) {
-      (dio.interceptors.firstWhere((element) => element is ApiKeyAuthInterceptor) as ApiKeyAuthInterceptor).apiKeys[name] = apiKey;
+      (dio.interceptors
+                  .firstWhere((element) => element is ApiKeyAuthInterceptor)
+              as ApiKeyAuthInterceptor)
+          .apiKeys[name] = apiKey;
     }
   }
 
