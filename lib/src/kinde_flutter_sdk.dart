@@ -199,6 +199,10 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
       String? orgCode,
       bool fromRegister = false,
       Map<String, String> additionalParams = const {}}) async {
+    if (kIsWeb && context == null) {
+      throw KindeError("context is required for web");
+    }
+
     {
       final params = HashMap<String, String>.from(additionalParams);
       if (orgCode != null) {
