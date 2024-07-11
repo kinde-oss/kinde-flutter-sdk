@@ -26,7 +26,7 @@ import 'package:kinde_flutter_sdk/src/token/refresh_token_interceptor.dart';
 import 'package:kinde_flutter_sdk/src/token/token_api.dart';
 import 'package:kinde_flutter_sdk/src/token/token_utils.dart';
 
-import 'package:oauth_webauth/oauth_webauth.dart';
+import 'package:oauth_webauth_param/oauth_webauth_param.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pubspec_parse/pubspec_parse.dart';
 
