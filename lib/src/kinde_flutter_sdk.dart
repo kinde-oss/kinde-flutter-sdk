@@ -152,7 +152,7 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
         await browser.close();
       });
     } else {
-      await launch(_buildEndSessionUrl().toString());
+      await launchUrl(_buildEndSessionUrl());
     }
     _kindeApi.setBearerAuth(_bearerAuth, '');
     await Store.instance.clear();
@@ -297,13 +297,13 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
     }
   }
 
-  Uri _buildEndSessionUrl() {
-    var uri = Uri.parse(_serviceConfiguration.endSessionEndpoint!)
+  WebUri _buildEndSessionUrl() {
+    var uri = WebUri(_serviceConfiguration.endSessionEndpoint!)
         .replace(queryParameters: {
       _postLogoutRedirectParamName: _config!.logoutRedirectUri,
       _redirectParamName: _config!.logoutRedirectUri,
     });
-    return uri;
+    return WebUri.uri(uri);
   }
 
   Future<bool> _checkToken() async {
