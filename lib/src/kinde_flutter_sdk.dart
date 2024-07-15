@@ -164,27 +164,34 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
 
   Future<void> logout({Dio? dio}) async {
     if (kIsWeb || Platform.isMacOS) {
-      await _kindeApi
-          .getOAuthApi()
-          .logout(url: _buildEndSessionUrl().toString(), dio: dio);
-
-      OAuthWebAuth.instance.clearCodeVerifier();
-      if (dio == null) {
-        OAuthWebAuth.instance.resetAppBaseUrl();
-      }
+      await handleWebAndMacLogout(dio);
     } else if (Platform.isIOS) {
-      final browser = ChromeSafariBrowser();
-      await browser.open(url: _buildEndSessionUrl()).then((value) async {
-        await browser.close();
-      });
+      await handleIosLogout();
     } else {
-      print("logout other");
       await launch(_buildEndSessionUrl().toString());
     }
     _kindeApi.setBearerAuth(_bearerAuth, '');
     await Store.instance.clear();
     if (kIsWeb) {
       html.window.location.reload();
+    }
+  }
+
+  Future<void> handleIosLogout() async {
+    final browser = ChromeSafariBrowser();
+    await browser.open(url: _buildEndSessionUrl()).then((value) async {
+      await browser.close();
+    });
+  }
+
+  Future<void> handleWebAndMacLogout(Dio? dio) async {
+    await _kindeApi
+        .getOAuthApi()
+        .logout(url: _buildEndSessionUrl().toString(), dio: dio);
+
+    OAuthWebAuth.instance.clearCodeVerifier();
+    if (dio == null) {
+      OAuthWebAuth.instance.resetAppBaseUrl();
     }
   }
 
@@ -203,31 +210,35 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
       throw KindeError("context is required for web");
     }
 
-    {
-      final params = HashMap<String, String>.from(additionalParams);
-      if (orgCode != null) {
-        params.putIfAbsent(_orgCodeParamName, () => orgCode);
-      }
-      if (_config?.audience != null) {
-        params.putIfAbsent(_audienceParamName, () => _config!.audience!);
-      }
-      if (kIsWeb) {
-        _webLogin(
-          params,
-          context!,
-        );
-      } else {
-        if (type == AuthFlowType.pkce) {
-          return _pkceLogin(params);
-        } else {
-          return _normalLogin(params);
-        }
-      }
+    final params = HashMap<String, String>.from(additionalParams);
+    if (orgCode != null) {
+      params.putIfAbsent(_orgCodeParamName, () => orgCode);
     }
+    if (_config?.audience != null) {
+      params.putIfAbsent(_audienceParamName, () => _config!.audience!);
+    }
+    if (kIsWeb) {
+      _handleWebLogin(
+        params,
+        context!,
+      );
+    } else {
+      return _handleOtherLogin(type, params);
+    }
+
     return null;
   }
 
-  Future<void> _webLogin(
+  Future<String?> _handleOtherLogin(
+      AuthFlowType? type, HashMap<String, String> params) {
+    if (type == AuthFlowType.pkce) {
+      return _pkceLogin(params);
+    } else {
+      return _normalLogin(params);
+    }
+  }
+
+  Future<void> _handleWebLogin(
       Map<String, String> params, BuildContext context) async {
     await OAuthWebScreen.start(
         context: context,
@@ -345,7 +356,7 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
         const Duration(milliseconds: 300),
         () async {
           try {
-            await _webLogin({}, context);
+            await _handleWebLogin({}, context);
           } catch (e) {}
         },
       );
