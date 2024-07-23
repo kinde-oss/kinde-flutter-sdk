@@ -27,6 +27,8 @@ dependencies:
   mockito: ^5.4.2
   universal_html: ^2.2.4
   oauth_webauth_param: ^4.0.2+2
+  url_launcher: ^6.3.0
+  http: ^1.2.2
 
 
 dev_dependencies:

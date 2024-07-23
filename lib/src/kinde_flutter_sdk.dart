@@ -162,10 +162,14 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
     }
   }
 
-  Future<void> logout({Dio? dio}) async {
-    if (kIsWeb || Platform.isMacOS) {
-      await handleWebAndMacLogout(dio);
-    } else if (Platform.isIOS) {
+  /// Logs out the user with redirection to [`_config!.logoutRedirectUri`].
+  /// Doesn't work on macOS; use `logoutWithoutRedirection()` instead.
+  Future<void> logout() async {
+    if (!kIsWeb && Platform.isMacOS) {
+      throw KindeError('Unsupported Platform Exception. '
+          'To logout on MacOS use logoutWithoutRedirection()');
+    }
+    if (!kIsWeb && Platform.isIOS) {
       await handleIosLogout();
     } else {
       await launch(_buildEndSessionUrl().toString());
@@ -177,22 +181,36 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
     }
   }
 
+  /// Logs out the user without redirection. Returns result so client can
+  /// take action depending on it,`true` if logout was successful.
+  Future<bool> logoutWithoutRedirection({Dio? dio}) async {
+    try {
+      var dioClient = dio ?? Dio();
+      final response =
+          await dioClient.get(_serviceConfiguration.endSessionEndpoint!);
+
+      OAuthWebAuth.instance.clearCodeVerifier();
+      if (dio == null && kIsWeb) {
+        OAuthWebAuth.instance.resetAppBaseUrl();
+      }
+
+      _kindeApi.setBearerAuth(_bearerAuth, '');
+      await Store.instance.clear();
+      if (kIsWeb) {
+        html.window.location.reload();
+      }
+
+      return response.statusCode == 200;
+    } catch (_) {
+      return false;
+    }
+  }
+
   Future<void> handleIosLogout() async {
     final browser = ChromeSafariBrowser();
     await browser.open(url: _buildEndSessionUrl()).then((value) async {
       await browser.close();
     });
-  }
-
-  Future<void> handleWebAndMacLogout(Dio? dio) async {
-    await _kindeApi
-        .getOAuthApi()
-        .logout(url: _buildEndSessionUrl().toString(), dio: dio);
-
-    OAuthWebAuth.instance.clearCodeVerifier();
-    if (dio == null) {
-      OAuthWebAuth.instance.resetAppBaseUrl();
-    }
   }
 
   Future<String?> login(
