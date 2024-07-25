@@ -172,7 +172,7 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
     if (!kIsWeb && Platform.isIOS) {
       await handleIosLogout();
     } else {
-      await launch(_buildEndSessionUrl().toString());
+      await launchUrl(_buildEndSessionUrl());
     }
     _kindeApi.setBearerAuth(_bearerAuth, '');
     await Store.instance.clear();
@@ -206,6 +206,22 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
     }
   }
 
+  Future<String?> login({
+    BuildContext? context,
+    AuthFlowType? type,
+    String? orgCode,
+    String? loginHint,
+    AuthUrlParams? authUrlParams,
+  }) async {
+    return _redirectToKinde(
+      context: context,
+      type: type,
+      orgCode: orgCode,
+      loginHint: loginHint,
+      additionalParams: authUrlParams?.toMap() ?? {},
+    );
+  }
+
   Future<void> handleIosLogout() async {
     final browser = ChromeSafariBrowser();
     await browser.open(url: _buildEndSessionUrl()).then((value) async {
@@ -213,16 +229,11 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
     });
   }
 
-  Future<String?> login(
-      {BuildContext? context, AuthFlowType? type, String? orgCode}) async {
-    return _redirectToKinde(context: context!, type: type, orgCode: orgCode);
-  }
-
   Future<String?> _redirectToKinde(
       {AuthFlowType? type,
       BuildContext? context,
       String? orgCode,
-      bool fromRegister = false,
+      String? loginHint,
       Map<String, String> additionalParams = const {}}) async {
     if (kIsWeb && context == null) {
       throw KindeError("context is required for web");
@@ -238,26 +249,27 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
     if (kIsWeb) {
       _handleWebLogin(
         params,
+        loginHint,
         context!,
       );
     } else {
-      return _handleOtherLogin(type, params);
+      return _handleOtherLogin(type, loginHint, params);
     }
 
     return null;
   }
 
   Future<String?> _handleOtherLogin(
-      AuthFlowType? type, HashMap<String, String> params) {
+      AuthFlowType? type, String? loginHint, HashMap<String, String> params) {
     if (type == AuthFlowType.pkce) {
-      return _pkceLogin(params);
+      return _pkceLogin(loginHint, params);
     } else {
-      return _normalLogin(params);
+      return _normalLogin(loginHint, params);
     }
   }
 
-  Future<void> _handleWebLogin(
-      Map<String, String> params, BuildContext context) async {
+  Future<void> _handleWebLogin(Map<String, String> params, String? loginHint,
+      BuildContext context) async {
     await OAuthWebScreen.start(
         context: context,
         configuration: OAuthConfiguration(
@@ -269,6 +281,7 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
             redirectUrl: _config!.loginRedirectUri,
             scopes: _config!.scopes,
             extraParameter: params,
+            loginHint: loginHint,
             onCertificateValidate: (certificate) {
               return true;
             },
@@ -298,16 +311,26 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
             onError: (e) {}));
   }
 
-  Future<void> register(
-      {AuthFlowType? type, BuildContext? context, String? orgCode}) async {
+  Future<void> register({
+    BuildContext? context,
+    AuthFlowType? type,
+    String? orgCode,
+    String? loginHint,
+    AuthUrlParams? authUrlParams,
+  }) async {
+    final additionalParams = {
+      _registrationPageParamName: _registrationPageParamValue
+    };
+    if (authUrlParams != null) {
+      additionalParams.addAll(authUrlParams.toMap());
+    }
+
     await _redirectToKinde(
+        context: context,
         type: type,
         orgCode: orgCode,
-        fromRegister: true,
-        context: context,
-        additionalParams: {
-          _registrationPageParamName: _registrationPageParamValue
-        });
+        loginHint: loginHint,
+        additionalParams: additionalParams);
   }
 
   Future<UserProfileV2?> getUserProfileV2() async {
@@ -374,7 +397,7 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
         const Duration(milliseconds: 300),
         () async {
           try {
-            await _handleWebLogin({}, context);
+            await _handleWebLogin({}, null, context);
           } catch (e) {}
         },
       );
@@ -388,7 +411,8 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
     return authState != null && !authState!.isExpired() && await _checkToken();
   }
 
-  Future<String?> _normalLogin(Map<String, String> additionalParams) async {
+  Future<String?> _normalLogin(
+      String? loginHint, Map<String, String> additionalParams) async {
     const appAuth = FlutterAppAuth();
     return await appAuth
         .authorizeAndExchangeCode(
@@ -398,6 +422,7 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
         serviceConfiguration: _serviceConfiguration,
         scopes: _config!.scopes,
         promptValues: ['login'],
+        loginHint: loginHint,
         additionalParameters: additionalParams,
       ),
     )
@@ -412,7 +437,8 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
     });
   }
 
-  Future<String?> _pkceLogin(Map<String, String> additionalParams) async {
+  Future<String?> _pkceLogin(
+      String? loginHint, Map<String, String> additionalParams) async {
     const appAuth = FlutterAppAuth();
     try {
       final result = await appAuth.authorize(
@@ -422,6 +448,7 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
           serviceConfiguration: _serviceConfiguration,
           scopes: _config!.scopes,
           promptValues: ['login'],
+          loginHint: loginHint,
           additionalParameters: additionalParams,
         ),
       );
@@ -449,13 +476,13 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
     }
   }
 
-  Uri _buildEndSessionUrl() {
-    var uri = Uri.parse(_serviceConfiguration.endSessionEndpoint!)
+  WebUri _buildEndSessionUrl() {
+    var uri = WebUri(_serviceConfiguration.endSessionEndpoint!)
         .replace(queryParameters: {
       _postLogoutRedirectParamName: _config!.logoutRedirectUri,
       _redirectParamName: _config!.logoutRedirectUri,
     });
-    return uri;
+    return WebUri.uri(uri);
   }
 
   Future<bool> _checkToken() async {

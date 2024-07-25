@@ -2,11 +2,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kinde_flutter_sdk/kinde_flutter_sdk.dart';
 import 'package:kinde_flutter_sdk/src/keys/keys.dart';
 import 'package:kinde_flutter_sdk/src/store/store.dart';
-import 'package:mockito/mockito.dart';
 
 import 'mock_channels.dart';
 import 'test_helpers/buildcontext_mock.dart';
-import 'test_helpers/dio_mock.dart';
 
 void main() async {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -54,7 +52,7 @@ void main() async {
     });
 
     test('test sdk logout', () async {
-      await KindeFlutterSDK.instance.logout(dio: DioAdapterMock());
+      await KindeFlutterSDK.instance.logout();
 
       expect(KindeFlutterSDK.instance.authState, isNull);
     });
