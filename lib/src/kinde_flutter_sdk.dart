@@ -3,6 +3,9 @@ import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:kinde_flutter_sdk/src/oauth_webauth_param/oauth_webauth_param.dart';
+import 'package:kinde_flutter_sdk/src/oauth_webauth_param/src/base/model/oauth_configuration.dart';
+import 'package:kinde_flutter_sdk/src/oauth_webauth_param/src/oauth_web_screen.dart';
 import "package:universal_html/html.dart" as html;
 import 'package:flutter/cupertino.dart';
 
@@ -25,8 +28,6 @@ import 'package:kinde_flutter_sdk/src/token/auth_state.dart';
 import 'package:kinde_flutter_sdk/src/token/refresh_token_interceptor.dart';
 import 'package:kinde_flutter_sdk/src/token/token_api.dart';
 import 'package:kinde_flutter_sdk/src/token/token_utils.dart';
-
-import 'package:oauth_webauth_param/oauth_webauth_param.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pubspec_parse/pubspec_parse.dart';
 
@@ -162,12 +163,10 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
     }
   }
 
-  /// Logs out the user with redirection to [`_config!.logoutRedirectUri`].
-  /// Doesn't work on macOS; use `logoutWithoutRedirection()` instead.
-  Future<void> logout() async {
+  Future<void> logout({Dio? dio}) async {
     if (!kIsWeb && Platform.isMacOS) {
-      throw KindeError('Unsupported Platform Exception. '
-          'To logout on MacOS use logoutWithoutRedirection()');
+      logoutWithoutRedirection(dio: dio);
+      return;
     }
     if (!kIsWeb && Platform.isIOS) {
       await handleIosLogout();

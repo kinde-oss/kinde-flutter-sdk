@@ -4,8 +4,8 @@ version: 1.0.2
 homepage: https://github.com/kinde-oss/kinde-flutter-sdk
 
 environment:
-  sdk: '>=2.15.0 <4.0.0'
-  flutter: '>=2.5.0'
+  sdk: '>=2.17.0 <4.0.0'
+  flutter: '>=3.0.0'
 
 dependencies:
   flutter:
@@ -26,11 +26,9 @@ dependencies:
   built_collection: '>=5.1.1 <6.0.0'
   mockito: ^5.4.2
   universal_html: ^2.2.4
-  oauth_webauth_param: ^4.0.2+2
+  shared_preferences: ^2.3.1
   http: ^1.2.2
-
-dependency_overrides:
-  flutter_inappwebview: ^6.0.0
+  oauth2: ^2.0.2
 
 dev_dependencies:
   flutter_test:
