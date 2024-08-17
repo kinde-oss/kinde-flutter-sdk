@@ -117,18 +117,13 @@ class BaseWebViewState<S extends BaseWebView> extends State<S>
       /// known certification authority.
       content = InAppWebView(
         // windowId: 12345,
-        initialOptions: InAppWebViewGroupOptions(
-          crossPlatform: InAppWebViewOptions(
-            useShouldOverrideUrlLoading: true,
-            supportZoom: false,
-
-            /// This custom userAgent is mandatory due to security constraints of Google's OAuth2 policies (https://developers.googleblog.com/2021/06/upcoming-security-changes-to-googles-oauth-2.0-authorization-endpoint.html)
-            userAgent: 'Mozilla/5.0',
-          ),
-          android: AndroidInAppWebViewOptions(
-            useHybridComposition: true,
-          ),
+        initialSettings: InAppWebViewSettings(
+          useShouldOverrideUrlLoading: true,
+          supportZoom: false,
+          /// This custom userAgent is mandatory due to security constraints of Google's OAuth2 policies (https://developers.googleblog.com/2021/06/upcoming-security-changes-to-googles-oauth-2.0-authorization-endpoint.html)
+          userAgent: 'Mozilla/5.0',
         ),
+
         initialUrlRequest: URLRequest(url: WebUri.uri(initialUri), headers: {
           ...configuration.headers,
           if (configuration.contentLocale != null)
