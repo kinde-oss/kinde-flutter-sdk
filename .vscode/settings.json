@@ -11,5 +11,6 @@
   "markdown.preview.fontFamily": "system-ui, -apple-system, sans-serif",
   "files.associations": {
     "CODEOWNERS": "ini"
-  }
+  },
+  "dart.flutterSdkPath": ".fvm/versions/stable"
 }

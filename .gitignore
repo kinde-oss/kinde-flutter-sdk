@@ -24,3 +24,6 @@ coverage/
 
 # ---------------------------------------------------------------------
 # Add specific rules here…
+
+# FVM Version Cache
+.fvm/

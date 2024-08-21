@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.3
+
+- Added support for lang, connectionId and loginHunt auth params
+
 ## 1.0.2
 
 - Removed unsupported platforms (web and desktop)
