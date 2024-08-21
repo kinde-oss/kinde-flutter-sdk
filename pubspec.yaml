@@ -4,8 +4,8 @@ version: 1.0.3
 homepage: https://github.com/kinde-oss/kinde-flutter-sdk
 
 environment:
-  sdk: '>=2.15.0 <4.0.0'
-  flutter: '>=2.5.0'
+  sdk: '>=2.17.0 <4.0.0'
+  flutter: '>=3.0.0'
 
 dependencies:
   flutter:
@@ -25,6 +25,10 @@ dependencies:
   built_value: '>=8.4.0 <9.0.0'
   built_collection: '>=5.1.1 <6.0.0'
   mockito: ^5.4.2
+  universal_html: ^2.2.4
+  shared_preferences: ^2.3.1
+  http: ^1.2.2
+  oauth2: ^2.0.2
 
 dev_dependencies:
   flutter_test:
@@ -57,6 +61,17 @@ flutter:
         pluginClass: KindeFlutterSdkPlugin
       ios:
         pluginClass: KindeFlutterSdkPlugin
+      linux:
+        pluginClass: KindeFlutterSdkPlugin
+      macos:
+        pluginClass: KindeFlutterSdkPlugin
+        pluginPath: macos
+      windows:
+        pluginClass: KindeFlutterSdkPluginCApi
+      web:
+        pluginClass: KindeFlutterWebSDK
+        fileName: kinde_web_plugin.dart
+
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:
@@ -66,6 +81,7 @@ flutter:
 
   assets:
     - pubspec.yaml
+
 
   # For details regarding assets in packages, see
   # https://flutter.dev/assets-and-images/#from-packages
