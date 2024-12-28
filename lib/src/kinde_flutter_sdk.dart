@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/services.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
@@ -11,6 +12,7 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart'
     as secure_store;
 import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jose/jose.dart';
 import 'package:kinde_flutter_sdk/kinde_flutter_sdk.dart';
 import 'package:kinde_flutter_sdk/src/handle_network_error_mixin.dart';
@@ -119,12 +121,24 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
         scopes: scopes,
         audience: audience);
 
-    secure_store.FlutterSecureStorage secureStorage =
-        const secure_store.FlutterSecureStorage(
-            aOptions: secure_store.AndroidOptions());
+    late secure_store.FlutterSecureStorage secureStorage;
 
-    Future<List<int>> getSecureKey(
-        secure_store.FlutterSecureStorage secureStorage) async {
+    if (!kIsWeb) {
+      if (Platform.isAndroid) {
+        secureStorage = const secure_store.FlutterSecureStorage(
+            aOptions: secure_store.AndroidOptions());
+      } else if (Platform.isIOS || Platform.isMacOS) {
+        secureStorage = const secure_store.FlutterSecureStorage(
+            iOptions: secure_store.IOSOptions(
+              accessibility: secure_store.KeychainAccessibility.first_unlock,
+            ));
+    } } else if (kIsWeb) {
+      secureStorage = secure_store.FlutterSecureStorage(); // Defaults for web
+    } else {
+      throw UnsupportedError('Unsupported platform');
+    }
+
+    Future<List<int>> getSecureKey(secure_store.FlutterSecureStorage secureStorage) async {
       var containsEncryptionKey =
           await secureStorage.containsKey(key: 'encryptionKey');
       if (!containsEncryptionKey) {
@@ -134,15 +148,29 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
         return key;
       } else {
         final base64 = await secureStorage.read(key: 'encryptionKey');
-        return base64Url.decode(base64!);
+        if (base64 == null) {
+          throw Exception('Encryption key not found in secure storage');
+        }
+        return base64Url.decode(base64);
       }
     }
 
     final secureKey = await getSecureKey(secureStorage);
 
-    final path = await getTemporaryDirectory();
+    String path;
+    if (kIsWeb) {
+      // Web-specific initialization: Hive supports in-browser storage
+      Hive.init(null); // Initialize Hive for web
+      path = 'web';
+    } else {
+      final directory = await getTemporaryDirectory();
+      path = directory.path;
+      Hive.init(path);
+    }
 
-    await Store.init(HiveAesCipher(secureKey), path.path);
+    await Store.init(HiveAesCipher(secureKey), path);
+
+    print('SDK initialized successfully with Hive at $path.');
   }
 
   Future<void> logout() async {
