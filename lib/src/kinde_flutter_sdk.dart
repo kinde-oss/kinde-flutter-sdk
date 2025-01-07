@@ -200,7 +200,8 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
       }
 
       return response.statusCode == 200;
-    } catch (_) {
+    } catch (e) {
+      debugPrint('Logout failed: $e');
       return false;
     }
   }
