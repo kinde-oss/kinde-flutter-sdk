@@ -307,7 +307,9 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
               OAuthWebAuth.instance.clearAll();
               OAuthWebAuth.instance.resetAppBaseUrl();
             },
-            onError: (e) {}));
+            onError: (e) {
+              debugPrint("OAuth error occurred: $e");
+            }));
   }
 
   Future<void> register({
