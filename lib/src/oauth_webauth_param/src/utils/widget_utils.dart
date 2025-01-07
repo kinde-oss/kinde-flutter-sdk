@@ -1,3 +1,4 @@
+import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
@@ -26,7 +27,7 @@ extension WidgetUtils on Widget {
   /// wait [waitToRender] to render the widget
   /// It's recommended to use a context when using this function.
   /// Check docs: https://docs.flutter.dev/release/breaking-changes/window-singleton#migration-guide
-  Future<void> _buildImageFromWidget(
+  Future<ByteData?> _buildImageFromWidget(
     BuildContext? context,
     Widget widget,
     Duration waitToRender,
@@ -74,8 +75,16 @@ extension WidgetUtils on Widget {
     pipelineOwner.flushCompositingBits();
     pipelineOwner.flushPaint();
 
-    final ui.Image image = await repaintBoundary.toImage(
-        pixelRatio: imageSize.width / logicalSize.width);
-    await image.toByteData();
+    // Capture image and handle memory
+    try {
+      final ui.Image image = await repaintBoundary.toImage(
+          pixelRatio: imageSize.width / logicalSize.width);
+      final ByteData? byteData = await image.toByteData();
+      image.dispose();
+      return byteData;
+    } catch (e) {
+      debugPrint('Error rendering image: $e');
+      return null;
+    }
   }
 }
