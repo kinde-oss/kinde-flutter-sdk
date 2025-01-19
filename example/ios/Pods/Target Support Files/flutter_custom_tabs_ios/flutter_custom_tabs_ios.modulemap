@@ -1,0 +1,6 @@
+framework module flutter_custom_tabs_ios {
+  umbrella header "flutter_custom_tabs_ios-umbrella.h"
+
+  export *
+  module * { export * }
+}
