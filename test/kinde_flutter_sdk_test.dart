@@ -4,7 +4,6 @@ import 'package:kinde_flutter_sdk/src/keys/keys.dart';
 import 'package:kinde_flutter_sdk/src/store/store.dart';
 
 import 'mock_channels.dart';
-import 'test_helpers/buildcontext_mock.dart';
 
 void main() async {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -25,28 +24,28 @@ void main() async {
     });
 
     test('test sdk login', () async {
-      await KindeFlutterSDK.instance.login(context: MockBuilderContext());
+      await KindeFlutterSDK.instance.login();
 
       expect(KindeFlutterSDK.instance.authState, isNotNull);
     });
 
     test('test sdk login pkce', () async {
       await KindeFlutterSDK.instance
-          .login(type: AuthFlowType.pkce, context: MockBuilderContext());
+          .login(type: AuthFlowType.pkce);
 
       expect(KindeFlutterSDK.instance.authState, isNotNull);
     });
 
     test('test sdk register', () async {
       await KindeFlutterSDK.instance
-          .register(type: AuthFlowType.pkce, context: MockBuilderContext());
+          .register(type: AuthFlowType.pkce);
 
       expect(KindeFlutterSDK.instance.authState, isNotNull);
     });
 
     test('test sdk register pkce', () async {
       await KindeFlutterSDK.instance
-          .register(type: AuthFlowType.pkce, context: MockBuilderContext());
+          .register(type: AuthFlowType.pkce);
 
       expect(KindeFlutterSDK.instance.authState, isNotNull);
     });
@@ -65,7 +64,7 @@ void main() async {
       await KindeFlutterSDK.instance.createOrg(
           orgName: 'test',
           type: AuthFlowType.pkce,
-          context: MockBuilderContext());
+          );
     });
   });
 }

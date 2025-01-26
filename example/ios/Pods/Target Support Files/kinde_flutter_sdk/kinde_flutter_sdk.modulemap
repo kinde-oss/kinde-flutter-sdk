@@ -1,6 +1,0 @@
-framework module kinde_flutter_sdk {
-  umbrella header "kinde_flutter_sdk-umbrella.h"
-
-  export *
-  module * { export * }
-}
