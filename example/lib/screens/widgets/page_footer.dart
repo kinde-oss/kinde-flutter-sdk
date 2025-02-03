@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_starter_kit/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class HomeFooter extends StatelessWidget {
-  const HomeFooter({super.key});
+class PageFooter extends StatelessWidget {
+  const PageFooter({super.key});
 
   @override
   Widget build(BuildContext context) {

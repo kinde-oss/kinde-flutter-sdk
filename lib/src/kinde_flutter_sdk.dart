@@ -15,7 +15,7 @@ import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart'
-as secure_store;
+    as secure_store;
 import 'package:hive/hive.dart';
 import 'package:jose/jose.dart';
 import 'package:kinde_flutter_sdk/kinde_flutter_sdk.dart';
@@ -111,11 +111,11 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
 
   static Future<void> initializeSDK(
       {required String authDomain,
-        required String authClientId,
-        required String loginRedirectUri,
-        required String logoutRedirectUri,
-        List<String> scopes = _defaultScopes,
-        String? audience}) async {
+      required String authClientId,
+      required String loginRedirectUri,
+      required String logoutRedirectUri,
+      List<String> scopes = _defaultScopes,
+      String? audience}) async {
     _config = AuthConfig(
         authDomain: authDomain,
         authClientId: authClientId,
@@ -125,15 +125,14 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
         audience: audience);
 
     secure_store.FlutterSecureStorage secureStorage =
-    const secure_store.FlutterSecureStorage(
-        aOptions: secure_store.AndroidOptions(),
-        mOptions: secure_store.MacOsOptions()
-    );
+        const secure_store.FlutterSecureStorage(
+            aOptions: secure_store.AndroidOptions(),
+            mOptions: secure_store.MacOsOptions());
 
     Future<List<int>> getSecureKey(
         secure_store.FlutterSecureStorage secureStorage) async {
       var containsEncryptionKey =
-      await secureStorage.containsKey(key: 'encryptionKey');
+          await secureStorage.containsKey(key: 'encryptionKey');
       if (!containsEncryptionKey) {
         var key = Hive.generateSecureKey();
         await secureStorage.write(
@@ -164,8 +163,9 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
     }
   }
 
+  /// for web it invokes logoutRedirectUri
   Future<void> logout({Dio? dio}) async {
-    if(!kIsWeb) {
+    if (!kIsWeb) {
       switch (Platform.operatingSystem) {
         case "macos":
           logoutWithoutRedirection(dio: dio);
@@ -180,15 +180,18 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
     }
     _kindeApi.setBearerAuth(_bearerAuth, '');
     await Store.instance.clear();
+    if(kIsWeb && _config?.logoutRedirectUri != null && _config!.logoutRedirectUri.isNotEmpty) {
+      html.window.location.assign(_config!.logoutRedirectUri);
+    }
   }
 
   /// Logs out the user without redirection. Returns result so client can
   /// take action depending on it,`true` if logout was successful.
-  Future<bool> logoutWithoutRedirection({Dio? dio}) async {
+  Future<void> logoutWithoutRedirection({Dio? dio}) async {
     try {
       var dioClient = dio ?? Dio();
       final response =
-      await dioClient.get(_serviceConfiguration.endSessionEndpoint!);
+          await dioClient.get(_serviceConfiguration.endSessionEndpoint!);
 
       KindeWeb.instance.clearCodeVerifier();
       if (dio == null && kIsWeb) {
@@ -201,13 +204,18 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
         html.window.location.reload();
       }
 
-      return response.statusCode == 200;
-    } catch (e) {
-      debugPrint('Logout failed: $e');
-      return false;
+      if (response.statusCode != null && response.statusCode! > 400) {
+        throw Exception("statusCode = ${response.statusCode}");
+      }
+    } catch (error) {
+      if (error is Exception) {
+        throw handleError(error);
+      }
+      KindeError(error.toString());
     }
   }
 
+  /// for web it returns null, and invokes loginRedirectUri
   Future<String?> login({
     AuthFlowType? type,
     String? orgCode,
@@ -231,10 +239,9 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
 
   Future<String?> _redirectToKinde(
       {AuthFlowType? type,
-        String? orgCode,
-        String? loginHint,
-        Map<String, String> additionalParams = const {}}) async {
-
+      String? orgCode,
+      String? loginHint,
+      Map<String, String> additionalParams = const {}}) async {
     final params = HashMap<String, String>.from(additionalParams);
     if (orgCode != null) {
       params.putIfAbsent(_orgCodeParamName, () => orgCode);
@@ -263,13 +270,16 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
     }
   }
 
-  Future<void> _handleWebLogin(Map<String, String> params, String? loginHint,) async {
+  Future<void> _handleWebLogin(
+    Map<String, String> params,
+    String? loginHint,
+  ) async {
     await KindeWeb.startLoginFlow(
         configuration: OAuthConfiguration(
-          closeBtnVisible: true,
+            closeBtnVisible: true,
             baseUrl: _config!.authDomain,
             authorizationEndpointUrl:
-            _serviceConfiguration.authorizationEndpoint,
+                _serviceConfiguration.authorizationEndpoint,
             tokenEndpointUrl: _serviceConfiguration.tokenEndpoint,
             clientId: _config!.authClientId,
             redirectUrl: _config!.loginRedirectUri,
@@ -308,7 +318,7 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
             }));
   }
 
-  Future<void> register({
+  Future<String?> register({
     AuthFlowType? type,
     String? orgCode,
     String? loginHint,
@@ -321,7 +331,7 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
       additionalParams.addAll(authUrlParams.toMap());
     }
 
-    await _redirectToKinde(
+    return _redirectToKinde(
         type: type,
         orgCode: orgCode,
         loginHint: loginHint,
@@ -344,16 +354,12 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
     });
   }
 
-  Future<void> createOrg(
-      {required String orgName, AuthFlowType? type}) async {
-    await _redirectToKinde(
-        type: type,
-        orgCode: null,
-        additionalParams: {
-          _registrationPageParamName: _registrationPageParamValue,
-          _createOrgParamName: "true",
-          _orgNameParamName: orgName
-        });
+  Future<void> createOrg({required String orgName, AuthFlowType? type}) async {
+    await _redirectToKinde(type: type, orgCode: null, additionalParams: {
+      _registrationPageParamName: _registrationPageParamValue,
+      _createOrgParamName: "true",
+      _orgNameParamName: orgName
+    });
   }
 
   Future<String?> getToken() async {
@@ -381,13 +387,14 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
   }
 
   Future<bool> isAuthenticate() async {
-    print("debug accessTokenExpirationDateTime: ${authState?.accessTokenExpirationDateTime}");
+    print(
+        "debug accessTokenExpirationDateTime: ${authState?.accessTokenExpirationDateTime}");
     if (kIsWeb &&
         authState == null &&
         KindeWeb.instance.appBaseUrl.contains("code")) {
       await Future.delayed(
         const Duration(milliseconds: 300),
-            () async {
+        () async {
           try {
             print("debug:: isAuthenticate");
             await _handleWebLogin({}, null);
@@ -397,7 +404,7 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
 
       await Future.delayed(
         const Duration(milliseconds: 1000),
-            () async {},
+        () async {},
       );
     }
 
@@ -498,7 +505,7 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
         accessToken: tokenResponse?.accessToken,
         idToken: tokenResponse?.idToken,
         accessTokenExpirationDateTime:
-        tokenResponse?.accessTokenExpirationDateTime,
+            tokenResponse?.accessTokenExpirationDateTime,
         refreshToken: tokenResponse?.refreshToken,
         scope: tokenResponse?.scopes?.join(' '));
     _kindeApi.setBearerAuth(_bearerAuth, tokenResponse?.accessToken ?? '');
