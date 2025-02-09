@@ -10,7 +10,7 @@ import 'package:kinde_flutter_sdk/kinde_api.dart';
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
-  static MaterialPageRoute get pageRoute =>
+  static MaterialPageRoute pageRoute(Map<String, String> params) =>
       MaterialPageRoute(builder: (context) => const HomeScreen());
 
   @override

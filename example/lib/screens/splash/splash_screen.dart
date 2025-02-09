@@ -22,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    future = AppStateManager.instance.getProfile();
+    future = AppStateManager.instance.checkIsUserLogged();
   }
 
   @override

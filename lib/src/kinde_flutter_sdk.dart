@@ -5,6 +5,7 @@ import 'dart:io';
 
 import 'package:kinde_flutter_sdk/src/kinde_web/kinde_web.dart';
 import 'package:kinde_flutter_sdk/src/kinde_web/src/base/model/oauth_configuration.dart';
+import 'package:kinde_flutter_sdk/src/kinde_web/src/utils/cross_platform_support.dart';
 import "package:universal_html/html.dart" as html;
 import 'package:flutter/cupertino.dart';
 
@@ -270,11 +271,11 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
     }
   }
 
-  Future<void> _handleWebLogin(
+  void _handleWebLogin(
     Map<String, String> params,
     String? loginHint,
-  ) async {
-    await KindeWeb.startLoginFlow(
+  ) {
+     KindeWeb.startLoginFlow(
         configuration: OAuthConfiguration(
             closeBtnVisible: true,
             baseUrl: _config!.authDomain,
@@ -295,6 +296,7 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
             refreshBtnVisible: false,
             clearCacheBtnVisible: false,
             onSuccessAuth: (credentials) {
+              print("DEBUG:: onSuccessAuth: $credentials");
               _saveState(TokenResponse(
                 credentials.accessToken,
                 credentials.refreshToken,
@@ -308,7 +310,7 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
               KindeWeb.instance.resetAppBaseUrl();
             },
             onCancel: () {
-              print("debug:: onCancel");
+              print("DEBUG:: onCancel:");
               KindeWeb.instance.clearCodeVerifier();
               KindeWeb.instance.clearAll();
               KindeWeb.instance.resetAppBaseUrl();
@@ -387,25 +389,15 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
   }
 
   Future<bool> isAuthenticate() async {
-    print(
-        "debug accessTokenExpirationDateTime: ${authState?.accessTokenExpirationDateTime}");
+    print("debug:: isAuthenticate(kIsWeb: $kIsWeb, authState == null: ${authState==null},"
+        "KindeWeb.instance.appBaseUrl: ${KindeWeb.instance.appBaseUrl}"
+        " originUrl == ${WebUtils.getOriginUrl}");
     if (kIsWeb &&
         authState == null &&
         KindeWeb.instance.appBaseUrl.contains("code")) {
-      await Future.delayed(
-        const Duration(milliseconds: 300),
-        () async {
-          try {
-            print("debug:: isAuthenticate");
-            await _handleWebLogin({}, null);
-          } catch (e) {}
-        },
-      );
-
-      await Future.delayed(
-        const Duration(milliseconds: 1000),
-        () async {},
-      );
+      try {
+        _handleWebLogin({}, null);
+      } catch (e) {}
     }
 
     return authState != null && !authState!.isExpired() && await _checkToken();

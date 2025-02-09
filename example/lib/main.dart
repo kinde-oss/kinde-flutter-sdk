@@ -6,11 +6,13 @@ import 'package:flutter_starter_kit/screens/home/home_screen.dart';
 import 'package:flutter_starter_kit/screens/routes.dart';
 import 'package:flutter_starter_kit/screens/splash/splash_screen.dart';
 import 'package:kinde_flutter_sdk/kinde_flutter_sdk.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 
 import 'screens/welcome/welcome_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // usePathUrlStrategy();
   await dotenv.load(fileName: ".env");
   await KindeFlutterSDK.initializeSDK(
       authDomain: dotenv.env['KINDE_AUTH_DOMAIN']!,
@@ -37,10 +39,16 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
+        onUnknownRoute: (settings) => UnknownScreen.pageRoute,
         initialRoute: AppRoutes.SPLASH,
         onGenerateRoute: (settings) {
-          return switch (settings.name) {
-            AppRoutes.HOME => HomeScreen.pageRoute,
+          if(settings.name == null) {
+            return UnknownScreen.pageRoute;
+          }
+          final uri = Uri.parse(settings.name!);
+          final extractedPath = uri.path;
+          return switch (extractedPath) {
+            AppRoutes.HOME => HomeScreen.pageRoute(uri.queryParameters),
             AppRoutes.SPLASH => SplashScreen.pageRoute,
             AppRoutes.WELCOME => WelcomeScreen.pageRoute,
             _ => UnknownScreen.pageRoute

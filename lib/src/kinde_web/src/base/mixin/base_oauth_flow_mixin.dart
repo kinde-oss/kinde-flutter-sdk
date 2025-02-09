@@ -6,6 +6,8 @@ import 'package:kinde_flutter_sdk/src/kinde_web/src/base/mixin/base_flow_mixin.d
 import 'package:kinde_flutter_sdk/src/kinde_web/src/base/model/oauth_configuration.dart';
 import 'package:oauth2/oauth2.dart' as oauth2;
 
+import '../../utils/web_utils.dart';
+
 
 mixin BaseOAuthFlowMixin on BaseFlowMixin {
   late oauth2.AuthorizationCodeGrant authorizationCodeGrant;
@@ -19,7 +21,7 @@ mixin BaseOAuthFlowMixin on BaseFlowMixin {
   void initOAuth({
     required OAuthConfiguration configuration,
   }) {
-    final redirectUrl = configuration.redirectUrl;
+    final redirectUrl = WebUtils.getOriginUrl ?? configuration.redirectUrl;
     baseUrl = configuration.baseUrl;
     onSuccessAuth = configuration.onSuccessAuth;
     super.init(
@@ -61,6 +63,7 @@ mixin BaseOAuthFlowMixin on BaseFlowMixin {
 
   @override
   void onSuccess(String responseRedirect) async {
+    print("DEBUG:: onSuccess: $responseRedirect");
     try {
       responseRedirect = responseRedirect.trim();
       final int ignoreStartIndex = responseRedirect.indexOf('#');

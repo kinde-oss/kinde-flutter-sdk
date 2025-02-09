@@ -5,7 +5,9 @@ import 'dart:html';
 abstract class WebUtils {
   const WebUtils._();
 
-  static void loadPage(String url) => window.location.assign(url);
+  static void openPage(String url) => window.location.assign(url);
 
-  static String get getOriginUrl => window.location.origin;
+  static void replacePage(String url) => window.location.replace(url);
+
+  static String? get getOriginUrl => window.location.origin;
 }

@@ -31,7 +31,9 @@ mixin BaseFlowMixin {
       this.redirectUrls.clear();
       this.redirectUrls.addAll(redirectUrls);
     }
-    this.redirectUrls.add(WebUtils.getOriginUrl);
+    if(WebUtils.getOriginUrl != null) {
+      this.redirectUrls.add(WebUtils.getOriginUrl!);
+    }
     _onSuccessRedirect = onSuccessRedirect;
     _onError = onError;
     _onCancel = onCancel;
@@ -47,11 +49,13 @@ mixin BaseFlowMixin {
   bool onNavigateTo(String url) {
     if (url != 'about:blank') showLoading();
     if (startsWithAnyRedirectUrl(url)) {
+      print("DEBug:: success onNavigateTo(url: $url)");
       onSuccess(url);
       return false;
     }
+    print("DEBug:: initial onNavigateTo(url: ${initialUri.toString()})");
     saveState();
-    WebUtils.loadPage(initialUri.toString());
+    WebUtils.openPage(initialUri.toString());
     return true;
   }
 
