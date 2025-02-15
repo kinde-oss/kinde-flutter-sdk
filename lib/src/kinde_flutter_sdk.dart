@@ -7,7 +7,6 @@ import 'package:kinde_flutter_sdk/src/kinde_web/kinde_web.dart';
 import 'package:kinde_flutter_sdk/src/kinde_web/src/base/model/oauth_configuration.dart';
 import 'package:kinde_flutter_sdk/src/kinde_web/src/utils/cross_platform_support.dart';
 import "package:universal_html/html.dart" as html;
-import 'package:flutter/cupertino.dart';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -22,7 +21,6 @@ import 'package:jose/jose.dart';
 import 'package:kinde_flutter_sdk/kinde_flutter_sdk.dart';
 import 'package:kinde_flutter_sdk/src/handle_network_error_mixin.dart';
 import 'package:kinde_flutter_sdk/src/keys/keys_api.dart';
-import 'package:kinde_flutter_sdk/src/kinde_error.dart';
 import 'package:kinde_flutter_sdk/src/store/store.dart';
 import 'package:kinde_flutter_sdk/src/token/auth_state.dart';
 import 'package:kinde_flutter_sdk/src/token/refresh_token_interceptor.dart';
@@ -181,8 +179,10 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
     }
     _kindeApi.setBearerAuth(_bearerAuth, '');
     await Store.instance.clear();
-    if(kIsWeb && _config?.logoutRedirectUri != null && _config!.logoutRedirectUri.isNotEmpty) {
-      html.window.location.assign(_config!.logoutRedirectUri);
+    if (kIsWeb &&
+        _config?.logoutRedirectUri != null &&
+        _config!.logoutRedirectUri.isNotEmpty) {
+      KindeWeb.instance.logout(_config!.logoutRedirectUri);
     }
   }
 
@@ -194,16 +194,8 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
       final response =
           await dioClient.get(_serviceConfiguration.endSessionEndpoint!);
 
-      KindeWeb.instance.clearCodeVerifier();
-      if (dio == null && kIsWeb) {
-        KindeWeb.instance.resetAppBaseUrl();
-      }
-
       _kindeApi.setBearerAuth(_bearerAuth, '');
       await Store.instance.clear();
-      if (kIsWeb) {
-        html.window.location.reload();
-      }
 
       if (response.statusCode != null && response.statusCode! > 400) {
         throw Exception("statusCode = ${response.statusCode}");
@@ -275,49 +267,65 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
     Map<String, String> params,
     String? loginHint,
   ) {
-     KindeWeb.startLoginFlow(
-        configuration: OAuthConfiguration(
-            closeBtnVisible: true,
-            baseUrl: _config!.authDomain,
-            authorizationEndpointUrl:
-                _serviceConfiguration.authorizationEndpoint,
-            tokenEndpointUrl: _serviceConfiguration.tokenEndpoint,
-            clientId: _config!.authClientId,
-            redirectUrl: _config!.loginRedirectUri,
-            scopes: _config!.scopes,
-            extraParameter: params,
-            loginHint: loginHint,
-            onCertificateValidate: (certificate) {
-              return true;
-            },
-            promptValues: [
-              'login',
-            ],
-            refreshBtnVisible: false,
-            clearCacheBtnVisible: false,
-            onSuccessAuth: (credentials) {
-              print("DEBUG:: onSuccessAuth: $credentials");
-              _saveState(TokenResponse(
-                credentials.accessToken,
-                credentials.refreshToken,
-                credentials.expiration,
-                credentials.idToken,
-                null,
-                credentials.scopes,
-                null,
-              ));
-              KindeWeb.instance.clearCodeVerifier();
-              KindeWeb.instance.resetAppBaseUrl();
-            },
-            onCancel: () {
-              print("DEBUG:: onCancel:");
-              KindeWeb.instance.clearCodeVerifier();
-              KindeWeb.instance.clearAll();
-              KindeWeb.instance.resetAppBaseUrl();
-            },
-            onError: (e) {
-              debugPrint("OAuth error occurred: $e");
-            }));
+    KindeWeb.instance.startLoginFlow(
+      configuration: OAuthConfiguration(
+        closeBtnVisible: true,
+        baseUrl: _config!.authDomain,
+        authorizationEndpointUrl: _serviceConfiguration.authorizationEndpoint,
+        tokenEndpointUrl: _serviceConfiguration.tokenEndpoint,
+        clientId: _config!.authClientId,
+        redirectUrl: _config!.loginRedirectUri,
+        scopes: _config!.scopes,
+        extraParameter: params,
+        loginHint: loginHint,
+        onCertificateValidate: (certificate) {
+          return true;
+        },
+        promptValues: [
+          'login',
+        ],
+        refreshBtnVisible: false,
+        clearCacheBtnVisible: false,
+      ),
+    );
+  }
+
+  Future<bool> _finishWebLogin() async {
+    final credentials = await KindeWeb.instance.finishLoginFlow(
+      OAuthConfiguration(
+        closeBtnVisible: true,
+        baseUrl: _config!.authDomain,
+        authorizationEndpointUrl: _serviceConfiguration.authorizationEndpoint,
+        tokenEndpointUrl: _serviceConfiguration.tokenEndpoint,
+        clientId: _config!.authClientId,
+        redirectUrl: _config!.loginRedirectUri,
+        scopes: _config!.scopes,
+        extraParameter: null,
+        loginHint: null,
+        onCertificateValidate: (certificate) {
+          return true;
+        },
+        promptValues: [
+          'login',
+        ],
+        refreshBtnVisible: false,
+        clearCacheBtnVisible: false,
+      ),
+    );
+
+    if (credentials == null) return false;
+
+    _saveState(TokenResponse(
+      credentials.accessToken,
+      credentials.refreshToken,
+      credentials.expiration,
+      credentials.idToken,
+      null,
+      credentials.scopes,
+      null,
+    ));
+
+    return true;
   }
 
   Future<String?> register({
@@ -389,18 +397,21 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
   }
 
   Future<bool> isAuthenticate() async {
-    print("debug:: isAuthenticate(kIsWeb: $kIsWeb, authState == null: ${authState==null},"
-        "KindeWeb.instance.appBaseUrl: ${KindeWeb.instance.appBaseUrl}"
-        " originUrl == ${WebUtils.getOriginUrl}");
-    if (kIsWeb &&
-        authState == null &&
-        KindeWeb.instance.appBaseUrl.contains("code")) {
+    if (_isWebAuthInProcess()) {
       try {
-        _handleWebLogin({}, null);
+        final isWebLoginSuccess = await _finishWebLogin();
+        return isWebLoginSuccess;
       } catch (e) {}
     }
 
     return authState != null && !authState!.isExpired() && await _checkToken();
+  }
+
+  bool _isWebAuthInProcess() {
+    final result = kIsWeb &&
+        authState == null &&
+        (WebUtils.getCurrentUrl ?? "").contains("code");
+    return result;
   }
 
   Future<String?> _normalLogin(
@@ -462,7 +473,7 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
       }
 
       _saveState(token);
-      return '';
+      return token.accessToken;
     } catch (ex) {
       return null;
     }

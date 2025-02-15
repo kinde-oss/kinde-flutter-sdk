@@ -9,5 +9,7 @@ abstract class WebUtils {
 
   static void replacePage(String url) => window.location.replace(url);
 
+  static String? get getCurrentUrl => window.location.href;
+
   static String? get getOriginUrl => window.location.origin;
 }

@@ -1,18 +1,22 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_starter_kit/encrypted_box.dart';
-import 'package:flutter_starter_kit/screens/home/home_screen.dart';
 import 'package:flutter_starter_kit/screens/routes.dart';
-import 'package:flutter_starter_kit/screens/splash/splash_screen.dart';
+import 'package:flutter_starter_kit/state/app_state_manager.dart';
+import 'package:go_router/go_router.dart';
 import 'package:kinde_flutter_sdk/kinde_flutter_sdk.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 
-import 'screens/welcome/welcome_screen.dart';
+import 'navigation/router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // usePathUrlStrategy();
+  GoRouter.optionURLReflectsImperativeAPIs = true;
+  usePathUrlStrategy();
   await dotenv.load(fileName: ".env");
   await KindeFlutterSDK.initializeSDK(
       authDomain: dotenv.env['KINDE_AUTH_DOMAIN']!,
@@ -26,46 +30,71 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  late GoRouter _router;
+  StreamSubscription<(UserProfileV2?, UserProfileV2?)>? _userStreamSubscription;
+
+
+  @override
+  void initState() {
+    super.initState();
+    _router = createRouter();
+    _subscribeUserChangesStream();
+  }
+
+  void _subscribeUserChangesStream() {
+      if(kIsWeb) return;
+      _userStreamSubscription = AppStateManager.instance.userProfileStream.stream.listen((userProfileChanges) {
+        final oldUser =userProfileChanges.$1;
+        final newUser =userProfileChanges.$2;
+        if(oldUser == null && newUser != null) {
+          _navigateToHome();         }
+        if(oldUser != null && newUser == null) {
+          _navigateToWelcome();
+        }
+      });
+
+  }
+
+  void _navigateToHome() {
+    _router.pushReplacement(AppRoutes.HOME);
+  }
+
+  void _navigateToWelcome() {
+    _router.pushReplacement(AppRoutes.WELCOME);
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(360, 690),
-      builder: (context, _) => MaterialApp(
+      builder: (context, _) => MaterialApp.router(
+        routerConfig: _router,
         title: 'Flutter Kinde StarterKit',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        onUnknownRoute: (settings) => UnknownScreen.pageRoute,
-        initialRoute: AppRoutes.SPLASH,
-        onGenerateRoute: (settings) {
-          if(settings.name == null) {
-            return UnknownScreen.pageRoute;
-          }
-          final uri = Uri.parse(settings.name!);
-          final extractedPath = uri.path;
-          return switch (extractedPath) {
-            AppRoutes.HOME => HomeScreen.pageRoute(uri.queryParameters),
-            AppRoutes.SPLASH => SplashScreen.pageRoute,
-            AppRoutes.WELCOME => WelcomeScreen.pageRoute,
-            _ => UnknownScreen.pageRoute
-          };
-        },
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _userStreamSubscription?.cancel();
+    super.dispose();
   }
 }
 
 class UnknownScreen extends StatelessWidget {
   const UnknownScreen({super.key});
 
-  static MaterialPageRoute get pageRoute => MaterialPageRoute(
-        builder: (context) =>
-            const UnknownScreen(), // Optional: a fallback for unknown routes
-      );
 
   @override
   Widget build(BuildContext context) {

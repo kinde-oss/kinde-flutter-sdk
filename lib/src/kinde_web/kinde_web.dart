@@ -1,16 +1,15 @@
 import 'dart:async';
-import 'dart:math';
-import 'dart:ui_web';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:kinde_flutter_sdk/src/kinde_web/src/base/base_oauth_flow.dart';
+import 'package:kinde_flutter_sdk/src/kinde_web/src/base/web_oauth_flow.dart';
 import 'package:kinde_flutter_sdk/src/kinde_web/src/base/model/oauth_configuration.dart';
 
 import 'package:flutter_web_plugins/url_strategy.dart';
-
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:kinde_flutter_sdk/src/kinde_web/src/utils/code_verifier_generator.dart';
+import 'package:kinde_flutter_sdk/src/kinde_web/src/utils/code_verifier_storage.dart';
+import 'package:kinde_flutter_sdk/src/kinde_web/src/utils/cross_platform_support.dart';
+import 'package:oauth2/oauth2.dart';
 
 class KindeWeb {
   KindeWeb._hashUrlStrategy(String? appBaseUrl) {
@@ -39,7 +38,7 @@ class KindeWeb {
     return _instance!;
   }
 
-  late final SharedPreferences _sharedPreferences;
+  late final CodeVerifierStorage _codeVerifierStorage;
   late String appBaseUrl;
 
   static Future<void> initialize({String? appBaseUrl}) async {
@@ -47,78 +46,62 @@ class KindeWeb {
       _instance = urlStrategy?.runtimeType is HashUrlStrategy
           ? KindeWeb._hashUrlStrategy(appBaseUrl)
           : KindeWeb._pathUrlStrategy(appBaseUrl);
-      _instance!._sharedPreferences = await SharedPreferences.getInstance();
-      debugPrint(
-          '------ OAuthWebAuth appBaseUri: ${_instance!.appBaseUrl} ------');
+      _instance?._codeVerifierStorage = await CodeVerifierStorage.initialize();
     } catch (e) {
       debugPrint('Error while initializing KindeWeb: $e');
     }
   }
 
-  static void startLoginFlow({
-    Key? key,
-    required OAuthConfiguration configuration,
-  }) {
-    final oauthFlow = BaseOAuthFlow()
-      ..initOAuth(
-        configuration: configuration,
-      );
-    oauthFlow.onNavigateTo(instance.appBaseUrl);
+  void logout(String? logoutUrl) {
+    _clear();
+    WebUtils.replacePage(logoutUrl ?? appBaseUrl);
   }
 
-  /// Clears WebView cookies
-  Future<void> clearCookies() async {
+  void startLoginFlow({
+    required OAuthConfiguration configuration,
+  }) {
     try {
-      await CookieManager.instance().deleteAllCookies();
+      final String codeVerifier = generateCodeVerifier();
+      _codeVerifierStorage.save(codeVerifier);
+      WebOAuthFlow.login(
+        configuration,
+        codeVerifier: codeVerifier,
+      );
     } catch (e) {
-      debugPrint("Error while clearCookies: $e");
+      debugPrint("Debug:: startLoginFlow():\nerror: $e");
+      _clear();
     }
   }
 
-  /// Clears WebView cache and cookies
-  /// It's recommended to use a context when using this function.
-  /// Check docs: https://docs.flutter.dev/release/breaking-changes/window-singleton#migration-guide
-  Future<void> clearAll({InAppWebViewController? controller}) async {
-    await clearCookies();
+  Future<Credentials?> finishLoginFlow(OAuthConfiguration configuration) async {
+    final codeVerifier = _codeVerifierStorage.restore();
+    if(codeVerifier == null) {
+      throw Exception("CodeVerifier is null");
+    }
+    try {
+      final credentials = await WebOAuthFlow.finishLogin(
+          codeVerifier: codeVerifier,
+          configuration: configuration,
+          responseRedirect: WebUtils.getCurrentUrl!);
+      _resetAppBaseUrl();
+      _clear();
+      return credentials;
+    } catch (e) {
+      _clear();
+      debugPrint("Debug:: finishLoginFlow():\nerror: $e");
+      return null;
+    }
+  }
+
+  void _clear() {
+    _codeVerifierStorage.clear();
+    _resetAppBaseUrl();
   }
 
   /// Resets the [appBaseUrl] to the origin url to remove any path segments and query parameters in it.
-  void resetAppBaseUrl() {
+  void _resetAppBaseUrl() {
     appBaseUrl = Uri.parse(appBaseUrl).origin;
   }
-
-  /// Clears the last [codeVerifier] saved state.
-  /// Only used in web.
-  void clearCodeVerifier() {
-    _sharedPreferences.remove(_codeVerifierKey);
-  }
-
-  /// Saves the state of [codeVerifier].
-  /// Only used in web.
-  void saveCodeVerifier(String codeVerifier) {
-    _sharedPreferences.setString(_codeVerifierKey, codeVerifier);
-  }
-
-  /// Restores the state of [codeVerifier].
-  /// Only used in web.
-  String? restoreCodeVerifier() {
-    final code = _sharedPreferences.getString(_codeVerifierKey);
-    debugPrint('------ OAuthWebAuth codeVerifier: $code ------');
-    return code;
-  }
-
-  static const String _codeVerifierKey = 'codeVerifier';
-
-  /// Allowed characters for generating a codeVerifier
-  static const String _charset =
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~';
-
-  /// Randomly generate a 128 character string to be used as the PKCE code verifier.
-  /// The codeVerifier must meet requirements specified in [RFC 7636].
-  ///
-  /// [RFC 7636]: https://tools.ietf.org/html/rfc7636#section-4.1
-  String generateCodeVerifier() {
-    return List.generate(
-        128, (i) => _charset[Random.secure().nextInt(_charset.length)]).join();
-  }
 }
+
+

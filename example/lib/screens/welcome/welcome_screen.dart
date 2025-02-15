@@ -8,9 +8,6 @@ import 'package:url_launcher/url_launcher.dart';
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
 
-  static MaterialPageRoute get pageRoute =>
-      MaterialPageRoute(builder: (context) => const WelcomeScreen());
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

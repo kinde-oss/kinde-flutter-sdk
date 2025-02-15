@@ -20,13 +20,6 @@ class BaseConfiguration {
   /// It will pass the url it causes redirect.
   final ValueChanged<String>? onSuccessRedirect;
 
-  /// This function will be called if any error occurs.
-  /// It will receive the error data which could be some Exception or Error
-  final ValueChanged<dynamic>? onError;
-
-  /// This function will be called when user cancels authentication.
-  final VoidCallback? onCancel;
-
   /// This function will be called when [authorizationEndpointUrl] is first loaded.
   /// If false is returned then a CertificateException() will be thrown
   /// Not available for Web
@@ -58,8 +51,6 @@ class BaseConfiguration {
     required this.initialUrl,
     required this.redirectUrls,
     this.onSuccessRedirect,
-    this.onError,
-    this.onCancel,
     this.onCertificateValidate,
     Map<String, String>? headers,
     this.urlStream,
@@ -109,8 +100,6 @@ class BaseConfiguration {
         initialUrl: initialUrl ?? this.initialUrl,
         redirectUrls: redirectUrls ?? this.redirectUrls,
         onSuccessRedirect: onSuccessRedirect ?? this.onSuccessRedirect,
-        onError: onError ?? this.onError,
-        onCancel: onCancel ?? this.onCancel,
         onCertificateValidate:
             onCertificateValidate ?? this.onCertificateValidate,
         headers: headers ?? this.headers,

@@ -5,13 +5,11 @@ import 'package:flutter_starter_kit/constants.dart';
 import 'package:flutter_starter_kit/screens/routes.dart';
 import 'package:flutter_starter_kit/screens/widgets/page_footer.dart';
 import 'package:flutter_starter_kit/state/app_state_manager.dart';
+import 'package:go_router/go_router.dart';
 import 'package:kinde_flutter_sdk/kinde_api.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
-
-  static MaterialPageRoute pageRoute(Map<String, String> params) =>
-      MaterialPageRoute(builder: (context) => const HomeScreen());
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -52,8 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         final user = asyncSnapshot.data;
                         if (user == null) {
                           SchedulerBinding.instance.addPostFrameCallback((_) {
-                            Navigator.of(context)
-                                .pushReplacementNamed(AppRoutes.WELCOME);
+                            context.pushReplacement(AppRoutes.WELCOME);
                           });
                         } else {
                           return Text(

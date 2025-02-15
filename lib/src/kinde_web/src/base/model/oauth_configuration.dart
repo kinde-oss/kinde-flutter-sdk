@@ -77,10 +77,6 @@ class OAuthConfiguration extends BaseConfiguration {
   /// The list of supported values depends on the identity provider.
   final List<String>? promptValues;
 
-  /// This function will be called when user successfully authenticates.
-  /// It will receive the OAuth Credentials
-  final ValueChanged<oauth2.Credentials>? onSuccessAuth;
-
   const OAuthConfiguration({
     required this.authorizationEndpointUrl,
     required this.tokenEndpointUrl,
@@ -95,9 +91,6 @@ class OAuthConfiguration extends BaseConfiguration {
     this.scopes,
     this.loginHint,
     this.promptValues,
-    this.onSuccessAuth,
-    super.onError,
-    super.onCancel,
     super.onCertificateValidate,
     super.headers,
     super.urlStream,
@@ -128,12 +121,9 @@ class OAuthConfiguration extends BaseConfiguration {
     this.scopes,
     this.loginHint,
     this.promptValues,
-    this.onSuccessAuth,
     super.initialUrl = '',
     super.redirectUrls = const [],
     super.onSuccessRedirect,
-    super.onError,
-    super.onCancel,
     super.onCertificateValidate,
     super.headers,
     super.urlStream,
@@ -195,12 +185,9 @@ class OAuthConfiguration extends BaseConfiguration {
         scopes: scopes ?? this.scopes,
         loginHint: loginHint ?? this.loginHint,
         promptValues: promptValues ?? this.promptValues,
-        onSuccessAuth: onSuccessAuth ?? this.onSuccessAuth,
         initialUrl: initialUrl ?? this.initialUrl,
         redirectUrls: redirectUrls ?? this.redirectUrls,
         onSuccessRedirect: onSuccessRedirect ?? this.onSuccessRedirect,
-        onError: onError ?? this.onError,
-        onCancel: onCancel ?? this.onCancel,
         onCertificateValidate:
             onCertificateValidate ?? this.onCertificateValidate,
         headers: headers ?? this.headers,

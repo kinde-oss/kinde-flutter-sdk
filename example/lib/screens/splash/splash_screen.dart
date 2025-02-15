@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_starter_kit/state/app_state_manager.dart';
+import 'package:go_router/go_router.dart';
 import 'package:kinde_flutter_sdk/kinde_api.dart';
 
+import '../../state/app_state_manager.dart';
 import '../routes.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
-
-  static MaterialPageRoute get pageRoute =>
-      MaterialPageRoute(builder: (context) => const SplashScreen());
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -22,6 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    print("intiState");
     future = AppStateManager.instance.checkIsUserLogged();
   }
 
@@ -37,7 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
               final user = asyncSnapshot.data;
               final route = user == null ? AppRoutes.WELCOME : AppRoutes.HOME;
               SchedulerBinding.instance.addPostFrameCallback((_) {
-                Navigator.of(context).pushReplacementNamed(route);
+                context.pushReplacement(route);
               });
             }
             return Center(
