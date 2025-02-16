@@ -77,7 +77,7 @@ class OAuthConfiguration extends BaseConfiguration {
   /// The list of supported values depends on the identity provider.
   final List<String>? promptValues;
 
-  const OAuthConfiguration({
+  OAuthConfiguration({
     required this.authorizationEndpointUrl,
     required this.tokenEndpointUrl,
     required this.redirectUrl,
@@ -91,23 +91,12 @@ class OAuthConfiguration extends BaseConfiguration {
     this.scopes,
     this.loginHint,
     this.promptValues,
-    super.onCertificateValidate,
-    super.headers,
-    super.urlStream,
-    super.themeData,
-    super.textLocales,
-    super.contentLocale,
-    super.goBackBtnVisible,
-    super.goForwardBtnVisible,
-    super.refreshBtnVisible,
-    super.clearCacheBtnVisible,
-    super.closeBtnVisible,
   }) : super(
           initialUrl: '',
           redirectUrls: const [],
         );
 
-  const OAuthConfiguration._({
+  OAuthConfiguration._({
     required this.authorizationEndpointUrl,
     required this.tokenEndpointUrl,
     required this.redirectUrl,
@@ -124,17 +113,6 @@ class OAuthConfiguration extends BaseConfiguration {
     super.initialUrl = '',
     super.redirectUrls = const [],
     super.onSuccessRedirect,
-    super.onCertificateValidate,
-    super.headers,
-    super.urlStream,
-    super.themeData,
-    super.textLocales,
-    super.contentLocale,
-    super.goBackBtnVisible,
-    super.goForwardBtnVisible,
-    super.refreshBtnVisible,
-    super.clearCacheBtnVisible,
-    super.closeBtnVisible,
   });
 
   @override
@@ -188,17 +166,5 @@ class OAuthConfiguration extends BaseConfiguration {
         initialUrl: initialUrl ?? this.initialUrl,
         redirectUrls: redirectUrls ?? this.redirectUrls,
         onSuccessRedirect: onSuccessRedirect ?? this.onSuccessRedirect,
-        onCertificateValidate:
-            onCertificateValidate ?? this.onCertificateValidate,
-        headers: headers ?? this.headers,
-        urlStream: urlStream ?? this.urlStream,
-        themeData: themeData ?? this.themeData,
-        textLocales: textLocales ?? this.textLocales,
-        contentLocale: contentLocale ?? this.contentLocale,
-        goBackBtnVisible: goBackBtnVisible ?? this.goBackBtnVisible,
-        goForwardBtnVisible: goForwardBtnVisible ?? this.goForwardBtnVisible,
-        refreshBtnVisible: refreshBtnVisible ?? this.refreshBtnVisible,
-        clearCacheBtnVisible: clearCacheBtnVisible ?? this.clearCacheBtnVisible,
-        closeBtnVisible: closeBtnVisible ?? this.closeBtnVisible,
       );
 }

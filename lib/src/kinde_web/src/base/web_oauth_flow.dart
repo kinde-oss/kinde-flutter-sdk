@@ -25,7 +25,7 @@ abstract class WebOAuthFlow {
       httpClient: configuration.httpClient,
     );
 
-    final parameters = Uri.dataFromString(responseRedirect).queryParameters;
+    final parameters = Uri.parse(responseRedirect).queryParameters;
 
     if (parameters.isEmpty &&
         (configuration.baseUrl?.isNotEmpty ?? false) &&

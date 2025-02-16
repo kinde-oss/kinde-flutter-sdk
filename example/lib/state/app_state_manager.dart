@@ -16,7 +16,6 @@ class AppStateManager {
   UserProfileV2? get userProfile => _userProfile;
 
   void _setUser(UserProfileV2? userProfile) {
-    print("_serUser: $userProfile");
     final oldUser = _userProfile;
     _userProfile = userProfile;
     userProfileStream.sink.add((oldUser, _userProfile));
@@ -99,7 +98,6 @@ class AppStateManager {
       await _kindeClient.logout();
       await _encryptedBox.clear();
       _setUser(null);
-
     } catch (e, st) {
       debugPrintStack(label: "signOut() failed: $e", stackTrace: st);
     } finally {

@@ -41,7 +41,6 @@ class _MyAppState extends State<MyApp> {
   late GoRouter _router;
   StreamSubscription<(UserProfileV2?, UserProfileV2?)>? _userStreamSubscription;
 
-
   @override
   void initState() {
     super.initState();
@@ -50,17 +49,18 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _subscribeUserChangesStream() {
-      if(kIsWeb) return;
-      _userStreamSubscription = AppStateManager.instance.userProfileStream.stream.listen((userProfileChanges) {
-        final oldUser =userProfileChanges.$1;
-        final newUser =userProfileChanges.$2;
-        if(oldUser == null && newUser != null) {
-          _navigateToHome();         }
-        if(oldUser != null && newUser == null) {
-          _navigateToWelcome();
-        }
-      });
-
+    if (kIsWeb) return;
+    _userStreamSubscription = AppStateManager.instance.userProfileStream.stream
+        .listen((userProfileChanges) {
+      final oldUser = userProfileChanges.$1;
+      final newUser = userProfileChanges.$2;
+      if (oldUser == null && newUser != null) {
+        _navigateToHome();
+      }
+      if (oldUser != null && newUser == null) {
+        _navigateToWelcome();
+      }
+    });
   }
 
   void _navigateToHome() {
@@ -94,7 +94,6 @@ class _MyAppState extends State<MyApp> {
 
 class UnknownScreen extends StatelessWidget {
   const UnknownScreen({super.key});
-
 
   @override
   Widget build(BuildContext context) {

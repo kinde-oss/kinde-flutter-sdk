@@ -269,7 +269,6 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
   ) {
     KindeWeb.instance.startLoginFlow(
       configuration: OAuthConfiguration(
-        closeBtnVisible: true,
         baseUrl: _config!.authDomain,
         authorizationEndpointUrl: _serviceConfiguration.authorizationEndpoint,
         tokenEndpointUrl: _serviceConfiguration.tokenEndpoint,
@@ -278,14 +277,9 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
         scopes: _config!.scopes,
         extraParameter: params,
         loginHint: loginHint,
-        onCertificateValidate: (certificate) {
-          return true;
-        },
         promptValues: [
           'login',
         ],
-        refreshBtnVisible: false,
-        clearCacheBtnVisible: false,
       ),
     );
   }
@@ -293,7 +287,6 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
   Future<bool> _finishWebLogin() async {
     final credentials = await KindeWeb.instance.finishLoginFlow(
       OAuthConfiguration(
-        closeBtnVisible: true,
         baseUrl: _config!.authDomain,
         authorizationEndpointUrl: _serviceConfiguration.authorizationEndpoint,
         tokenEndpointUrl: _serviceConfiguration.tokenEndpoint,
@@ -302,14 +295,9 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
         scopes: _config!.scopes,
         extraParameter: null,
         loginHint: null,
-        onCertificateValidate: (certificate) {
-          return true;
-        },
         promptValues: [
           'login',
         ],
-        refreshBtnVisible: false,
-        clearCacheBtnVisible: false,
       ),
     );
 

@@ -12,16 +12,27 @@ import 'package:kinde_flutter_sdk/src/kinde_web/src/utils/cross_platform_support
 import 'package:oauth2/oauth2.dart';
 
 class KindeWeb {
+   /// Creates a KindeWeb instance using hash URL strategy.
+   ///
+   /// [appBaseUrl] is the base URL of the application. If not provided,
+   /// it will be extracted from the current URL, removing any hash fragments
+   /// and trailing slashes.
   KindeWeb._hashUrlStrategy(String? appBaseUrl) {
-    String tempAppBaseUrl = appBaseUrl ?? Uri.base.toString().trim();
-    final int ignoreStartIndex = tempAppBaseUrl.indexOf('#');
-    if (ignoreStartIndex > -1) {
-      tempAppBaseUrl = tempAppBaseUrl.substring(0, ignoreStartIndex);
-    }
-    while (tempAppBaseUrl.endsWith('/')) {
-      tempAppBaseUrl = tempAppBaseUrl.substring(0, tempAppBaseUrl.length - 1);
-    }
-    this.appBaseUrl = tempAppBaseUrl;
+      if (appBaseUrl != null && !(Uri.tryParse(appBaseUrl)?.hasScheme ?? true)) {
+        throw ArgumentError('Invalid appBaseUrl: must be a valid URL');
+      }
+  String tempAppBaseUrl = appBaseUrl ?? Uri.base.toString().trim();
+  final int ignoreStartIndex = tempAppBaseUrl.indexOf('#');
+  if (ignoreStartIndex > -1) {
+  tempAppBaseUrl = tempAppBaseUrl.substring(0, ignoreStartIndex);
+  }
+  while (tempAppBaseUrl.endsWith('/')) {
+  tempAppBaseUrl = tempAppBaseUrl.substring(0, tempAppBaseUrl.length - 1);
+  }
+      if (tempAppBaseUrl.isEmpty) {
+        throw StateError('Failed to determine appBaseUrl');
+      }
+  this.appBaseUrl = tempAppBaseUrl;
   }
 
   KindeWeb._pathUrlStrategy(String? appBaseUrl) {
@@ -75,7 +86,7 @@ class KindeWeb {
 
   Future<Credentials?> finishLoginFlow(OAuthConfiguration configuration) async {
     final codeVerifier = _codeVerifierStorage.restore();
-    if(codeVerifier == null) {
+    if (codeVerifier == null) {
       throw Exception("CodeVerifier is null");
     }
     try {
@@ -88,7 +99,9 @@ class KindeWeb {
       return credentials;
     } catch (e) {
       _clear();
-      debugPrint("Debug:: finishLoginFlow():\nerror: $e");
+      if (kDebugMode) {
+        debugPrint("Debug:: finishLoginFlow():\nerror: $e");
+      }
       return null;
     }
   }
@@ -103,5 +116,3 @@ class KindeWeb {
     appBaseUrl = Uri.parse(appBaseUrl).origin;
   }
 }
-
-

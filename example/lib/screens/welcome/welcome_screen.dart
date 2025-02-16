@@ -85,7 +85,18 @@ class WelcomeScreen extends StatelessWidget {
                               elevation: 0,
                               color: Colors.white,
                               onPressed: () {
-                                launchUrl(Uri.parse(docsUrl));
+                                final url = Uri.parse(docsUrl);
+                                canLaunchUrl(url).then((isCan) {
+                                  if (isCan) {
+                                    launchUrl(url);
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          content: Text(
+                                              'Could not open documentation')),
+                                    );
+                                  }
+                                });
                               },
                               child: Text(
                                 'Go to docs',

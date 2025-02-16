@@ -14,24 +14,6 @@ GoRouter createRouter() => GoRouter(
   errorBuilder: (context, state) {
     return const UnknownScreen();
   },
-  redirect: (context, state) {
-    if(state.uri.path == AppRoutes.SPLASH) {
-      return null;
-    }
-    if(AppStateManager.instance.userProfile == null) {
-      return AppRoutes.WELCOME;
-    }
-    if(kIsWeb) {
-      if (state.uri.path == AppRoutes.WELCOME &&
-          AppStateManager.instance.userProfile != null) {
-        return GoRouterState
-            .of(context)
-            .uri
-            .toString();
-      }
-    }
-    return null;
-  },
   routes: [
     GoRoute(
         path: AppRoutes.HOME,

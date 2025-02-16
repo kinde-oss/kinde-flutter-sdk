@@ -45,6 +45,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   FutureBuilder<UserProfileV2?>(
                     future: future,
                     builder: (context, asyncSnapshot) {
+                      if (asyncSnapshot.hasError) {
+                        return Text(
+                          'Error loading profile: ${asyncSnapshot.error}',
+                          style: const TextStyle(color: Colors.red),
+                        );
+                      }
                       if (asyncSnapshot.connectionState ==
                           ConnectionState.done) {
                         final user = asyncSnapshot.data;
@@ -60,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           );
                         }
                       }
-                      return CircularProgressIndicator.adaptive();
+                      return const Center(child: CircularProgressIndicator.adaptive());
                     },
                   ),
                   const SizedBox(height: 10),
@@ -72,49 +78,49 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             Expanded(
                 child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  verticalSpaceMedium,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      verticalSpaceMedium,
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: double.infinity,
-                            padding: EdgeInsets.all(32.w),
-                            decoration: roundedBoxRegular,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                verticalSpaceMedium,
-                                Text(
-                                  "Woohoo!",
-                                  textAlign: TextAlign.center,
-                                  style: kTitleText.copyWith(color: Colors.white),
-                                ),
-                                verticalSpaceMedium,
-                                Text(
-                                  "Your\nauthentication is\nall sorted.\nBuild the\nimportant stuff.",
-                                  textAlign: TextAlign.center,
-                                  style: kRobotoText.copyWith(
-                                      fontWeight: kFwBlack,
-                                      color: Colors.white,
-                                      fontSize: kTitleLarge),
-                                ),
-                              ],
+                      Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.all(32.w),
+                        decoration: roundedBoxRegular,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            verticalSpaceMedium,
+                            Text(
+                              "Woohoo!",
+                              textAlign: TextAlign.center,
+                              style: kTitleText.copyWith(color: Colors.white),
                             ),
-                          ),
-                          verticalSpaceRegular,
-                          Text(
-                            "Next steps for you",
-                            style: kTitleText,
-                          ),
-                        ],
+                            verticalSpaceMedium,
+                            Text(
+                              "Your\nauthentication is\nall sorted.\nBuild the\nimportant stuff.",
+                              textAlign: TextAlign.center,
+                              style: kRobotoText.copyWith(
+                                  fontWeight: kFwBlack,
+                                  color: Colors.white,
+                                  fontSize: kTitleLarge),
+                            ),
+                          ],
+                        ),
                       ),
-                      const PageFooter(),
+                      verticalSpaceRegular,
+                      Text(
+                        "Next steps for you",
+                        style: kTitleText,
+                      ),
                     ],
                   ),
-                ))
+                  const PageFooter(),
+                ],
+              ),
+            ))
           ],
         ),
       ),
