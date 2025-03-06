@@ -21,7 +21,6 @@ class KindeFlutterWebSDK {
         case 'getPlatformVersion':
           String userAgent = html.window.navigator.userAgent;
           return 'Web $userAgent';
-          break;
         default:
           throw PlatformException(
             code: 'Unimplemented',

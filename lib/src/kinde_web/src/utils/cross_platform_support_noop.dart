@@ -7,4 +7,6 @@ abstract class WebUtils {
   static String? get getCurrentUrl => null;
 
   static String? get getOriginUrl => null;
+
+  static String get temporaryDirectory => "";
 }

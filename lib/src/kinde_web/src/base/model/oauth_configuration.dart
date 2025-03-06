@@ -135,7 +135,6 @@ class OAuthConfiguration extends BaseConfiguration {
     ValueChanged<String>? onSuccessRedirect,
     ValueChanged<dynamic>? onError,
     VoidCallback? onCancel,
-    CertificateValidator? onCertificateValidate,
     Map<String, String>? headers,
     Stream<String>? urlStream,
     ThemeData? themeData,

@@ -6,14 +6,11 @@ import 'dart:io';
 import 'package:kinde_flutter_sdk/src/kinde_web/kinde_web.dart';
 import 'package:kinde_flutter_sdk/src/kinde_web/src/base/model/oauth_configuration.dart';
 import 'package:kinde_flutter_sdk/src/kinde_web/src/utils/cross_platform_support.dart';
-import "package:universal_html/html.dart" as html;
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
-import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart'
     as secure_store;
 import 'package:hive/hive.dart';
@@ -158,7 +155,7 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
       path = await getTemporaryDirectory();
       return path.path;
     } else {
-      return html.window.localStorage['temporary_directory'] ?? '';
+      return WebUtils.temporaryDirectory;
     }
   }
 
@@ -170,11 +167,23 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
           logoutWithoutRedirection(dio: dio);
           return;
         case "android":
-          await launchUrl(_buildEndSessionUrl());
-          break;
         case "ios":
-          await handleIosLogout();
-          break;
+          try {
+          const appAuth = FlutterAppAuth();
+          final endSessionRequest = EndSessionRequest(
+            externalUserAgent: ExternalUserAgent.ephemeralAsWebAuthenticationSession,
+            idTokenHint: _config!.authClientId,
+            postLogoutRedirectUrl: _config!.logoutRedirectUri,
+            serviceConfiguration: _serviceConfiguration,
+          );
+          await appAuth.endSession(endSessionRequest);
+          } on FlutterAppAuthPlatformException catch (e) {
+            debugPrint("Error in logout(), details: ${e.details}");
+            return;
+          } catch (e) {
+            debugPrint("Error in logout(): $e");
+            return;
+          }
       }
     }
     _kindeApi.setBearerAuth(_bearerAuth, '');
@@ -186,8 +195,7 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
     }
   }
 
-  /// Logs out the user without redirection. Returns result so client can
-  /// take action depending on it,`true` if logout was successful.
+  /// Logs out the user without redirection.
   Future<void> logoutWithoutRedirection({Dio? dio}) async {
     try {
       var dioClient = dio ?? Dio();
@@ -221,13 +229,6 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
       loginHint: loginHint,
       additionalParams: authUrlParams?.toMap() ?? {},
     );
-  }
-
-  Future<void> handleIosLogout() async {
-    final browser = ChromeSafariBrowser();
-    await browser.open(url: _buildEndSessionUrl()).then((value) async {
-      await browser.close();
-    });
   }
 
   Future<String?> _redirectToKinde(
@@ -404,28 +405,36 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
 
   Future<String?> _normalLogin(
       String? loginHint, Map<String, String> additionalParams) async {
-    const appAuth = FlutterAppAuth();
-    return await appAuth
-        .authorizeAndExchangeCode(
-      AuthorizationTokenRequest(
-        _config!.authClientId,
-        _config!.loginRedirectUri,
-        serviceConfiguration: _serviceConfiguration,
-        scopes: _config!.scopes,
-        promptValues: ['login'],
-        loginHint: loginHint,
-        additionalParameters: additionalParams,
-      ),
-    )
-        .then((value) {
-      if (additionalParams.containsKey(_orgNameParamName)) {
-        return additionalParams[_orgNameParamName];
-      }
-      _saveState(value);
-      return value.accessToken;
-    }).catchError((ex) {
+    try {
+      const appAuth = FlutterAppAuth();
+      final authorizationTokenResponse = await appAuth
+          .authorizeAndExchangeCode(
+        AuthorizationTokenRequest(
+          _config!.authClientId,
+          _config!.loginRedirectUri,
+          serviceConfiguration: _serviceConfiguration,
+          externalUserAgent: ExternalUserAgent
+              .ephemeralAsWebAuthenticationSession,
+          scopes: _config!.scopes,
+          promptValues: ['login'],
+          loginHint: loginHint,
+          additionalParameters: additionalParams,
+        ),
+      );
+
+        if (additionalParams.containsKey(_orgNameParamName)) {
+          return additionalParams[_orgNameParamName];
+        }
+        _saveState(authorizationTokenResponse);
+        return authorizationTokenResponse.accessToken;
+
+    } on FlutterAppAuthPlatformException catch (e) {
+      debugPrint("Error in login(), details: ${e.details}");
       return null;
-    });
+    } catch (e) {
+      debugPrint("Error in login(): $e");
+      return null;
+    }
   }
 
   Future<String?> _pkceLogin(
@@ -440,6 +449,7 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
           scopes: _config!.scopes,
           promptValues: ['login'],
           loginHint: loginHint,
+          externalUserAgent: ExternalUserAgent.ephemeralAsWebAuthenticationSession,
           additionalParameters: additionalParams,
         ),
       );
@@ -462,18 +472,13 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
 
       _saveState(token);
       return token.accessToken;
-    } catch (ex) {
+    } on FlutterAppAuthPlatformException catch (e) {
+      debugPrint("Error in pkceLogin(), details: ${e.details}");
+      return null;
+    } catch (e) {
+      debugPrint("Error in pkceLogin(): $e");
       return null;
     }
-  }
-
-  WebUri _buildEndSessionUrl() {
-    var uri = WebUri(_serviceConfiguration.endSessionEndpoint!)
-        .replace(queryParameters: {
-      _postLogoutRedirectParamName: _config!.logoutRedirectUri,
-      _redirectParamName: _config!.logoutRedirectUri,
-    });
-    return WebUri.uri(uri);
   }
 
   Future<bool> _checkToken() async {

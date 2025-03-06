@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
-typedef CertificateValidator = bool Function(X509Certificate certificate);
 
 class BaseConfiguration {
   final String initialUrl;
@@ -38,7 +36,6 @@ class BaseConfiguration {
     ValueChanged<String>? onSuccessRedirect,
     ValueChanged<dynamic>? onError,
     VoidCallback? onCancel,
-    CertificateValidator? onCertificateValidate,
     Map<String, String>? headers,
     Stream<String>? urlStream,
     ThemeData? themeData,

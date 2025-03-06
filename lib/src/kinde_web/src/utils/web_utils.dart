@@ -12,4 +12,6 @@ abstract class WebUtils {
   static String? get getCurrentUrl => window.location.href;
 
   static String? get getOriginUrl => window.location.origin;
+
+  static String get temporaryDirectory => window.localStorage['temporary_directory'] ?? "";
 }
