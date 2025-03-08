@@ -34,18 +34,6 @@ class BaseConfiguration {
     String? initialUrl,
     List<String>? redirectUrls,
     ValueChanged<String>? onSuccessRedirect,
-    ValueChanged<dynamic>? onError,
-    VoidCallback? onCancel,
-    Map<String, String>? headers,
-    Stream<String>? urlStream,
-    ThemeData? themeData,
-    Map<String, String>? textLocales,
-    Locale? contentLocale,
-    bool? goBackBtnVisible,
-    bool? goForwardBtnVisible,
-    bool? refreshBtnVisible,
-    bool? clearCacheBtnVisible,
-    bool? closeBtnVisible,
   }) =>
       BaseConfiguration(
         initialUrl: initialUrl ?? this.initialUrl,
