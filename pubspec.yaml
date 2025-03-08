@@ -21,7 +21,7 @@ dependencies:
   shared_preferences: ^2.3.1
   oauth2: ^2.0.2
   jose: ^0.3.4
-  pubspec_parse: ^1.5.0
+  pubspec_parse: ^1.2.1
 
 dev_dependencies:
   flutter_test:
