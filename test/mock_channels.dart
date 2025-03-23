@@ -25,6 +25,17 @@ class MockChannels {
     const MethodChannel customTabs =
     MethodChannel('plugins.flutter.droibit.github.io/custom_tabs');
 
+    const MethodChannel sharedPreferences =
+    MethodChannel('plugins.flutter.io/shared_preferences');
+
+    TestWidgetsFlutterBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(sharedPreferences, (MethodCall methodCall) async {
+      if(methodCall.method == 'getAll') {
+        print("hello");
+        return null;
+      }
+      return false;
+    });
+
     TestWidgetsFlutterBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(flutterSecureStorage, (MethodCall methodCall) async {
       if(methodCall.method == 'read') {
         return '';
@@ -45,7 +56,7 @@ class MockChannels {
 
     TestWidgetsFlutterBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(customTabs, (MethodCall methodCall) async {
       return null;
-    
+
 
     });
   }

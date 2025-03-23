@@ -6,14 +6,12 @@ import 'package:kinde_flutter_sdk/src/store/store.dart';
 import 'mock_channels.dart';
 
 void main() async {
-
   TestWidgetsFlutterBinding.ensureInitialized();
 
   mockChannels.setupMockChannel();
 
   group(KindeFlutterSDK, () {
     test('test initializeSDK', () async {
-
       await KindeFlutterSDK.initializeSDK(
           authDomain: "authDomain",
           authClientId: "authClientId",
@@ -26,50 +24,47 @@ void main() async {
     });
 
     test('test sdk login', () async {
-
       await KindeFlutterSDK.instance.login();
 
       expect(KindeFlutterSDK.instance.authState, isNotNull);
     });
 
     test('test sdk login pkce', () async {
-
-      await KindeFlutterSDK.instance.login(type: AuthFlowType.pkce);
+      await KindeFlutterSDK.instance
+          .login(type: AuthFlowType.pkce);
 
       expect(KindeFlutterSDK.instance.authState, isNotNull);
     });
 
     test('test sdk register', () async {
-
-      await KindeFlutterSDK.instance.register(type: AuthFlowType.pkce);
+      await KindeFlutterSDK.instance
+          .register(type: AuthFlowType.pkce);
 
       expect(KindeFlutterSDK.instance.authState, isNotNull);
     });
 
     test('test sdk register pkce', () async {
-
-      await KindeFlutterSDK.instance.register(type: AuthFlowType.pkce);
+      await KindeFlutterSDK.instance
+          .register(type: AuthFlowType.pkce);
 
       expect(KindeFlutterSDK.instance.authState, isNotNull);
     });
 
     test('test sdk logout', () async {
-
       await KindeFlutterSDK.instance.logout();
-
+      print("KindeFlutterSDK.instance.authState: ${KindeFlutterSDK.instance.authState}");
       expect(KindeFlutterSDK.instance.authState, isNull);
     });
 
     test('test create org', () async {
-
       await KindeFlutterSDK.instance.createOrg(orgName: 'test');
-
     });
 
     test('test create org pkce', () async {
-
-      await KindeFlutterSDK.instance.createOrg(orgName: 'test', type: AuthFlowType.pkce);
-
+      await KindeFlutterSDK.instance.createOrg(
+          orgName: 'test',
+          type: AuthFlowType.pkce,
+          );
     });
   });
 }

@@ -1,29 +1,53 @@
-# https://git-scm.com/docs/gitignore
-
-# ---------------------------------------------------------------------
-# DO NOT CHANGE THIS SECTION
-
-# Dependencies
-node_modules/
-
-# Compiled output
-dist/
+# Flutter
 build/
-coverage/
-.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+**/android/**/GeneratedPluginRegistrant.java
+**/ios/**/GeneratedPluginRegistrant.*
 
-# Generated at runtime
+# Dart
+*.dart_tool/
 *.log
-.cache
+pubspec.lock
 
-# Personal files
-.idea
+# Android specific
+android/.gradle/
+android/.idea/
+android/key.properties
+android/local.properties
 
-# System files
-.DS_Store
+# iOS specific
+ios/Pods/
+ios/Flutter/.last_build_id
+ios/Flutter/App.framework
+ios/Flutter/Flutter.framework
+ios/Flutter/Generated.xcconfig
+ios/.generated/
 
-# ---------------------------------------------------------------------
-# Add specific rules here…
+# macOS specific
+macos/Pods/
+macos/Flutter/ephemeral/
 
-# FVM Version Cache
-.fvm/
+# Linux specific
+linux/flutter/ephemeral/
+
+# Windows specific
+windows/flutter/ephemeral/
+
+# Web specific
+web/.dart_tool/
+web/build/
+
+# Generated files
+*.iml
+*.lock
+*.log
+
+# VSCode settings
+.vscode/
+
+# IDE files
+.idea/
