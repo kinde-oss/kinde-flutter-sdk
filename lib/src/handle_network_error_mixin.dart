@@ -1,11 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:kinde_flutter_sdk/src/kinde_error.dart';
+import 'package:kinde_flutter_sdk/src/kinde_error_code..dart';
 
 mixin HandleNetworkMixin {
   Exception handleError(Exception error) {
     if (error is KindeError) {
       return error;
     }
+    KindeError? resultError;
     if (error is DioException) {
       DioException dioError = error;
       switch (dioError.type) {
@@ -17,17 +19,18 @@ mixin HandleNetworkMixin {
         case DioExceptionType.badCertificate:
         case DioExceptionType.unknown:
           if (dioError.error is KindeError) {
-            return dioError.error as KindeError;
+            resultError = dioError.error as KindeError;
           }
-          return KindeError(dioError.message ?? "");
+          break;
         case DioExceptionType.badResponse:
           if (dioError.requestOptions.path == "/oauth2/token") {
-            return KindeError("Refresh token Expired");
+            resultError = KindeError(
+                code: KindeErrorCode.refreshTokenExpired,
+                message: dioError.message);
           }
-          return KindeError(dioError.message ?? "");
+          break;
       }
-    } else {
-      return error;
     }
+    return resultError ?? KindeError(message: error.toString());
   }
 }

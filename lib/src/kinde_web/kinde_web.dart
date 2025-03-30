@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
-import 'package:flutter/widgets.dart';
+import 'package:kinde_flutter_sdk/kinde_api.dart';
+import 'package:kinde_flutter_sdk/src/kinde_error_code..dart';
 import 'package:kinde_flutter_sdk/src/kinde_web/src/base/web_oauth_flow.dart';
 import 'package:kinde_flutter_sdk/src/kinde_web/src/base/model/oauth_configuration.dart';
 
@@ -12,27 +12,27 @@ import 'package:kinde_flutter_sdk/src/kinde_web/src/utils/cross_platform_support
 import 'package:oauth2/oauth2.dart';
 
 class KindeWeb {
-   /// Creates a KindeWeb instance using hash URL strategy.
-   ///
-   /// [appBaseUrl] is the base URL of the application. If not provided,
-   /// it will be extracted from the current URL, removing any hash fragments
-   /// and trailing slashes.
+  /// Creates a KindeWeb instance using hash URL strategy.
+  ///
+  /// [appBaseUrl] is the base URL of the application. If not provided,
+  /// it will be extracted from the current URL, removing any hash fragments
+  /// and trailing slashes.
   KindeWeb._hashUrlStrategy(String? appBaseUrl) {
-      if (appBaseUrl != null && !(Uri.tryParse(appBaseUrl)?.hasScheme ?? true)) {
-        throw ArgumentError('Invalid appBaseUrl: must be a valid URL');
-      }
-  String tempAppBaseUrl = appBaseUrl ?? Uri.base.toString().trim();
-  final int ignoreStartIndex = tempAppBaseUrl.indexOf('#');
-  if (ignoreStartIndex > -1) {
-  tempAppBaseUrl = tempAppBaseUrl.substring(0, ignoreStartIndex);
-  }
-  while (tempAppBaseUrl.endsWith('/')) {
-  tempAppBaseUrl = tempAppBaseUrl.substring(0, tempAppBaseUrl.length - 1);
-  }
-      if (tempAppBaseUrl.isEmpty) {
-        throw StateError('Failed to determine appBaseUrl');
-      }
-  this.appBaseUrl = tempAppBaseUrl;
+    if (appBaseUrl != null && !(Uri.tryParse(appBaseUrl)?.hasScheme ?? true)) {
+      throw ArgumentError('Invalid appBaseUrl: must be a valid URL');
+    }
+    String tempAppBaseUrl = appBaseUrl ?? Uri.base.toString().trim();
+    final int ignoreStartIndex = tempAppBaseUrl.indexOf('#');
+    if (ignoreStartIndex > -1) {
+      tempAppBaseUrl = tempAppBaseUrl.substring(0, ignoreStartIndex);
+    }
+    while (tempAppBaseUrl.endsWith('/')) {
+      tempAppBaseUrl = tempAppBaseUrl.substring(0, tempAppBaseUrl.length - 1);
+    }
+    if (tempAppBaseUrl.isEmpty) {
+      throw StateError('Failed to determine appBaseUrl');
+    }
+    this.appBaseUrl = tempAppBaseUrl;
   }
 
   KindeWeb._pathUrlStrategy(String? appBaseUrl) {
@@ -43,9 +43,8 @@ class KindeWeb {
   static KindeWeb? _instance;
 
   static KindeWeb get instance {
-    if (_instance == null) {
-      throw (Exception("Did you forget call initialize() method ?"));
-    }
+    assert(
+        _instance != null, "Did you forget to call the initialize() method?");
     return _instance!;
   }
 
@@ -58,8 +57,11 @@ class KindeWeb {
           ? KindeWeb._hashUrlStrategy(appBaseUrl)
           : KindeWeb._pathUrlStrategy(appBaseUrl);
       _instance?._codeVerifierStorage = await CodeVerifierStorage.initialize();
-    } catch (e) {
-      debugPrint('Error while initializing KindeWeb: $e');
+    } catch (e, st) {
+      throw KindeError(
+          code: KindeErrorCode.initializingFailed,
+          message: e.toString(),
+          stackTrace: st);
     }
   }
 
@@ -68,6 +70,8 @@ class KindeWeb {
     WebUtils.replacePage(logoutUrl ?? appBaseUrl);
   }
 
+  ///If multiple logins are triggered in parallel, then flow finished correctly only for
+  ///last triggered login, for others will be thrown [KindeError] with code=[invalid_grant]
   void startLoginFlow({
     required OAuthConfiguration configuration,
   }) {
@@ -79,15 +83,17 @@ class KindeWeb {
         codeVerifier: codeVerifier,
       );
     } catch (e) {
-      debugPrint("Debug:: startLoginFlow():\nerror: $e");
       _clear();
+      if(e is KindeError) {
+        rethrow;
+      }
     }
   }
 
   Future<Credentials?> finishLoginFlow(OAuthConfiguration configuration) async {
     final codeVerifier = _codeVerifierStorage.restore();
     if (codeVerifier == null) {
-      throw Exception("CodeVerifier is null");
+      throw const KindeError(code: KindeErrorCode.noCodeVerifier, message: "No code verifier in storage.");
     }
     try {
       final credentials = await WebOAuthFlow.finishLogin(
@@ -99,10 +105,10 @@ class KindeWeb {
       return credentials;
     } catch (e) {
       _clear();
-      if (kDebugMode) {
-        debugPrint("Debug:: finishLoginFlow():\nerror: $e");
+      if (e is KindeError) {
+        rethrow;
       }
-      return null;
+      throw KindeError(code: KindeErrorCode.unknown, message: e.toString());
     }
   }
 

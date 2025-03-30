@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:kinde_flutter_sdk/src/kinde_error_code..dart';
 import 'package:kinde_flutter_sdk/src/kinde_web/kinde_web.dart';
 import 'package:kinde_flutter_sdk/src/kinde_web/src/base/model/oauth_configuration.dart';
 import 'package:kinde_flutter_sdk/src/kinde_web/src/utils/cross_platform_support.dart';
@@ -55,13 +56,12 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
   late AuthorizationServiceConfiguration _serviceConfiguration;
 
   static KindeFlutterSDK get instance {
-    _instance ??= KindeFlutterSDK._internal();
-    return _instance ?? KindeFlutterSDK._internal();
+    return _instance ??= KindeFlutterSDK._internal();
   }
 
   KindeFlutterSDK._internal() {
     if (_config == null) {
-      throw KindeError('KindeFlutterSDK have not been configured');
+      throw const KindeError(code: KindeErrorCode.missingConfig, message: 'KindeFlutterSDK have not been configured');
     }
 
     var domainUrl = "";
@@ -105,47 +105,56 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
 
   Store get _store => Store.instance;
 
-  static Future<void> initializeSDK(
+  static Future<KindeFlutterSDK> initializeSDK(
       {required String authDomain,
       required String authClientId,
       required String loginRedirectUri,
       required String logoutRedirectUri,
       List<String> scopes = _defaultScopes,
       String? audience}) async {
-    _config = AuthConfig(
-        authDomain: authDomain,
-        authClientId: authClientId,
-        loginRedirectUri: loginRedirectUri,
-        logoutRedirectUri: logoutRedirectUri,
-        scopes: scopes,
-        audience: audience);
+    try {
+      _config = AuthConfig(
+          authDomain: authDomain,
+          authClientId: authClientId,
+          loginRedirectUri: loginRedirectUri,
+          logoutRedirectUri: logoutRedirectUri,
+          scopes: scopes,
+          audience: audience);
 
-    secure_store.FlutterSecureStorage secureStorage =
-        const secure_store.FlutterSecureStorage(
-            aOptions: secure_store.AndroidOptions(),
-            mOptions: secure_store.MacOsOptions());
+      secure_store.FlutterSecureStorage secureStorage =
+      const secure_store.FlutterSecureStorage(
+          aOptions: secure_store.AndroidOptions(),
+          mOptions: secure_store.MacOsOptions());
 
-    Future<List<int>> getSecureKey(
-        secure_store.FlutterSecureStorage secureStorage) async {
-      var containsEncryptionKey =
-          await secureStorage.containsKey(key: 'encryptionKey');
-      if (!containsEncryptionKey) {
-        var key = Hive.generateSecureKey();
-        await secureStorage.write(
-            key: 'encryptionKey', value: base64UrlEncode(key));
-        return key;
-      } else {
-        final base64 = await secureStorage.read(key: 'encryptionKey');
-        return base64Url.decode(base64!);
+      Future<List<int>> getSecureKey(
+          secure_store.FlutterSecureStorage secureStorage) async {
+        var containsEncryptionKey =
+        await secureStorage.containsKey(key: 'encryptionKey');
+        if (!containsEncryptionKey) {
+          var key = Hive.generateSecureKey();
+          await secureStorage.write(
+              key: 'encryptionKey', value: base64UrlEncode(key));
+          return key;
+        } else {
+          final base64 = await secureStorage.read(key: 'encryptionKey');
+          return base64Url.decode(base64!);
+        }
       }
-    }
 
-    final secureKey = await getSecureKey(secureStorage);
+      final secureKey = await getSecureKey(secureStorage);
 
-    String path = await getTemporaryDirectoryPath();
-    await Store.init(HiveAesCipher(secureKey), path);
-    if (kIsWeb) {
-      await KindeWeb.initialize();
+      String path = await getTemporaryDirectoryPath();
+      await Store.init(HiveAesCipher(secureKey), path);
+      if (kIsWeb) {
+        await KindeWeb.initialize();
+      }
+
+      return instance;
+    } catch (e) {
+      if(e is KindeError) {
+        rethrow;
+      }
+      throw KindeError(code: KindeErrorCode.initializingFailed, message: e.toString());
     }
   }
 
@@ -164,7 +173,7 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
     if (!kIsWeb) {
       switch (Platform.operatingSystem) {
         case "macos":
-          logoutWithoutRedirection(dio: dio);
+          _logoutWithoutRedirection(dio: dio);
           return;
         case "android":
         case "ios":
@@ -196,7 +205,7 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
   }
 
   /// Logs out the user without redirection.
-  Future<void> logoutWithoutRedirection({Dio? dio}) async {
+  Future<void> _logoutWithoutRedirection({Dio? dio}) async {
     try {
       var dioClient = dio ?? Dio();
       final response =
@@ -206,13 +215,16 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
       await Store.instance.clear();
 
       if (response.statusCode != null && response.statusCode! > 400) {
-        throw Exception("statusCode = ${response.statusCode}");
+        throw KindeError(code: KindeErrorCode.logoutRequestFailed, message: "Logout status code: ${response.statusCode}");
       }
     } catch (error) {
+      if(error is KindeError) {
+        rethrow;
+      }
       if (error is Exception) {
         throw handleError(error);
       }
-      KindeError(error.toString());
+      throw KindeError(message: error.toString());
     }
   }
 
@@ -369,7 +381,9 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
     final versionParam = 'Flutter/$version';
     try {
       if (authState?.refreshToken == null) {
-        throw KindeError("Session expired or invalid");
+        throw const KindeError(
+            code: KindeErrorCode.sessionExpiredOrInvalid,
+        );
       }
       final data = await _tokenApi.retrieveToken(
           versionParam,
@@ -387,10 +401,8 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
 
   Future<bool> isAuthenticate() async {
     if (_isWebAuthInProcess()) {
-      try {
         final isWebLoginSuccess = await _finishWebLogin();
         return isWebLoginSuccess;
-      } catch (e) {}
     }
 
     return authState != null && !authState!.isExpired() && await _checkToken();
