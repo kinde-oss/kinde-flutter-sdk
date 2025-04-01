@@ -1,3 +1,5 @@
+part of 'kinde_error.dart';
+
 abstract class KindeErrorCode {
   const KindeErrorCode._();
 

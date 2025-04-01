@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:kinde_flutter_sdk/kinde_api.dart';
-import 'package:kinde_flutter_sdk/src/kinde_error_code..dart';
 import 'package:oauth2/oauth2.dart';
 
 import '../utils/cross_platform_support.dart';
@@ -101,7 +100,6 @@ abstract class WebOAuthFlow {
     final redirectUrls = _getRedirectUrls(
         redirectUrl: configuration.redirectUrl, baseUrl: configuration.baseUrl);
     final bool isThisUrlRedirectUrl = redirectUrls.any((redirectUrl) =>
-        responseRedirect != redirectUrl &&
         responseRedirect.startsWith(redirectUrl));
 
     if (!isThisUrlRedirectUrl) return null;

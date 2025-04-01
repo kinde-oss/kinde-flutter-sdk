@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:kinde_flutter_sdk/kinde_api.dart';
-import 'package:kinde_flutter_sdk/src/kinde_error_code..dart';
 import 'package:kinde_flutter_sdk/src/kinde_web/src/base/web_oauth_flow.dart';
 import 'package:kinde_flutter_sdk/src/kinde_web/src/base/model/oauth_configuration.dart';
 

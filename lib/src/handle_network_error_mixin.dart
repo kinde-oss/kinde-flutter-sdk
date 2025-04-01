@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:kinde_flutter_sdk/src/kinde_error.dart';
-import 'package:kinde_flutter_sdk/src/kinde_error_code..dart';
 
 mixin HandleNetworkMixin {
   Exception handleError(Exception error) {

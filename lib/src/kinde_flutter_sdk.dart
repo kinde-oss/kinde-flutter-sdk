@@ -3,7 +3,6 @@ import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:kinde_flutter_sdk/src/kinde_error_code..dart';
 import 'package:kinde_flutter_sdk/src/kinde_web/kinde_web.dart';
 import 'package:kinde_flutter_sdk/src/kinde_web/src/base/model/oauth_configuration.dart';
 import 'package:kinde_flutter_sdk/src/kinde_web/src/utils/cross_platform_support.dart';
@@ -409,10 +408,12 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
   }
 
   bool _isWebAuthInProcess() {
-    final result = kIsWeb &&
-        authState == null &&
-        (WebUtils.getCurrentUrl ?? "").contains("code");
-    return result;
+    if(kIsWeb && authState == null) {
+      final currentUri = Uri.tryParse(WebUtils.getCurrentUrl ?? "");
+      final isUriContainCodeParameter = currentUri?.queryParameters["code"]?.isNotEmpty ?? false;
+      return isUriContainCodeParameter;
+    }
+    return false;
   }
 
   Future<String?> _normalLogin(

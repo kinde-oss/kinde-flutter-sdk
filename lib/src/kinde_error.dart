@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'kinde_error_code..dart';
+part 'kinde_error_code.dart';
 
 @immutable
 class KindeError implements Exception {
