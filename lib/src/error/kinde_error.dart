@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 
+import 'package:oauth2/oauth2.dart';
+
 part 'kinde_error_code.dart';
+part 'authorization_kinde_error.dart';
 
 @immutable
 class KindeError implements Exception {
-   const KindeError({
+  const KindeError({
     String? message,
     String? code,
     this.stackTrace,
-  }) : this.code = code ?? KindeErrorCode.unknown, this.message = message ?? "";
+  })  : this.code = code ?? KindeErrorCode.unknown,
+        this.message = message ?? "";
 
   /// The long form message of the exception.
   final String message;
@@ -20,13 +24,12 @@ class KindeError implements Exception {
   /// sequence that triggered an exception
   final StackTrace? stackTrace;
 
-   @override
+  @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is KindeError &&
           runtimeType == other.runtimeType &&
           hashCode == other.hashCode;
-
 
   @override
   int get hashCode => Object.hash(code, message);

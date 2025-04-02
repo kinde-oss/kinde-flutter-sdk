@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:kinde_flutter_sdk/src/kinde_error.dart';
+import 'package:kinde_flutter_sdk/src/error/kinde_error.dart';
 
 class RefreshTokenInterceptor<T> extends InterceptorsWrapper {
   final Dio dio;

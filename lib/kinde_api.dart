@@ -90,4 +90,4 @@ export 'package:kinde_flutter_sdk/src/model/user_profile.dart';
 export 'package:kinde_flutter_sdk/src/model/user_profile_v2.dart';
 export 'package:kinde_flutter_sdk/src/model/users_response.dart';
 export 'package:kinde_flutter_sdk/src/serializers.dart';
-export 'package:kinde_flutter_sdk/src/kinde_error.dart';
+export 'package:kinde_flutter_sdk/src/error/kinde_error.dart';

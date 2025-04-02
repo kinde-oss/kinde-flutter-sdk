@@ -102,12 +102,12 @@ class KindeWeb {
       _resetAppBaseUrl();
       _clear();
       return credentials;
-    } catch (e) {
+    } catch (e, st) {
       _clear();
       if (e is KindeError) {
         rethrow;
       }
-      throw KindeError(code: KindeErrorCode.unknown, message: e.toString());
+      throw KindeError(code: KindeErrorCode.unknown, message: e.toString(), stackTrace: st);
     }
   }
 

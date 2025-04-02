@@ -23,7 +23,6 @@ class CodeVerifierStorage {
   /// Only used in web.
   String? restore() {
     final code = _sharedPreferences?.getString(_codeVerifierKey);
-    debugPrint('------ OAuthWebAuth codeVerifier: $code ------');
     return code;
   }
 

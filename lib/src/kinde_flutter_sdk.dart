@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:kinde_flutter_sdk/src/kinde_debug_print.dart';
 import 'package:kinde_flutter_sdk/src/kinde_web/kinde_web.dart';
 import 'package:kinde_flutter_sdk/src/kinde_web/src/base/model/oauth_configuration.dart';
 import 'package:kinde_flutter_sdk/src/kinde_web/src/utils/cross_platform_support.dart';
@@ -60,7 +61,10 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
 
   KindeFlutterSDK._internal() {
     if (_config == null) {
-      throw const KindeError(code: KindeErrorCode.missingConfig, message: 'KindeFlutterSDK have not been configured');
+      throw const KindeError(
+        code: KindeErrorCode.missingConfig,
+        message: 'KindeFlutterSDK has not been configured',
+      );
     }
 
     var domainUrl = "";
@@ -121,14 +125,14 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
           audience: audience);
 
       secure_store.FlutterSecureStorage secureStorage =
-      const secure_store.FlutterSecureStorage(
-          aOptions: secure_store.AndroidOptions(),
-          mOptions: secure_store.MacOsOptions());
+          const secure_store.FlutterSecureStorage(
+              aOptions: secure_store.AndroidOptions(),
+              mOptions: secure_store.MacOsOptions());
 
       Future<List<int>> getSecureKey(
           secure_store.FlutterSecureStorage secureStorage) async {
         var containsEncryptionKey =
-        await secureStorage.containsKey(key: 'encryptionKey');
+            await secureStorage.containsKey(key: 'encryptionKey');
         if (!containsEncryptionKey) {
           var key = Hive.generateSecureKey();
           await secureStorage.write(
@@ -149,11 +153,14 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
       }
 
       return instance;
-    } catch (e) {
-      if(e is KindeError) {
+    } catch (e, st) {
+      if (e is KindeError) {
         rethrow;
       }
-      throw KindeError(code: KindeErrorCode.initializingFailed, message: e.toString());
+      throw KindeError(
+          code: KindeErrorCode.initializingFailed,
+          message: e.toString(),
+          stackTrace: st);
     }
   }
 
@@ -177,14 +184,15 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
         case "android":
         case "ios":
           try {
-          const appAuth = FlutterAppAuth();
-          final endSessionRequest = EndSessionRequest(
-            externalUserAgent: ExternalUserAgent.ephemeralAsWebAuthenticationSession,
-            idTokenHint: _config!.authClientId,
-            postLogoutRedirectUrl: _config!.logoutRedirectUri,
-            serviceConfiguration: _serviceConfiguration,
-          );
-          await appAuth.endSession(endSessionRequest);
+            const appAuth = FlutterAppAuth();
+            final endSessionRequest = EndSessionRequest(
+              externalUserAgent:
+                  ExternalUserAgent.ephemeralAsWebAuthenticationSession,
+              idTokenHint: _config!.authClientId,
+              postLogoutRedirectUrl: _config!.logoutRedirectUri,
+              serviceConfiguration: _serviceConfiguration,
+            );
+            await appAuth.endSession(endSessionRequest);
           } on FlutterAppAuthPlatformException catch (e) {
             debugPrint("Error in logout(), details: ${e.details}");
             return;
@@ -214,16 +222,18 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
       await Store.instance.clear();
 
       if (response.statusCode != null && response.statusCode! > 400) {
-        throw KindeError(code: KindeErrorCode.logoutRequestFailed, message: "Logout status code: ${response.statusCode}");
+        throw KindeError(
+            code: KindeErrorCode.logoutRequestFailed,
+            message: "Logout status code: ${response.statusCode}");
       }
-    } catch (error) {
-      if(error is KindeError) {
+    } catch (error, st) {
+      if (error is KindeError) {
         rethrow;
       }
       if (error is Exception) {
         throw handleError(error);
       }
-      throw KindeError(message: error.toString());
+      throw KindeError(message: error.toString(), stackTrace: st);
     }
   }
 
@@ -242,6 +252,7 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
     );
   }
 
+  /// for web it returns null, and invokes loginRedirectUri
   Future<String?> _redirectToKinde(
       {AuthFlowType? type,
       String? orgCode,
@@ -313,7 +324,13 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
       ),
     );
 
-    if (credentials == null) return false;
+    if (credentials == null) {
+      kindeDebugPrint(
+          methodName: "finishWebLogin",
+          message:
+              "No credentials returned from finishLoginFlow. Login may have been canceled or failed.");
+      return false;
+    }
 
     _saveState(TokenResponse(
       credentials.accessToken,
@@ -328,6 +345,7 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
     return true;
   }
 
+  /// for web it returns null, and invokes loginRedirectUri
   Future<String?> register({
     AuthFlowType? type,
     String? orgCode,
@@ -373,7 +391,7 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
   }
 
   Future<String?> getToken() async {
-    if (await isAuthenticate()) {
+    if (await isAuthenticated()) {
       return _store.authState?.accessToken;
     }
     final version = await _getVersion();
@@ -381,7 +399,7 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
     try {
       if (authState?.refreshToken == null) {
         throw const KindeError(
-            code: KindeErrorCode.sessionExpiredOrInvalid,
+          code: KindeErrorCode.sessionExpiredOrInvalid,
         );
       }
       final data = await _tokenApi.retrieveToken(
@@ -398,19 +416,20 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
     }
   }
 
-  Future<bool> isAuthenticate() async {
+  Future<bool> isAuthenticated() async {
     if (_isWebAuthInProcess()) {
-        final isWebLoginSuccess = await _finishWebLogin();
-        return isWebLoginSuccess;
+      final isWebLoginSuccess = await _finishWebLogin();
+      return isWebLoginSuccess;
     }
 
     return authState != null && !authState!.isExpired() && await _checkToken();
   }
 
   bool _isWebAuthInProcess() {
-    if(kIsWeb && authState == null) {
+    if (kIsWeb && authState == null) {
       final currentUri = Uri.tryParse(WebUtils.getCurrentUrl ?? "");
-      final isUriContainCodeParameter = currentUri?.queryParameters["code"]?.isNotEmpty ?? false;
+      final isUriContainCodeParameter =
+          currentUri?.queryParameters["code"]?.isNotEmpty ?? false;
       return isUriContainCodeParameter;
     }
     return false;
@@ -420,14 +439,13 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
       String? loginHint, Map<String, String> additionalParams) async {
     try {
       const appAuth = FlutterAppAuth();
-      final authorizationTokenResponse = await appAuth
-          .authorizeAndExchangeCode(
+      final authorizationTokenResponse = await appAuth.authorizeAndExchangeCode(
         AuthorizationTokenRequest(
           _config!.authClientId,
           _config!.loginRedirectUri,
           serviceConfiguration: _serviceConfiguration,
-          externalUserAgent: ExternalUserAgent
-              .ephemeralAsWebAuthenticationSession,
+          externalUserAgent:
+              ExternalUserAgent.ephemeralAsWebAuthenticationSession,
           scopes: _config!.scopes,
           promptValues: ['login'],
           loginHint: loginHint,
@@ -435,18 +453,19 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
         ),
       );
 
-        if (additionalParams.containsKey(_orgNameParamName)) {
-          return additionalParams[_orgNameParamName];
-        }
-        _saveState(authorizationTokenResponse);
-        return authorizationTokenResponse.accessToken;
-
-    } on FlutterAppAuthPlatformException catch (e) {
-      debugPrint("Error in login(), details: ${e.details}");
-      return null;
-    } catch (e) {
-      debugPrint("Error in login(): $e");
-      return null;
+      if (additionalParams.containsKey(_orgNameParamName)) {
+        return additionalParams[_orgNameParamName];
+      }
+      _saveState(authorizationTokenResponse);
+      return authorizationTokenResponse.accessToken;
+    } catch (e, st) {
+      if (e is KindeError) {
+        rethrow;
+      }
+      if (e is FlutterAppAuthPlatformException) {
+        throw KindeError(code: e.code, message: e.message, stackTrace: st);
+      }
+      throw KindeError(code: KindeErrorCode.unknown, stackTrace: st);
     }
   }
 
@@ -462,7 +481,8 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
           scopes: _config!.scopes,
           promptValues: ['login'],
           loginHint: loginHint,
-          externalUserAgent: ExternalUserAgent.ephemeralAsWebAuthenticationSession,
+          externalUserAgent:
+              ExternalUserAgent.ephemeralAsWebAuthenticationSession,
           additionalParameters: additionalParams,
         ),
       );
@@ -485,12 +505,14 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
 
       _saveState(token);
       return token.accessToken;
-    } on FlutterAppAuthPlatformException catch (e) {
-      debugPrint("Error in pkceLogin(), details: ${e.details}");
-      return null;
-    } catch (e) {
-      debugPrint("Error in pkceLogin(): $e");
-      return null;
+    } catch (e, st) {
+      if (e is KindeError) {
+        rethrow;
+      }
+      if (e is FlutterAppAuthPlatformException) {
+        throw KindeError(code: e.code, message: e.message, stackTrace: st);
+      }
+      throw KindeError(code: KindeErrorCode.unknown, stackTrace: st);
     }
   }
 

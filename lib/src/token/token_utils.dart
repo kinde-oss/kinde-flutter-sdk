@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
-import 'package:kinde_flutter_sdk/src/kinde_error.dart';
+import 'package:kinde_flutter_sdk/src/error/kinde_error.dart';
 import 'package:kinde_flutter_sdk/src/model/claim/claim.dart';
 import 'package:kinde_flutter_sdk/src/model/claim/claim_organization.dart';
 import 'package:kinde_flutter_sdk/src/model/claim/claim_organizations.dart';

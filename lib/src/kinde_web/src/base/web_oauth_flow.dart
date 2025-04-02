@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:kinde_flutter_sdk/kinde_api.dart';
+import 'package:kinde_flutter_sdk/src/kinde_debug_print.dart';
 import 'package:oauth2/oauth2.dart';
 
 import '../utils/cross_platform_support.dart';
@@ -29,6 +30,9 @@ abstract class WebOAuthFlow {
       if (parameters.isEmpty &&
           (configuration.baseUrl?.isNotEmpty ?? false) &&
           responseRedirect.startsWith(configuration.baseUrl!)) {
+        kindeDebugPrint(
+            methodName: "getClientCredentials",
+            message: "parameters are empty");
         return null;
       }
 
@@ -40,16 +44,16 @@ abstract class WebOAuthFlow {
       final client =
           await authorizationCodeGrant.handleAuthorizationResponse(parameters);
       return client.credentials;
-    } catch (e) {
-      _handleError(e);
+    } catch (e, st) {
+      _handleError(e, st);
+      return null;
     }
   }
 
-  static void _handleError(Object error) {
+  static void _handleError(Object error, StackTrace st) {
     {
       if (error is AuthorizationException) {
-        throw KindeError(
-            code: KindeErrorCode.unknown, message: error.description ?? "");
+        throw AuthorizationKindeError.fromOauth2Exception(error);
       }
       if (error is FormatException) {
         final jsonMatch = RegExp(r'\{.*\}').firstMatch(error.message);
@@ -73,7 +77,10 @@ abstract class WebOAuthFlow {
         }
       }
 
-      throw KindeError(code: KindeErrorCode.unknown, message: error.toString());
+      throw KindeError(
+          code: KindeErrorCode.unknown,
+          message: error.toString(),
+          stackTrace: st);
     }
   }
 
@@ -97,33 +104,71 @@ abstract class WebOAuthFlow {
       {required OAuthConfiguration configuration,
       required String responseRedirect,
       required String codeVerifier}) async {
-    final redirectUrls = _getRedirectUrls(
-        redirectUrl: configuration.redirectUrl, baseUrl: configuration.baseUrl);
-    final bool isThisUrlRedirectUrl = redirectUrls.any((redirectUrl) =>
-        responseRedirect.startsWith(redirectUrl));
+    responseRedirect = _sanitizeRedirect(responseRedirect);
 
-    if (!isThisUrlRedirectUrl) return null;
-
+    if (!_isValidRedirect(responseRedirect, configuration)) {
+      return null;
+    }
     try {
-      responseRedirect = responseRedirect.trim();
-
-      final int ignoreStartIndex = responseRedirect.indexOf('#');
-      if (ignoreStartIndex > -1) {
-        responseRedirect = responseRedirect.substring(0, ignoreStartIndex);
-      }
-
       final credentials = await _getClientCredentials(
           configuration: configuration,
           responseRedirect: responseRedirect,
           codeVerifier: codeVerifier);
 
       return credentials;
-    } catch (e) {
+    } catch (e, st) {
       if (e is KindeError) {
         rethrow;
       }
-      throw KindeError(code: KindeErrorCode.unknown, message: e.toString());
+      throw KindeError(
+          code: KindeErrorCode.unknown, message: e.toString(), stackTrace: st);
     }
+  }
+
+  /// Ensures the responseRedirect matches a known valid redirect URL
+  static bool _isValidRedirect(
+      String responseRedirect, OAuthConfiguration config) {
+    final Uri redirectUri = Uri.parse(responseRedirect);
+
+    final List<Uri> validUris = _getRedirectUrls(
+      redirectUrl: config.redirectUrl,
+      baseUrl: config.baseUrl,
+    ).map(Uri.parse).toList();
+
+    int matches = 0;
+    Uri? mostValidUri;
+
+    final isValidUri = validUris.any((validUri) {
+      int validUriMatches = 0;
+      validUriMatches = validUriMatches + (redirectUri.scheme == validUri.scheme ? 1 : -1);
+      validUriMatches = validUriMatches + (redirectUri.host == validUri.host ? 1 : -1);
+      validUriMatches = validUriMatches + (redirectUri.port == validUri.port ? 1 : -1);
+      validUriMatches = validUriMatches + (redirectUri.path == validUri.path ? 1 : -1);
+      if(validUriMatches > matches) {
+        matches = validUriMatches;
+        mostValidUri = validUri;
+      }
+      return matches == 4;
+    });
+
+    if(!isValidUri) {
+      kindeDebugPrint(
+          methodName: "isValidRedirect",
+          message: '''
+
+          expect: $mostValidUri,
+          actual: ${"${redirectUri.scheme}://${redirectUri.host}:${redirectUri.port}${redirectUri.path}"}
+          ''');
+    }
+
+    return isValidUri;
+  }
+
+  /// Removes URL fragments (`#` and anything after)
+  static String _sanitizeRedirect(String url) {
+    url = url.trim();
+    final int index = url.indexOf('#');
+    return index > -1 ? url.substring(0, index) : url;
   }
 
   static Uri _getInitialUrl(
