@@ -1,4 +1,9 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_appauth/flutter_appauth.dart';
 
 import 'package:oauth2/oauth2.dart';
 
@@ -29,7 +34,8 @@ class KindeError implements Exception {
       identical(this, other) ||
       other is KindeError &&
           runtimeType == other.runtimeType &&
-          hashCode == other.hashCode;
+          code == other.code &&
+          message == other.message;
 
   @override
   int get hashCode => Object.hash(code, message);
@@ -44,4 +50,77 @@ class KindeError implements Exception {
 
     return output;
   }
+
+  factory KindeError.fromError(Object error, StackTrace stackTrace) {
+    if (error is KindeError) {
+      return error;
+    }
+    if (error is PlatformException) {
+      return _flutterAppAuthExceptionMapper(error);
+    }
+    if (error is AuthorizationException) {
+      return AuthorizationKindeError.fromOauth2Exception(error);
+    }
+    if (error is Exception) {
+      throw _handleError(error);
+    }
+    if (error is FormatException) {
+      final jsonMatch = RegExp(r'\{.*\}').firstMatch(error.message);
+      if (jsonMatch != null) {
+        final jsonString = jsonMatch.group(0);
+
+        try {
+          final jsonData = jsonDecode(jsonString!);
+
+          final error = jsonData['error'];
+          final errorDescription = jsonData['error_description'];
+
+          return KindeError(code: error, message: errorDescription);
+        } catch (e) {
+          return KindeError(
+              code: KindeErrorCode.unknown, message: e.toString());
+        }
+      }
+    }
+    return KindeError(message: error.toString(), stackTrace: stackTrace);
+  }
+}
+
+KindeError _handleError(Exception error) {
+  if (error is KindeError) {
+    return error;
+  }
+  KindeError? resultError;
+  if (error is DioException) {
+    DioException dioError = error;
+    switch (dioError.type) {
+      case DioExceptionType.cancel:
+      case DioExceptionType.connectionTimeout:
+      case DioExceptionType.receiveTimeout:
+      case DioExceptionType.sendTimeout:
+      case DioExceptionType.connectionError:
+      case DioExceptionType.badCertificate:
+      case DioExceptionType.unknown:
+        if (dioError.error is KindeError) {
+          resultError = dioError.error as KindeError;
+        }
+        break;
+      case DioExceptionType.badResponse:
+        if (dioError.requestOptions.path == "/oauth2/token") {
+          resultError = KindeError(
+              code: KindeErrorCode.refreshTokenExpired,
+              message: dioError.message);
+        }
+        break;
+    }
+  }
+  return resultError ?? KindeError(message: error.toString());
+}
+
+KindeError _flutterAppAuthExceptionMapper(PlatformException platformException) {
+  if (platformException is FlutterAppAuthUserCancelledException) {
+    return const KindeError(code: KindeErrorCode.userCanceled);
+  }
+  return KindeError(
+      code: platformException.code, message: platformException.message);
 }

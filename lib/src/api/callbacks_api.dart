@@ -7,7 +7,7 @@ import 'dart:async';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 
-import 'package:kinde_flutter_sdk/src/api_util.dart';
+import 'package:kinde_flutter_sdk/src/utils/api_util.dart';
 import 'package:kinde_flutter_sdk/src/model/logout_redirect_urls.dart';
 import 'package:kinde_flutter_sdk/src/model/redirect_callback_urls.dart';
 import 'package:kinde_flutter_sdk/src/model/replace_logout_redirect_urls_request.dart';
@@ -23,7 +23,7 @@ class CallbacksApi {
   const CallbacksApi(this._dio, this._serializers);
 
   /// Add Logout Redirect URLs
-  /// Add additional logout redirect URLs. 
+  /// Add additional logout redirect URLs.
   ///
   /// Parameters:
   /// * [appId] - The identifier for the application.
@@ -37,7 +37,7 @@ class CallbacksApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> addLogoutRedirectURLs({ 
+  Future<Response<SuccessResponse>> addLogoutRedirectURLs({
     required String appId,
     required ReplaceLogoutRedirectURLsRequest replaceLogoutRedirectURLsRequest,
     CancelToken? cancelToken,
@@ -126,7 +126,7 @@ class CallbacksApi {
   }
 
   /// Add Redirect Callback URLs
-  /// Add additional redirect callback URLs. 
+  /// Add additional redirect callback URLs.
   ///
   /// Parameters:
   /// * [appId] - The identifier for the application.
@@ -140,7 +140,7 @@ class CallbacksApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> addRedirectCallbackURLs({ 
+  Future<Response<SuccessResponse>> addRedirectCallbackURLs({
     required String appId,
     required ReplaceRedirectCallbackURLsRequest replaceRedirectCallbackURLsRequest,
     CancelToken? cancelToken,
@@ -229,7 +229,7 @@ class CallbacksApi {
   }
 
   /// Delete Callback URLs
-  /// Delete callback URLs. 
+  /// Delete callback URLs.
   ///
   /// Parameters:
   /// * [appId] - The identifier for the application.
@@ -243,7 +243,7 @@ class CallbacksApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> deleteCallbackURLs({ 
+  Future<Response<SuccessResponse>> deleteCallbackURLs({
     required String appId,
     required String urls,
     CancelToken? cancelToken,
@@ -317,7 +317,7 @@ class CallbacksApi {
   }
 
   /// Delete Logout URLs
-  /// Delete logout URLs. 
+  /// Delete logout URLs.
   ///
   /// Parameters:
   /// * [appId] - The identifier for the application.
@@ -331,7 +331,7 @@ class CallbacksApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> deleteLogoutURLs({ 
+  Future<Response<SuccessResponse>> deleteLogoutURLs({
     required String appId,
     required String urls,
     CancelToken? cancelToken,
@@ -405,7 +405,7 @@ class CallbacksApi {
   }
 
   /// List Callback URLs
-  /// Returns an application&#39;s redirect callback URLs. 
+  /// Returns an application&#39;s redirect callback URLs.
   ///
   /// Parameters:
   /// * [appId] - The identifier for the application.
@@ -418,7 +418,7 @@ class CallbacksApi {
   ///
   /// Returns a [Future] containing a [Response] with a [RedirectCallbackUrls] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<RedirectCallbackUrls>> getCallbackURLs({ 
+  Future<Response<RedirectCallbackUrls>> getCallbackURLs({
     required String appId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -486,7 +486,7 @@ class CallbacksApi {
   }
 
   /// List Logout URLs
-  /// Returns an application&#39;s logout redirect URLs. 
+  /// Returns an application&#39;s logout redirect URLs.
   ///
   /// Parameters:
   /// * [appId] - The identifier for the application.
@@ -499,7 +499,7 @@ class CallbacksApi {
   ///
   /// Returns a [Future] containing a [Response] with a [LogoutRedirectUrls] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<LogoutRedirectUrls>> getLogoutURLs({ 
+  Future<Response<LogoutRedirectUrls>> getLogoutURLs({
     required String appId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -567,7 +567,7 @@ class CallbacksApi {
   }
 
   /// Replace Logout Redirect URLs
-  /// Replace all logout redirect URLs. 
+  /// Replace all logout redirect URLs.
   ///
   /// Parameters:
   /// * [appId] - The identifier for the application.
@@ -581,7 +581,7 @@ class CallbacksApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> replaceLogoutRedirectURLs({ 
+  Future<Response<SuccessResponse>> replaceLogoutRedirectURLs({
     required String appId,
     required ReplaceLogoutRedirectURLsRequest replaceLogoutRedirectURLsRequest,
     CancelToken? cancelToken,
@@ -670,7 +670,7 @@ class CallbacksApi {
   }
 
   /// Replace Redirect Callback URLs
-  /// Replace all redirect callback URLs. 
+  /// Replace all redirect callback URLs.
   ///
   /// Parameters:
   /// * [appId] - The identifier for the application.
@@ -684,7 +684,7 @@ class CallbacksApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> replaceRedirectCallbackURLs({ 
+  Future<Response<SuccessResponse>> replaceRedirectCallbackURLs({
     required String appId,
     required ReplaceRedirectCallbackURLsRequest replaceRedirectCallbackURLsRequest,
     CancelToken? cancelToken,

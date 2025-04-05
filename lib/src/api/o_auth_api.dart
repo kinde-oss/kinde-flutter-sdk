@@ -7,7 +7,7 @@ import 'dart:async';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 
-import 'package:kinde_flutter_sdk/src/api_util.dart';
+import 'package:kinde_flutter_sdk/src/utils/api_util.dart';
 import 'package:kinde_flutter_sdk/src/model/token_introspect.dart';
 import 'package:kinde_flutter_sdk/src/model/user_profile.dart';
 import 'package:kinde_flutter_sdk/src/model/user_profile_v2.dart';

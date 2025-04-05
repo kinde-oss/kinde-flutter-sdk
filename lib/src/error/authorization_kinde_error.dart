@@ -17,6 +17,6 @@ class AuthorizationKindeError extends KindeError {
           AuthorizationException error) =>
       AuthorizationKindeError._(
         error.error,
-        error.description ?? KindeErrorCode.unknown,
+        error.description ?? "Unknown OAuth2 authorization error",
       );
 }

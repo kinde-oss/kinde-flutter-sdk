@@ -7,7 +7,7 @@ import 'dart:async';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 
-import 'package:kinde_flutter_sdk/src/api_util.dart';
+import 'package:kinde_flutter_sdk/src/utils/api_util.dart';
 import 'package:kinde_flutter_sdk/src/model/connected_apps_access_token.dart';
 import 'package:kinde_flutter_sdk/src/model/connected_apps_auth_url.dart';
 import 'package:kinde_flutter_sdk/src/model/success_response.dart';
@@ -35,7 +35,7 @@ class ConnectedAppsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [ConnectedAppsAuthUrl] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<ConnectedAppsAuthUrl>> getConnectedAppAuthUrl({ 
+  Future<Response<ConnectedAppsAuthUrl>> getConnectedAppAuthUrl({
     required String keyCodeRef,
     required String userId,
     CancelToken? cancelToken,
@@ -123,7 +123,7 @@ class ConnectedAppsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [ConnectedAppsAccessToken] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<ConnectedAppsAccessToken>> getConnectedAppToken({ 
+  Future<Response<ConnectedAppsAccessToken>> getConnectedAppToken({
     required String sessionId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -209,7 +209,7 @@ class ConnectedAppsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> revokeConnectedAppToken({ 
+  Future<Response<SuccessResponse>> revokeConnectedAppToken({
     required String sessionId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,

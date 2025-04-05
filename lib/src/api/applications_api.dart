@@ -7,7 +7,7 @@ import 'dart:async';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 
-import 'package:kinde_flutter_sdk/src/api_util.dart';
+import 'package:kinde_flutter_sdk/src/utils/api_util.dart';
 import 'package:kinde_flutter_sdk/src/model/create_application_request.dart';
 import 'package:kinde_flutter_sdk/src/model/create_application_response.dart';
 import 'package:kinde_flutter_sdk/src/model/get_application_response.dart';
@@ -37,7 +37,7 @@ class ApplicationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [CreateApplicationResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<CreateApplicationResponse>> createApplication({ 
+  Future<Response<CreateApplicationResponse>> createApplication({
     CreateApplicationRequest? createApplicationRequest,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -125,7 +125,7 @@ class ApplicationsApi {
   }
 
   /// Delete Application
-  /// Delete application. 
+  /// Delete application.
   ///
   /// Parameters:
   /// * [applicationId] - The identifier for the application.
@@ -138,7 +138,7 @@ class ApplicationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> deleteApplication({ 
+  Future<Response<SuccessResponse>> deleteApplication({
     required String applicationId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -206,7 +206,7 @@ class ApplicationsApi {
   }
 
   /// Get Application
-  /// Gets an application given the application&#39;s id. 
+  /// Gets an application given the application&#39;s id.
   ///
   /// Parameters:
   /// * [applicationId] - The identifier for the application.
@@ -219,7 +219,7 @@ class ApplicationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [GetApplicationResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<GetApplicationResponse>> getApplication({ 
+  Future<Response<GetApplicationResponse>> getApplication({
     required String applicationId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -287,7 +287,7 @@ class ApplicationsApi {
   }
 
   /// List Applications
-  /// Get a list of applications. 
+  /// Get a list of applications.
   ///
   /// Parameters:
   /// * [sort] - Field and order to sort the result by.
@@ -302,7 +302,7 @@ class ApplicationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [GetApplicationsResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<GetApplicationsResponse>> getApplications({ 
+  Future<Response<GetApplicationsResponse>> getApplications({
     String? sort,
     int? pageSize,
     String? nextToken,
@@ -393,7 +393,7 @@ class ApplicationsApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> updateApplication({ 
+  Future<Response<void>> updateApplication({
     required String applicationId,
     UpdateApplicationRequest? updateApplicationRequest,
     CancelToken? cancelToken,

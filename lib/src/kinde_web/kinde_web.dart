@@ -1,8 +1,9 @@
 import 'dart:async';
 
+import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:kinde_flutter_sdk/kinde_api.dart';
+import 'package:kinde_flutter_sdk/src/utils/kinde_secure_storage.dart';
 import 'package:kinde_flutter_sdk/src/kinde_web/src/base/web_oauth_flow.dart';
-import 'package:kinde_flutter_sdk/src/kinde_web/src/base/model/oauth_configuration.dart';
 
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:kinde_flutter_sdk/src/kinde_web/src/utils/code_verifier_generator.dart';
@@ -42,8 +43,9 @@ class KindeWeb {
   static KindeWeb? _instance;
 
   static KindeWeb get instance {
-    assert(
-        _instance != null, "Did you forget to call the initialize() method?");
+    if(_instance == null) {
+      throw Exception("Did you forget to call the initialize() method?");
+    }
     return _instance!;
   }
 
@@ -71,9 +73,9 @@ class KindeWeb {
 
   ///If multiple logins are triggered in parallel, then flow finished correctly only for
   ///last triggered login, for others will be thrown [KindeError] with code=[invalid_grant]
-  void startLoginFlow({
-    required OAuthConfiguration configuration,
-  }) {
+  void startLoginFlow(
+    AuthorizationRequest configuration,
+  ) {
     try {
       final String codeVerifier = generateCodeVerifier();
       _codeVerifierStorage.save(codeVerifier);
@@ -83,31 +85,54 @@ class KindeWeb {
       );
     } catch (e) {
       _clear();
-      if(e is KindeError) {
+      if (e is KindeError) {
         rethrow;
       }
     }
   }
 
-  Future<Credentials?> finishLoginFlow(OAuthConfiguration configuration) async {
+  Future<Credentials?> finishLoginFlow(
+      {required String redirectUrl,
+      required String responseUrl,
+      required String clientId,
+      required String authorizationEndpoint,
+      required String tokenEndpoint,
+      required List<String> scopes}) async {
     final codeVerifier = _codeVerifierStorage.restore();
     if (codeVerifier == null) {
-      throw const KindeError(code: KindeErrorCode.noCodeVerifier, message: "No code verifier in storage.");
+      throw const KindeError(
+          code: KindeErrorCode.noCodeVerifier,
+          message: "No code verifier in storage.");
     }
+
+    final authRequestState =
+        await KindeSecureStorage.instance.getAuthRequestState();
+    if (authRequestState == null) {
+      throw const KindeError(
+          code: KindeErrorCode.noAuthStateStored,
+          message: "No auth request state in storage.");
+    }
+
+    final authorizationCodeGrant = AuthorizationCodeGrant(
+      clientId,
+      Uri.parse(authorizationEndpoint),
+      Uri.parse(tokenEndpoint),
+      codeVerifier: codeVerifier,
+      basicAuth: true,
+    );
+
     try {
       final credentials = await WebOAuthFlow.finishLogin(
-          codeVerifier: codeVerifier,
-          configuration: configuration,
-          responseRedirect: WebUtils.getCurrentUrl!);
-      _resetAppBaseUrl();
+          authRequestState: authRequestState,
+          responseUrl: responseUrl,
+          authorizationCodeGrant: authorizationCodeGrant,
+          redirectUrl: redirectUrl,
+          scopes: scopes);
       _clear();
       return credentials;
     } catch (e, st) {
       _clear();
-      if (e is KindeError) {
-        rethrow;
-      }
-      throw KindeError(code: KindeErrorCode.unknown, message: e.toString(), stackTrace: st);
+      throw KindeError.fromError(e, st);
     }
   }
 

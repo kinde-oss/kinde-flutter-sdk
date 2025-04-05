@@ -7,7 +7,7 @@ import 'dart:async';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 
-import 'package:kinde_flutter_sdk/src/api_util.dart';
+import 'package:kinde_flutter_sdk/src/utils/api_util.dart';
 import 'package:kinde_flutter_sdk/src/model/success_response.dart';
 
 class TimezonesApi {
@@ -33,7 +33,7 @@ class TimezonesApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> getTimezones({ 
+  Future<Response<SuccessResponse>> getTimezones({
     String? timezoneKey,
     String? name,
     CancelToken? cancelToken,

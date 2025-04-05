@@ -1,27 +1,35 @@
+import 'dart:collection';
+
 class AuthUrlParams {
-  static const _lang = 'lang';
-  static const _connectionId = 'connection_id';
-
+  final String? orgCode;
+  final String? loginHint;
+  // static const _connectionId = 'connection_id';
   /// Language to display for login page
-  String? lang;
-
+  final String? lang;
   /// Connection id string corresponding to social sign in
-  String? connectionId;
+  final String? connectionId;
 
   AuthUrlParams({
     this.lang,
     this.connectionId,
+    this.loginHint,
+    this.orgCode
   });
 
   Map<String, String> toMap() {
     final params = <String, String>{};
-    if (lang != null) {
-      params[_lang] = lang!;
+    if (orgCode != null) {
+      params.putIfAbsent("org_code", () => orgCode!);
     }
-    if (connectionId != null) {
-      params[_connectionId] = connectionId!;
+    if(lang != null) {
+      params.putIfAbsent("lang", () => lang!);
     }
-
+    if(connectionId != null) {
+      params.putIfAbsent("connection_id", () => connectionId!);
+    }
+    if(loginHint != null) {
+      params.putIfAbsent("login_hint", () => loginHint!);
+    }
     return params;
   }
 }
