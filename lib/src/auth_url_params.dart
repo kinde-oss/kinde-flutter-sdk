@@ -21,13 +21,13 @@ class AuthUrlParams {
     if (orgCode != null) {
       params.putIfAbsent("org_code", () => orgCode!);
     }
-    if(lang != null) {
+    if (lang != null) {
       params.putIfAbsent("lang", () => lang!);
     }
-    if(connectionId != null) {
+    if (connectionId != null) {
       params.putIfAbsent("connection_id", () => connectionId!);
     }
-    if(loginHint != null) {
+    if (loginHint != null) {
       params.putIfAbsent("login_hint", () => loginHint!);
     }
     return params;

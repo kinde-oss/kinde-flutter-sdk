@@ -1,7 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:crypto/crypto.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+import 'kinde_debug_print.dart';
 
 abstract class SecureStorageKey {
   static const String encryption = 'encryptionKey';
@@ -21,9 +24,18 @@ class KindeSecureStorage {
   late final FlutterSecureStorage _secureStorage;
 
   Future<List<int>?> getSecureKey() async {
-    final base64 = await _secureStorage.read(key: SecureStorageKey.encryption);
-    if(base64 == null) return null;
-    return base64Url.decode(base64);
+    try {
+      final base64 = await _secureStorage.read(
+          key: SecureStorageKey.encryption);
+      if (base64 == null) return null;
+      return base64Url.decode(base64);
+    } catch (e) {
+      kindeDebugPrint(
+          methodName: "getSecureKey",
+          message: e.toString()
+      );
+      return null;
+    }
   }
 
   Future<void> saveSecureKey(List<int> secureKey) async {
@@ -43,7 +55,6 @@ class KindeSecureStorage {
 }
 
 String generateAuthState() {
-  final generatedState = const Base64Encoder.urlSafe()
-      .convert(DateTime.now().toIso8601String().codeUnits);
-  return generatedState;
+ final digest = sha1.convert(DateTime.now().toIso8601String().codeUnits);
+ return digest.toString();
 }

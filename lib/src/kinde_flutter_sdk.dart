@@ -101,46 +101,62 @@ class KindeFlutterSDK with TokenUtils {
 
   Store get _store => Store.instance;
 
-  static Future<KindeFlutterSDK> initializeSDK(
-      {required String authDomain,
-      required String authClientId,
-      required String loginRedirectUri,
-      required String logoutRedirectUri,
-      List<String> scopes = _defaultScopes,
-      String? audience}) async {
-    try {
-      _config = AuthConfig(
-          authDomain: authDomain,
-          authClientId: authClientId,
-          loginRedirectUri: loginRedirectUri,
-          logoutRedirectUri: logoutRedirectUri,
-          scopes: scopes,
-          audience: audience);
+  static Future<KindeFlutterSDK> initializeSDK({
+    required String authDomain,
+    required String authClientId,
+    required String loginRedirectUri,
+    required String logoutRedirectUri,
+    List<String> scopes = _defaultScopes,
+    String? audience,
+  }) async {
+    String step = 'initializing';
 
+    try {
+      step = 'config setup';
+      _config = AuthConfig(
+        authDomain: authDomain,
+        authClientId: authClientId,
+        loginRedirectUri: loginRedirectUri,
+        logoutRedirectUri: logoutRedirectUri,
+        scopes: scopes,
+        audience: audience,
+      );
+
+      step = 'secure key retrieval';
       List<int>? secureKey = await KindeSecureStorage.instance.getSecureKey();
+
       if (secureKey == null) {
+        step = 'secure key generation and storage';
         secureKey = Hive.generateSecureKey();
         await KindeSecureStorage.instance.saveSecureKey(secureKey);
       }
 
-      String path = await getTemporaryDirectoryPath();
+      step = 'temp path resolution';
+      final String path = await getTemporaryDirectoryPath();
 
+      step = 'Hive store initialization';
       await Store.init(HiveAesCipher(secureKey), path);
+
       if (kIsWeb) {
+        step = 'web layer initialization';
         await KindeWeb.initialize();
       }
 
+      step = 'finalization';
       return instance;
+
     } catch (e, st) {
-      if (e is KindeError) {
-        rethrow;
-      }
+      kindeDebugPrint(methodName: "KindeFlutterSDK.initializeSDK", message: 'SDK initialization failed at step: $step');
+      if (e is KindeError) rethrow;
+
       throw KindeError(
-          code: KindeErrorCode.initializingFailed,
-          message: e.toString(),
-          stackTrace: st);
+        code: KindeErrorCode.initializingFailed,
+        message: 'Error during "$step": ${e.toString()}',
+        stackTrace: st,
+      );
     }
   }
+
 
   static Future<String> getTemporaryDirectoryPath() async {
     Directory? path;
@@ -373,7 +389,7 @@ class KindeFlutterSDK with TokenUtils {
     if (kIsWeb && authState == null) {
       final currentUrl = WebUtils.getCurrentUrl ?? "";
       final currentUri = Uri.tryParse(currentUrl);
-      return currentUri?.queryParameters["code"]?.isNotEmpty ?? false
+      return (currentUri?.queryParameters["code"]?.isNotEmpty ?? false) && (currentUri?.queryParameters["state"]?.isNotEmpty ?? false)
           ? currentUrl
           : null;
     }

@@ -6,7 +6,7 @@ import 'package:oauth2/oauth2.dart';
 
 import '../utils/cross_platform_support.dart';
 
-const int _httpDefaultPort = 4;
+const int _httpDefaultPort = 80;
 const int _httpsDefaultPort = 443;
 
 abstract class WebOAuthFlow {
@@ -56,15 +56,19 @@ abstract class WebOAuthFlow {
   static void login(
     AuthorizationRequest configuration, {
     required String codeVerifier,
-  }) {
+  }) async {
     final String authState = generateAuthState();
-    KindeSecureStorage.instance.saveAuthRequestState(authState).then((_) {
+    try {
+      await KindeSecureStorage.instance.saveAuthRequestState(authState);
+    } catch (e, st) {
+      throw KindeError(code: KindeErrorCode.unknown, message: e.toString(), stackTrace: st);
+    }
       final initialUri = _getInitialUrl(
           configuration: configuration,
           codeVerifier: codeVerifier,
           authState: authState);
       WebUtils.replacePage(initialUri.toString());
-    });
+
   }
 
   static Future<Credentials?> finishLogin({
@@ -81,9 +85,9 @@ abstract class WebOAuthFlow {
           message: "Stored state is not equal state in response.");
     }
 
-    if (!_isValidRedirect(responseUri, redirectUrl)) {
-      return null;
-    }
+    ///throws KindeError with code=not-redirect-url
+    _isValidRedirect(responseUri, redirectUrl);
+
     try {
       final credentials = await _getClientCredentials(
           scopes: scopes,
@@ -97,7 +101,8 @@ abstract class WebOAuthFlow {
     }
   }
 
-  /// Ensures the responseRedirect matches a known valid redirect URL
+  /// Ensures the responseRedirect matches a known valid redirect URL,
+  /// throws KindeError with code=not=redirect-url
   static bool _isValidRedirect(
       Uri actualRedirectUri, String expectedRedirectUrl) {
     final Uri validUri = Uri.parse(expectedRedirectUrl);
@@ -106,12 +111,14 @@ abstract class WebOAuthFlow {
       return true;
     }
 
-    kindeDebugPrint(methodName: "isValidRedirect", message: '''
+    final comparingSummary = '''
     Expected: $validUri,
     Actual: ${actualRedirectUri.toString()}
-  ''');
+  ''';
 
-    return false;
+    kindeDebugPrint(methodName: "isValidRedirect", message: comparingSummary);
+    throw KindeError(
+        code: KindeErrorCode.notRedirect, message: comparingSummary);
   }
 
   static bool _urisMatch(Uri a, Uri b) {

@@ -19,22 +19,7 @@ class KindeWeb {
   /// [appBaseUrl] is the base URL of the application. If not provided,
   /// it will be extracted from the current URL, removing any hash fragments
   /// and trailing slashes.
-  KindeWeb._hashUrlStrategy(String appBaseUrl) {
-    String tempAppBaseUrl = appBaseUrl;
-    final int ignoreStartIndex = tempAppBaseUrl.indexOf('#');
-    if (ignoreStartIndex > -1) {
-      tempAppBaseUrl = tempAppBaseUrl.substring(0, ignoreStartIndex);
-    }
-    while (tempAppBaseUrl.endsWith('/')) {
-      tempAppBaseUrl = tempAppBaseUrl.substring(0, tempAppBaseUrl.length - 1);
-    }
-    if (tempAppBaseUrl.isEmpty) {
-      throw StateError('Failed to determine appBaseUrl');
-    }
-    this.appBaseUrl = tempAppBaseUrl;
-  }
-
-  KindeWeb._pathUrlStrategy(this.appBaseUrl);
+  KindeWeb._();
 
   static KindeWeb? _instance;
 
@@ -46,16 +31,13 @@ class KindeWeb {
   }
 
   late final CodeVerifierStorage _codeVerifierStorage;
-  late String appBaseUrl;
 
   static Future<void> initialize({String? appBaseUrl}) async {
     try {
       String? tempAppBaseUrl = appBaseUrl;
-      KindeWeb Function(String) constructor;
 
       if (urlStrategy?.runtimeType is HashUrlStrategy) {
         tempAppBaseUrl ??= Uri.base.toString().trim();
-        constructor = KindeWeb._hashUrlStrategy;
       } else {
         // Log when using fallback strategy
         if (urlStrategy == null) {
@@ -65,7 +47,6 @@ class KindeWeb {
         }
 
         tempAppBaseUrl ??= Uri.base.origin;
-        constructor = KindeWeb._pathUrlStrategy;
       }
 
       // Check validity
@@ -75,7 +56,7 @@ class KindeWeb {
       }
 
       // Proceed
-      _instance = constructor(tempAppBaseUrl);
+      _instance = KindeWeb._();
       _instance?._codeVerifierStorage = await CodeVerifierStorage.initialize();
 
     } catch (e, st) {
