@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:kinde_flutter_sdk/kinde_api.dart';
+import 'package:kinde_flutter_sdk/src/utils/helpers.dart';
+import 'package:kinde_flutter_sdk/src/utils/kinde_debug_print.dart';
 import 'package:kinde_flutter_sdk/src/utils/kinde_secure_storage.dart';
 import 'package:kinde_flutter_sdk/src/kinde_web/src/base/web_oauth_flow.dart';
 
@@ -17,11 +19,8 @@ class KindeWeb {
   /// [appBaseUrl] is the base URL of the application. If not provided,
   /// it will be extracted from the current URL, removing any hash fragments
   /// and trailing slashes.
-  KindeWeb._hashUrlStrategy(String? appBaseUrl) {
-    if (appBaseUrl != null && !(Uri.tryParse(appBaseUrl)?.hasScheme ?? true)) {
-      throw ArgumentError('Invalid appBaseUrl: must be a valid URL');
-    }
-    String tempAppBaseUrl = appBaseUrl ?? Uri.base.toString().trim();
+  KindeWeb._hashUrlStrategy(String appBaseUrl) {
+    String tempAppBaseUrl = appBaseUrl;
     final int ignoreStartIndex = tempAppBaseUrl.indexOf('#');
     if (ignoreStartIndex > -1) {
       tempAppBaseUrl = tempAppBaseUrl.substring(0, ignoreStartIndex);
@@ -35,15 +34,12 @@ class KindeWeb {
     this.appBaseUrl = tempAppBaseUrl;
   }
 
-  KindeWeb._pathUrlStrategy(String? appBaseUrl) {
-    String tempAppBaseUrl = appBaseUrl ?? Uri.base.origin;
-    this.appBaseUrl = tempAppBaseUrl;
-  }
+  KindeWeb._pathUrlStrategy(this.appBaseUrl);
 
   static KindeWeb? _instance;
 
   static KindeWeb get instance {
-    if(_instance == null) {
+    if (_instance == null) {
       throw Exception("Did you forget to call the initialize() method?");
     }
     return _instance!;
@@ -54,29 +50,60 @@ class KindeWeb {
 
   static Future<void> initialize({String? appBaseUrl}) async {
     try {
-      _instance = urlStrategy?.runtimeType is HashUrlStrategy
-          ? KindeWeb._hashUrlStrategy(appBaseUrl)
-          : KindeWeb._pathUrlStrategy(appBaseUrl);
+      String? tempAppBaseUrl = appBaseUrl;
+      KindeWeb Function(String) constructor;
+
+      if (urlStrategy?.runtimeType is HashUrlStrategy) {
+        tempAppBaseUrl ??= Uri.base.toString().trim();
+        constructor = KindeWeb._hashUrlStrategy;
+      } else {
+        // Log when using fallback strategy
+        if (urlStrategy == null) {
+          kindeDebugPrint(methodName: 'KindeWeb.initialize', message: '[Kinde] No urlStrategy detected. Defaulting to path strategy.');
+        } else {
+          kindeDebugPrint(methodName: 'KindeWeb.initialize', message: '[Kinde] Using custom urlStrategy: ${urlStrategy.runtimeType}');
+        }
+
+        tempAppBaseUrl ??= Uri.base.origin;
+        constructor = KindeWeb._pathUrlStrategy;
+      }
+
+      // Check validity
+      final isBaseUrlValid = isSafeWebUrl(tempAppBaseUrl);
+      if (!isBaseUrlValid) {
+        throw ArgumentError('Invalid appBaseUrl: must be a valid HTTP/HTTPS URL');
+      }
+
+      // Proceed
+      _instance = constructor(tempAppBaseUrl);
       _instance?._codeVerifierStorage = await CodeVerifierStorage.initialize();
+
     } catch (e, st) {
       throw KindeError(
-          code: KindeErrorCode.initializingFailed,
-          message: e.toString(),
-          stackTrace: st);
+        code: KindeErrorCode.initializingFailed,
+        message: e.toString(),
+        stackTrace: st,
+      );
     }
   }
 
-  void logout(String? logoutUrl) {
+
+  void logout(String logoutUrl) {
     _clear();
-    WebUtils.replacePage(logoutUrl ?? appBaseUrl);
+    WebUtils.replacePage(logoutUrl);
   }
 
+  bool _loginInProgress = false;
+
   ///If multiple logins are triggered in parallel, then flow finished correctly only for
-  ///last triggered login, for others will be thrown [KindeError] with code=[invalid_grant]
-  void startLoginFlow(
-    AuthorizationRequest configuration,
-  ) {
+  ///last triggered login, for others after finishing login will be thrown [KindeError] with code=[invalid_grant]
+  void startLoginFlow(AuthorizationRequest configuration) {
+    if (_loginInProgress) {
+      throw const KindeError(code: KindeErrorCode.loginInProcess);
+    }
     try {
+      _loginInProgress = true;
+
       final String codeVerifier = generateCodeVerifier();
       _codeVerifierStorage.save(codeVerifier);
       WebOAuthFlow.login(
@@ -85,11 +112,10 @@ class KindeWeb {
       );
     } catch (e) {
       _clear();
-      if (e is KindeError) {
-        rethrow;
-      }
+      if (e is KindeError) rethrow;
     }
   }
+
 
   Future<Credentials?> finishLoginFlow(
       {required String redirectUrl,
@@ -98,6 +124,7 @@ class KindeWeb {
       required String authorizationEndpoint,
       required String tokenEndpoint,
       required List<String> scopes}) async {
+    _loginInProgress = false;
     final codeVerifier = _codeVerifierStorage.restore();
     if (codeVerifier == null) {
       throw const KindeError(
@@ -137,12 +164,7 @@ class KindeWeb {
   }
 
   void _clear() {
+    _loginInProgress = false;
     _codeVerifierStorage.clear();
-    _resetAppBaseUrl();
-  }
-
-  /// Resets the [appBaseUrl] to the origin url to remove any path segments and query parameters in it.
-  void _resetAppBaseUrl() {
-    appBaseUrl = Uri.parse(appBaseUrl).origin;
   }
 }
