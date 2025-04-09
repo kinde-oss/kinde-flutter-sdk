@@ -61,10 +61,12 @@ class KindeError implements Exception {
     if (error is AuthorizationException) {
       return AuthorizationKindeError.fromOauth2Exception(error);
     }
-    if (error is Exception) {
-      throw _handleError(error);
-    }
     if (error is FormatException) {
+      if(error.message.contains("parameter \"state\" expected")) {
+          return KindeError(
+              code: KindeErrorCode.authStateNotMatch,
+              message: error.message);
+      }
       final jsonMatch = RegExp(r'\{.*\}').firstMatch(error.message);
       if (jsonMatch != null) {
         final jsonString = jsonMatch.group(0);
@@ -81,6 +83,9 @@ class KindeError implements Exception {
               code: KindeErrorCode.unknown, message: e.toString());
         }
       }
+    }
+    if (error is Exception) {
+      return _handleError(error);
     }
     return KindeError(message: error.toString(), stackTrace: stackTrace);
   }

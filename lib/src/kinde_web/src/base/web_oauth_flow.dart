@@ -10,50 +10,7 @@ const int _httpDefaultPort = 80;
 const int _httpsDefaultPort = 443;
 
 abstract class WebOAuthFlow {
-  static Future<Credentials?> _getClientCredentials({
-    required List<String> scopes,
-    required String redirectUrl,
-    required AuthorizationCodeGrant authorizationCodeGrant,
-    required Uri responseUri,
-  }) async {
-    try {
-      final parameters = responseUri.queryParameters;
-
-      if (parameters.isEmpty) {
-        kindeDebugPrint(
-            methodName: "getClientCredentials",
-            message: "parameters are empty");
-        return null;
-      }
-
-      authorizationCodeGrant.getAuthorizationUrl(
-        Uri.parse(redirectUrl),
-        scopes: scopes,
-      );
-
-      final client =
-          await authorizationCodeGrant.handleAuthorizationResponse(parameters);
-      return client.credentials;
-    } catch (e, st) {
-      _handleError(e, st);
-      return null;
-    }
-  }
-
-  static void _handleError(Object error, StackTrace st) {
-    {
-      if (error is AuthorizationException) {
-        throw AuthorizationKindeError.fromOauth2Exception(error);
-      }
-
-      throw KindeError(
-          code: KindeErrorCode.unknown,
-          message: error.toString(),
-          stackTrace: st);
-    }
-  }
-
-  static void login(
+  static Future<void> login(
     AuthorizationRequest configuration, {
     required String codeVerifier,
   }) async {
@@ -61,14 +18,14 @@ abstract class WebOAuthFlow {
     try {
       await KindeSecureStorage.instance.saveAuthRequestState(authState);
     } catch (e, st) {
-      throw KindeError(code: KindeErrorCode.unknown, message: e.toString(), stackTrace: st);
+      throw KindeError(
+          code: KindeErrorCode.unknown, message: e.toString(), stackTrace: st);
     }
-      final initialUri = _getInitialUrl(
-          configuration: configuration,
-          codeVerifier: codeVerifier,
-          authState: authState);
-      WebUtils.replacePage(initialUri.toString());
-
+    final initialUri = _getInitialUrl(
+        configuration: configuration,
+        codeVerifier: codeVerifier,
+        authState: authState);
+    WebUtils.replacePage(initialUri.toString());
   }
 
   static Future<Credentials?> finishLogin({
@@ -78,24 +35,21 @@ abstract class WebOAuthFlow {
     required String authRequestState,
     required List<String> scopes,
   }) async {
-    final Uri responseUri = Uri.parse(_sanitizeRedirect(responseUrl));
-    if (responseUri.queryParameters['state'] != authRequestState) {
-      throw const KindeError(
-          code: KindeErrorCode.authStateNotMatch,
-          message: "Stored state is not equal state in response.");
-    }
-
-    ///throws KindeError with code=not-redirect-url
-    _isValidRedirect(responseUri, redirectUrl);
-
     try {
-      final credentials = await _getClientCredentials(
-          scopes: scopes,
-          authorizationCodeGrant: authorizationCodeGrant,
-          responseUri: responseUri,
-          redirectUrl: redirectUrl);
+      final Uri responseUri = Uri.parse(_sanitizeRedirect(responseUrl));
 
-      return credentials;
+      ///preparing for handling authorization response
+      authorizationCodeGrant.getAuthorizationUrl(Uri.parse(redirectUrl),
+          scopes: scopes, state: authRequestState);
+
+      ///throws KindeError with code=not-redirect-url
+      _compareActualRedirectUriWithExpected(
+          actual: responseUri, expected: redirectUrl);
+
+      ///Get client credentials
+      final client = await authorizationCodeGrant
+          .handleAuthorizationResponse(responseUri.queryParameters);
+      return client.credentials;
     } catch (e, st) {
       throw KindeError.fromError(e, st);
     }
@@ -103,17 +57,17 @@ abstract class WebOAuthFlow {
 
   /// Ensures the responseRedirect matches a known valid redirect URL,
   /// throws KindeError with code=not=redirect-url
-  static bool _isValidRedirect(
-      Uri actualRedirectUri, String expectedRedirectUrl) {
-    final Uri validUri = Uri.parse(expectedRedirectUrl);
+  static void _compareActualRedirectUriWithExpected(
+      {required Uri actual, required String expected}) {
+    final Uri validUri = Uri.parse(expected);
 
-    if (_urisMatch(actualRedirectUri, validUri)) {
-      return true;
+    if (_urisMatch(actual, validUri)) {
+      return;
     }
 
     final comparingSummary = '''
     Expected: $validUri,
-    Actual: ${actualRedirectUri.toString()}
+    Actual: ${actual.toString()}
   ''';
 
     kindeDebugPrint(methodName: "isValidRedirect", message: comparingSummary);
@@ -121,6 +75,7 @@ abstract class WebOAuthFlow {
         code: KindeErrorCode.notRedirect, message: comparingSummary);
   }
 
+  ///ignoring query parameters
   static bool _urisMatch(Uri a, Uri b) {
     return a.scheme == b.scheme &&
         a.host == b.host &&
@@ -148,8 +103,6 @@ abstract class WebOAuthFlow {
     required String codeVerifier,
     required String authState,
   }) {
-    Uri initialUri = Uri();
-
     final redirectUrl = configuration.redirectUrl;
 
     final authorizationCodeGrant = AuthorizationCodeGrant(
@@ -159,7 +112,8 @@ abstract class WebOAuthFlow {
       codeVerifier: codeVerifier,
       basicAuth: true,
     );
-    initialUri = authorizationCodeGrant.getAuthorizationUrl(
+
+    Uri initialUri = authorizationCodeGrant.getAuthorizationUrl(
       Uri.parse(redirectUrl),
       scopes: configuration.scopes,
     );

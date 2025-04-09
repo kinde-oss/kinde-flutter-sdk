@@ -28,8 +28,8 @@ class CodeVerifierStorage {
 
   /// Clears the last [codeVerifier] saved state.
   /// Only used in web.
-  void clear() {
-    _sharedPreferences?.remove(_codeVerifierKey);
+  Future<void> clear() async {
+    await _sharedPreferences?.remove(_codeVerifierKey);
   }
 
   /// Saves the state of [codeVerifier].

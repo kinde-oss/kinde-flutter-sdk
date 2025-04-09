@@ -1,6 +1,8 @@
 bool isSafeWebUrl(String input) {
   final uri = Uri.tryParse(input);
-  return uri != null &&
-      (uri.isAbsolute) &&
-      (uri.scheme == 'http' || uri.scheme == 'https');
+  if (uri == null || !uri.isAbsolute) {
+    return false;
+  }
+  final scheme = uri.scheme.toLowerCase();
+  return scheme == 'http' || scheme == 'https';
 }

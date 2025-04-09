@@ -144,9 +144,11 @@ class KindeFlutterSDK with TokenUtils {
 
       step = 'finalization';
       return instance;
-
     } catch (e, st) {
-      kindeDebugPrint(methodName: "KindeFlutterSDK.initializeSDK", message: 'SDK initialization failed at step: $step');
+      _config = null;
+      kindeDebugPrint(
+          methodName: "KindeFlutterSDK.initializeSDK",
+          message: 'SDK initialization failed at step: $step');
       if (e is KindeError) rethrow;
 
       throw KindeError(
@@ -156,7 +158,6 @@ class KindeFlutterSDK with TokenUtils {
       );
     }
   }
-
 
   static Future<String> getTemporaryDirectoryPath() async {
     Directory? path;
@@ -169,31 +170,31 @@ class KindeFlutterSDK with TokenUtils {
   }
 
   /// for web it invokes logoutRedirectUri
-  Future<void> logout({Dio? dio}) async {
+  Future<void> logout(
+      {Dio? dio, bool macosLogoutWithoutRedirection = true}) async {
     if (!kIsWeb) {
-      switch (Platform.operatingSystem) {
-        case "macos":
-          _logoutWithoutRedirection(dio: dio);
-          return;
-        case "android":
-        case "ios":
-          try {
-            const appAuth = FlutterAppAuth();
-            final endSessionRequest = EndSessionRequest(
-              externalUserAgent:
-                  ExternalUserAgent.ephemeralAsWebAuthenticationSession,
-              idTokenHint: _config!.authClientId,
-              postLogoutRedirectUrl: _config!.logoutRedirectUri,
-              serviceConfiguration: _serviceConfiguration,
-            );
-            await appAuth.endSession(endSessionRequest);
-          } on FlutterAppAuthPlatformException catch (e) {
-            debugPrint("Error in logout(), details: ${e.details}");
-            return;
-          } catch (e) {
-            debugPrint("Error in logout(): $e");
-            return;
-          }
+      if (Platform.operatingSystem == "macos" &&
+          macosLogoutWithoutRedirection) {
+        _logoutWithoutRedirection(dio: dio);
+        return;
+      }
+      try {
+        const appAuth = FlutterAppAuth();
+        final endSessionRequest = EndSessionRequest(
+          ///macOS and iOS 12 and above
+          externalUserAgent:
+              ExternalUserAgent.ephemeralAsWebAuthenticationSession,
+          idTokenHint: _config!.authClientId,
+          postLogoutRedirectUrl: _config!.logoutRedirectUri,
+          serviceConfiguration: _serviceConfiguration,
+        );
+        await appAuth.endSession(endSessionRequest);
+      } on FlutterAppAuthPlatformException catch (e) {
+        debugPrint("Error in logout(), details: ${e.details}");
+        return;
+      } catch (e) {
+        debugPrint("Error in logout(): $e");
+        return;
       }
     }
     _kindeApi.setBearerAuth(_bearerAuth, '');
@@ -376,20 +377,26 @@ class KindeFlutterSDK with TokenUtils {
   }
 
   Future<bool> isAuthenticated() async {
-    final finishLoginUri = _isWebAuthInProcess();
+    final finishLoginUri = _isCurrentUrlContainWebAuthParams();
     if (finishLoginUri != null) {
-      final isWebLoginSuccess = await _finishWebLogin(finishLoginUri);
-      return isWebLoginSuccess;
+      final storedState =
+          await KindeSecureStorage.instance.getAuthRequestState();
+      if (storedState != null) {
+        return await _finishWebLogin(finishLoginUri);
+      }
     }
-    return authState != null && !authState!.isExpired() && await _checkToken();
+
+    final hasValidAuthState = authState != null && !authState!.isExpired();
+    return hasValidAuthState && await _checkToken();
   }
 
   ///returns current url if it contain required params for finishing auth flow
-  String? _isWebAuthInProcess() {
+  String? _isCurrentUrlContainWebAuthParams() {
     if (kIsWeb && authState == null) {
       final currentUrl = WebUtils.getCurrentUrl ?? "";
       final currentUri = Uri.tryParse(currentUrl);
-      return (currentUri?.queryParameters["code"]?.isNotEmpty ?? false) && (currentUri?.queryParameters["state"]?.isNotEmpty ?? false)
+      return (currentUri?.queryParameters["code"]?.isNotEmpty ?? false) &&
+              (currentUri?.queryParameters["state"]?.isNotEmpty ?? false)
           ? currentUrl
           : null;
     }

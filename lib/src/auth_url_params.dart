@@ -19,16 +19,16 @@ class AuthUrlParams {
   Map<String, String> toMap() {
     final params = <String, String>{};
     if (orgCode != null) {
-      params.putIfAbsent("org_code", () => orgCode!);
+      params["org_code"] = orgCode!;
     }
     if (lang != null) {
-      params.putIfAbsent("lang", () => lang!);
+      params["lang"] = lang!;
     }
     if (connectionId != null) {
-      params.putIfAbsent("connection_id", () => connectionId!);
+      params["connection_id"] = connectionId!;
     }
     if (loginHint != null) {
-      params.putIfAbsent("login_hint", () => loginHint!);
+      params["login_hint"] = loginHint!;
     }
     return params;
   }

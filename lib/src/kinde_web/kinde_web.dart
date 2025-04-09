@@ -41,9 +41,15 @@ class KindeWeb {
       } else {
         // Log when using fallback strategy
         if (urlStrategy == null) {
-          kindeDebugPrint(methodName: 'KindeWeb.initialize', message: '[Kinde] No urlStrategy detected. Defaulting to path strategy.');
+          kindeDebugPrint(
+              methodName: 'KindeWeb.initialize',
+              message:
+                  '[Kinde] No urlStrategy detected. Defaulting to path strategy.');
         } else {
-          kindeDebugPrint(methodName: 'KindeWeb.initialize', message: '[Kinde] Using custom urlStrategy: ${urlStrategy.runtimeType}');
+          kindeDebugPrint(
+              methodName: 'KindeWeb.initialize',
+              message:
+                  '[Kinde] Using custom urlStrategy: ${urlStrategy.runtimeType}');
         }
 
         tempAppBaseUrl ??= Uri.base.origin;
@@ -52,13 +58,13 @@ class KindeWeb {
       // Check validity
       final isBaseUrlValid = isSafeWebUrl(tempAppBaseUrl);
       if (!isBaseUrlValid) {
-        throw ArgumentError('Invalid appBaseUrl: must be a valid HTTP/HTTPS URL');
+        throw ArgumentError(
+            'Invalid appBaseUrl: must be a valid HTTP/HTTPS URL');
       }
 
       // Proceed
       _instance = KindeWeb._();
       _instance?._codeVerifierStorage = await CodeVerifierStorage.initialize();
-
     } catch (e, st) {
       throw KindeError(
         code: KindeErrorCode.initializingFailed,
@@ -68,8 +74,12 @@ class KindeWeb {
     }
   }
 
-
   void logout(String logoutUrl) {
+    if (!isSafeWebUrl(logoutUrl)) {
+      throw const KindeError(
+          code: KindeErrorCode.invalidRedirect,
+          message: 'Unsafe or untrusted logout URL detected');
+    }
     _clear();
     WebUtils.replacePage(logoutUrl);
   }
@@ -97,7 +107,6 @@ class KindeWeb {
     }
   }
 
-
   Future<Credentials?> finishLoginFlow(
       {required String redirectUrl,
       required String responseUrl,
@@ -105,7 +114,6 @@ class KindeWeb {
       required String authorizationEndpoint,
       required String tokenEndpoint,
       required List<String> scopes}) async {
-    _loginInProgress = false;
     final codeVerifier = _codeVerifierStorage.restore();
     if (codeVerifier == null) {
       throw const KindeError(
@@ -136,7 +144,7 @@ class KindeWeb {
           authorizationCodeGrant: authorizationCodeGrant,
           redirectUrl: redirectUrl,
           scopes: scopes);
-      _clear();
+      await _clear();
       return credentials;
     } catch (e, st) {
       _clear();
@@ -144,8 +152,9 @@ class KindeWeb {
     }
   }
 
-  void _clear() {
+  Future<void> _clear() async {
     _loginInProgress = false;
-    _codeVerifierStorage.clear();
+    await KindeSecureStorage.instance.removeAuthRequestState();
+    await _codeVerifierStorage.clear();
   }
 }

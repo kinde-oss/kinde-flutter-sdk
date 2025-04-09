@@ -28,4 +28,5 @@ abstract class KindeErrorCode {
   /// Parameter 'state' used for login request isn't equal stored one.
   static const notRedirect = "not-redirect-url";
   static const loginInProcess = "login-in-process";
+  static const invalidRedirect = "invalid-redirect";
 }
