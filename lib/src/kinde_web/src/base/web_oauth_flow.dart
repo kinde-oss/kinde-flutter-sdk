@@ -1,7 +1,7 @@
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:kinde_flutter_sdk/kinde_api.dart';
 import 'package:kinde_flutter_sdk/src/utils/kinde_debug_print.dart';
-import 'package:kinde_flutter_sdk/src/utils/kinde_secure_storage.dart';
+import 'package:kinde_flutter_sdk/src/kinde_secure_storage/kinde_secure_storage.dart';
 import 'package:oauth2/oauth2.dart';
 
 import '../utils/cross_platform_support.dart';
@@ -13,14 +13,8 @@ abstract class WebOAuthFlow {
   static Future<void> login(
     AuthorizationRequest configuration, {
     required String codeVerifier,
+    required String authState,
   }) async {
-    final String authState = generateAuthState();
-    try {
-      await KindeSecureStorage.instance.saveAuthRequestState(authState);
-    } catch (e, st) {
-      throw KindeError(
-          code: KindeErrorCode.unknown, message: e.toString(), stackTrace: st);
-    }
     final initialUri = _getInitialUrl(
         configuration: configuration,
         codeVerifier: codeVerifier,
@@ -42,9 +36,10 @@ abstract class WebOAuthFlow {
       authorizationCodeGrant.getAuthorizationUrl(Uri.parse(redirectUrl),
           scopes: scopes, state: authRequestState);
 
+      final sanitizedExpected = _sanitizeRedirect(redirectUrl);
       ///throws KindeError with code=not-redirect-url
       _compareActualRedirectUriWithExpected(
-          actual: responseUri, expected: redirectUrl);
+          actual: responseUri, expected: sanitizedExpected);
 
       ///Get client credentials
       final client = await authorizationCodeGrant
@@ -116,19 +111,20 @@ abstract class WebOAuthFlow {
     Uri initialUri = authorizationCodeGrant.getAuthorizationUrl(
       Uri.parse(redirectUrl),
       scopes: configuration.scopes,
+      state: authState
     );
-    final queryParameters = {
-      'state': authState,
-      if (configuration.promptValues?.isNotEmpty ?? false)
-        'prompt': configuration.promptValues!.join(' '),
-    };
-    for (var queryParam in initialUri.queryParameters.entries) {
-      queryParameters.putIfAbsent(queryParam.key, () => queryParam.value);
+    final Map<String, String> queryParameters = Map.from(initialUri.queryParameters);
+    if (configuration.promptValues?.isNotEmpty ?? false) {
+      queryParameters.putIfAbsent('prompt', () => configuration.promptValues!.join(' '));
     }
-    initialUri = initialUri.replace(
-        queryParameters: Map.from(initialUri.queryParameters)
-          ..addAll(queryParameters)
-          ..addAll(configuration.additionalParameters ?? {}));
+    //configuration.additionalParameters is AuthUrlParams in Map<String, String> representation
+    //not should contain critical params such: [client_id, redirect_uri, response_type, state, scope, prompt, code_challenge, code_challenge_method]
+    if (configuration.additionalParameters != null && configuration.additionalParameters!.isNotEmpty) {
+      for(final param in configuration.additionalParameters!.entries) {
+        queryParameters.putIfAbsent(param.key, () => param.value);
+      }
+    }
+    initialUri = initialUri.replace(queryParameters: queryParameters);
     return initialUri;
   }
 }

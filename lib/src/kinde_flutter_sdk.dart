@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:kinde_flutter_sdk/src/kinde_secure_storage/kinde_secure_storage_i.dart';
 import 'package:kinde_flutter_sdk/src/utils/kinde_debug_print.dart';
-import 'package:kinde_flutter_sdk/src/utils/kinde_secure_storage.dart';
+import 'package:kinde_flutter_sdk/src/kinde_secure_storage/kinde_secure_storage.dart';
 import 'package:kinde_flutter_sdk/src/kinde_web/kinde_web.dart';
 import 'package:kinde_flutter_sdk/src/kinde_web/src/utils/cross_platform_support.dart';
 
@@ -39,6 +40,8 @@ class KindeFlutterSDK with TokenUtils {
   // Singleton
   static KindeFlutterSDK? _instance;
 
+  late final KindeSecureStorageInterface _kindeSecureStorage;
+
   @override
   AuthState? get authState => _store.authState;
 
@@ -52,13 +55,20 @@ class KindeFlutterSDK with TokenUtils {
     return _instance ??= KindeFlutterSDK._internal();
   }
 
-  KindeFlutterSDK._internal() {
+  @visibleForTesting
+  static KindeFlutterSDK testInstance(KindeSecureStorageInterface? kindeSecureStorage) {
+    return _instance ??= KindeFlutterSDK._internal(secureStorage: kindeSecureStorage);
+  }
+
+  KindeFlutterSDK._internal({KindeSecureStorageInterface? secureStorage}) {
     if (_config == null) {
       throw const KindeError(
         code: KindeErrorCode.missingConfig,
         message: 'KindeFlutterSDK has not been configured',
       );
     }
+
+    _kindeSecureStorage = secureStorage ?? KindeSecureStorage();
 
     var domainUrl = "";
     if (_config!.authDomain.startsWith('https')) {
@@ -99,6 +109,7 @@ class KindeFlutterSDK with TokenUtils {
     }
   }
 
+
   Store get _store => Store.instance;
 
   static Future<KindeFlutterSDK> initializeSDK({
@@ -109,6 +120,8 @@ class KindeFlutterSDK with TokenUtils {
     List<String> scopes = _defaultScopes,
     String? audience,
   }) async {
+    final classInstance = KindeFlutterSDK._internal();
+
     String step = 'initializing';
 
     try {
@@ -123,12 +136,13 @@ class KindeFlutterSDK with TokenUtils {
       );
 
       step = 'secure key retrieval';
-      List<int>? secureKey = await KindeSecureStorage.instance.getSecureKey();
+      List<int>? secureKey =
+          await classInstance._kindeSecureStorage.getSecureKey();
 
       if (secureKey == null) {
         step = 'secure key generation and storage';
         secureKey = Hive.generateSecureKey();
-        await KindeSecureStorage.instance.saveSecureKey(secureKey);
+        await classInstance._kindeSecureStorage.saveSecureKey(secureKey);
       }
 
       step = 'temp path resolution';
@@ -139,7 +153,7 @@ class KindeFlutterSDK with TokenUtils {
 
       if (kIsWeb) {
         step = 'web layer initialization';
-        await KindeWeb.initialize();
+        await KindeWeb.initialize(secureStorage: classInstance._kindeSecureStorage);
       }
 
       step = 'finalization';
@@ -379,8 +393,7 @@ class KindeFlutterSDK with TokenUtils {
   Future<bool> isAuthenticated() async {
     final finishLoginUri = _isCurrentUrlContainWebAuthParams();
     if (finishLoginUri != null) {
-      final storedState =
-          await KindeSecureStorage.instance.getAuthRequestState();
+      final storedState = await _kindeSecureStorage.getAuthRequestState();
       if (storedState != null) {
         return await _finishWebLogin(finishLoginUri);
       }

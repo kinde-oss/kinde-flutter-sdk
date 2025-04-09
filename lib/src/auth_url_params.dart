@@ -1,9 +1,7 @@
-import 'dart:collection';
 
 class AuthUrlParams {
   final String? orgCode;
   final String? loginHint;
-  // static const _connectionId = 'connection_id';
   /// Language to display for login page
   final String? lang;
   /// Connection id string corresponding to social sign in

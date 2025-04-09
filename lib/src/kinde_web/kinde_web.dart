@@ -2,9 +2,10 @@ import 'dart:async';
 
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:kinde_flutter_sdk/kinde_api.dart';
+import 'package:kinde_flutter_sdk/src/kinde_secure_storage/kinde_secure_storage_i.dart';
 import 'package:kinde_flutter_sdk/src/utils/helpers.dart';
 import 'package:kinde_flutter_sdk/src/utils/kinde_debug_print.dart';
-import 'package:kinde_flutter_sdk/src/utils/kinde_secure_storage.dart';
+import 'package:kinde_flutter_sdk/src/kinde_secure_storage/kinde_secure_storage.dart';
 import 'package:kinde_flutter_sdk/src/kinde_web/src/base/web_oauth_flow.dart';
 
 import 'package:flutter_web_plugins/url_strategy.dart';
@@ -19,7 +20,9 @@ class KindeWeb {
   /// [appBaseUrl] is the base URL of the application. If not provided,
   /// it will be extracted from the current URL, removing any hash fragments
   /// and trailing slashes.
-  KindeWeb._();
+  KindeWeb._(this._kindeSecureStorage);
+
+  final KindeSecureStorageInterface _kindeSecureStorage;
 
   static KindeWeb? _instance;
 
@@ -32,7 +35,8 @@ class KindeWeb {
 
   late final CodeVerifierStorage _codeVerifierStorage;
 
-  static Future<void> initialize({String? appBaseUrl}) async {
+  static Future<void> initialize(
+      {String? appBaseUrl, required KindeSecureStorageInterface secureStorage}) async {
     try {
       String? tempAppBaseUrl = appBaseUrl;
 
@@ -62,8 +66,12 @@ class KindeWeb {
             'Invalid appBaseUrl: must be a valid HTTP/HTTPS URL');
       }
 
+      kindeDebugPrint(
+          methodName: 'KindeWeb.initialize',
+          message: 'Successfully validated base URL: $tempAppBaseUrl');
+
       // Proceed
-      _instance = KindeWeb._();
+      _instance = KindeWeb._(secureStorage);
       _instance?._codeVerifierStorage = await CodeVerifierStorage.initialize();
     } catch (e, st) {
       throw KindeError(
@@ -74,13 +82,16 @@ class KindeWeb {
     }
   }
 
-  void logout(String logoutUrl) {
+  Future<void> logout(String logoutUrl) async {
+    if (_loginInProgress) {
+      throw const KindeError(code: KindeErrorCode.loginInProcess);
+    }
     if (!isSafeWebUrl(logoutUrl)) {
       throw const KindeError(
           code: KindeErrorCode.invalidRedirect,
           message: 'Unsafe or untrusted logout URL detected');
     }
-    _clear();
+    await _clear();
     WebUtils.replacePage(logoutUrl);
   }
 
@@ -88,7 +99,7 @@ class KindeWeb {
 
   ///If multiple logins are triggered in parallel, then flow finished correctly only for
   ///last triggered login, for others after finishing login will be thrown [KindeError] with code=[invalid_grant]
-  void startLoginFlow(AuthorizationRequest configuration) {
+  Future<void> startLoginFlow(AuthorizationRequest configuration) async {
     if (_loginInProgress) {
       throw const KindeError(code: KindeErrorCode.loginInProcess);
     }
@@ -97,12 +108,19 @@ class KindeWeb {
 
       final String codeVerifier = generateCodeVerifier();
       _codeVerifierStorage.save(codeVerifier);
-      WebOAuthFlow.login(
-        configuration,
-        codeVerifier: codeVerifier,
-      );
+      final String authState = generateAuthState();
+      try {
+        await _kindeSecureStorage.saveAuthRequestState(authState);
+      } catch (e, st) {
+        throw KindeError(
+            code: KindeErrorCode.unknown,
+            message: e.toString(),
+            stackTrace: st);
+      }
+      WebOAuthFlow.login(configuration,
+          codeVerifier: codeVerifier, authState: authState);
     } catch (e) {
-      _clear();
+      await _clear();
       if (e is KindeError) rethrow;
     }
   }
@@ -121,8 +139,7 @@ class KindeWeb {
           message: "No code verifier in storage.");
     }
 
-    final authRequestState =
-        await KindeSecureStorage.instance.getAuthRequestState();
+    final authRequestState = await _kindeSecureStorage.getAuthRequestState();
     if (authRequestState == null) {
       throw const KindeError(
           code: KindeErrorCode.noAuthStateStored,
@@ -147,14 +164,14 @@ class KindeWeb {
       await _clear();
       return credentials;
     } catch (e, st) {
-      _clear();
+      await _clear();
       throw KindeError.fromError(e, st);
     }
   }
 
   Future<void> _clear() async {
     _loginInProgress = false;
-    await KindeSecureStorage.instance.removeAuthRequestState();
+    await _kindeSecureStorage.removeAuthRequestState();
     await _codeVerifierStorage.clear();
   }
 }
