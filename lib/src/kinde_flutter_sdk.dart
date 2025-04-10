@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:kinde_flutter_sdk/src/additional_params.dart';
 import 'package:kinde_flutter_sdk/src/kinde_secure_storage/kinde_secure_storage_i.dart';
 import 'package:kinde_flutter_sdk/src/utils/kinde_debug_print.dart';
 import 'package:kinde_flutter_sdk/src/kinde_secure_storage/kinde_secure_storage.dart';
@@ -25,10 +26,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:pubspec_parse/pubspec_parse.dart';
 
 class KindeFlutterSDK with TokenUtils {
-  static const _orgNameParamName = 'org_name';
-  static const _audienceParamName = 'audience';
-  static const _createOrgParamName = 'is_create_org';
-  static const _registrationPageParamName = 'start_page';
   static const _registrationPageParamValue = 'registration';
   static const _authPath = '/oauth2/auth';
   static const _tokenPath = '/oauth2/token';
@@ -56,8 +53,10 @@ class KindeFlutterSDK with TokenUtils {
   }
 
   @visibleForTesting
-  static KindeFlutterSDK testInstance(KindeSecureStorageInterface? kindeSecureStorage) {
-    return _instance ??= KindeFlutterSDK._internal(secureStorage: kindeSecureStorage);
+  static KindeFlutterSDK testInstance(
+      KindeSecureStorageInterface? kindeSecureStorage) {
+    return _instance ??=
+        KindeFlutterSDK._internal(secureStorage: kindeSecureStorage);
   }
 
   KindeFlutterSDK._internal({KindeSecureStorageInterface? secureStorage}) {
@@ -109,7 +108,6 @@ class KindeFlutterSDK with TokenUtils {
     }
   }
 
-
   Store get _store => Store.instance;
 
   static Future<KindeFlutterSDK> initializeSDK({
@@ -120,7 +118,6 @@ class KindeFlutterSDK with TokenUtils {
     List<String> scopes = _defaultScopes,
     String? audience,
   }) async {
-    final classInstance = KindeFlutterSDK._internal();
 
     String step = 'initializing';
 
@@ -136,13 +133,17 @@ class KindeFlutterSDK with TokenUtils {
       );
 
       step = 'secure key retrieval';
+
+
+      final kindeSecureStorage = KindeSecureStorage();
+
       List<int>? secureKey =
-          await classInstance._kindeSecureStorage.getSecureKey();
+          await kindeSecureStorage.getSecureKey();
 
       if (secureKey == null) {
         step = 'secure key generation and storage';
         secureKey = Hive.generateSecureKey();
-        await classInstance._kindeSecureStorage.saveSecureKey(secureKey);
+        await kindeSecureStorage.saveSecureKey(secureKey);
       }
 
       step = 'temp path resolution';
@@ -153,11 +154,12 @@ class KindeFlutterSDK with TokenUtils {
 
       if (kIsWeb) {
         step = 'web layer initialization';
-        await KindeWeb.initialize(secureStorage: classInstance._kindeSecureStorage);
+        await KindeWeb.initialize(secureStorage: kindeSecureStorage);
       }
 
       step = 'finalization';
-      return instance;
+
+      return KindeFlutterSDK._internal(secureStorage: kindeSecureStorage);
     } catch (e, st) {
       _config = null;
       kindeDebugPrint(
@@ -243,43 +245,95 @@ class KindeFlutterSDK with TokenUtils {
   /// for web it returns null, and invokes loginRedirectUri
   Future<String?> login({
     AuthFlowType? type,
-    AuthUrlParams? urlParams,
+    AdditionalParameters additionalParams = const AdditionalParameters(),
   }) async {
+    final internalAdditionalParams =
+        _prepareInternalAdditionalParameters(additionalParams);
     return _redirectToKinde(
       type: type,
-      queryParams: urlParams?.toMap(),
+      internalAdditionalParameters: internalAdditionalParams,
     );
+  }
+
+  InternalAdditionalParameters _prepareInternalAdditionalParameters(
+      AdditionalParameters additionalParams) {
+    final internalAdditionalParams =
+        InternalAdditionalParameters.fromUserAdditionalParams(additionalParams);
+    internalAdditionalParams.audience = _config!.audience;
+    internalAdditionalParams.promptValues = ['login'];
+    internalAdditionalParams.scopes = _config!.scopes;
+    return internalAdditionalParams;
   }
 
   /// for web it returns null, and invokes loginRedirectUri
   Future<String?> _redirectToKinde({
     AuthFlowType? type,
-    Map<String, String>? queryParams,
+    required InternalAdditionalParameters internalAdditionalParameters,
   }) async {
-    final Map<String, String> params = Map.from(queryParams ?? {});
-    if (_config?.audience != null) {
-      params.putIfAbsent(_audienceParamName, () => _config!.audience!);
-    }
     if (kIsWeb) {
-      _handleWebLogin(params);
+      _handleWebLogin(internalAdditionalParameters);
     } else {
-      return _handleOtherLogin(type, params);
+      return _handleOtherLogin(type, internalAdditionalParameters);
     }
-
     return null;
   }
 
+  //MacOs, Android, IOS
   Future<String?> _handleOtherLogin(
-      AuthFlowType? type, Map<String, String> params) {
-    if (type == AuthFlowType.pkce) {
-      return _pkceLogin(params);
-    } else {
-      return _normalLogin(params);
+      AuthFlowType? type, InternalAdditionalParameters params) async {
+    const appAuth = FlutterAppAuth();
+    TokenResponse tokenResponse;
+    final additionalParameters = params.toMap();
+    try {
+      if (type == AuthFlowType.pkce) {
+        final AuthorizationResponse result = await appAuth.authorize(
+          AuthorizationRequest(
+            _config!.authClientId,
+            _config!.loginRedirectUri,
+            serviceConfiguration: _serviceConfiguration,
+            externalUserAgent:
+                ExternalUserAgent.ephemeralAsWebAuthenticationSession,
+            additionalParameters: additionalParameters,
+          ),
+        );
+
+        tokenResponse = await appAuth.token(
+          TokenRequest(
+            _config!.authClientId,
+            _config!.loginRedirectUri,
+            codeVerifier: result.codeVerifier,
+            authorizationCode: result.authorizationCode,
+            serviceConfiguration: _serviceConfiguration,
+            nonce: result.nonce,
+            additionalParameters: additionalParameters,
+          ),
+        );
+      } else {
+        tokenResponse = await appAuth.authorizeAndExchangeCode(
+          AuthorizationTokenRequest(
+            _config!.authClientId,
+            _config!.loginRedirectUri,
+            serviceConfiguration: _serviceConfiguration,
+            externalUserAgent:
+                ExternalUserAgent.ephemeralAsWebAuthenticationSession,
+            additionalParameters: additionalParameters,
+          ),
+        );
+      }
+
+      if (params.orgName != null) {
+        return params.orgName;
+      }
+
+      _saveState(tokenResponse);
+      return tokenResponse.accessToken;
+    } catch (e, st) {
+      throw KindeError.fromError(e, st);
     }
   }
 
   void _handleWebLogin(
-    Map<String, String> params,
+    InternalAdditionalParameters params,
   ) {
     KindeWeb.instance.startLoginFlow(
       AuthorizationRequest(
@@ -288,10 +342,8 @@ class KindeFlutterSDK with TokenUtils {
         serviceConfiguration: _serviceConfiguration,
         externalUserAgent:
             ExternalUserAgent.ephemeralAsWebAuthenticationSession,
-        scopes: _config!.scopes,
-        promptValues: ['login'],
-        additionalParameters: params,
       ),
+      additionalParameters: params
     );
   }
 
@@ -328,16 +380,14 @@ class KindeFlutterSDK with TokenUtils {
   /// for web it returns null, and invokes loginRedirectUri
   Future<String?> register({
     AuthFlowType? type,
-    AuthUrlParams? authUrlParams,
+    AdditionalParameters additionalParams = const AdditionalParameters(),
   }) async {
-    final additionalParams = {
-      _registrationPageParamName: _registrationPageParamValue
-    };
-    if (authUrlParams != null) {
-      additionalParams.addAll(authUrlParams.toMap());
-    }
+    final internalAdditionalParams =
+        _prepareInternalAdditionalParameters(additionalParams);
+    internalAdditionalParams.registrationPage = _registrationPageParamValue;
 
-    return _redirectToKinde(type: type, queryParams: additionalParams);
+    return _redirectToKinde(
+        type: type, internalAdditionalParameters: internalAdditionalParams);
   }
 
   Future<UserProfileV2?> getUserProfileV2() async {
@@ -357,13 +407,13 @@ class KindeFlutterSDK with TokenUtils {
   }
 
   Future<void> createOrg({required String orgName, AuthFlowType? type}) async {
-    final params = {
-      _registrationPageParamName: _registrationPageParamValue,
-      _createOrgParamName: "true",
-      _orgNameParamName: orgName
-    };
+    final params =
+        _prepareInternalAdditionalParameters(const AdditionalParameters());
+    params.registrationPage = _registrationPageParamValue;
+    params.createOrg = true;
+    params.orgName = orgName;
 
-    await _redirectToKinde(type: type, queryParams: params);
+    await _redirectToKinde(type: type, internalAdditionalParameters: params);
   }
 
   Future<String?> getToken() async {
@@ -416,72 +466,6 @@ class KindeFlutterSDK with TokenUtils {
     return null;
   }
 
-  Future<String?> _normalLogin(Map<String, String> additionalParams) async {
-    try {
-      const appAuth = FlutterAppAuth();
-      final authorizationTokenResponse = await appAuth.authorizeAndExchangeCode(
-        AuthorizationTokenRequest(
-          _config!.authClientId,
-          _config!.loginRedirectUri,
-          serviceConfiguration: _serviceConfiguration,
-          externalUserAgent:
-              ExternalUserAgent.ephemeralAsWebAuthenticationSession,
-          scopes: _config!.scopes,
-          promptValues: ['login'],
-          additionalParameters: additionalParams,
-        ),
-      );
-
-      if (additionalParams.containsKey(_orgNameParamName)) {
-        return additionalParams[_orgNameParamName];
-      }
-      _saveState(authorizationTokenResponse);
-      return authorizationTokenResponse.accessToken;
-    } catch (e, st) {
-      throw KindeError.fromError(e, st);
-    }
-  }
-
-  Future<String?> _pkceLogin(Map<String, String> additionalParams) async {
-    const appAuth = FlutterAppAuth();
-    final loginHint = additionalParams.remove("login_hint");
-    try {
-      final result = await appAuth.authorize(
-        AuthorizationRequest(
-          _config!.authClientId,
-          _config!.loginRedirectUri,
-          serviceConfiguration: _serviceConfiguration,
-          scopes: _config!.scopes,
-          promptValues: ['login'],
-          loginHint: loginHint,
-          externalUserAgent:
-              ExternalUserAgent.ephemeralAsWebAuthenticationSession,
-          additionalParameters: additionalParams,
-        ),
-      );
-      final token = await appAuth.token(
-        TokenRequest(
-          _config!.authClientId,
-          _config!.loginRedirectUri,
-          codeVerifier: result.codeVerifier,
-          authorizationCode: result.authorizationCode,
-          serviceConfiguration: _serviceConfiguration,
-          nonce: result.nonce,
-          scopes: _config!.scopes,
-          additionalParameters: additionalParams,
-        ),
-      );
-
-      if (additionalParams.containsKey(_orgNameParamName)) {
-        return additionalParams[_orgNameParamName];
-      }
-
-      _saveState(token);
-      return token.accessToken;
-    } catch (e, st) {
-      throw KindeError.fromError(e, st);
-    }
-  }
 
   Future<bool> _checkToken() async {
     final keys = _store.keys?.keys;

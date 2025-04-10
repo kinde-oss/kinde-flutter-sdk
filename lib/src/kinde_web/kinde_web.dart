@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:kinde_flutter_sdk/kinde_api.dart';
+import 'package:kinde_flutter_sdk/src/additional_params.dart';
 import 'package:kinde_flutter_sdk/src/kinde_secure_storage/kinde_secure_storage_i.dart';
 import 'package:kinde_flutter_sdk/src/utils/helpers.dart';
 import 'package:kinde_flutter_sdk/src/utils/kinde_debug_print.dart';
@@ -99,7 +100,7 @@ class KindeWeb {
 
   ///If multiple logins are triggered in parallel, then flow finished correctly only for
   ///last triggered login, for others after finishing login will be thrown [KindeError] with code=[invalid_grant]
-  Future<void> startLoginFlow(AuthorizationRequest configuration) async {
+  Future<void> startLoginFlow(AuthorizationRequest configuration, {required InternalAdditionalParameters additionalParameters}) async {
     if (_loginInProgress) {
       throw const KindeError(code: KindeErrorCode.loginInProcess);
     }
@@ -108,17 +109,18 @@ class KindeWeb {
 
       final String codeVerifier = generateCodeVerifier();
       _codeVerifierStorage.save(codeVerifier);
+      additionalParameters.codeVerifier = codeVerifier;
       final String authState = generateAuthState();
       try {
         await _kindeSecureStorage.saveAuthRequestState(authState);
+        additionalParameters.state = authState;
       } catch (e, st) {
         throw KindeError(
             code: KindeErrorCode.unknown,
             message: e.toString(),
             stackTrace: st);
       }
-      WebOAuthFlow.login(configuration,
-          codeVerifier: codeVerifier, authState: authState);
+      WebOAuthFlow.login(configuration, additionalParameters);
     } catch (e) {
       await _clear();
       if (e is KindeError) rethrow;

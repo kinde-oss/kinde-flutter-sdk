@@ -1,5 +1,6 @@
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:kinde_flutter_sdk/kinde_api.dart';
+import 'package:kinde_flutter_sdk/src/additional_params.dart';
 import 'package:kinde_flutter_sdk/src/utils/kinde_debug_print.dart';
 import 'package:kinde_flutter_sdk/src/kinde_secure_storage/kinde_secure_storage.dart';
 import 'package:oauth2/oauth2.dart';
@@ -10,15 +11,11 @@ const int _httpDefaultPort = 80;
 const int _httpsDefaultPort = 443;
 
 abstract class WebOAuthFlow {
-  static Future<void> login(
-    AuthorizationRequest configuration, {
-    required String codeVerifier,
-    required String authState,
-  }) async {
+  static Future<void> login(AuthorizationRequest configuration,
+      InternalAdditionalParameters additionalParameters) async {
     final initialUri = _getInitialUrl(
         configuration: configuration,
-        codeVerifier: codeVerifier,
-        authState: authState);
+        additionalParameters: additionalParameters);
     WebUtils.replacePage(initialUri.toString());
   }
 
@@ -37,6 +34,7 @@ abstract class WebOAuthFlow {
           scopes: scopes, state: authRequestState);
 
       final sanitizedExpected = _sanitizeRedirect(redirectUrl);
+
       ///throws KindeError with code=not-redirect-url
       _compareActualRedirectUriWithExpected(
           actual: responseUri, expected: sanitizedExpected);
@@ -95,8 +93,7 @@ abstract class WebOAuthFlow {
 
   static Uri _getInitialUrl({
     required AuthorizationRequest configuration,
-    required String codeVerifier,
-    required String authState,
+    required InternalAdditionalParameters additionalParameters,
   }) {
     final redirectUrl = configuration.redirectUrl;
 
@@ -104,26 +101,21 @@ abstract class WebOAuthFlow {
       configuration.clientId,
       Uri.parse(configuration.serviceConfiguration!.authorizationEndpoint),
       Uri.parse(configuration.serviceConfiguration!.tokenEndpoint),
-      codeVerifier: codeVerifier,
+      codeVerifier: additionalParameters.codeVerifier,
       basicAuth: true,
     );
 
     Uri initialUri = authorizationCodeGrant.getAuthorizationUrl(
       Uri.parse(redirectUrl),
-      scopes: configuration.scopes,
-      state: authState
     );
-    final Map<String, String> queryParameters = Map.from(initialUri.queryParameters);
-    if (configuration.promptValues?.isNotEmpty ?? false) {
-      queryParameters.putIfAbsent('prompt', () => configuration.promptValues!.join(' '));
+
+    final Map<String, String> queryParameters =
+        Map.from(initialUri.queryParameters);
+
+    for (final param in additionalParameters.toMap().entries) {
+      queryParameters.putIfAbsent(param.key, () => param.value);
     }
-    //configuration.additionalParameters is AuthUrlParams in Map<String, String> representation
-    //not should contain critical params such: [client_id, redirect_uri, response_type, state, scope, prompt, code_challenge, code_challenge_method]
-    if (configuration.additionalParameters != null && configuration.additionalParameters!.isNotEmpty) {
-      for(final param in configuration.additionalParameters!.entries) {
-        queryParameters.putIfAbsent(param.key, () => param.value);
-      }
-    }
+
     initialUri = initialUri.replace(queryParameters: queryParameters);
     return initialUri;
   }
