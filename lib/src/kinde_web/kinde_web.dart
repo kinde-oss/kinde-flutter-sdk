@@ -83,6 +83,14 @@ class KindeWeb {
     }
   }
 
+  /// Logs the user out by clearing local session data and navigating to the provided logout URL.
+  ///
+  /// Throws:
+  /// - [KindeError] with [KindeErrorCode.loginInProcess] if a login flow is currently in progress.
+  /// - [KindeError] with [KindeErrorCode.invalidRedirect] if the provided logout URL is unsafe or untrusted.
+  ///
+  /// Parameters:
+  /// - [logoutUrl]: The URL to navigate to after clearing session data. Must be a safe and trusted web URL.
   Future<void> logout(String logoutUrl) async {
     if (_loginInProgress) {
       throw const KindeError(code: KindeErrorCode.loginInProcess);

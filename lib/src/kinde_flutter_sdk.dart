@@ -363,7 +363,6 @@ class KindeFlutterSDK with TokenUtils {
               "No credentials returned from finishLoginFlow. Login may have been canceled or failed.");
       return false;
     }
-
     _saveState(TokenResponse(
       credentials.accessToken,
       credentials.refreshToken,

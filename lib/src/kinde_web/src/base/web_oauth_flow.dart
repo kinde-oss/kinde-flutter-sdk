@@ -2,7 +2,6 @@ import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:kinde_flutter_sdk/kinde_api.dart';
 import 'package:kinde_flutter_sdk/src/additional_params.dart';
 import 'package:kinde_flutter_sdk/src/utils/kinde_debug_print.dart';
-import 'package:kinde_flutter_sdk/src/kinde_secure_storage/kinde_secure_storage.dart';
 import 'package:oauth2/oauth2.dart';
 
 import '../utils/cross_platform_support.dart';
@@ -68,20 +67,29 @@ abstract class WebOAuthFlow {
         code: KindeErrorCode.notRedirect, message: comparingSummary);
   }
 
-  ///ignoring query parameters
+  /// Ignoring query parameters.
+  /// Returns the default port for a given URL scheme.
+  /// Falls back to 0 for unknown schemes, effectively treating the port as unknown,
+  /// which may skip port-based matching in comparisons.
   static bool _urisMatch(Uri a, Uri b) {
+    final int aPort = a.hasPort ? a.port : _defaultPort(a.scheme);
+    final int bPort = b.hasPort ? b.port : _defaultPort(b.scheme);
+
     return a.scheme == b.scheme &&
         a.host == b.host &&
-        (a.port == b.port ||
-            (a.port == 0 && _defaultPort(a.scheme) == b.port) ||
-            (b.port == 0 && _defaultPort(b.scheme) == a.port)) &&
+        aPort == bPort &&
         a.path == b.path;
   }
 
   static int _defaultPort(String scheme) {
-    return scheme == 'https'
-        ? _httpsDefaultPort
-        : (scheme == 'http' ? _httpDefaultPort : 0);
+    if (scheme == 'https') return _httpsDefaultPort;
+    if (scheme == 'http') return _httpDefaultPort;
+
+    throw KindeError(
+      code: KindeErrorCode.unsupportedScheme,
+      message:
+          'Unsupported URI scheme: "$scheme". Only "https" and "http" are allowed.',
+    );
   }
 
   /// Removes URL fragments (`#` and anything after)

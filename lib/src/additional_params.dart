@@ -1,10 +1,10 @@
 abstract class BaseAdditionalParameters {
+  /// Optional organization code, used for tenant-specific authentication.
   final String? orgCode;
+  /// Optional login hint (e.g., email) to pre-fill the login form.
   final String? loginHint;
-
   /// Language to display for login page
   final String? lang;
-
   /// Connection id string corresponding to social sign in
   final String? connectionId;
 
@@ -73,7 +73,7 @@ class InternalAdditionalParameters extends BaseAdditionalParameters {
   Map<String, String> toMap() {
     final result = Map<String, String>.from(super.toMap());
     if (audience != null) {
-      result["_audienceParamName"] = audience!;
+      result["audience"] = audience!;
     }
     if (promptValues != null) {
       result["prompt"] = promptValues!.join(' ');
@@ -88,7 +88,7 @@ class InternalAdditionalParameters extends BaseAdditionalParameters {
       result["start_page"] = registrationPage!;
     }
     if (createOrg != null) {
-      result["is_create_org"] = "${createOrg!}";
+      result["is_create_org"] = createOrg.toString();
     }
     if (orgName != null) {
       result["org_name"] = orgName!;
@@ -96,17 +96,3 @@ class InternalAdditionalParameters extends BaseAdditionalParameters {
     return result;
   }
 }
-
-// const _criticalParams = {"client_id", "redirect_uri", "response_type", "state", "scope", "prompt", "code_challenge", "code_challenge_method"};
-//
-// abstract class AdditionalParametersMapper {
-//   AdditionalParametersMapper._();
-//
-//   static Map<String, String> toMap(BaseAdditionalParameters parameters) {
-//      final result = Map<String, String>.from(parameters.toMap());
-//
-//      result.removeWhere((key, _) => _criticalParams.contains(key));
-//
-//      return result;
-//   }
-// }
