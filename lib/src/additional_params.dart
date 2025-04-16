@@ -1,18 +1,18 @@
 abstract class BaseAdditionalParameters {
   /// Optional organization code, used for tenant-specific authentication.
   final String? orgCode;
+
   /// Optional login hint (e.g., email) to pre-fill the login form.
   final String? loginHint;
+
   /// Language to display for login page
   final String? lang;
+
   /// Connection id string corresponding to social sign in
   final String? connectionId;
 
   const BaseAdditionalParameters(
-      {this.lang,
-        this.connectionId,
-        this.loginHint,
-        this.orgCode});
+      {this.lang, this.connectionId, this.loginHint, this.orgCode});
 
   Map<String, String> toMap() {
     final params = <String, String>{};
@@ -33,7 +33,8 @@ abstract class BaseAdditionalParameters {
 }
 
 class AdditionalParameters extends BaseAdditionalParameters {
-  const AdditionalParameters(): super();
+  const AdditionalParameters(
+      {super.lang, super.connectionId, super.loginHint, super.orgCode});
 }
 
 class InternalAdditionalParameters extends BaseAdditionalParameters {
@@ -44,23 +45,27 @@ class InternalAdditionalParameters extends BaseAdditionalParameters {
   String? registrationPage;
   bool? createOrg;
   String? orgName;
-  ///not participate in toMap() method
+
+  /// The PKCE code verifier for OAuth 2.0 Authorization Code flow with PKCE.
+  /// This is a cryptographically random string used to correlate the authorization request with the token request.
+  /// Not included in the toMap() method as it's not sent as a URL parameter but used separately in the token exchange step.  String? codeVerifier;
   String? codeVerifier;
 
   InternalAdditionalParameters(
       {this.audience,
       this.promptValues,
-        this.scopes,
-        this.state,
-        this.registrationPage,
-        this.createOrg,
-        this.orgName,
+      this.scopes,
+      this.state,
+      this.registrationPage,
+      this.createOrg,
+      this.orgName,
       super.lang,
       super.connectionId,
       super.loginHint,
       super.orgCode});
 
-  factory InternalAdditionalParameters.fromUserAdditionalParams(AdditionalParameters userParams) {
+  factory InternalAdditionalParameters.fromUserAdditionalParams(
+      AdditionalParameters userParams) {
     return InternalAdditionalParameters(
       lang: userParams.lang,
       connectionId: userParams.connectionId,

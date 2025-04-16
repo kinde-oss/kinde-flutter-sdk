@@ -52,14 +52,8 @@ class KindeFlutterSDK with TokenUtils {
     return _instance ??= KindeFlutterSDK._internal();
   }
 
-  @visibleForTesting
-  static KindeFlutterSDK testInstance(
-      KindeSecureStorageInterface? kindeSecureStorage) {
-    return _instance ??=
-        KindeFlutterSDK._internal(secureStorage: kindeSecureStorage);
-  }
-
-  KindeFlutterSDK._internal({KindeSecureStorageInterface? secureStorage}) {
+  KindeFlutterSDK._internal(
+      {KindeSecureStorageInterface? secureStorage, Dio? dio}) {
     if (_config == null) {
       throw const KindeError(
         code: KindeErrorCode.missingConfig,
@@ -82,8 +76,8 @@ class KindeFlutterSDK with TokenUtils {
         authorizationEndpoint: '$domainUrl$_authPath',
         tokenEndpoint: '$domainUrl$_tokenPath',
         endSessionEndpoint: '$domainUrl$_logoutPath');
-
-    Dio dio = Dio(BaseOptions(
+    print("dio is null: ${dio == null}");
+    dio ??= Dio(BaseOptions(
       baseUrl: domainUrl,
     ));
 
@@ -96,8 +90,10 @@ class KindeFlutterSDK with TokenUtils {
     ]);
     _keysApi = KeysApi(_kindeApi.dio);
     _tokenApi = TokenApi(_kindeApi.dio);
+    print("store keys: ${_store.keys.toString()}");
     if (_store.keys == null) {
       _keysApi.getKeys().then((value) {
+        print("get keys: $value");
         _store.keys = value;
       });
     }
@@ -118,7 +114,23 @@ class KindeFlutterSDK with TokenUtils {
     List<String> scopes = _defaultScopes,
     String? audience,
   }) async {
+    return _initializeSDK(
+        authDomain: authDomain,
+        authClientId: authClientId,
+        loginRedirectUri: loginRedirectUri,
+        logoutRedirectUri: logoutRedirectUri,
+        scopes: scopes,
+        audience: audience);
+  }
 
+  static Future<KindeFlutterSDK> _initializeSDK(
+      {required String authDomain,
+      required String authClientId,
+      required String loginRedirectUri,
+      required String logoutRedirectUri,
+      required List<String> scopes,
+      String? audience,
+      Dio? dio}) async {
     String step = 'initializing';
 
     try {
@@ -134,11 +146,9 @@ class KindeFlutterSDK with TokenUtils {
 
       step = 'secure key retrieval';
 
-
       final kindeSecureStorage = KindeSecureStorage();
 
-      List<int>? secureKey =
-          await kindeSecureStorage.getSecureKey();
+      List<int>? secureKey = await kindeSecureStorage.getSecureKey();
 
       if (secureKey == null) {
         step = 'secure key generation and storage';
@@ -159,7 +169,8 @@ class KindeFlutterSDK with TokenUtils {
 
       step = 'finalization';
 
-      return KindeFlutterSDK._internal(secureStorage: kindeSecureStorage);
+      return _instance = KindeFlutterSDK._internal(
+          secureStorage: kindeSecureStorage, dio: dio);
     } catch (e, st) {
       _config = null;
       kindeDebugPrint(
@@ -186,40 +197,57 @@ class KindeFlutterSDK with TokenUtils {
   }
 
   /// for web it invokes logoutRedirectUri
-  Future<void> logout(
-      {Dio? dio, bool macosLogoutWithoutRedirection = true}) async {
-    if (!kIsWeb) {
-      if (Platform.operatingSystem == "macos" &&
-          macosLogoutWithoutRedirection) {
-        _logoutWithoutRedirection(dio: dio);
-        return;
-      }
-      try {
-        const appAuth = FlutterAppAuth();
-        final endSessionRequest = EndSessionRequest(
-          ///macOS and iOS 12 and above
-          externalUserAgent:
-              ExternalUserAgent.ephemeralAsWebAuthenticationSession,
-          idTokenHint: _config!.authClientId,
-          postLogoutRedirectUrl: _config!.logoutRedirectUri,
-          serviceConfiguration: _serviceConfiguration,
-        );
-        await appAuth.endSession(endSessionRequest);
-      } on FlutterAppAuthPlatformException catch (e) {
-        debugPrint("Error in logout(), details: ${e.details}");
-        return;
-      } catch (e) {
-        debugPrint("Error in logout(): $e");
-        return;
-      }
+  Future<void> logout({
+    Dio? dio,
+    bool macosLogoutWithoutRedirection = true,
+  }) async {
+    if (kIsWeb) {
+      await _handleWebLogout();
+    } else {
+      await _handleMobileLogout(
+          dio: dio,
+          macosLogoutWithoutRedirection: macosLogoutWithoutRedirection);
     }
-    _kindeApi.setBearerAuth(_bearerAuth, '');
-    await Store.instance.clear();
-    if (kIsWeb &&
-        _config?.logoutRedirectUri != null &&
+
+    await _commonLogoutCleanup();
+  }
+
+  Future<void> _handleMobileLogout({
+    Dio? dio,
+    required bool macosLogoutWithoutRedirection,
+  }) async {
+    if (Platform.operatingSystem == "macos" && macosLogoutWithoutRedirection) {
+      _logoutWithoutRedirection(dio: dio);
+      return;
+    }
+
+    try {
+      const appAuth = FlutterAppAuth();
+      final endSessionRequest = EndSessionRequest(
+        externalUserAgent:
+            ExternalUserAgent.ephemeralAsWebAuthenticationSession,
+        idTokenHint: _config!.authClientId,
+        postLogoutRedirectUrl: _config!.logoutRedirectUri,
+        serviceConfiguration: _serviceConfiguration,
+      );
+      await appAuth.endSession(endSessionRequest);
+    } on FlutterAppAuthPlatformException catch (e) {
+      debugPrint("Error in mobile logout(), details: ${e.details}");
+    } catch (e) {
+      debugPrint("Error in mobile logout(): $e");
+    }
+  }
+
+  Future<void> _handleWebLogout() async {
+    if (_config?.logoutRedirectUri != null &&
         _config!.logoutRedirectUri.isNotEmpty) {
       KindeWeb.instance.logout(_config!.logoutRedirectUri);
     }
+  }
+
+  Future<void> _commonLogoutCleanup() async {
+    _kindeApi.setBearerAuth(_bearerAuth, '');
+    await Store.instance.clear();
   }
 
   /// Logs out the user without redirection.
@@ -336,15 +364,14 @@ class KindeFlutterSDK with TokenUtils {
     InternalAdditionalParameters params,
   ) {
     KindeWeb.instance.startLoginFlow(
-      AuthorizationRequest(
-        _config!.authClientId,
-        _config!.loginRedirectUri,
-        serviceConfiguration: _serviceConfiguration,
-        externalUserAgent:
-            ExternalUserAgent.ephemeralAsWebAuthenticationSession,
-      ),
-      additionalParameters: params
-    );
+        AuthorizationRequest(
+          _config!.authClientId,
+          _config!.loginRedirectUri,
+          serviceConfiguration: _serviceConfiguration,
+          externalUserAgent:
+              ExternalUserAgent.ephemeralAsWebAuthenticationSession,
+        ),
+        additionalParameters: params);
   }
 
   Future<bool> _finishWebLogin(String responseUrl) async {
@@ -439,17 +466,35 @@ class KindeFlutterSDK with TokenUtils {
     }
   }
 
+  /// Returns whether the user is currently authenticated.
+  ///
+  /// This method does **not** perform any login completion or mutate state.
+  /// It only checks if there is a valid, non-expired auth state
+  /// and confirms token validity.
+  ///
+  /// ⚠️ If your app supports web-based login flows,
+  /// make sure to call [completePendingLoginIfNeeded] first
+  /// to finalize any in-progress authentication before calling this.
   Future<bool> isAuthenticated() async {
+    final hasValidAuthState = authState != null && !authState!.isExpired();
+    return hasValidAuthState && await _checkToken();
+  }
+
+  /// Attempts to complete a pending web login flow if auth parameters
+  /// are present in the current URL.
+  ///
+  /// This method performs a side-effect and may modify auth state
+  /// and secure storage.
+  ///
+  /// Call this **before** checking authentication status.
+  Future<void> completePendingLoginIfNeeded() async {
     final finishLoginUri = _isCurrentUrlContainWebAuthParams();
     if (finishLoginUri != null) {
       final storedState = await _kindeSecureStorage.getAuthRequestState();
       if (storedState != null) {
-        return await _finishWebLogin(finishLoginUri);
+        await _finishWebLogin(finishLoginUri);
       }
     }
-
-    final hasValidAuthState = authState != null && !authState!.isExpired();
-    return hasValidAuthState && await _checkToken();
   }
 
   ///returns current url if it contain required params for finishing auth flow
@@ -464,7 +509,6 @@ class KindeFlutterSDK with TokenUtils {
     }
     return null;
   }
-
 
   Future<bool> _checkToken() async {
     final keys = _store.keys?.keys;
@@ -503,4 +547,22 @@ class KindeFlutterSDK with TokenUtils {
       return '';
     }
   }
+}
+
+Future<KindeFlutterSDK> initializeKindeFlutterSdkForTest(
+    {required String authDomain,
+    required String authClientId,
+    required String loginRedirectUri,
+    required String logoutRedirectUri,
+    List<String> scopes = KindeFlutterSDK._defaultScopes,
+    String? audience,
+    Dio? dio}) async {
+  return KindeFlutterSDK._initializeSDK(
+      authDomain: authDomain,
+      authClientId: authClientId,
+      loginRedirectUri: loginRedirectUri,
+      logoutRedirectUri: logoutRedirectUri,
+      scopes: scopes,
+      audience: audience,
+      dio: dio);
 }

@@ -9,55 +9,63 @@ var tokenResponseMap = {
   'scopes': ['openid', 'profile', 'email', 'offline']
 };
 
+var authorizeResponse = {
+  'authorizationCode': 'authorizationCode',
+  'codeVerifier': 'codeVerifier',
+  'nonce': null,
+  'authorizationAdditionalParameters': {},
+};
+
 final mockChannels = MockChannels();
 
 class MockChannels {
   setupMockChannel() {
     const MethodChannel flutterSecureStorage =
-    MethodChannel('plugins.it_nomads.com/flutter_secure_storage');
+        MethodChannel('plugins.it_nomads.com/flutter_secure_storage');
 
     const MethodChannel flutterAppauth =
-    MethodChannel('crossingthestreams.io/flutter_appauth');
+        MethodChannel('crossingthestreams.io/flutter_appauth');
 
     const MethodChannel pathProvider =
-    MethodChannel('plugins.flutter.io/path_provider');
-
-    const MethodChannel customTabs =
-    MethodChannel('plugins.flutter.droibit.github.io/custom_tabs');
+        MethodChannel('plugins.flutter.io/path_provider');
 
     const MethodChannel sharedPreferences =
-    MethodChannel('plugins.flutter.io/shared_preferences');
+        MethodChannel('plugins.flutter.io/shared_preferences');
 
-    TestWidgetsFlutterBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(sharedPreferences, (MethodCall methodCall) async {
-      if(methodCall.method == 'getAll') {
-        print("hello");
+    TestWidgetsFlutterBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(sharedPreferences,
+            (MethodCall methodCall) async {
+      if (methodCall.method == 'getAll') {
         return null;
       }
       return false;
     });
 
-    TestWidgetsFlutterBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(flutterSecureStorage, (MethodCall methodCall) async {
-      if(methodCall.method == 'read') {
-        return '';
+    TestWidgetsFlutterBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(flutterSecureStorage,
+            (MethodCall methodCall) async {
+      if (methodCall.method == 'read') {
+        return null;
       }
       return false;
     });
 
-    TestWidgetsFlutterBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(pathProvider, (MethodCall methodCall) async {
+    TestWidgetsFlutterBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(pathProvider, (MethodCall methodCall) async {
       return './';
     });
 
-    TestWidgetsFlutterBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(flutterAppauth, (MethodCall methodCall) async {
-      if(methodCall.method == 'authorizeAndExchangeCode') {
+    TestWidgetsFlutterBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(flutterAppauth,
+            (MethodCall methodCall) async {
+      if (methodCall.method == 'authorizeAndExchangeCode' ||
+          methodCall.method == 'token') {
         return tokenResponseMap;
       }
+      if (methodCall.method == 'authorize') {
+        return authorizeResponse;
+      }
       return null;
-    });
-
-    TestWidgetsFlutterBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(customTabs, (MethodCall methodCall) async {
-      return null;
-
-
     });
   }
 }

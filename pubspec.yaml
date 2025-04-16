@@ -25,6 +25,7 @@ dependencies:
   jose: ^0.3.4
   pubspec_parse: ^1.2.1
   built_value: ^8.9.5
+  http_mock_adapter: ^0.6.1
 
 dev_dependencies:
   flutter_test:
