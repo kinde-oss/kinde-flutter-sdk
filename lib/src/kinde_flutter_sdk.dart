@@ -76,7 +76,6 @@ class KindeFlutterSDK with TokenUtils {
         authorizationEndpoint: '$domainUrl$_authPath',
         tokenEndpoint: '$domainUrl$_tokenPath',
         endSessionEndpoint: '$domainUrl$_logoutPath');
-    print("dio is null: ${dio == null}");
     dio ??= Dio(BaseOptions(
       baseUrl: domainUrl,
     ));
@@ -90,10 +89,8 @@ class KindeFlutterSDK with TokenUtils {
     ]);
     _keysApi = KeysApi(_kindeApi.dio);
     _tokenApi = TokenApi(_kindeApi.dio);
-    print("store keys: ${_store.keys.toString()}");
     if (_store.keys == null) {
       _keysApi.getKeys().then((value) {
-        print("get keys: $value");
         _store.keys = value;
       });
     }
@@ -231,10 +228,9 @@ class KindeFlutterSDK with TokenUtils {
         serviceConfiguration: _serviceConfiguration,
       );
       await appAuth.endSession(endSessionRequest);
-    } on FlutterAppAuthPlatformException catch (e) {
-      debugPrint("Error in mobile logout(), details: ${e.details}");
-    } catch (e) {
-      debugPrint("Error in mobile logout(): $e");
+    } catch (e, st) {
+      kindeDebugPrint(methodName: "Logout", message: e.toString());
+      throw KindeError.fromError(e, st);
     }
   }
 

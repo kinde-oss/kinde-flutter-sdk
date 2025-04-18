@@ -26,17 +26,15 @@ abstract class WebOAuthFlow {
     required List<String> scopes,
   }) async {
     try {
-      final Uri responseUri = Uri.parse(_sanitizeRedirect(responseUrl));
+      final Uri responseUri = Uri.parse(responseUrl);
 
       ///preparing for handling authorization response
       authorizationCodeGrant.getAuthorizationUrl(Uri.parse(redirectUrl),
           scopes: scopes, state: authRequestState);
 
-      final sanitizedExpected = _sanitizeRedirect(redirectUrl);
-
       ///throws KindeError with code=not-redirect-url
       _compareActualRedirectUriWithExpected(
-          actual: responseUri, expected: sanitizedExpected);
+          actual: responseUri, expected: redirectUrl);
 
       ///Get client credentials
       final client = await authorizationCodeGrant
@@ -90,13 +88,6 @@ abstract class WebOAuthFlow {
       message:
           'Unsupported URI scheme: "$scheme". Only "https" and "http" are allowed.',
     );
-  }
-
-  /// Removes URL fragments (`#` and anything after)
-  static String _sanitizeRedirect(String url) {
-    url = url.trim();
-    final int index = url.indexOf('#');
-    return index > -1 ? url.substring(0, index) : url;
   }
 
   static Uri _getInitialUrl({

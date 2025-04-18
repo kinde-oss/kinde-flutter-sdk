@@ -48,7 +48,7 @@ class InternalAdditionalParameters extends BaseAdditionalParameters {
 
   /// The PKCE code verifier for OAuth 2.0 Authorization Code flow with PKCE.
   /// This is a cryptographically random string used to correlate the authorization request with the token request.
-  /// Not included in the toMap() method as it's not sent as a URL parameter but used separately in the token exchange step.  String? codeVerifier;
+  /// Not included in the toMap() method as it's not sent as a URL parameter but used separately in the token exchange step.
   String? codeVerifier;
 
   InternalAdditionalParameters(
