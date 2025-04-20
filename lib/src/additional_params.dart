@@ -1,3 +1,19 @@
+abstract class ParamName {
+  const ParamName._();
+
+  static const scope = "scope";
+  static const prompt = "prompt";
+  static const orgCode = "org_code";
+  static const lang = "lang";
+  static const connectionId = "connection_id";
+  static const loginHint = "login_hint";
+  static const audience = "audience";
+  static const state = "state";
+  static const startPage = "start_page";
+  static const isCreateOrg = "is_create_org";
+  static const orgName = "org_name";
+}
+
 abstract class BaseAdditionalParameters {
   /// Optional organization code, used for tenant-specific authentication.
   final String? orgCode;
@@ -14,19 +30,19 @@ abstract class BaseAdditionalParameters {
   const BaseAdditionalParameters(
       {this.lang, this.connectionId, this.loginHint, this.orgCode});
 
-  Map<String, String> toMap() {
+  Map<String, String> _toMap() {
     final params = <String, String>{};
     if (orgCode != null) {
-      params["org_code"] = orgCode!;
+      params[ParamName.orgCode] = orgCode!;
     }
     if (lang != null) {
-      params["lang"] = lang!;
+      params[ParamName.lang] = lang!;
     }
     if (connectionId != null) {
-      params["connection_id"] = connectionId!;
+      params[ParamName.connectionId] = connectionId!;
     }
     if (loginHint != null) {
-      params["login_hint"] = loginHint!;
+      params[ParamName.loginHint] = loginHint!;
     }
     return params;
   }
@@ -74,30 +90,42 @@ class InternalAdditionalParameters extends BaseAdditionalParameters {
     );
   }
 
+  Map<String, String> toWebParams() {
+    return _toMap();
+  }
+
   @override
-  Map<String, String> toMap() {
-    final result = Map<String, String>.from(super.toMap());
+  Map<String, String> _toMap() {
+    final result = Map<String, String>.from(super._toMap());
     if (audience != null) {
-      result["audience"] = audience!;
+      result[ParamName.audience] = audience!;
     }
     if (promptValues != null) {
-      result["prompt"] = promptValues!.join(' ');
+      result[ParamName.prompt] = promptValues!.join(' ');
     }
     if (scopes != null) {
-      result["scope"] = scopes!.join(' ');
+      result[ParamName.scope] = scopes!.join(' ');
     }
     if (state != null) {
-      result["state"] = state!;
+      result[ParamName.state] = state!;
     }
     if (registrationPage != null) {
-      result["start_page"] = registrationPage!;
+      result[ParamName.startPage] = registrationPage!;
     }
     if (createOrg != null) {
-      result["is_create_org"] = createOrg.toString();
+      result[ParamName.isCreateOrg] = createOrg.toString();
     }
     if (orgName != null) {
-      result["org_name"] = orgName!;
+      result[ParamName.orgName] = orgName!;
     }
     return result;
+  }
+
+  ///for Authorization Request setting 'scope' and 'prompt' via builder
+  Map<String, String> toAuthorizationRequestParams() {
+    final dict = _toMap();
+    dict.remove(ParamName.scope);
+    dict.remove(ParamName.prompt);
+    return dict;
   }
 }

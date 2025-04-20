@@ -111,7 +111,7 @@ abstract class WebOAuthFlow {
     final Map<String, String> queryParameters =
         Map.from(initialUri.queryParameters);
 
-    for (final param in additionalParameters.toMap().entries) {
+    for (final param in additionalParameters.toWebParams().entries) {
       queryParameters.putIfAbsent(param.key, () => param.value);
     }
 

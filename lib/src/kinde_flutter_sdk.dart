@@ -198,6 +198,10 @@ class KindeFlutterSDK with TokenUtils {
     Dio? dio,
     bool macosLogoutWithoutRedirection = true,
   }) async {
+    if (authState == null) {
+      kindeDebugPrint(methodName: "logout", message: "AuthState is null.");
+      return;
+    }
     if (kIsWeb) {
       await _handleWebLogout();
     } else {
@@ -214,19 +218,20 @@ class KindeFlutterSDK with TokenUtils {
     required bool macosLogoutWithoutRedirection,
   }) async {
     if (Platform.operatingSystem == "macos" && macosLogoutWithoutRedirection) {
-      _logoutWithoutRedirection(dio: dio);
-      return;
+      return _logoutWithoutRedirection(dio: dio);
     }
 
     try {
       const appAuth = FlutterAppAuth();
       final endSessionRequest = EndSessionRequest(
-        externalUserAgent:
-            ExternalUserAgent.ephemeralAsWebAuthenticationSession,
-        idTokenHint: _config!.authClientId,
-        postLogoutRedirectUrl: _config!.logoutRedirectUri,
-        serviceConfiguration: _serviceConfiguration,
-      );
+          externalUserAgent:
+              ExternalUserAgent.ephemeralAsWebAuthenticationSession,
+          idTokenHint: authState!.idToken,
+          postLogoutRedirectUrl: _config!.logoutRedirectUri,
+          serviceConfiguration: _serviceConfiguration,
+          additionalParameters: _config != null
+              ? {"redirect": _config!.logoutRedirectUri}
+              : null);
       await appAuth.endSession(endSessionRequest);
     } catch (e, st) {
       kindeDebugPrint(methodName: "Logout", message: e.toString());
@@ -256,7 +261,7 @@ class KindeFlutterSDK with TokenUtils {
       _kindeApi.setBearerAuth(_bearerAuth, '');
       await Store.instance.clear();
 
-      if (response.statusCode != null && response.statusCode! > 400) {
+      if (response.statusCode != null && response.statusCode! >= 400) {
         throw KindeError(
             code: KindeErrorCode.logoutRequestFailed,
             message: "Logout status code: ${response.statusCode}");
@@ -307,42 +312,20 @@ class KindeFlutterSDK with TokenUtils {
       AuthFlowType? type, InternalAdditionalParameters params) async {
     const appAuth = FlutterAppAuth();
     TokenResponse tokenResponse;
-    final additionalParameters = params.toMap();
     try {
       if (type == AuthFlowType.pkce) {
-        final AuthorizationResponse result = await appAuth.authorize(
-          AuthorizationRequest(
-            _config!.authClientId,
-            _config!.loginRedirectUri,
-            serviceConfiguration: _serviceConfiguration,
-            externalUserAgent:
-                ExternalUserAgent.ephemeralAsWebAuthenticationSession,
-            additionalParameters: additionalParameters,
-          ),
-        );
-
-        tokenResponse = await appAuth.token(
-          TokenRequest(
-            _config!.authClientId,
-            _config!.loginRedirectUri,
-            codeVerifier: result.codeVerifier,
-            authorizationCode: result.authorizationCode,
-            serviceConfiguration: _serviceConfiguration,
-            nonce: result.nonce,
-            additionalParameters: additionalParameters,
-          ),
-        );
+        final authorizationRequest = _createAuthorizationRequest(params);
+        final AuthorizationResponse result =
+            await appAuth.authorize(authorizationRequest);
+        final tokenRequest = _createTokenRequest(
+            authorizationResponse: result,
+            scopes: params.scopes,
+            additionalParameters: authorizationRequest.additionalParameters);
+        tokenResponse = await appAuth.token(tokenRequest);
       } else {
-        tokenResponse = await appAuth.authorizeAndExchangeCode(
-          AuthorizationTokenRequest(
-            _config!.authClientId,
-            _config!.loginRedirectUri,
-            serviceConfiguration: _serviceConfiguration,
-            externalUserAgent:
-                ExternalUserAgent.ephemeralAsWebAuthenticationSession,
-            additionalParameters: additionalParameters,
-          ),
-        );
+        final authorizationTokenRequest = _createAuthorizationTokenRequest(params);
+        tokenResponse =
+            await appAuth.authorizeAndExchangeCode(authorizationTokenRequest);
       }
 
       if (params.orgName != null) {
@@ -354,6 +337,51 @@ class KindeFlutterSDK with TokenUtils {
     } catch (e, st) {
       throw KindeError.fromError(e, st);
     }
+  }
+
+  TokenRequest _createTokenRequest(
+          {required AuthorizationResponse authorizationResponse,
+          List<String>? scopes,
+          Map<String, String>? additionalParameters}) =>
+      TokenRequest(
+        _config!.authClientId,
+        _config!.loginRedirectUri,
+        codeVerifier: authorizationResponse.codeVerifier,
+        authorizationCode: authorizationResponse.authorizationCode,
+        serviceConfiguration: _serviceConfiguration,
+        nonce: authorizationResponse.nonce,
+        scopes: scopes,
+        additionalParameters: additionalParameters,
+      );
+
+  AuthorizationRequest _createAuthorizationRequest(
+      InternalAdditionalParameters additionalParameters) {
+    final authorizationRequestParams =
+        additionalParameters.toAuthorizationRequestParams();
+    final authorizationRequest = AuthorizationRequest(
+        _config!.authClientId, _config!.loginRedirectUri,
+        serviceConfiguration: _serviceConfiguration,
+        externalUserAgent:
+            ExternalUserAgent.ephemeralAsWebAuthenticationSession,
+        additionalParameters: authorizationRequestParams,
+        scopes: additionalParameters.scopes,
+        promptValues: additionalParameters.promptValues);
+    return authorizationRequest;
+  }
+
+  AuthorizationTokenRequest _createAuthorizationTokenRequest(
+      InternalAdditionalParameters additionalParameters) {
+    final authorizationRequestParams =
+        additionalParameters.toAuthorizationRequestParams();
+    final authorizationTokenRequest = AuthorizationTokenRequest(
+        _config!.authClientId, _config!.loginRedirectUri,
+        serviceConfiguration: _serviceConfiguration,
+        externalUserAgent:
+            ExternalUserAgent.ephemeralAsWebAuthenticationSession,
+        additionalParameters: authorizationRequestParams,
+        scopes: additionalParameters.scopes,
+        promptValues: additionalParameters.promptValues);
+    return authorizationTokenRequest;
   }
 
   void _handleWebLogin(
