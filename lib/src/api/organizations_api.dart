@@ -7,7 +7,7 @@ import 'dart:async';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 
-import 'package:kinde_flutter_sdk/src/api_util.dart';
+import 'package:kinde_flutter_sdk/src/utils/api_util.dart';
 import 'package:kinde_flutter_sdk/src/model/add_organization_users_request.dart';
 import 'package:kinde_flutter_sdk/src/model/add_organization_users_response.dart';
 import 'package:kinde_flutter_sdk/src/model/create_organization_request.dart';
@@ -38,7 +38,7 @@ class OrganizationsApi {
   ///
   /// Parameters:
   /// * [orgCode] - The organization's code.
-  /// * [addOrganizationUsersRequest] 
+  /// * [addOrganizationUsersRequest]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -48,7 +48,7 @@ class OrganizationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [AddOrganizationUsersResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<AddOrganizationUsersResponse>> addOrganizationUsers({ 
+  Future<Response<AddOrganizationUsersResponse>> addOrganizationUsers({
     required String orgCode,
     AddOrganizationUsersRequest? addOrganizationUsersRequest,
     CancelToken? cancelToken,
@@ -150,7 +150,7 @@ class OrganizationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [CreateOrganizationResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<CreateOrganizationResponse>> createOrganization({ 
+  Future<Response<CreateOrganizationResponse>> createOrganization({
     CreateOrganizationRequest? createOrganizationRequest,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -253,7 +253,7 @@ class OrganizationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> createOrganizationUserPermission({ 
+  Future<Response<SuccessResponse>> createOrganizationUserPermission({
     required String orgCode,
     required String userId,
     required CreateOrganizationUserPermissionRequest createOrganizationUserPermissionRequest,
@@ -358,7 +358,7 @@ class OrganizationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> createOrganizationUserRole({ 
+  Future<Response<SuccessResponse>> createOrganizationUserRole({
     required String orgCode,
     required String userId,
     required CreateOrganizationUserRoleRequest createOrganizationUserRoleRequest,
@@ -461,7 +461,7 @@ class OrganizationsApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> deleteOrganization({ 
+  Future<Response<void>> deleteOrganization({
     required String orgCode,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -515,7 +515,7 @@ class OrganizationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> deleteOrganizationFeatureFlagOverride({ 
+  Future<Response<SuccessResponse>> deleteOrganizationFeatureFlagOverride({
     required String orgCode,
     required String featureFlagKey,
     CancelToken? cancelToken,
@@ -597,7 +597,7 @@ class OrganizationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> deleteOrganizationFeatureFlagOverrides({ 
+  Future<Response<SuccessResponse>> deleteOrganizationFeatureFlagOverrides({
     required String orgCode,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -680,7 +680,7 @@ class OrganizationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> deleteOrganizationUserPermission({ 
+  Future<Response<SuccessResponse>> deleteOrganizationUserPermission({
     required String orgCode,
     required String userId,
     required String permissionId,
@@ -765,7 +765,7 @@ class OrganizationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> deleteOrganizationUserRole({ 
+  Future<Response<SuccessResponse>> deleteOrganizationUserRole({
     required String orgCode,
     required String userId,
     required String roleId,
@@ -835,7 +835,7 @@ class OrganizationsApi {
   }
 
   /// Get Organization
-  /// Gets an organization given the organization&#39;s code. 
+  /// Gets an organization given the organization&#39;s code.
   ///
   /// Parameters:
   /// * [code] - The organization's code.
@@ -848,7 +848,7 @@ class OrganizationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [Organization] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Organization>> getOrganization({ 
+  Future<Response<Organization>> getOrganization({
     String? code,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -934,7 +934,7 @@ class OrganizationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [GetOrganizationFeatureFlagsResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<GetOrganizationFeatureFlagsResponse>> getOrganizationFeatureFlags({ 
+  Future<Response<GetOrganizationFeatureFlagsResponse>> getOrganizationFeatureFlags({
     required String orgCode,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -1017,7 +1017,7 @@ class OrganizationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [GetOrganizationsUserPermissionsResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<GetOrganizationsUserPermissionsResponse>> getOrganizationUserPermissions({ 
+  Future<Response<GetOrganizationsUserPermissionsResponse>> getOrganizationUserPermissions({
     required String orgCode,
     required String userId,
     String? expand,
@@ -1106,7 +1106,7 @@ class OrganizationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [GetOrganizationsUserRolesResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<GetOrganizationsUserRolesResponse>> getOrganizationUserRoles({ 
+  Future<Response<GetOrganizationsUserRolesResponse>> getOrganizationUserRoles({
     required String orgCode,
     required String userId,
     CancelToken? cancelToken,
@@ -1193,7 +1193,7 @@ class OrganizationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [GetOrganizationUsersResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<GetOrganizationUsersResponse>> getOrganizationUsers({ 
+  Future<Response<GetOrganizationUsersResponse>> getOrganizationUsers({
     required String orgCode,
     String? sort,
     int? pageSize,
@@ -1275,7 +1275,7 @@ class OrganizationsApi {
   }
 
   /// List Organizations
-  /// Get a list of organizations. 
+  /// Get a list of organizations.
   ///
   /// Parameters:
   /// * [sort] - Field and order to sort the result by.
@@ -1290,7 +1290,7 @@ class OrganizationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [GetOrganizationsResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<GetOrganizationsResponse>> getOrganizations({ 
+  Future<Response<GetOrganizationsResponse>> getOrganizations({
     String? sort,
     int? pageSize,
     String? nextToken,
@@ -1381,7 +1381,7 @@ class OrganizationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> removeOrganizationUser({ 
+  Future<Response<SuccessResponse>> removeOrganizationUser({
     required String orgCode,
     required String userId,
     CancelToken? cancelToken,
@@ -1464,7 +1464,7 @@ class OrganizationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> updateOrganization({ 
+  Future<Response<SuccessResponse>> updateOrganization({
     required String orgCode,
     UpdateOrganizationRequest? updateOrganizationRequest,
     CancelToken? cancelToken,
@@ -1568,7 +1568,7 @@ class OrganizationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> updateOrganizationFeatureFlagOverride({ 
+  Future<Response<SuccessResponse>> updateOrganizationFeatureFlagOverride({
     required String orgCode,
     required String featureFlagKey,
     required String value,
@@ -1647,7 +1647,7 @@ class OrganizationsApi {
   ///
   /// Parameters:
   /// * [orgCode] - The organization's code.
-  /// * [updateOrganizationUsersRequest] 
+  /// * [updateOrganizationUsersRequest]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -1657,7 +1657,7 @@ class OrganizationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [UpdateOrganizationUsersResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<UpdateOrganizationUsersResponse>> updateOrganizationUsers({ 
+  Future<Response<UpdateOrganizationUsersResponse>> updateOrganizationUsers({
     required String orgCode,
     UpdateOrganizationUsersRequest? updateOrganizationUsersRequest,
     CancelToken? cancelToken,

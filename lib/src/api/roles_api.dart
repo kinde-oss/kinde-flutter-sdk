@@ -8,7 +8,7 @@ import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 
 import 'package:built_collection/built_collection.dart';
-import 'package:kinde_flutter_sdk/src/api_util.dart';
+import 'package:kinde_flutter_sdk/src/utils/api_util.dart';
 import 'package:kinde_flutter_sdk/src/model/create_role_request.dart';
 import 'package:kinde_flutter_sdk/src/model/get_roles_response.dart';
 import 'package:kinde_flutter_sdk/src/model/roles_permission_response_inner.dart';
@@ -39,7 +39,7 @@ class RolesApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> createRole({ 
+  Future<Response<SuccessResponse>> createRole({
     CreateRoleRequest? createRoleRequest,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -140,7 +140,7 @@ class RolesApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> deleteRole({ 
+  Future<Response<SuccessResponse>> deleteRole({
     required String roleId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -224,7 +224,7 @@ class RolesApi {
   ///
   /// Returns a [Future] containing a [Response] with a [BuiltList<RolesPermissionResponseInner>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BuiltList<RolesPermissionResponseInner>>> getRolePermission({ 
+  Future<Response<BuiltList<RolesPermissionResponseInner>>> getRolePermission({
     required String roleId,
     String? sort,
     int? pageSize,
@@ -302,7 +302,7 @@ class RolesApi {
   }
 
   /// List Roles
-  /// The returned list can be sorted by role name or role ID in ascending or descending order. The number of records to return at a time can also be controlled using the &#x60;page_size&#x60; query string parameter. 
+  /// The returned list can be sorted by role name or role ID in ascending or descending order. The number of records to return at a time can also be controlled using the &#x60;page_size&#x60; query string parameter.
   ///
   /// Parameters:
   /// * [sort] - Field and order to sort the result by.
@@ -317,7 +317,7 @@ class RolesApi {
   ///
   /// Returns a [Future] containing a [Response] with a [GetRolesResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<GetRolesResponse>> getRoles({ 
+  Future<Response<GetRolesResponse>> getRoles({
     String? sort,
     int? pageSize,
     String? nextToken,
@@ -408,7 +408,7 @@ class RolesApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> removeRolePermission({ 
+  Future<Response<SuccessResponse>> removeRolePermission({
     required String roleId,
     required String permissionId,
     CancelToken? cancelToken,
@@ -477,11 +477,11 @@ class RolesApi {
   }
 
   /// Update Role Permissions
-  /// Update role permissions. 
+  /// Update role permissions.
   ///
   /// Parameters:
   /// * [roleId] - The identifier for the role.
-  /// * [updateRolePermissionsRequest] 
+  /// * [updateRolePermissionsRequest]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -491,7 +491,7 @@ class RolesApi {
   ///
   /// Returns a [Future] containing a [Response] with a [UpdateRolePermissionsResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<UpdateRolePermissionsResponse>> updateRolePermissions({ 
+  Future<Response<UpdateRolePermissionsResponse>> updateRolePermissions({
     required String roleId,
     required UpdateRolePermissionsRequest updateRolePermissionsRequest,
     CancelToken? cancelToken,
@@ -594,7 +594,7 @@ class RolesApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> updateRoles({ 
+  Future<Response<SuccessResponse>> updateRoles({
     required String roleId,
     UpdateRolesRequest? updateRolesRequest,
     CancelToken? cancelToken,

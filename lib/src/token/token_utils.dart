@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
-import 'package:kinde_flutter_sdk/src/kinde_error.dart';
+import 'package:kinde_flutter_sdk/src/error/kinde_error.dart';
 import 'package:kinde_flutter_sdk/src/model/claim/claim.dart';
 import 'package:kinde_flutter_sdk/src/model/claim/claim_organization.dart';
 import 'package:kinde_flutter_sdk/src/model/claim/claim_organizations.dart';
@@ -83,7 +83,7 @@ mixin TokenUtils implements ClaimApi {
     final flagClaim = _getClaim(_featureFlagsClaim) as Map<String, dynamic>?;
     if (flagClaim == null || !flagClaim.containsKey(code)) {
       if (defaultValue == null) {
-        throw KindeError(
+        throw KindeError(message:
             'Flag $code was not found, and no default value has been provided');
       }
     } else {
@@ -92,7 +92,7 @@ mixin TokenUtils implements ClaimApi {
       if (type != null &&
           flagType != null &&
           type.character != flagType.character) {
-        throw KindeError('Flag $code is type $flagType - requested type $type');
+        throw KindeError(message: 'Flag $code is type $flagType - requested type $type');
       }
     }
     return Flag(code, flagType ?? type,
