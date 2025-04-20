@@ -37,7 +37,8 @@ class KindeWeb {
   late final CodeVerifierStorage _codeVerifierStorage;
 
   static Future<void> initialize(
-      {String? appBaseUrl, required KindeSecureStorageInterface secureStorage}) async {
+      {String? appBaseUrl,
+      required KindeSecureStorageInterface secureStorage}) async {
     try {
       String? tempAppBaseUrl = appBaseUrl;
 
@@ -108,7 +109,8 @@ class KindeWeb {
 
   ///If multiple logins are triggered in parallel, then flow finished correctly only for
   ///last triggered login, for others after finishing login will be thrown [KindeError] with code=[invalid_grant]
-  Future<void> startLoginFlow(AuthorizationRequest configuration, {required InternalAdditionalParameters additionalParameters}) async {
+  Future<void> startLoginFlow(AuthorizationRequest configuration,
+      {required InternalAdditionalParameters additionalParameters}) async {
     if (_loginInProgress) {
       throw const KindeError(code: KindeErrorCode.loginInProcess);
     }
@@ -117,7 +119,6 @@ class KindeWeb {
 
       final String codeVerifier = generateCodeVerifier();
       _codeVerifierStorage.save(codeVerifier);
-      additionalParameters.codeVerifier = codeVerifier;
       final String authState = generateAuthState();
       try {
         await _kindeSecureStorage.saveAuthRequestState(authState);
@@ -128,7 +129,10 @@ class KindeWeb {
             message: e.toString(),
             stackTrace: st);
       }
-      WebOAuthFlow.login(configuration, additionalParameters);
+      WebOAuthFlow.login(
+          configuration: configuration,
+          additionalParameters: additionalParameters,
+          codeVerifier: codeVerifier);
     } catch (e) {
       await _clear();
       if (e is KindeError) rethrow;

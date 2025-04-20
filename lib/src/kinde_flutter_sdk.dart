@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:kinde_flutter_sdk/src/additional_params.dart';
 import 'package:kinde_flutter_sdk/src/kinde_secure_storage/kinde_secure_storage_i.dart';
+import 'package:kinde_flutter_sdk/src/utils/kinde_custom_types.dart';
 import 'package:kinde_flutter_sdk/src/utils/kinde_debug_print.dart';
 import 'package:kinde_flutter_sdk/src/kinde_secure_storage/kinde_secure_storage.dart';
 import 'package:kinde_flutter_sdk/src/kinde_web/kinde_web.dart';
@@ -129,6 +130,7 @@ class KindeFlutterSDK with TokenUtils {
       String? audience,
       Dio? dio}) async {
     String step = 'initializing';
+    void updateStep(String newStep) { step = newStep; }
 
     try {
       step = 'config setup';
@@ -141,30 +143,14 @@ class KindeFlutterSDK with TokenUtils {
         audience: audience,
       );
 
-      step = 'secure key retrieval';
 
       final kindeSecureStorage = KindeSecureStorage();
 
-      List<int>? secureKey = await kindeSecureStorage.getSecureKey();
+      await _initializeStore(kindeSecureStorage, stepUpdater: updateStep);
 
-      if (secureKey == null) {
-        step = 'secure key generation and storage';
-        secureKey = Hive.generateSecureKey();
-        await kindeSecureStorage.saveSecureKey(secureKey);
-      }
+      await _initializeWebLayerIfNeeded(kindeSecureStorage, stepUpdater: updateStep);
 
-      step = 'temp path resolution';
-      final String path = await getTemporaryDirectoryPath();
-
-      step = 'Hive store initialization';
-      await Store.init(HiveAesCipher(secureKey), path);
-
-      if (kIsWeb) {
-        step = 'web layer initialization';
-        await KindeWeb.initialize(secureStorage: kindeSecureStorage);
-      }
-
-      step = 'finalization';
+      updateStep('finalization');
 
       return _instance = KindeFlutterSDK._internal(
           secureStorage: kindeSecureStorage, dio: dio);
@@ -180,6 +166,31 @@ class KindeFlutterSDK with TokenUtils {
         message: 'Error during "$step": ${e.toString()}',
         stackTrace: st,
       );
+    }
+  }
+
+  static Future<void> _initializeStore(KindeSecureStorage kindeSecureStorage, {required InitializationStepUpdater stepUpdater}) async {
+
+    stepUpdater('temp path resolution');
+    final String path = await getTemporaryDirectoryPath();
+
+    stepUpdater('secure key retrieval');
+    List<int>? secureKey = await kindeSecureStorage.getSecureKey();
+
+    if (secureKey == null) {
+      stepUpdater('secure key generation and storage');
+      secureKey = Hive.generateSecureKey();
+      await kindeSecureStorage.saveSecureKey(secureKey);
+    }
+
+    stepUpdater('Hive store initialization');
+    await Store.init(HiveAesCipher(secureKey), path);
+  }
+
+  static Future<void> _initializeWebLayerIfNeeded (KindeSecureStorage kindeSecureStorage, {required InitializationStepUpdater stepUpdater}) async {
+    if (kIsWeb) {
+      stepUpdater('web layer initialization');
+      await KindeWeb.initialize(secureStorage: kindeSecureStorage);
     }
   }
 
@@ -205,7 +216,7 @@ class KindeFlutterSDK with TokenUtils {
     if (kIsWeb) {
       await _handleWebLogout();
     } else {
-      await _handleMobileLogout(
+      await _handleNonWebLogout(
           dio: dio,
           macosLogoutWithoutRedirection: macosLogoutWithoutRedirection);
     }
@@ -213,7 +224,7 @@ class KindeFlutterSDK with TokenUtils {
     await _commonLogoutCleanup();
   }
 
-  Future<void> _handleMobileLogout({
+  Future<void> _handleNonWebLogout({
     Dio? dio,
     required bool macosLogoutWithoutRedirection,
   }) async {
@@ -511,14 +522,15 @@ class KindeFlutterSDK with TokenUtils {
   /// and secure storage.
   ///
   /// Call this **before** checking authentication status.
-  Future<void> completePendingLoginIfNeeded() async {
+  Future<bool> completePendingLoginIfNeeded() async {
     final finishLoginUri = _isCurrentUrlContainWebAuthParams();
     if (finishLoginUri != null) {
       final storedState = await _kindeSecureStorage.getAuthRequestState();
       if (storedState != null) {
-        await _finishWebLogin(finishLoginUri);
+        return _finishWebLogin(finishLoginUri);
       }
     }
+    return false;
   }
 
   ///returns current url if it contain required params for finishing auth flow

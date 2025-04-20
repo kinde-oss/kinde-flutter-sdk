@@ -1,17 +1,21 @@
-abstract class ParamName {
-  const ParamName._();
+enum Parameter {
+  scope("scope"),
+  prompt("prompt"),
+  orgCode("org_code"),
+  lang("lang"),
+  connectionId("connection_id"),
+  loginHint("login_hint"),
+  audience("audience"),
+  state("state"),
+  startPage("start_page"),
+  isCreateOrg("is_create_org"),
+  orgName("org_name");
 
-  static const scope = "scope";
-  static const prompt = "prompt";
-  static const orgCode = "org_code";
-  static const lang = "lang";
-  static const connectionId = "connection_id";
-  static const loginHint = "login_hint";
-  static const audience = "audience";
-  static const state = "state";
-  static const startPage = "start_page";
-  static const isCreateOrg = "is_create_org";
-  static const orgName = "org_name";
+  const Parameter(this.value);
+
+  final String value;
+
+  String get name => value;
 }
 
 abstract class BaseAdditionalParameters {
@@ -30,19 +34,19 @@ abstract class BaseAdditionalParameters {
   const BaseAdditionalParameters(
       {this.lang, this.connectionId, this.loginHint, this.orgCode});
 
-  Map<String, String> _toMap() {
+  Map<String, String> toWebParams() {
     final params = <String, String>{};
     if (orgCode != null) {
-      params[ParamName.orgCode] = orgCode!;
+      params[Parameter.orgCode.name] = orgCode!;
     }
     if (lang != null) {
-      params[ParamName.lang] = lang!;
+      params[Parameter.lang.name] = lang!;
     }
     if (connectionId != null) {
-      params[ParamName.connectionId] = connectionId!;
+      params[Parameter.connectionId.name] = connectionId!;
     }
     if (loginHint != null) {
-      params[ParamName.loginHint] = loginHint!;
+      params[Parameter.loginHint.name] = loginHint!;
     }
     return params;
   }
@@ -61,11 +65,6 @@ class InternalAdditionalParameters extends BaseAdditionalParameters {
   String? registrationPage;
   bool? createOrg;
   String? orgName;
-
-  /// The PKCE code verifier for OAuth 2.0 Authorization Code flow with PKCE.
-  /// This is a cryptographically random string used to correlate the authorization request with the token request.
-  /// Not included in the toMap() method as it's not sent as a URL parameter but used separately in the token exchange step.
-  String? codeVerifier;
 
   InternalAdditionalParameters(
       {this.audience,
@@ -90,42 +89,38 @@ class InternalAdditionalParameters extends BaseAdditionalParameters {
     );
   }
 
-  Map<String, String> toWebParams() {
-    return _toMap();
-  }
-
   @override
-  Map<String, String> _toMap() {
-    final result = Map<String, String>.from(super._toMap());
+  Map<String, String> toWebParams() {
+    final result = Map<String, String>.from(super.toWebParams());
     if (audience != null) {
-      result[ParamName.audience] = audience!;
+      result[Parameter.audience.name] = audience!;
     }
     if (promptValues != null) {
-      result[ParamName.prompt] = promptValues!.join(' ');
+      result[Parameter.prompt.name] = promptValues!.join(' ');
     }
     if (scopes != null) {
-      result[ParamName.scope] = scopes!.join(' ');
+      result[Parameter.scope.name] = scopes!.join(' ');
     }
     if (state != null) {
-      result[ParamName.state] = state!;
+      result[Parameter.state.name] = state!;
     }
     if (registrationPage != null) {
-      result[ParamName.startPage] = registrationPage!;
+      result[Parameter.startPage.name] = registrationPage!;
     }
     if (createOrg != null) {
-      result[ParamName.isCreateOrg] = createOrg.toString();
+      result[Parameter.isCreateOrg.name] = createOrg.toString();
     }
     if (orgName != null) {
-      result[ParamName.orgName] = orgName!;
+      result[Parameter.orgName.name] = orgName!;
     }
     return result;
   }
 
   ///for Authorization Request setting 'scope' and 'prompt' via builder
   Map<String, String> toAuthorizationRequestParams() {
-    final dict = _toMap();
-    dict.remove(ParamName.scope);
-    dict.remove(ParamName.prompt);
+    final dict = toWebParams();
+    dict.remove(Parameter.scope.name);
+    dict.remove(Parameter.prompt.name);
     return dict;
   }
 }

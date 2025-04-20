@@ -10,11 +10,14 @@ const int _httpDefaultPort = 80;
 const int _httpsDefaultPort = 443;
 
 abstract class WebOAuthFlow {
-  static Future<void> login(AuthorizationRequest configuration,
-      InternalAdditionalParameters additionalParameters) async {
+  static Future<void> login(
+      {required AuthorizationRequest configuration,
+      required InternalAdditionalParameters additionalParameters,
+      required String codeVerifier}) async {
     final initialUri = _getInitialUrl(
         configuration: configuration,
-        additionalParameters: additionalParameters);
+        additionalParameters: additionalParameters,
+        codeVerifier: codeVerifier);
     WebUtils.replacePage(initialUri.toString());
   }
 
@@ -32,7 +35,7 @@ abstract class WebOAuthFlow {
       authorizationCodeGrant.getAuthorizationUrl(Uri.parse(redirectUrl),
           scopes: scopes, state: authRequestState);
 
-      ///throws KindeError with code=not-redirect-url
+      /// throws KindeError with code=notRedirect
       _compareActualRedirectUriWithExpected(
           actual: responseUri, expected: redirectUrl);
 
@@ -86,13 +89,15 @@ abstract class WebOAuthFlow {
     throw KindeError(
       code: KindeErrorCode.unsupportedScheme,
       message:
-          'Unsupported URI scheme: "$scheme". Only "https" and "http" are allowed.',
+          'Unsupported URI scheme: "$scheme". Only "https" and "http" are allowed. '
+          'Please ensure your redirect URL begins with http:// or https://.',
     );
   }
 
   static Uri _getInitialUrl({
     required AuthorizationRequest configuration,
     required InternalAdditionalParameters additionalParameters,
+    required String codeVerifier,
   }) {
     final redirectUrl = configuration.redirectUrl;
 
@@ -100,7 +105,7 @@ abstract class WebOAuthFlow {
       configuration.clientId,
       Uri.parse(configuration.serviceConfiguration!.authorizationEndpoint),
       Uri.parse(configuration.serviceConfiguration!.tokenEndpoint),
-      codeVerifier: additionalParameters.codeVerifier,
+      codeVerifier: codeVerifier,
       basicAuth: true,
     );
 
