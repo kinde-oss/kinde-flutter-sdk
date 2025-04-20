@@ -135,7 +135,7 @@ class KindeWeb {
           codeVerifier: codeVerifier);
     } catch (e, st) {
       await _clear();
-      throw KindeError.fromError(e, st);
+      throw e is KindeError ? e : KindeError.fromError(e, st);
     }
   }
 
