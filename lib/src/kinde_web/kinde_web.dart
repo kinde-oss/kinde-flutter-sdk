@@ -133,9 +133,9 @@ class KindeWeb {
           configuration: configuration,
           additionalParameters: additionalParameters,
           codeVerifier: codeVerifier);
-    } catch (e) {
+    } catch (e, st) {
       await _clear();
-      if (e is KindeError) rethrow;
+      throw KindeError.fromError(e, st);
     }
   }
 

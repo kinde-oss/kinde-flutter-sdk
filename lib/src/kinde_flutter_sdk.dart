@@ -130,7 +130,9 @@ class KindeFlutterSDK with TokenUtils {
       String? audience,
       Dio? dio}) async {
     String step = 'initializing';
-    void updateStep(String newStep) { step = newStep; }
+    void updateStep(String newStep) {
+      step = newStep;
+    }
 
     try {
       step = 'config setup';
@@ -143,12 +145,12 @@ class KindeFlutterSDK with TokenUtils {
         audience: audience,
       );
 
-
       final kindeSecureStorage = KindeSecureStorage();
 
       await _initializeStore(kindeSecureStorage, stepUpdater: updateStep);
 
-      await _initializeWebLayerIfNeeded(kindeSecureStorage, stepUpdater: updateStep);
+      await _initializeWebLayerIfNeeded(kindeSecureStorage,
+          stepUpdater: updateStep);
 
       updateStep('finalization');
 
@@ -169,8 +171,8 @@ class KindeFlutterSDK with TokenUtils {
     }
   }
 
-  static Future<void> _initializeStore(KindeSecureStorage kindeSecureStorage, {required InitializationStepUpdater stepUpdater}) async {
-
+  static Future<void> _initializeStore(KindeSecureStorage kindeSecureStorage,
+      {required InitializationStepUpdater stepUpdater}) async {
     stepUpdater('temp path resolution');
     final String path = await getTemporaryDirectoryPath();
 
@@ -187,7 +189,9 @@ class KindeFlutterSDK with TokenUtils {
     await Store.init(HiveAesCipher(secureKey), path);
   }
 
-  static Future<void> _initializeWebLayerIfNeeded (KindeSecureStorage kindeSecureStorage, {required InitializationStepUpdater stepUpdater}) async {
+  static Future<void> _initializeWebLayerIfNeeded(
+      KindeSecureStorage kindeSecureStorage,
+      {required InitializationStepUpdater stepUpdater}) async {
     if (kIsWeb) {
       stepUpdater('web layer initialization');
       await KindeWeb.initialize(secureStorage: kindeSecureStorage);
@@ -205,9 +209,11 @@ class KindeFlutterSDK with TokenUtils {
   }
 
   /// for web it invokes logoutRedirectUri
+  /// [timeout] - for non web logout
   Future<void> logout({
     Dio? dio,
     bool macosLogoutWithoutRedirection = true,
+    Duration timeout = const Duration(seconds: 30),
   }) async {
     if (authState == null) {
       kindeDebugPrint(methodName: "logout", message: "AuthState is null.");
@@ -218,7 +224,9 @@ class KindeFlutterSDK with TokenUtils {
     } else {
       await _handleNonWebLogout(
           dio: dio,
-          macosLogoutWithoutRedirection: macosLogoutWithoutRedirection);
+          macosLogoutWithoutRedirection: macosLogoutWithoutRedirection,
+          timeout: timeout
+      );
     }
 
     await _commonLogoutCleanup();
@@ -227,6 +235,7 @@ class KindeFlutterSDK with TokenUtils {
   Future<void> _handleNonWebLogout({
     Dio? dio,
     required bool macosLogoutWithoutRedirection,
+    required Duration timeout,
   }) async {
     if (Platform.operatingSystem == "macos" && macosLogoutWithoutRedirection) {
       return _logoutWithoutRedirection(dio: dio);
@@ -243,7 +252,11 @@ class KindeFlutterSDK with TokenUtils {
           additionalParameters: _config != null
               ? {"redirect": _config!.logoutRedirectUri}
               : null);
-      await appAuth.endSession(endSessionRequest);
+
+      await appAuth.endSession(endSessionRequest).timeout(timeout,
+          onTimeout: () {
+        throw const KindeError(code: KindeErrorCode.requestTimedOut, message: 'Logout request timed out');
+      });
     } catch (e, st) {
       kindeDebugPrint(methodName: "Logout", message: e.toString());
       throw KindeError.fromError(e, st);
@@ -273,9 +286,13 @@ class KindeFlutterSDK with TokenUtils {
       await Store.instance.clear();
 
       if (response.statusCode != null && response.statusCode! >= 400) {
+        final errorMessage = response.data is Map
+            ? response.data['error_description'] ??
+                response.data['error'] ??
+                "Unknown error"
+            : "Logout failed with status: ${response.statusCode}";
         throw KindeError(
-            code: KindeErrorCode.logoutRequestFailed,
-            message: "Logout status code: ${response.statusCode}");
+            code: KindeErrorCode.logoutRequestFailed, message: errorMessage);
       }
     } catch (error, st) {
       throw KindeError.fromError(error, st);
@@ -334,7 +351,8 @@ class KindeFlutterSDK with TokenUtils {
             additionalParameters: authorizationRequest.additionalParameters);
         tokenResponse = await appAuth.token(tokenRequest);
       } else {
-        final authorizationTokenRequest = _createAuthorizationTokenRequest(params);
+        final authorizationTokenRequest =
+            _createAuthorizationTokenRequest(params);
         tokenResponse =
             await appAuth.authorizeAndExchangeCode(authorizationTokenRequest);
       }

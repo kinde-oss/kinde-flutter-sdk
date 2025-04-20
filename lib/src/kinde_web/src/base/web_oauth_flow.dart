@@ -111,7 +111,12 @@ abstract class WebOAuthFlow {
 
     Uri initialUri = authorizationCodeGrant.getAuthorizationUrl(
       Uri.parse(redirectUrl),
+      state: additionalParameters.state,
+      scopes: additionalParameters.scopes
     );
+
+    additionalParameters.state = null;
+    additionalParameters.scopes = null;
 
     final Map<String, String> queryParameters =
         Map.from(initialUri.queryParameters);
