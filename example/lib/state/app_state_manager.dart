@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_starter_kit/encrypted_box.dart';
 
 import 'package:kinde_flutter_sdk/kinde_flutter_sdk.dart';
@@ -41,7 +40,10 @@ class AppStateManager {
   Future<UserProfileV2?> checkIsUserLogged() async {
     _loading.value = true;
     try {
-      bool isLogged = await _kindeClient.isAuthenticate();
+      if (kIsWeb) {
+        await _kindeClient.completePendingLoginIfNeeded();
+      }
+      bool isLogged = await _kindeClient.isAuthenticated();
       if (!isLogged) {
         ///if user not logged, refresh access and refresh token
         final accessToken = await EncryptedBox.instance.returnAccessToken();

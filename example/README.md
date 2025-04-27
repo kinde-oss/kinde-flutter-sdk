@@ -22,7 +22,7 @@ Follow [the installation instructions for your chosen OS](https://docs.flutter.d
 
 1. Clone the repository to your machine:
 ```shell
-https://github.com/abdullahihsan3/flutter-starter-kit.git
+https://github.com/kinde-oss/kinde-flutter-sdk.git
 ```
 2. Go into the project:
 ```shell
@@ -61,7 +61,7 @@ In your main.dart file,
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:kinde_flutter_sdk/kinde_flutter_sdk.dart';
-void main(){
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
   await KindeFlutterSDK.initializeSDK(

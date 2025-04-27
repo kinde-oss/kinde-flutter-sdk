@@ -7,8 +7,6 @@ const appTitle = "KindeAuth";
 
 /// Text Styles
 const TextStyle kRobotoText = TextStyle(fontFamily: 'Roboto');
-TextStyle kTitleText = kRobotoText.copyWith(
-    fontWeight: kFwMedium, color: Colors.black, fontSize: kTitle);
 
 /// Font Sizes
 double kTitle = 24.sp;
@@ -22,6 +20,9 @@ FontWeight kFwBold = FontWeight.w700;
 FontWeight kFwMedium = FontWeight.w500;
 
 FontWeight kFwBlack = FontWeight.w900;
+
+TextStyle kTitleText = kRobotoText.copyWith(
+    fontWeight: kFwMedium, color: Colors.black, fontSize: kTitle);
 
 // Vertical Spacing
 Widget get verticalSpaceSmall => SizedBox(height: 8.0.h);

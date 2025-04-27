@@ -41,11 +41,17 @@ class EncryptedBox {
     if (token == null) {
       return await getNewToken();
     }
-    bool hasExpired = JwtDecoder.isExpired(token);
-    if (hasExpired) {
+    try {
+      bool hasExpired = JwtDecoder.isExpired(token);
+      if (hasExpired) {
+        return await getNewToken();
+      }
+      return token;
+    } catch (e) {
+      debugPrint("Error decoding token: ${e.toString()}");
+      // Token might be malformed, get a new one
       return await getNewToken();
     }
-    return token;
   }
 
   Future<String?> getNewToken() async {

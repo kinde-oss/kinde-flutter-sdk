@@ -81,9 +81,11 @@ class WelcomeScreen extends StatelessWidget {
                                   fontWeight: kFwBlack, color: Colors.white),
                             ),
                             verticalSpaceMedium,
-                            MaterialButton(
-                              elevation: 0,
-                              color: Colors.white,
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white,
+                                elevation: 0,
+                              ),
                               onPressed: () {
                                 final url = Uri.parse(docsUrl);
                                 canLaunchUrl(url).then((isCan) {

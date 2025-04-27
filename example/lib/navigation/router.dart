@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter_starter_kit/main.dart';
 import 'package:flutter_starter_kit/screens/splash/splash_screen.dart';
+import 'package:flutter_starter_kit/screens/unknown/unknown_screen.dart';
 import 'package:flutter_starter_kit/screens/welcome/welcome_screen.dart';
 import 'package:go_router/go_router.dart';
 
