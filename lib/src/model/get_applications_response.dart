@@ -15,10 +15,11 @@ part 'get_applications_response.g.dart';
 /// Properties:
 /// * [code] - Response code.
 /// * [message] - Response message.
-/// * [applications] 
+/// * [applications]
 /// * [nextToken] - Pagination token.
 @BuiltValue()
-abstract class GetApplicationsResponse implements Built<GetApplicationsResponse, GetApplicationsResponseBuilder> {
+abstract class GetApplicationsResponse
+    implements Built<GetApplicationsResponse, GetApplicationsResponseBuilder> {
   /// Response code.
   @BuiltValueField(wireName: r'code')
   String? get code;
@@ -36,18 +37,25 @@ abstract class GetApplicationsResponse implements Built<GetApplicationsResponse,
 
   GetApplicationsResponse._();
 
-  factory GetApplicationsResponse([void Function(GetApplicationsResponseBuilder b) updates]) = _$GetApplicationsResponse;
+  factory GetApplicationsResponse([
+    void Function(GetApplicationsResponseBuilder b) updates,
+  ]) = _$GetApplicationsResponse;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(GetApplicationsResponseBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<GetApplicationsResponse> get serializer => _$GetApplicationsResponseSerializer();
+  static Serializer<GetApplicationsResponse> get serializer =>
+      _$GetApplicationsResponseSerializer();
 }
 
-class _$GetApplicationsResponseSerializer implements PrimitiveSerializer<GetApplicationsResponse> {
+class _$GetApplicationsResponseSerializer
+    implements PrimitiveSerializer<GetApplicationsResponse> {
   @override
-  final Iterable<Type> types = const [GetApplicationsResponse, _$GetApplicationsResponse];
+  final Iterable<Type> types = const [
+    GetApplicationsResponse,
+    _$GetApplicationsResponse,
+  ];
 
   @override
   final String wireName = r'GetApplicationsResponse';
@@ -93,7 +101,11 @@ class _$GetApplicationsResponseSerializer implements PrimitiveSerializer<GetAppl
     GetApplicationsResponse object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -109,31 +121,41 @@ class _$GetApplicationsResponseSerializer implements PrimitiveSerializer<GetAppl
       final value = serializedList[i + 1];
       switch (key) {
         case r'code':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.code = valueDes;
           break;
         case r'message':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.message = valueDes;
           break;
         case r'applications':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(Applications)]),
-          ) as BuiltList<Applications>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(Applications),
+                    ]),
+                  )
+                  as BuiltList<Applications>;
           result.applications.replace(valueDes);
           break;
         case r'next_token':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.nextToken = valueDes;
           break;
         default:
@@ -164,4 +186,3 @@ class _$GetApplicationsResponseSerializer implements PrimitiveSerializer<GetAppl
     return result.build();
   }
 }
-

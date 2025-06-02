@@ -16,18 +16,21 @@ class _$GetOrganizationUsersResponse extends GetOrganizationUsersResponse {
   @override
   final String? nextToken;
 
-  factory _$GetOrganizationUsersResponse(
-          [void Function(GetOrganizationUsersResponseBuilder)? updates]) =>
-      (new GetOrganizationUsersResponseBuilder()..update(updates))._build();
+  factory _$GetOrganizationUsersResponse([
+    void Function(GetOrganizationUsersResponseBuilder)? updates,
+  ]) => (new GetOrganizationUsersResponseBuilder()..update(updates))._build();
 
-  _$GetOrganizationUsersResponse._(
-      {this.code, this.message, this.organizationUsers, this.nextToken})
-      : super._();
+  _$GetOrganizationUsersResponse._({
+    this.code,
+    this.message,
+    this.organizationUsers,
+    this.nextToken,
+  }) : super._();
 
   @override
   GetOrganizationUsersResponse rebuild(
-          void Function(GetOrganizationUsersResponseBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(GetOrganizationUsersResponseBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   GetOrganizationUsersResponseBuilder toBuilder() =>
@@ -67,8 +70,10 @@ class _$GetOrganizationUsersResponse extends GetOrganizationUsersResponse {
 
 class GetOrganizationUsersResponseBuilder
     implements
-        Builder<GetOrganizationUsersResponse,
-            GetOrganizationUsersResponseBuilder> {
+        Builder<
+          GetOrganizationUsersResponse,
+          GetOrganizationUsersResponseBuilder
+        > {
   _$GetOrganizationUsersResponse? _$v;
 
   String? _code;
@@ -122,12 +127,14 @@ class GetOrganizationUsersResponseBuilder
   _$GetOrganizationUsersResponse _build() {
     _$GetOrganizationUsersResponse _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           new _$GetOrganizationUsersResponse._(
-              code: code,
-              message: message,
-              organizationUsers: _organizationUsers?.build(),
-              nextToken: nextToken);
+            code: code,
+            message: message,
+            organizationUsers: _organizationUsers?.build(),
+            nextToken: nextToken,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -135,7 +142,10 @@ class GetOrganizationUsersResponseBuilder
         _organizationUsers?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'GetOrganizationUsersResponse', _$failedField, e.toString());
+          r'GetOrganizationUsersResponse',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

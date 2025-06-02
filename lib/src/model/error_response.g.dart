@@ -39,8 +39,7 @@ class _$ErrorResponse extends ErrorResponse {
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'ErrorResponse')
-          ..add('errors', errors))
-        .toString();
+      ..add('errors', errors)).toString();
   }
 }
 
@@ -90,7 +89,10 @@ class ErrorResponseBuilder
         _errors?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'ErrorResponse', _$failedField, e.toString());
+          r'ErrorResponse',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

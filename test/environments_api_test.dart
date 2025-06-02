@@ -54,11 +54,12 @@ void main() {
     test('test updateEnvironementFeatureFlagOverride', () async {
       // TODO
       final responseData = await instance.updateEnvironementFeatureFlagOverride(
-          featureFlagKey: 'test_key',
-          updateEnvironementFeatureFlagOverrideRequest:
-              UpdateEnvironementFeatureFlagOverrideRequest((builder) {
-            builder.value = 'test_value';
-          }));
+        featureFlagKey: 'test_key',
+        updateEnvironementFeatureFlagOverrideRequest:
+            UpdateEnvironementFeatureFlagOverrideRequest((builder) {
+              builder.value = 'test_value';
+            }),
+      );
       expect(responseData, isNotNull);
     });
   });

@@ -13,25 +13,41 @@ part 'update_environement_feature_flag_override_request.g.dart';
 /// Properties:
 /// * [value] - The flag override value.
 @BuiltValue()
-abstract class UpdateEnvironementFeatureFlagOverrideRequest implements Built<UpdateEnvironementFeatureFlagOverrideRequest, UpdateEnvironementFeatureFlagOverrideRequestBuilder> {
+abstract class UpdateEnvironementFeatureFlagOverrideRequest
+    implements
+        Built<
+          UpdateEnvironementFeatureFlagOverrideRequest,
+          UpdateEnvironementFeatureFlagOverrideRequestBuilder
+        > {
   /// The flag override value.
   @BuiltValueField(wireName: r'value')
   String get value;
 
   UpdateEnvironementFeatureFlagOverrideRequest._();
 
-  factory UpdateEnvironementFeatureFlagOverrideRequest([void Function(UpdateEnvironementFeatureFlagOverrideRequestBuilder b) updates]) = _$UpdateEnvironementFeatureFlagOverrideRequest;
+  factory UpdateEnvironementFeatureFlagOverrideRequest([
+    void Function(UpdateEnvironementFeatureFlagOverrideRequestBuilder b)
+    updates,
+  ]) = _$UpdateEnvironementFeatureFlagOverrideRequest;
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _defaults(UpdateEnvironementFeatureFlagOverrideRequestBuilder b) => b;
+  static void _defaults(
+    UpdateEnvironementFeatureFlagOverrideRequestBuilder b,
+  ) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<UpdateEnvironementFeatureFlagOverrideRequest> get serializer => _$UpdateEnvironementFeatureFlagOverrideRequestSerializer();
+  static Serializer<UpdateEnvironementFeatureFlagOverrideRequest>
+  get serializer => _$UpdateEnvironementFeatureFlagOverrideRequestSerializer();
 }
 
-class _$UpdateEnvironementFeatureFlagOverrideRequestSerializer implements PrimitiveSerializer<UpdateEnvironementFeatureFlagOverrideRequest> {
+class _$UpdateEnvironementFeatureFlagOverrideRequestSerializer
+    implements
+        PrimitiveSerializer<UpdateEnvironementFeatureFlagOverrideRequest> {
   @override
-  final Iterable<Type> types = const [UpdateEnvironementFeatureFlagOverrideRequest, _$UpdateEnvironementFeatureFlagOverrideRequest];
+  final Iterable<Type> types = const [
+    UpdateEnvironementFeatureFlagOverrideRequest,
+    _$UpdateEnvironementFeatureFlagOverrideRequest,
+  ];
 
   @override
   final String wireName = r'UpdateEnvironementFeatureFlagOverrideRequest';
@@ -54,7 +70,11 @@ class _$UpdateEnvironementFeatureFlagOverrideRequestSerializer implements Primit
     UpdateEnvironementFeatureFlagOverrideRequest object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -70,10 +90,12 @@ class _$UpdateEnvironementFeatureFlagOverrideRequestSerializer implements Primit
       final value = serializedList[i + 1];
       switch (key) {
         case r'value':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.value = valueDes;
           break;
         default:
@@ -104,4 +126,3 @@ class _$UpdateEnvironementFeatureFlagOverrideRequestSerializer implements Primit
     return result.build();
   }
 }
-

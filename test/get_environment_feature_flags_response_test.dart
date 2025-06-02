@@ -42,16 +42,23 @@ void main() {
       // TODO
       final featureFlags = instance.featureFlags;
       expect(featureFlags.length, isZero);
-      var featureFlagsBuilder = MapBuilder<String,
-          GetOrganizationFeatureFlagsResponseFeatureFlagsValue>();
+      var featureFlagsBuilder =
+          MapBuilder<
+            String,
+            GetOrganizationFeatureFlagsResponseFeatureFlagsValue
+          >();
       instance.featureFlags = featureFlagsBuilder;
       final result = instance.build();
       expect(result, isA<GetEnvironmentFeatureFlagsResponse>());
       expect(
-          result.featureFlags,
-          isA<
-              BuiltMap<String,
-                  GetOrganizationFeatureFlagsResponseFeatureFlagsValue>?>());
+        result.featureFlags,
+        isA<
+          BuiltMap<
+            String,
+            GetOrganizationFeatureFlagsResponseFeatureFlagsValue
+          >?
+        >(),
+      );
       expect(result.featureFlags, isNotNull);
     });
 

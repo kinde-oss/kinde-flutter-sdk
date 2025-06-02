@@ -16,17 +16,17 @@ class _$ApiApplicationsInner extends ApiApplicationsInner {
   @override
   final bool? isActive;
 
-  factory _$ApiApplicationsInner(
-          [void Function(ApiApplicationsInnerBuilder)? updates]) =>
-      (new ApiApplicationsInnerBuilder()..update(updates))._build();
+  factory _$ApiApplicationsInner([
+    void Function(ApiApplicationsInnerBuilder)? updates,
+  ]) => (new ApiApplicationsInnerBuilder()..update(updates))._build();
 
   _$ApiApplicationsInner._({this.id, this.name, this.type, this.isActive})
-      : super._();
+    : super._();
 
   @override
   ApiApplicationsInner rebuild(
-          void Function(ApiApplicationsInnerBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(ApiApplicationsInnerBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   ApiApplicationsInnerBuilder toBuilder() =>
@@ -115,9 +115,14 @@ class ApiApplicationsInnerBuilder
   ApiApplicationsInner build() => _build();
 
   _$ApiApplicationsInner _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         new _$ApiApplicationsInner._(
-            id: id, name: name, type: type, isActive: isActive);
+          id: id,
+          name: name,
+          type: type,
+          isActive: isActive,
+        );
     replace(_$result);
     return _$result;
   }

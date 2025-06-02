@@ -37,8 +37,9 @@ void main() {
     //Future<SuccessResponse> deleteFeatureFlag(String featureFlagKey) async
     test('test deleteFeatureFlag', () async {
       // TODO
-      final response =
-          await instance.deleteFeatureFlag(featureFlagKey: 'test_key');
+      final response = await instance.deleteFeatureFlag(
+        featureFlagKey: 'test_key',
+      );
       expect(response, isNotNull);
     });
 

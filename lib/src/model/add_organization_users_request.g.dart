@@ -10,16 +10,16 @@ class _$AddOrganizationUsersRequest extends AddOrganizationUsersRequest {
   @override
   final BuiltList<AddOrganizationUsersRequestUsersInner>? users;
 
-  factory _$AddOrganizationUsersRequest(
-          [void Function(AddOrganizationUsersRequestBuilder)? updates]) =>
-      (new AddOrganizationUsersRequestBuilder()..update(updates))._build();
+  factory _$AddOrganizationUsersRequest([
+    void Function(AddOrganizationUsersRequestBuilder)? updates,
+  ]) => (new AddOrganizationUsersRequestBuilder()..update(updates))._build();
 
   _$AddOrganizationUsersRequest._({this.users}) : super._();
 
   @override
   AddOrganizationUsersRequest rebuild(
-          void Function(AddOrganizationUsersRequestBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(AddOrganizationUsersRequestBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   AddOrganizationUsersRequestBuilder toBuilder() =>
@@ -42,15 +42,16 @@ class _$AddOrganizationUsersRequest extends AddOrganizationUsersRequest {
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'AddOrganizationUsersRequest')
-          ..add('users', users))
-        .toString();
+      ..add('users', users)).toString();
   }
 }
 
 class AddOrganizationUsersRequestBuilder
     implements
-        Builder<AddOrganizationUsersRequest,
-            AddOrganizationUsersRequestBuilder> {
+        Builder<
+          AddOrganizationUsersRequest,
+          AddOrganizationUsersRequestBuilder
+        > {
   _$AddOrganizationUsersRequest? _$v;
 
   ListBuilder<AddOrganizationUsersRequestUsersInner>? _users;
@@ -99,7 +100,10 @@ class AddOrganizationUsersRequestBuilder
         _users?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'AddOrganizationUsersRequest', _$failedField, e.toString());
+          r'AddOrganizationUsersRequest',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

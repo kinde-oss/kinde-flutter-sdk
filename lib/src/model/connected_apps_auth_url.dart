@@ -14,7 +14,8 @@ part 'connected_apps_auth_url.g.dart';
 /// * [url] - A URL that is used to authenticate an end-user against a connected app.
 /// * [sessionId] - A unique identifier for the login session.
 @BuiltValue()
-abstract class ConnectedAppsAuthUrl implements Built<ConnectedAppsAuthUrl, ConnectedAppsAuthUrlBuilder> {
+abstract class ConnectedAppsAuthUrl
+    implements Built<ConnectedAppsAuthUrl, ConnectedAppsAuthUrlBuilder> {
   /// A URL that is used to authenticate an end-user against a connected app.
   @BuiltValueField(wireName: r'url')
   String? get url;
@@ -25,18 +26,25 @@ abstract class ConnectedAppsAuthUrl implements Built<ConnectedAppsAuthUrl, Conne
 
   ConnectedAppsAuthUrl._();
 
-  factory ConnectedAppsAuthUrl([void Function(ConnectedAppsAuthUrlBuilder b) updates]) = _$ConnectedAppsAuthUrl;
+  factory ConnectedAppsAuthUrl([
+    void Function(ConnectedAppsAuthUrlBuilder b) updates,
+  ]) = _$ConnectedAppsAuthUrl;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(ConnectedAppsAuthUrlBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<ConnectedAppsAuthUrl> get serializer => _$ConnectedAppsAuthUrlSerializer();
+  static Serializer<ConnectedAppsAuthUrl> get serializer =>
+      _$ConnectedAppsAuthUrlSerializer();
 }
 
-class _$ConnectedAppsAuthUrlSerializer implements PrimitiveSerializer<ConnectedAppsAuthUrl> {
+class _$ConnectedAppsAuthUrlSerializer
+    implements PrimitiveSerializer<ConnectedAppsAuthUrl> {
   @override
-  final Iterable<Type> types = const [ConnectedAppsAuthUrl, _$ConnectedAppsAuthUrl];
+  final Iterable<Type> types = const [
+    ConnectedAppsAuthUrl,
+    _$ConnectedAppsAuthUrl,
+  ];
 
   @override
   final String wireName = r'ConnectedAppsAuthUrl';
@@ -68,7 +76,11 @@ class _$ConnectedAppsAuthUrlSerializer implements PrimitiveSerializer<ConnectedA
     ConnectedAppsAuthUrl object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -84,17 +96,21 @@ class _$ConnectedAppsAuthUrlSerializer implements PrimitiveSerializer<ConnectedA
       final value = serializedList[i + 1];
       switch (key) {
         case r'url':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.url = valueDes;
           break;
         case r'session_id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.sessionId = valueDes;
           break;
         default:
@@ -125,4 +141,3 @@ class _$ConnectedAppsAuthUrlSerializer implements PrimitiveSerializer<ConnectedA
     return result.build();
   }
 }
-

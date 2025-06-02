@@ -15,9 +15,14 @@ part 'get_organizations_user_permissions_response.g.dart';
 /// Properties:
 /// * [code] - Response code.
 /// * [message] - Response message.
-/// * [permissions] 
+/// * [permissions]
 @BuiltValue()
-abstract class GetOrganizationsUserPermissionsResponse implements Built<GetOrganizationsUserPermissionsResponse, GetOrganizationsUserPermissionsResponseBuilder> {
+abstract class GetOrganizationsUserPermissionsResponse
+    implements
+        Built<
+          GetOrganizationsUserPermissionsResponse,
+          GetOrganizationsUserPermissionsResponseBuilder
+        > {
   /// Response code.
   @BuiltValueField(wireName: r'code')
   String? get code;
@@ -31,18 +36,25 @@ abstract class GetOrganizationsUserPermissionsResponse implements Built<GetOrgan
 
   GetOrganizationsUserPermissionsResponse._();
 
-  factory GetOrganizationsUserPermissionsResponse([void Function(GetOrganizationsUserPermissionsResponseBuilder b) updates]) = _$GetOrganizationsUserPermissionsResponse;
+  factory GetOrganizationsUserPermissionsResponse([
+    void Function(GetOrganizationsUserPermissionsResponseBuilder b) updates,
+  ]) = _$GetOrganizationsUserPermissionsResponse;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(GetOrganizationsUserPermissionsResponseBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<GetOrganizationsUserPermissionsResponse> get serializer => _$GetOrganizationsUserPermissionsResponseSerializer();
+  static Serializer<GetOrganizationsUserPermissionsResponse> get serializer =>
+      _$GetOrganizationsUserPermissionsResponseSerializer();
 }
 
-class _$GetOrganizationsUserPermissionsResponseSerializer implements PrimitiveSerializer<GetOrganizationsUserPermissionsResponse> {
+class _$GetOrganizationsUserPermissionsResponseSerializer
+    implements PrimitiveSerializer<GetOrganizationsUserPermissionsResponse> {
   @override
-  final Iterable<Type> types = const [GetOrganizationsUserPermissionsResponse, _$GetOrganizationsUserPermissionsResponse];
+  final Iterable<Type> types = const [
+    GetOrganizationsUserPermissionsResponse,
+    _$GetOrganizationsUserPermissionsResponse,
+  ];
 
   @override
   final String wireName = r'GetOrganizationsUserPermissionsResponse';
@@ -70,7 +82,9 @@ class _$GetOrganizationsUserPermissionsResponseSerializer implements PrimitiveSe
       yield r'permissions';
       yield serializers.serialize(
         object.permissions,
-        specifiedType: const FullType(BuiltList, [FullType(OrganizationUserPermission)]),
+        specifiedType: const FullType(BuiltList, [
+          FullType(OrganizationUserPermission),
+        ]),
       );
     }
   }
@@ -81,7 +95,11 @@ class _$GetOrganizationsUserPermissionsResponseSerializer implements PrimitiveSe
     GetOrganizationsUserPermissionsResponse object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -97,24 +115,32 @@ class _$GetOrganizationsUserPermissionsResponseSerializer implements PrimitiveSe
       final value = serializedList[i + 1];
       switch (key) {
         case r'code':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.code = valueDes;
           break;
         case r'message':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.message = valueDes;
           break;
         case r'permissions':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(OrganizationUserPermission)]),
-          ) as BuiltList<OrganizationUserPermission>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(OrganizationUserPermission),
+                    ]),
+                  )
+                  as BuiltList<OrganizationUserPermission>;
           result.permissions.replace(valueDes);
           break;
         default:
@@ -145,4 +171,3 @@ class _$GetOrganizationsUserPermissionsResponseSerializer implements PrimitiveSe
     return result.build();
   }
 }
-

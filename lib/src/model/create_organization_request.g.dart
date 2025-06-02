@@ -7,17 +7,17 @@ part of 'create_organization_request.dart';
 // **************************************************************************
 
 const CreateOrganizationRequestFeatureFlagsEnum
-    _$createOrganizationRequestFeatureFlagsEnum_str =
+_$createOrganizationRequestFeatureFlagsEnum_str =
     const CreateOrganizationRequestFeatureFlagsEnum._('str');
 const CreateOrganizationRequestFeatureFlagsEnum
-    _$createOrganizationRequestFeatureFlagsEnum_int_ =
+_$createOrganizationRequestFeatureFlagsEnum_int_ =
     const CreateOrganizationRequestFeatureFlagsEnum._('int_');
 const CreateOrganizationRequestFeatureFlagsEnum
-    _$createOrganizationRequestFeatureFlagsEnum_bool_ =
+_$createOrganizationRequestFeatureFlagsEnum_bool_ =
     const CreateOrganizationRequestFeatureFlagsEnum._('bool_');
 
 CreateOrganizationRequestFeatureFlagsEnum
-    _$createOrganizationRequestFeatureFlagsEnumValueOf(String name) {
+_$createOrganizationRequestFeatureFlagsEnumValueOf(String name) {
   switch (name) {
     case 'str':
       return _$createOrganizationRequestFeatureFlagsEnum_str;
@@ -31,15 +31,16 @@ CreateOrganizationRequestFeatureFlagsEnum
 }
 
 final BuiltSet<CreateOrganizationRequestFeatureFlagsEnum>
-    _$createOrganizationRequestFeatureFlagsEnumValues = new BuiltSet<
-        CreateOrganizationRequestFeatureFlagsEnum>(const <CreateOrganizationRequestFeatureFlagsEnum>[
+_$createOrganizationRequestFeatureFlagsEnumValues = new BuiltSet<
+  CreateOrganizationRequestFeatureFlagsEnum
+>(const <CreateOrganizationRequestFeatureFlagsEnum>[
   _$createOrganizationRequestFeatureFlagsEnum_str,
   _$createOrganizationRequestFeatureFlagsEnum_int_,
   _$createOrganizationRequestFeatureFlagsEnum_bool_,
 ]);
 
 Serializer<CreateOrganizationRequestFeatureFlagsEnum>
-    _$createOrganizationRequestFeatureFlagsEnumSerializer =
+_$createOrganizationRequestFeatureFlagsEnumSerializer =
     new _$CreateOrganizationRequestFeatureFlagsEnumSerializer();
 
 class _$CreateOrganizationRequestFeatureFlagsEnumSerializer
@@ -57,23 +58,26 @@ class _$CreateOrganizationRequestFeatureFlagsEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    CreateOrganizationRequestFeatureFlagsEnum
+    CreateOrganizationRequestFeatureFlagsEnum,
   ];
   @override
   final String wireName = 'CreateOrganizationRequestFeatureFlagsEnum';
 
   @override
-  Object serialize(Serializers serializers,
-          CreateOrganizationRequestFeatureFlagsEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    CreateOrganizationRequestFeatureFlagsEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   CreateOrganizationRequestFeatureFlagsEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      CreateOrganizationRequestFeatureFlagsEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => CreateOrganizationRequestFeatureFlagsEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$CreateOrganizationRequest extends CreateOrganizationRequest {
@@ -81,7 +85,7 @@ class _$CreateOrganizationRequest extends CreateOrganizationRequest {
   final String? name;
   @override
   final BuiltMap<String, CreateOrganizationRequestFeatureFlagsEnum>?
-      featureFlags;
+  featureFlags;
   @override
   final String? externalId;
   @override
@@ -93,24 +97,24 @@ class _$CreateOrganizationRequest extends CreateOrganizationRequest {
   @override
   final String? linkColor;
 
-  factory _$CreateOrganizationRequest(
-          [void Function(CreateOrganizationRequestBuilder)? updates]) =>
-      (new CreateOrganizationRequestBuilder()..update(updates))._build();
+  factory _$CreateOrganizationRequest([
+    void Function(CreateOrganizationRequestBuilder)? updates,
+  ]) => (new CreateOrganizationRequestBuilder()..update(updates))._build();
 
-  _$CreateOrganizationRequest._(
-      {this.name,
-      this.featureFlags,
-      this.externalId,
-      this.backgroundColor,
-      this.buttonColor,
-      this.buttonTextColor,
-      this.linkColor})
-      : super._();
+  _$CreateOrganizationRequest._({
+    this.name,
+    this.featureFlags,
+    this.externalId,
+    this.backgroundColor,
+    this.buttonColor,
+    this.buttonTextColor,
+    this.linkColor,
+  }) : super._();
 
   @override
   CreateOrganizationRequest rebuild(
-          void Function(CreateOrganizationRequestBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CreateOrganizationRequestBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CreateOrganizationRequestBuilder toBuilder() =>
@@ -168,12 +172,12 @@ class CreateOrganizationRequestBuilder
 
   MapBuilder<String, CreateOrganizationRequestFeatureFlagsEnum>? _featureFlags;
   MapBuilder<String, CreateOrganizationRequestFeatureFlagsEnum>
-      get featureFlags => _$this._featureFlags ??=
+  get featureFlags =>
+      _$this._featureFlags ??=
           new MapBuilder<String, CreateOrganizationRequestFeatureFlagsEnum>();
   set featureFlags(
-          MapBuilder<String, CreateOrganizationRequestFeatureFlagsEnum>?
-              featureFlags) =>
-      _$this._featureFlags = featureFlags;
+    MapBuilder<String, CreateOrganizationRequestFeatureFlagsEnum>? featureFlags,
+  ) => _$this._featureFlags = featureFlags;
 
   String? _externalId;
   String? get externalId => _$this._externalId;
@@ -233,15 +237,17 @@ class CreateOrganizationRequestBuilder
   _$CreateOrganizationRequest _build() {
     _$CreateOrganizationRequest _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           new _$CreateOrganizationRequest._(
-              name: name,
-              featureFlags: _featureFlags?.build(),
-              externalId: externalId,
-              backgroundColor: backgroundColor,
-              buttonColor: buttonColor,
-              buttonTextColor: buttonTextColor,
-              linkColor: linkColor);
+            name: name,
+            featureFlags: _featureFlags?.build(),
+            externalId: externalId,
+            backgroundColor: backgroundColor,
+            buttonColor: buttonColor,
+            buttonTextColor: buttonTextColor,
+            linkColor: linkColor,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -249,7 +255,10 @@ class CreateOrganizationRequestBuilder
         _featureFlags?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'CreateOrganizationRequest', _$failedField, e.toString());
+          r'CreateOrganizationRequest',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

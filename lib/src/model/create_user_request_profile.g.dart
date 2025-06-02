@@ -12,16 +12,16 @@ class _$CreateUserRequestProfile extends CreateUserRequestProfile {
   @override
   final String? familyName;
 
-  factory _$CreateUserRequestProfile(
-          [void Function(CreateUserRequestProfileBuilder)? updates]) =>
-      (new CreateUserRequestProfileBuilder()..update(updates))._build();
+  factory _$CreateUserRequestProfile([
+    void Function(CreateUserRequestProfileBuilder)? updates,
+  ]) => (new CreateUserRequestProfileBuilder()..update(updates))._build();
 
   _$CreateUserRequestProfile._({this.givenName, this.familyName}) : super._();
 
   @override
   CreateUserRequestProfile rebuild(
-          void Function(CreateUserRequestProfileBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CreateUserRequestProfileBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CreateUserRequestProfileBuilder toBuilder() =>
@@ -95,9 +95,12 @@ class CreateUserRequestProfileBuilder
   CreateUserRequestProfile build() => _build();
 
   _$CreateUserRequestProfile _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         new _$CreateUserRequestProfile._(
-            givenName: givenName, familyName: familyName);
+          givenName: givenName,
+          familyName: familyName,
+        );
     replace(_$result);
     return _$result;
   }

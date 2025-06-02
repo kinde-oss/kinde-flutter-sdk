@@ -23,14 +23,14 @@ class _$UserProfile extends UserProfile {
   factory _$UserProfile([void Function(UserProfileBuilder)? updates]) =>
       (new UserProfileBuilder()..update(updates))._build();
 
-  _$UserProfile._(
-      {this.id,
-      this.preferredEmail,
-      this.providedId,
-      this.lastName,
-      this.firstName,
-      this.picture})
-      : super._();
+  _$UserProfile._({
+    this.id,
+    this.preferredEmail,
+    this.providedId,
+    this.lastName,
+    this.firstName,
+    this.picture,
+  }) : super._();
 
   @override
   UserProfile rebuild(void Function(UserProfileBuilder) updates) =>
@@ -138,14 +138,16 @@ class UserProfileBuilder implements Builder<UserProfile, UserProfileBuilder> {
   UserProfile build() => _build();
 
   _$UserProfile _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         new _$UserProfile._(
-            id: id,
-            preferredEmail: preferredEmail,
-            providedId: providedId,
-            lastName: lastName,
-            firstName: firstName,
-            picture: picture);
+          id: id,
+          preferredEmail: preferredEmail,
+          providedId: providedId,
+          lastName: lastName,
+          firstName: firstName,
+          picture: picture,
+        );
     replace(_$result);
     return _$result;
   }

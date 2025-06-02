@@ -14,9 +14,14 @@ part 'create_user_request_identities_inner.g.dart';
 ///
 /// Properties:
 /// * [type] - The type of identity to create, for e.g. email.
-/// * [details] 
+/// * [details]
 @BuiltValue()
-abstract class CreateUserRequestIdentitiesInner implements Built<CreateUserRequestIdentitiesInner, CreateUserRequestIdentitiesInnerBuilder> {
+abstract class CreateUserRequestIdentitiesInner
+    implements
+        Built<
+          CreateUserRequestIdentitiesInner,
+          CreateUserRequestIdentitiesInnerBuilder
+        > {
   /// The type of identity to create, for e.g. email.
   @BuiltValueField(wireName: r'type')
   CreateUserRequestIdentitiesInnerTypeEnum? get type;
@@ -27,18 +32,25 @@ abstract class CreateUserRequestIdentitiesInner implements Built<CreateUserReque
 
   CreateUserRequestIdentitiesInner._();
 
-  factory CreateUserRequestIdentitiesInner([void Function(CreateUserRequestIdentitiesInnerBuilder b) updates]) = _$CreateUserRequestIdentitiesInner;
+  factory CreateUserRequestIdentitiesInner([
+    void Function(CreateUserRequestIdentitiesInnerBuilder b) updates,
+  ]) = _$CreateUserRequestIdentitiesInner;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CreateUserRequestIdentitiesInnerBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CreateUserRequestIdentitiesInner> get serializer => _$CreateUserRequestIdentitiesInnerSerializer();
+  static Serializer<CreateUserRequestIdentitiesInner> get serializer =>
+      _$CreateUserRequestIdentitiesInnerSerializer();
 }
 
-class _$CreateUserRequestIdentitiesInnerSerializer implements PrimitiveSerializer<CreateUserRequestIdentitiesInner> {
+class _$CreateUserRequestIdentitiesInnerSerializer
+    implements PrimitiveSerializer<CreateUserRequestIdentitiesInner> {
   @override
-  final Iterable<Type> types = const [CreateUserRequestIdentitiesInner, _$CreateUserRequestIdentitiesInner];
+  final Iterable<Type> types = const [
+    CreateUserRequestIdentitiesInner,
+    _$CreateUserRequestIdentitiesInner,
+  ];
 
   @override
   final String wireName = r'CreateUserRequestIdentitiesInner';
@@ -70,7 +82,11 @@ class _$CreateUserRequestIdentitiesInnerSerializer implements PrimitiveSerialize
     CreateUserRequestIdentitiesInner object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -86,17 +102,25 @@ class _$CreateUserRequestIdentitiesInnerSerializer implements PrimitiveSerialize
       final value = serializedList[i + 1];
       switch (key) {
         case r'type':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(CreateUserRequestIdentitiesInnerTypeEnum),
-          ) as CreateUserRequestIdentitiesInnerTypeEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      CreateUserRequestIdentitiesInnerTypeEnum,
+                    ),
+                  )
+                  as CreateUserRequestIdentitiesInnerTypeEnum;
           result.type = valueDes;
           break;
         case r'details':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(CreateUserRequestIdentitiesInnerDetails),
-          ) as CreateUserRequestIdentitiesInnerDetails;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      CreateUserRequestIdentitiesInnerDetails,
+                    ),
+                  )
+                  as CreateUserRequestIdentitiesInnerDetails;
           result.details.replace(valueDes);
           break;
         default:
@@ -129,16 +153,18 @@ class _$CreateUserRequestIdentitiesInnerSerializer implements PrimitiveSerialize
 }
 
 class CreateUserRequestIdentitiesInnerTypeEnum extends EnumClass {
-
   /// The type of identity to create, for e.g. email.
   @BuiltValueEnumConst(wireName: r'email')
-  static const CreateUserRequestIdentitiesInnerTypeEnum email = _$createUserRequestIdentitiesInnerTypeEnum_email;
+  static const CreateUserRequestIdentitiesInnerTypeEnum email =
+      _$createUserRequestIdentitiesInnerTypeEnum_email;
 
-  static Serializer<CreateUserRequestIdentitiesInnerTypeEnum> get serializer => _$createUserRequestIdentitiesInnerTypeEnumSerializer;
+  static Serializer<CreateUserRequestIdentitiesInnerTypeEnum> get serializer =>
+      _$createUserRequestIdentitiesInnerTypeEnumSerializer;
 
-  const CreateUserRequestIdentitiesInnerTypeEnum._(String name): super(name);
+  const CreateUserRequestIdentitiesInnerTypeEnum._(String name) : super(name);
 
-  static BuiltSet<CreateUserRequestIdentitiesInnerTypeEnum> get values => _$createUserRequestIdentitiesInnerTypeEnumValues;
-  static CreateUserRequestIdentitiesInnerTypeEnum valueOf(String name) => _$createUserRequestIdentitiesInnerTypeEnumValueOf(name);
+  static BuiltSet<CreateUserRequestIdentitiesInnerTypeEnum> get values =>
+      _$createUserRequestIdentitiesInnerTypeEnumValues;
+  static CreateUserRequestIdentitiesInnerTypeEnum valueOf(String name) =>
+      _$createUserRequestIdentitiesInnerTypeEnumValueOf(name);
 }
-

@@ -15,25 +15,37 @@ part 'get_redirect_callback_urls_response.g.dart';
 /// Properties:
 /// * [redirectUrls] - An application's redirect callback URLs.
 @BuiltValue()
-abstract class GetRedirectCallbackUrlsResponse implements Built<GetRedirectCallbackUrlsResponse, GetRedirectCallbackUrlsResponseBuilder> {
+abstract class GetRedirectCallbackUrlsResponse
+    implements
+        Built<
+          GetRedirectCallbackUrlsResponse,
+          GetRedirectCallbackUrlsResponseBuilder
+        > {
   /// An application's redirect callback URLs.
   @BuiltValueField(wireName: r'redirect_urls')
   BuiltList<RedirectCallbackUrls>? get redirectUrls;
 
   GetRedirectCallbackUrlsResponse._();
 
-  factory GetRedirectCallbackUrlsResponse([void Function(GetRedirectCallbackUrlsResponseBuilder b) updates]) = _$GetRedirectCallbackUrlsResponse;
+  factory GetRedirectCallbackUrlsResponse([
+    void Function(GetRedirectCallbackUrlsResponseBuilder b) updates,
+  ]) = _$GetRedirectCallbackUrlsResponse;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(GetRedirectCallbackUrlsResponseBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<GetRedirectCallbackUrlsResponse> get serializer => _$GetRedirectCallbackUrlsResponseSerializer();
+  static Serializer<GetRedirectCallbackUrlsResponse> get serializer =>
+      _$GetRedirectCallbackUrlsResponseSerializer();
 }
 
-class _$GetRedirectCallbackUrlsResponseSerializer implements PrimitiveSerializer<GetRedirectCallbackUrlsResponse> {
+class _$GetRedirectCallbackUrlsResponseSerializer
+    implements PrimitiveSerializer<GetRedirectCallbackUrlsResponse> {
   @override
-  final Iterable<Type> types = const [GetRedirectCallbackUrlsResponse, _$GetRedirectCallbackUrlsResponse];
+  final Iterable<Type> types = const [
+    GetRedirectCallbackUrlsResponse,
+    _$GetRedirectCallbackUrlsResponse,
+  ];
 
   @override
   final String wireName = r'GetRedirectCallbackUrlsResponse';
@@ -47,7 +59,9 @@ class _$GetRedirectCallbackUrlsResponseSerializer implements PrimitiveSerializer
       yield r'redirect_urls';
       yield serializers.serialize(
         object.redirectUrls,
-        specifiedType: const FullType(BuiltList, [FullType(RedirectCallbackUrls)]),
+        specifiedType: const FullType(BuiltList, [
+          FullType(RedirectCallbackUrls),
+        ]),
       );
     }
   }
@@ -58,7 +72,11 @@ class _$GetRedirectCallbackUrlsResponseSerializer implements PrimitiveSerializer
     GetRedirectCallbackUrlsResponse object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -74,10 +92,14 @@ class _$GetRedirectCallbackUrlsResponseSerializer implements PrimitiveSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'redirect_urls':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(RedirectCallbackUrls)]),
-          ) as BuiltList<RedirectCallbackUrls>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(RedirectCallbackUrls),
+                    ]),
+                  )
+                  as BuiltList<RedirectCallbackUrls>;
           result.redirectUrls.replace(valueDes);
           break;
         default:
@@ -108,4 +130,3 @@ class _$GetRedirectCallbackUrlsResponseSerializer implements PrimitiveSerializer
     return result.build();
   }
 }
-

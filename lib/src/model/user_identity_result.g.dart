@@ -10,16 +10,16 @@ class _$UserIdentityResult extends UserIdentityResult {
   @override
   final bool? created;
 
-  factory _$UserIdentityResult(
-          [void Function(UserIdentityResultBuilder)? updates]) =>
-      (new UserIdentityResultBuilder()..update(updates))._build();
+  factory _$UserIdentityResult([
+    void Function(UserIdentityResultBuilder)? updates,
+  ]) => (new UserIdentityResultBuilder()..update(updates))._build();
 
   _$UserIdentityResult._({this.created}) : super._();
 
   @override
   UserIdentityResult rebuild(
-          void Function(UserIdentityResultBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(UserIdentityResultBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   UserIdentityResultBuilder toBuilder() =>
@@ -42,8 +42,7 @@ class _$UserIdentityResult extends UserIdentityResult {
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'UserIdentityResult')
-          ..add('created', created))
-        .toString();
+      ..add('created', created)).toString();
   }
 }
 

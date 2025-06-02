@@ -18,9 +18,10 @@ void main() {
     test('test addRedirectCallbackURLs', () async {
       // TODO
       final responseData = await instance.addRedirectCallbackURLs(
-          appId: 'test_id',
-          replaceRedirectCallbackURLsRequest:
-              ReplaceRedirectCallbackURLsRequest());
+        appId: 'test_id',
+        replaceRedirectCallbackURLsRequest:
+            ReplaceRedirectCallbackURLsRequest(),
+      );
       expect(responseData, isNotNull);
     });
 
@@ -31,8 +32,10 @@ void main() {
     //Future<SuccessResponse> deleteCallbackURLs(String appId, String urls) async
     test('test deleteCallbackURLs', () async {
       // TODO
-      final responseData =
-          await instance.deleteCallbackURLs(appId: 'test_id', urls: 'test_url');
+      final responseData = await instance.deleteCallbackURLs(
+        appId: 'test_id',
+        urls: 'test_url',
+      );
       expect(responseData, isNotNull);
     });
 

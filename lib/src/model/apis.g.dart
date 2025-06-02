@@ -20,7 +20,7 @@ class _$Apis extends Apis {
       (new ApisBuilder()..update(updates))._build();
 
   _$Apis._({this.id, this.name, this.audience, this.isManagementApi})
-      : super._();
+    : super._();
 
   @override
   Apis rebuild(void Function(ApisBuilder) updates) =>
@@ -112,12 +112,14 @@ class ApisBuilder implements Builder<Apis, ApisBuilder> {
   Apis build() => _build();
 
   _$Apis _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         new _$Apis._(
-            id: id,
-            name: name,
-            audience: audience,
-            isManagementApi: isManagementApi);
+          id: id,
+          name: name,
+          audience: audience,
+          isManagementApi: isManagementApi,
+        );
     replace(_$result);
     return _$result;
   }

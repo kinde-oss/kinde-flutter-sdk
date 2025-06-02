@@ -20,7 +20,7 @@ class _$Subscriber extends Subscriber {
       (new SubscriberBuilder()..update(updates))._build();
 
   _$Subscriber._({this.id, this.preferredEmail, this.firstName, this.lastName})
-      : super._();
+    : super._();
 
   @override
   Subscriber rebuild(void Function(SubscriberBuilder) updates) =>
@@ -112,12 +112,14 @@ class SubscriberBuilder implements Builder<Subscriber, SubscriberBuilder> {
   Subscriber build() => _build();
 
   _$Subscriber _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         new _$Subscriber._(
-            id: id,
-            preferredEmail: preferredEmail,
-            firstName: firstName,
-            lastName: lastName);
+          id: id,
+          preferredEmail: preferredEmail,
+          firstName: firstName,
+          lastName: lastName,
+        );
     replace(_$result);
     return _$result;
   }

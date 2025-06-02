@@ -12,16 +12,16 @@ class _$ConnectedAppsAuthUrl extends ConnectedAppsAuthUrl {
   @override
   final String? sessionId;
 
-  factory _$ConnectedAppsAuthUrl(
-          [void Function(ConnectedAppsAuthUrlBuilder)? updates]) =>
-      (new ConnectedAppsAuthUrlBuilder()..update(updates))._build();
+  factory _$ConnectedAppsAuthUrl([
+    void Function(ConnectedAppsAuthUrlBuilder)? updates,
+  ]) => (new ConnectedAppsAuthUrlBuilder()..update(updates))._build();
 
   _$ConnectedAppsAuthUrl._({this.url, this.sessionId}) : super._();
 
   @override
   ConnectedAppsAuthUrl rebuild(
-          void Function(ConnectedAppsAuthUrlBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(ConnectedAppsAuthUrlBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   ConnectedAppsAuthUrlBuilder toBuilder() =>

@@ -12,7 +12,9 @@ void main() {
       // TODO
       final subscriber = instance.subscriber;
       expect(
-          subscriber, isA<CreateSubscriberSuccessResponseSubscriberBuilder>());
+        subscriber,
+        isA<CreateSubscriberSuccessResponseSubscriberBuilder>(),
+      );
       CreateSubscriberSuccessResponseSubscriberBuilder subscriberBuilder =
           CreateSubscriberSuccessResponseSubscriberBuilder();
       subscriberBuilder.subscriberId = "subscriberId";

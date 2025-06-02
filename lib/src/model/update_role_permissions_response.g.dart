@@ -16,18 +16,21 @@ class _$UpdateRolePermissionsResponse extends UpdateRolePermissionsResponse {
   @override
   final BuiltList<String>? permissionsRemoved;
 
-  factory _$UpdateRolePermissionsResponse(
-          [void Function(UpdateRolePermissionsResponseBuilder)? updates]) =>
-      (new UpdateRolePermissionsResponseBuilder()..update(updates))._build();
+  factory _$UpdateRolePermissionsResponse([
+    void Function(UpdateRolePermissionsResponseBuilder)? updates,
+  ]) => (new UpdateRolePermissionsResponseBuilder()..update(updates))._build();
 
-  _$UpdateRolePermissionsResponse._(
-      {this.code, this.message, this.permissionsAdded, this.permissionsRemoved})
-      : super._();
+  _$UpdateRolePermissionsResponse._({
+    this.code,
+    this.message,
+    this.permissionsAdded,
+    this.permissionsRemoved,
+  }) : super._();
 
   @override
   UpdateRolePermissionsResponse rebuild(
-          void Function(UpdateRolePermissionsResponseBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(UpdateRolePermissionsResponseBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   UpdateRolePermissionsResponseBuilder toBuilder() =>
@@ -67,8 +70,10 @@ class _$UpdateRolePermissionsResponse extends UpdateRolePermissionsResponse {
 
 class UpdateRolePermissionsResponseBuilder
     implements
-        Builder<UpdateRolePermissionsResponse,
-            UpdateRolePermissionsResponseBuilder> {
+        Builder<
+          UpdateRolePermissionsResponse,
+          UpdateRolePermissionsResponseBuilder
+        > {
   _$UpdateRolePermissionsResponse? _$v;
 
   String? _code;
@@ -124,12 +129,14 @@ class UpdateRolePermissionsResponseBuilder
   _$UpdateRolePermissionsResponse _build() {
     _$UpdateRolePermissionsResponse _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           new _$UpdateRolePermissionsResponse._(
-              code: code,
-              message: message,
-              permissionsAdded: _permissionsAdded?.build(),
-              permissionsRemoved: _permissionsRemoved?.build());
+            code: code,
+            message: message,
+            permissionsAdded: _permissionsAdded?.build(),
+            permissionsRemoved: _permissionsRemoved?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -139,7 +146,10 @@ class UpdateRolePermissionsResponseBuilder
         _permissionsRemoved?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'UpdateRolePermissionsResponse', _$failedField, e.toString());
+          r'UpdateRolePermissionsResponse',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

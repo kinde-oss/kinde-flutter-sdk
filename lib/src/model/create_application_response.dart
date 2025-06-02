@@ -14,9 +14,11 @@ part 'create_application_response.g.dart';
 /// Properties:
 /// * [code] - Response code.
 /// * [message] - Response message.
-/// * [application] 
+/// * [application]
 @BuiltValue()
-abstract class CreateApplicationResponse implements Built<CreateApplicationResponse, CreateApplicationResponseBuilder> {
+abstract class CreateApplicationResponse
+    implements
+        Built<CreateApplicationResponse, CreateApplicationResponseBuilder> {
   /// Response code.
   @BuiltValueField(wireName: r'code')
   String? get code;
@@ -30,18 +32,25 @@ abstract class CreateApplicationResponse implements Built<CreateApplicationRespo
 
   CreateApplicationResponse._();
 
-  factory CreateApplicationResponse([void Function(CreateApplicationResponseBuilder b) updates]) = _$CreateApplicationResponse;
+  factory CreateApplicationResponse([
+    void Function(CreateApplicationResponseBuilder b) updates,
+  ]) = _$CreateApplicationResponse;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CreateApplicationResponseBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CreateApplicationResponse> get serializer => _$CreateApplicationResponseSerializer();
+  static Serializer<CreateApplicationResponse> get serializer =>
+      _$CreateApplicationResponseSerializer();
 }
 
-class _$CreateApplicationResponseSerializer implements PrimitiveSerializer<CreateApplicationResponse> {
+class _$CreateApplicationResponseSerializer
+    implements PrimitiveSerializer<CreateApplicationResponse> {
   @override
-  final Iterable<Type> types = const [CreateApplicationResponse, _$CreateApplicationResponse];
+  final Iterable<Type> types = const [
+    CreateApplicationResponse,
+    _$CreateApplicationResponse,
+  ];
 
   @override
   final String wireName = r'CreateApplicationResponse';
@@ -80,7 +89,11 @@ class _$CreateApplicationResponseSerializer implements PrimitiveSerializer<Creat
     CreateApplicationResponse object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -96,24 +109,32 @@ class _$CreateApplicationResponseSerializer implements PrimitiveSerializer<Creat
       final value = serializedList[i + 1];
       switch (key) {
         case r'code':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.code = valueDes;
           break;
         case r'message':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.message = valueDes;
           break;
         case r'application':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(CreateApplicationResponseApplication),
-          ) as CreateApplicationResponseApplication;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      CreateApplicationResponseApplication,
+                    ),
+                  )
+                  as CreateApplicationResponseApplication;
           result.application.replace(valueDes);
           break;
         default:
@@ -144,4 +165,3 @@ class _$CreateApplicationResponseSerializer implements PrimitiveSerializer<Creat
     return result.build();
   }
 }
-

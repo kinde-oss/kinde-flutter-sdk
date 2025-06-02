@@ -14,7 +14,9 @@ part 'create_user_request_profile.g.dart';
 /// * [givenName] - User's first name.
 /// * [familyName] - User's last name.
 @BuiltValue()
-abstract class CreateUserRequestProfile implements Built<CreateUserRequestProfile, CreateUserRequestProfileBuilder> {
+abstract class CreateUserRequestProfile
+    implements
+        Built<CreateUserRequestProfile, CreateUserRequestProfileBuilder> {
   /// User's first name.
   @BuiltValueField(wireName: r'given_name')
   String? get givenName;
@@ -25,18 +27,25 @@ abstract class CreateUserRequestProfile implements Built<CreateUserRequestProfil
 
   CreateUserRequestProfile._();
 
-  factory CreateUserRequestProfile([void Function(CreateUserRequestProfileBuilder b) updates]) = _$CreateUserRequestProfile;
+  factory CreateUserRequestProfile([
+    void Function(CreateUserRequestProfileBuilder b) updates,
+  ]) = _$CreateUserRequestProfile;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CreateUserRequestProfileBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CreateUserRequestProfile> get serializer => _$CreateUserRequestProfileSerializer();
+  static Serializer<CreateUserRequestProfile> get serializer =>
+      _$CreateUserRequestProfileSerializer();
 }
 
-class _$CreateUserRequestProfileSerializer implements PrimitiveSerializer<CreateUserRequestProfile> {
+class _$CreateUserRequestProfileSerializer
+    implements PrimitiveSerializer<CreateUserRequestProfile> {
   @override
-  final Iterable<Type> types = const [CreateUserRequestProfile, _$CreateUserRequestProfile];
+  final Iterable<Type> types = const [
+    CreateUserRequestProfile,
+    _$CreateUserRequestProfile,
+  ];
 
   @override
   final String wireName = r'CreateUserRequestProfile';
@@ -68,7 +77,11 @@ class _$CreateUserRequestProfileSerializer implements PrimitiveSerializer<Create
     CreateUserRequestProfile object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -84,17 +97,21 @@ class _$CreateUserRequestProfileSerializer implements PrimitiveSerializer<Create
       final value = serializedList[i + 1];
       switch (key) {
         case r'given_name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.givenName = valueDes;
           break;
         case r'family_name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.familyName = valueDes;
           break;
         default:
@@ -125,4 +142,3 @@ class _$CreateUserRequestProfileSerializer implements PrimitiveSerializer<Create
     return result.build();
   }
 }
-

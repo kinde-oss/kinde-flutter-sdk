@@ -16,12 +16,12 @@ class _$GetRolesResponse extends GetRolesResponse {
   @override
   final String? nextToken;
 
-  factory _$GetRolesResponse(
-          [void Function(GetRolesResponseBuilder)? updates]) =>
-      (new GetRolesResponseBuilder()..update(updates))._build();
+  factory _$GetRolesResponse([
+    void Function(GetRolesResponseBuilder)? updates,
+  ]) => (new GetRolesResponseBuilder()..update(updates))._build();
 
   _$GetRolesResponse._({this.code, this.message, this.roles, this.nextToken})
-      : super._();
+    : super._();
 
   @override
   GetRolesResponse rebuild(void Function(GetRolesResponseBuilder) updates) =>
@@ -116,12 +116,14 @@ class GetRolesResponseBuilder
   _$GetRolesResponse _build() {
     _$GetRolesResponse _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           new _$GetRolesResponse._(
-              code: code,
-              message: message,
-              roles: _roles?.build(),
-              nextToken: nextToken);
+            code: code,
+            message: message,
+            roles: _roles?.build(),
+            nextToken: nextToken,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -129,7 +131,10 @@ class GetRolesResponseBuilder
         _roles?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'GetRolesResponse', _$failedField, e.toString());
+          r'GetRolesResponse',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

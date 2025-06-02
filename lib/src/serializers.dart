@@ -195,16 +195,17 @@ part 'serializers.g.dart';
   UsersResponse,
   UsersResponseUsersInner,
 ])
-Serializers serializers = (_$serializers.toBuilder()
-      ..addBuilderFactory(
-        const FullType(BuiltList, [FullType(RolesPermissionResponseInner)]),
-        () => ListBuilder<RolesPermissionResponseInner>(),
-      )
-      ..add(const OneOfSerializer())
-      ..add(const AnyOfSerializer())
-      ..add(const DateSerializer())
-      ..add(Iso8601DateTimeSerializer()))
-    .build();
+Serializers serializers =
+    (_$serializers.toBuilder()
+          ..addBuilderFactory(
+            const FullType(BuiltList, [FullType(RolesPermissionResponseInner)]),
+            () => ListBuilder<RolesPermissionResponseInner>(),
+          )
+          ..add(const OneOfSerializer())
+          ..add(const AnyOfSerializer())
+          ..add(const DateSerializer())
+          ..add(Iso8601DateTimeSerializer()))
+        .build();
 
 Serializers standardSerializers =
     (serializers.toBuilder()..addPlugin(StandardJsonPlugin())).build();

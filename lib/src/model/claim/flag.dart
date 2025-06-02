@@ -16,7 +16,7 @@ class Flag {
 
 extension FlagTypeExt on FlagType {
   String get character {
-    switch(this) {
+    switch (this) {
       case FlagType.string:
         return 's';
       case FlagType.integer:

@@ -41,8 +41,9 @@ void main() {
       // TODO
       final responseData = await instance.updateRolePermissions(
         roleId: 'test_roleId',
-        updateRolePermissionsRequest:
-            UpdateRolePermissionsRequest((builder) {}),
+        updateRolePermissionsRequest: UpdateRolePermissionsRequest(
+          (builder) {},
+        ),
       );
       expect(responseData, isNotNull);
     });
@@ -54,9 +55,7 @@ void main() {
     //Future<SuccessResponse> updateRoles(String roleId, { UpdateRolesRequest updateRolesRequest }) async
     test('test updateRoles', () async {
       // TODO
-      final responseData = await instance.updateRoles(
-        roleId: 'test_roleId',
-      );
+      final responseData = await instance.updateRoles(roleId: 'test_roleId');
       expect(responseData, isNotNull);
     });
   });

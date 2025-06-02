@@ -11,20 +11,19 @@ class _$CreateSubscriberSuccessResponseSubscriber
   @override
   final String? subscriberId;
 
-  factory _$CreateSubscriberSuccessResponseSubscriber(
-          [void Function(CreateSubscriberSuccessResponseSubscriberBuilder)?
-              updates]) =>
+  factory _$CreateSubscriberSuccessResponseSubscriber([
+    void Function(CreateSubscriberSuccessResponseSubscriberBuilder)? updates,
+  ]) =>
       (new CreateSubscriberSuccessResponseSubscriberBuilder()..update(updates))
           ._build();
 
   _$CreateSubscriberSuccessResponseSubscriber._({this.subscriberId})
-      : super._();
+    : super._();
 
   @override
   CreateSubscriberSuccessResponseSubscriber rebuild(
-          void Function(CreateSubscriberSuccessResponseSubscriberBuilder)
-              updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CreateSubscriberSuccessResponseSubscriberBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CreateSubscriberSuccessResponseSubscriberBuilder toBuilder() =>
@@ -48,16 +47,17 @@ class _$CreateSubscriberSuccessResponseSubscriber
   @override
   String toString() {
     return (newBuiltValueToStringHelper(
-            r'CreateSubscriberSuccessResponseSubscriber')
-          ..add('subscriberId', subscriberId))
-        .toString();
+      r'CreateSubscriberSuccessResponseSubscriber',
+    )..add('subscriberId', subscriberId)).toString();
   }
 }
 
 class CreateSubscriberSuccessResponseSubscriberBuilder
     implements
-        Builder<CreateSubscriberSuccessResponseSubscriber,
-            CreateSubscriberSuccessResponseSubscriberBuilder> {
+        Builder<
+          CreateSubscriberSuccessResponseSubscriber,
+          CreateSubscriberSuccessResponseSubscriberBuilder
+        > {
   _$CreateSubscriberSuccessResponseSubscriber? _$v;
 
   String? _subscriberId;
@@ -85,8 +85,8 @@ class CreateSubscriberSuccessResponseSubscriberBuilder
 
   @override
   void update(
-      void Function(CreateSubscriberSuccessResponseSubscriberBuilder)?
-          updates) {
+    void Function(CreateSubscriberSuccessResponseSubscriberBuilder)? updates,
+  ) {
     if (updates != null) updates(this);
   }
 
@@ -94,9 +94,11 @@ class CreateSubscriberSuccessResponseSubscriberBuilder
   CreateSubscriberSuccessResponseSubscriber build() => _build();
 
   _$CreateSubscriberSuccessResponseSubscriber _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         new _$CreateSubscriberSuccessResponseSubscriber._(
-            subscriberId: subscriberId);
+          subscriberId: subscriberId,
+        );
     replace(_$result);
     return _$result;
   }

@@ -16,7 +16,6 @@ import 'package:kinde_flutter_sdk/src/model/success_response.dart';
 import 'package:kinde_flutter_sdk/src/model/update_application_request.dart';
 
 class ApplicationsApi {
-
   final Dio _dio;
 
   final Serializers _serializers;
@@ -37,7 +36,7 @@ class ApplicationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [CreateApplicationResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<CreateApplicationResponse>> createApplication({ 
+  Future<Response<CreateApplicationResponse>> createApplication({
     CreateApplicationRequest? createApplicationRequest,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -49,16 +48,10 @@ class ApplicationsApi {
     const path = r'/api/v1/applications';
     final options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -70,14 +63,16 @@ class ApplicationsApi {
 
     try {
       const type = FullType(CreateApplicationRequest);
-      bodyData = createApplicationRequest == null ? null : _serializers.serialize(createApplicationRequest, specifiedType: type);
-
-    } catch(error, stackTrace) {
+      bodyData =
+          createApplicationRequest == null
+              ? null
+              : _serializers.serialize(
+                createApplicationRequest,
+                specifiedType: type,
+              );
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: options.compose(
-          _dio.options,
-          path,
-        ),
+        requestOptions: options.compose(_dio.options, path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -97,11 +92,14 @@ class ApplicationsApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(CreateApplicationResponse),
-      ) as CreateApplicationResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(CreateApplicationResponse),
+                  )
+                  as CreateApplicationResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -125,7 +123,7 @@ class ApplicationsApi {
   }
 
   /// Delete Application
-  /// Delete application. 
+  /// Delete application.
   ///
   /// Parameters:
   /// * [applicationId] - The identifier for the application.
@@ -138,7 +136,7 @@ class ApplicationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> deleteApplication({ 
+  Future<Response<SuccessResponse>> deleteApplication({
     required String applicationId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -147,19 +145,22 @@ class ApplicationsApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/api/v1/applications/{application_id}'.replaceAll('{' r'application_id' '}', encodeQueryParameter(_serializers, applicationId, const FullType(String)).toString());
+    final path = r'/api/v1/applications/{application_id}'.replaceAll(
+      '{'
+      r'application_id'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        applicationId,
+        const FullType(String),
+      ).toString(),
+    );
     final options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -178,11 +179,14 @@ class ApplicationsApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(SuccessResponse),
-      ) as SuccessResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(SuccessResponse),
+                  )
+                  as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -206,7 +210,7 @@ class ApplicationsApi {
   }
 
   /// Get Application
-  /// Gets an application given the application&#39;s id. 
+  /// Gets an application given the application&#39;s id.
   ///
   /// Parameters:
   /// * [applicationId] - The identifier for the application.
@@ -219,7 +223,7 @@ class ApplicationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [GetApplicationResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<GetApplicationResponse>> getApplication({ 
+  Future<Response<GetApplicationResponse>> getApplication({
     required String applicationId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -228,19 +232,22 @@ class ApplicationsApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/api/v1/applications/{application_id}'.replaceAll('{' r'application_id' '}', encodeQueryParameter(_serializers, applicationId, const FullType(String)).toString());
+    final path = r'/api/v1/applications/{application_id}'.replaceAll(
+      '{'
+      r'application_id'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        applicationId,
+        const FullType(String),
+      ).toString(),
+    );
     final options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -259,11 +266,14 @@ class ApplicationsApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(GetApplicationResponse),
-      ) as GetApplicationResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(GetApplicationResponse),
+                  )
+                  as GetApplicationResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -287,7 +297,7 @@ class ApplicationsApi {
   }
 
   /// List Applications
-  /// Get a list of applications. 
+  /// Get a list of applications.
   ///
   /// Parameters:
   /// * [sort] - Field and order to sort the result by.
@@ -302,7 +312,7 @@ class ApplicationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [GetApplicationsResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<GetApplicationsResponse>> getApplications({ 
+  Future<Response<GetApplicationsResponse>> getApplications({
     String? sort,
     int? pageSize,
     String? nextToken,
@@ -316,16 +326,10 @@ class ApplicationsApi {
     const path = r'/api/v1/applications';
     final options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -334,8 +338,16 @@ class ApplicationsApi {
 
     final queryParameters = <String, dynamic>{
       r'sort': encodeQueryParameter(_serializers, sort, const FullType(String)),
-      r'page_size': encodeQueryParameter(_serializers, pageSize, const FullType(int)),
-      r'next_token': encodeQueryParameter(_serializers, nextToken, const FullType(String)),
+      r'page_size': encodeQueryParameter(
+        _serializers,
+        pageSize,
+        const FullType(int),
+      ),
+      r'next_token': encodeQueryParameter(
+        _serializers,
+        nextToken,
+        const FullType(String),
+      ),
     };
 
     final response = await _dio.request<Object>(
@@ -351,11 +363,14 @@ class ApplicationsApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(GetApplicationsResponse),
-      ) as GetApplicationsResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(GetApplicationsResponse),
+                  )
+                  as GetApplicationsResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -393,7 +408,7 @@ class ApplicationsApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> updateApplication({ 
+  Future<Response<void>> updateApplication({
     required String applicationId,
     UpdateApplicationRequest? updateApplicationRequest,
     CancelToken? cancelToken,
@@ -403,19 +418,22 @@ class ApplicationsApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/api/v1/applications/{application_id}'.replaceAll('{' r'application_id' '}', encodeQueryParameter(_serializers, applicationId, const FullType(String)).toString());
+    final path = r'/api/v1/applications/{application_id}'.replaceAll(
+      '{'
+      r'application_id'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        applicationId,
+        const FullType(String),
+      ).toString(),
+    );
     final options = Options(
       method: r'PATCH',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -427,14 +445,16 @@ class ApplicationsApi {
 
     try {
       const type = FullType(UpdateApplicationRequest);
-      bodyData = updateApplicationRequest == null ? null : _serializers.serialize(updateApplicationRequest, specifiedType: type);
-
-    } catch(error, stackTrace) {
+      bodyData =
+          updateApplicationRequest == null
+              ? null
+              : _serializers.serialize(
+                updateApplicationRequest,
+                specifiedType: type,
+              );
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: options.compose(
-          _dio.options,
-          path,
-        ),
+        requestOptions: options.compose(_dio.options, path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -452,5 +472,4 @@ class ApplicationsApi {
 
     return response;
   }
-
 }

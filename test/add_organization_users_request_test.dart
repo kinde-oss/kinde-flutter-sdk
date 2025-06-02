@@ -12,12 +12,14 @@ void main() {
     // BuiltList<AddOrganizationUsersRequestUsersInner> users
     test('to test the property `users`', () async {
       // TODO
-      instance.users.add(AddOrganizationUsersRequestUsersInner((updates) {
-        updates.permissions.add('Admin');
-        updates.permissions.add('Guest');
-        updates.roles.add('User');
-        updates.roles.add('Student');
-      }));
+      instance.users.add(
+        AddOrganizationUsersRequestUsersInner((updates) {
+          updates.permissions.add('Admin');
+          updates.permissions.add('Guest');
+          updates.roles.add('User');
+          updates.roles.add('Student');
+        }),
+      );
       final result = instance.build();
       BuiltList<AddOrganizationUsersRequestUsersInner>? userList = result.users;
       if (userList != null) {

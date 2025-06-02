@@ -18,7 +18,6 @@ import 'package:kinde_flutter_sdk/src/model/update_role_permissions_response.dar
 import 'package:kinde_flutter_sdk/src/model/update_roles_request.dart';
 
 class RolesApi {
-
   final Dio _dio;
 
   final Serializers _serializers;
@@ -39,7 +38,7 @@ class RolesApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> createRole({ 
+  Future<Response<SuccessResponse>> createRole({
     CreateRoleRequest? createRoleRequest,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -51,16 +50,10 @@ class RolesApi {
     const path = r'/api/v1/role';
     final options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -72,14 +65,13 @@ class RolesApi {
 
     try {
       const type = FullType(CreateRoleRequest);
-      bodyData = createRoleRequest == null ? null : _serializers.serialize(createRoleRequest, specifiedType: type);
-
-    } catch(error, stackTrace) {
+      bodyData =
+          createRoleRequest == null
+              ? null
+              : _serializers.serialize(createRoleRequest, specifiedType: type);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: options.compose(
-          _dio.options,
-          path,
-        ),
+        requestOptions: options.compose(_dio.options, path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -99,11 +91,14 @@ class RolesApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(SuccessResponse),
-      ) as SuccessResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(SuccessResponse),
+                  )
+                  as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -140,7 +135,7 @@ class RolesApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> deleteRole({ 
+  Future<Response<SuccessResponse>> deleteRole({
     required String roleId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -149,19 +144,22 @@ class RolesApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/api/v1/roles/{role_id}'.replaceAll('{' r'role_id' '}', encodeQueryParameter(_serializers, roleId, const FullType(String)).toString());
+    final path = r'/api/v1/roles/{role_id}'.replaceAll(
+      '{'
+      r'role_id'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        roleId,
+        const FullType(String),
+      ).toString(),
+    );
     final options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -180,11 +178,14 @@ class RolesApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(SuccessResponse),
-      ) as SuccessResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(SuccessResponse),
+                  )
+                  as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -224,7 +225,7 @@ class RolesApi {
   ///
   /// Returns a [Future] containing a [Response] with a [BuiltList<RolesPermissionResponseInner>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BuiltList<RolesPermissionResponseInner>>> getRolePermission({ 
+  Future<Response<BuiltList<RolesPermissionResponseInner>>> getRolePermission({
     required String roleId,
     String? sort,
     int? pageSize,
@@ -236,19 +237,22 @@ class RolesApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/api/v1/roles/{role_id}/permissions'.replaceAll('{' r'role_id' '}', encodeQueryParameter(_serializers, roleId, const FullType(String)).toString());
+    final path = r'/api/v1/roles/{role_id}/permissions'.replaceAll(
+      '{'
+      r'role_id'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        roleId,
+        const FullType(String),
+      ).toString(),
+    );
     final options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -257,8 +261,16 @@ class RolesApi {
 
     final queryParameters = <String, dynamic>{
       r'sort': encodeQueryParameter(_serializers, sort, const FullType(String)),
-      r'page_size': encodeQueryParameter(_serializers, pageSize, const FullType(int)),
-      r'next_token': encodeQueryParameter(_serializers, nextToken, const FullType(String)),
+      r'page_size': encodeQueryParameter(
+        _serializers,
+        pageSize,
+        const FullType(int),
+      ),
+      r'next_token': encodeQueryParameter(
+        _serializers,
+        nextToken,
+        const FullType(String),
+      ),
     };
 
     final response = await _dio.request<Object>(
@@ -274,11 +286,16 @@ class RolesApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(BuiltList, [FullType(RolesPermissionResponseInner)]),
-      ) as BuiltList<RolesPermissionResponseInner>;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(RolesPermissionResponseInner),
+                    ]),
+                  )
+                  as BuiltList<RolesPermissionResponseInner>;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -302,7 +319,7 @@ class RolesApi {
   }
 
   /// List Roles
-  /// The returned list can be sorted by role name or role ID in ascending or descending order. The number of records to return at a time can also be controlled using the &#x60;page_size&#x60; query string parameter. 
+  /// The returned list can be sorted by role name or role ID in ascending or descending order. The number of records to return at a time can also be controlled using the &#x60;page_size&#x60; query string parameter.
   ///
   /// Parameters:
   /// * [sort] - Field and order to sort the result by.
@@ -317,7 +334,7 @@ class RolesApi {
   ///
   /// Returns a [Future] containing a [Response] with a [GetRolesResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<GetRolesResponse>> getRoles({ 
+  Future<Response<GetRolesResponse>> getRoles({
     String? sort,
     int? pageSize,
     String? nextToken,
@@ -331,16 +348,10 @@ class RolesApi {
     const path = r'/api/v1/roles';
     final options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -349,8 +360,16 @@ class RolesApi {
 
     final queryParameters = <String, dynamic>{
       r'sort': encodeQueryParameter(_serializers, sort, const FullType(String)),
-      r'page_size': encodeQueryParameter(_serializers, pageSize, const FullType(int)),
-      r'next_token': encodeQueryParameter(_serializers, nextToken, const FullType(String)),
+      r'page_size': encodeQueryParameter(
+        _serializers,
+        pageSize,
+        const FullType(int),
+      ),
+      r'next_token': encodeQueryParameter(
+        _serializers,
+        nextToken,
+        const FullType(String),
+      ),
     };
 
     final response = await _dio.request<Object>(
@@ -366,11 +385,14 @@ class RolesApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(GetRolesResponse),
-      ) as GetRolesResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(GetRolesResponse),
+                  )
+                  as GetRolesResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -408,7 +430,7 @@ class RolesApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> removeRolePermission({ 
+  Future<Response<SuccessResponse>> removeRolePermission({
     required String roleId,
     required String permissionId,
     CancelToken? cancelToken,
@@ -418,19 +440,33 @@ class RolesApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/api/v1/roles/{role_id}/permission/{permission_id}'.replaceAll('{' r'role_id' '}', encodeQueryParameter(_serializers, roleId, const FullType(String)).toString()).replaceAll('{' r'permission_id' '}', encodeQueryParameter(_serializers, permissionId, const FullType(String)).toString());
+    final path = r'/api/v1/roles/{role_id}/permission/{permission_id}'
+        .replaceAll(
+          '{'
+          r'role_id'
+          '}',
+          encodeQueryParameter(
+            _serializers,
+            roleId,
+            const FullType(String),
+          ).toString(),
+        )
+        .replaceAll(
+          '{'
+          r'permission_id'
+          '}',
+          encodeQueryParameter(
+            _serializers,
+            permissionId,
+            const FullType(String),
+          ).toString(),
+        );
     final options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -449,11 +485,14 @@ class RolesApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(SuccessResponse),
-      ) as SuccessResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(SuccessResponse),
+                  )
+                  as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -477,11 +516,11 @@ class RolesApi {
   }
 
   /// Update Role Permissions
-  /// Update role permissions. 
+  /// Update role permissions.
   ///
   /// Parameters:
   /// * [roleId] - The identifier for the role.
-  /// * [updateRolePermissionsRequest] 
+  /// * [updateRolePermissionsRequest]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -491,7 +530,7 @@ class RolesApi {
   ///
   /// Returns a [Future] containing a [Response] with a [UpdateRolePermissionsResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<UpdateRolePermissionsResponse>> updateRolePermissions({ 
+  Future<Response<UpdateRolePermissionsResponse>> updateRolePermissions({
     required String roleId,
     required UpdateRolePermissionsRequest updateRolePermissionsRequest,
     CancelToken? cancelToken,
@@ -501,19 +540,22 @@ class RolesApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/api/v1/roles/{role_id}/permissions'.replaceAll('{' r'role_id' '}', encodeQueryParameter(_serializers, roleId, const FullType(String)).toString());
+    final path = r'/api/v1/roles/{role_id}/permissions'.replaceAll(
+      '{'
+      r'role_id'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        roleId,
+        const FullType(String),
+      ).toString(),
+    );
     final options = Options(
       method: r'PATCH',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -525,14 +567,13 @@ class RolesApi {
 
     try {
       const type = FullType(UpdateRolePermissionsRequest);
-      bodyData = _serializers.serialize(updateRolePermissionsRequest, specifiedType: type);
-
-    } catch(error, stackTrace) {
+      bodyData = _serializers.serialize(
+        updateRolePermissionsRequest,
+        specifiedType: type,
+      );
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: options.compose(
-          _dio.options,
-          path,
-        ),
+        requestOptions: options.compose(_dio.options, path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -552,11 +593,16 @@ class RolesApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(UpdateRolePermissionsResponse),
-      ) as UpdateRolePermissionsResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(
+                      UpdateRolePermissionsResponse,
+                    ),
+                  )
+                  as UpdateRolePermissionsResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -594,7 +640,7 @@ class RolesApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> updateRoles({ 
+  Future<Response<SuccessResponse>> updateRoles({
     required String roleId,
     UpdateRolesRequest? updateRolesRequest,
     CancelToken? cancelToken,
@@ -604,19 +650,22 @@ class RolesApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/api/v1/roles/{role_id}'.replaceAll('{' r'role_id' '}', encodeQueryParameter(_serializers, roleId, const FullType(String)).toString());
+    final path = r'/api/v1/roles/{role_id}'.replaceAll(
+      '{'
+      r'role_id'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        roleId,
+        const FullType(String),
+      ).toString(),
+    );
     final options = Options(
       method: r'PATCH',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -628,14 +677,13 @@ class RolesApi {
 
     try {
       const type = FullType(UpdateRolesRequest);
-      bodyData = updateRolesRequest == null ? null : _serializers.serialize(updateRolesRequest, specifiedType: type);
-
-    } catch(error, stackTrace) {
+      bodyData =
+          updateRolesRequest == null
+              ? null
+              : _serializers.serialize(updateRolesRequest, specifiedType: type);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: options.compose(
-          _dio.options,
-          path,
-        ),
+        requestOptions: options.compose(_dio.options, path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -655,11 +703,14 @@ class RolesApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(SuccessResponse),
-      ) as SuccessResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(SuccessResponse),
+                  )
+                  as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -681,5 +732,4 @@ class RolesApi {
       extra: response.extra,
     );
   }
-
 }

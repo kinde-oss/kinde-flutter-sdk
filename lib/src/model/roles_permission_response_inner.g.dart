@@ -16,18 +16,21 @@ class _$RolesPermissionResponseInner extends RolesPermissionResponseInner {
   @override
   final String? description;
 
-  factory _$RolesPermissionResponseInner(
-          [void Function(RolesPermissionResponseInnerBuilder)? updates]) =>
-      (new RolesPermissionResponseInnerBuilder()..update(updates))._build();
+  factory _$RolesPermissionResponseInner([
+    void Function(RolesPermissionResponseInnerBuilder)? updates,
+  ]) => (new RolesPermissionResponseInnerBuilder()..update(updates))._build();
 
-  _$RolesPermissionResponseInner._(
-      {this.id, this.key, this.name, this.description})
-      : super._();
+  _$RolesPermissionResponseInner._({
+    this.id,
+    this.key,
+    this.name,
+    this.description,
+  }) : super._();
 
   @override
   RolesPermissionResponseInner rebuild(
-          void Function(RolesPermissionResponseInnerBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(RolesPermissionResponseInnerBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   RolesPermissionResponseInnerBuilder toBuilder() =>
@@ -67,8 +70,10 @@ class _$RolesPermissionResponseInner extends RolesPermissionResponseInner {
 
 class RolesPermissionResponseInnerBuilder
     implements
-        Builder<RolesPermissionResponseInner,
-            RolesPermissionResponseInnerBuilder> {
+        Builder<
+          RolesPermissionResponseInner,
+          RolesPermissionResponseInnerBuilder
+        > {
   _$RolesPermissionResponseInner? _$v;
 
   String? _id;
@@ -118,9 +123,14 @@ class RolesPermissionResponseInnerBuilder
   RolesPermissionResponseInner build() => _build();
 
   _$RolesPermissionResponseInner _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         new _$RolesPermissionResponseInner._(
-            id: id, key: key, name: name, description: description);
+          id: id,
+          key: key,
+          name: name,
+          description: description,
+        );
     replace(_$result);
     return _$result;
   }

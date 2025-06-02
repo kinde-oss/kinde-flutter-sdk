@@ -13,25 +13,37 @@ part 'create_organization_user_role_request.g.dart';
 /// Properties:
 /// * [roleId] - The role id.
 @BuiltValue()
-abstract class CreateOrganizationUserRoleRequest implements Built<CreateOrganizationUserRoleRequest, CreateOrganizationUserRoleRequestBuilder> {
+abstract class CreateOrganizationUserRoleRequest
+    implements
+        Built<
+          CreateOrganizationUserRoleRequest,
+          CreateOrganizationUserRoleRequestBuilder
+        > {
   /// The role id.
   @BuiltValueField(wireName: r'role_id')
   String? get roleId;
 
   CreateOrganizationUserRoleRequest._();
 
-  factory CreateOrganizationUserRoleRequest([void Function(CreateOrganizationUserRoleRequestBuilder b) updates]) = _$CreateOrganizationUserRoleRequest;
+  factory CreateOrganizationUserRoleRequest([
+    void Function(CreateOrganizationUserRoleRequestBuilder b) updates,
+  ]) = _$CreateOrganizationUserRoleRequest;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CreateOrganizationUserRoleRequestBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CreateOrganizationUserRoleRequest> get serializer => _$CreateOrganizationUserRoleRequestSerializer();
+  static Serializer<CreateOrganizationUserRoleRequest> get serializer =>
+      _$CreateOrganizationUserRoleRequestSerializer();
 }
 
-class _$CreateOrganizationUserRoleRequestSerializer implements PrimitiveSerializer<CreateOrganizationUserRoleRequest> {
+class _$CreateOrganizationUserRoleRequestSerializer
+    implements PrimitiveSerializer<CreateOrganizationUserRoleRequest> {
   @override
-  final Iterable<Type> types = const [CreateOrganizationUserRoleRequest, _$CreateOrganizationUserRoleRequest];
+  final Iterable<Type> types = const [
+    CreateOrganizationUserRoleRequest,
+    _$CreateOrganizationUserRoleRequest,
+  ];
 
   @override
   final String wireName = r'CreateOrganizationUserRoleRequest';
@@ -56,7 +68,11 @@ class _$CreateOrganizationUserRoleRequestSerializer implements PrimitiveSerializ
     CreateOrganizationUserRoleRequest object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -72,10 +88,12 @@ class _$CreateOrganizationUserRoleRequestSerializer implements PrimitiveSerializ
       final value = serializedList[i + 1];
       switch (key) {
         case r'role_id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.roleId = valueDes;
           break;
         default:
@@ -106,4 +124,3 @@ class _$CreateOrganizationUserRoleRequestSerializer implements PrimitiveSerializ
     return result.build();
   }
 }
-

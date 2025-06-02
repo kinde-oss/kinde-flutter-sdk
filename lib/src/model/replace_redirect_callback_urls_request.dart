@@ -14,25 +14,37 @@ part 'replace_redirect_callback_urls_request.g.dart';
 /// Properties:
 /// * [urls] - Array of callback urls.
 @BuiltValue()
-abstract class ReplaceRedirectCallbackURLsRequest implements Built<ReplaceRedirectCallbackURLsRequest, ReplaceRedirectCallbackURLsRequestBuilder> {
+abstract class ReplaceRedirectCallbackURLsRequest
+    implements
+        Built<
+          ReplaceRedirectCallbackURLsRequest,
+          ReplaceRedirectCallbackURLsRequestBuilder
+        > {
   /// Array of callback urls.
   @BuiltValueField(wireName: r'urls')
   BuiltList<String>? get urls;
 
   ReplaceRedirectCallbackURLsRequest._();
 
-  factory ReplaceRedirectCallbackURLsRequest([void Function(ReplaceRedirectCallbackURLsRequestBuilder b) updates]) = _$ReplaceRedirectCallbackURLsRequest;
+  factory ReplaceRedirectCallbackURLsRequest([
+    void Function(ReplaceRedirectCallbackURLsRequestBuilder b) updates,
+  ]) = _$ReplaceRedirectCallbackURLsRequest;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(ReplaceRedirectCallbackURLsRequestBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<ReplaceRedirectCallbackURLsRequest> get serializer => _$ReplaceRedirectCallbackURLsRequestSerializer();
+  static Serializer<ReplaceRedirectCallbackURLsRequest> get serializer =>
+      _$ReplaceRedirectCallbackURLsRequestSerializer();
 }
 
-class _$ReplaceRedirectCallbackURLsRequestSerializer implements PrimitiveSerializer<ReplaceRedirectCallbackURLsRequest> {
+class _$ReplaceRedirectCallbackURLsRequestSerializer
+    implements PrimitiveSerializer<ReplaceRedirectCallbackURLsRequest> {
   @override
-  final Iterable<Type> types = const [ReplaceRedirectCallbackURLsRequest, _$ReplaceRedirectCallbackURLsRequest];
+  final Iterable<Type> types = const [
+    ReplaceRedirectCallbackURLsRequest,
+    _$ReplaceRedirectCallbackURLsRequest,
+  ];
 
   @override
   final String wireName = r'ReplaceRedirectCallbackURLsRequest';
@@ -57,7 +69,11 @@ class _$ReplaceRedirectCallbackURLsRequestSerializer implements PrimitiveSeriali
     ReplaceRedirectCallbackURLsRequest object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -73,10 +89,14 @@ class _$ReplaceRedirectCallbackURLsRequestSerializer implements PrimitiveSeriali
       final value = serializedList[i + 1];
       switch (key) {
         case r'urls':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(String)]),
-          ) as BuiltList<String>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(String),
+                    ]),
+                  )
+                  as BuiltList<String>;
           result.urls.replace(valueDes);
           break;
         default:
@@ -107,4 +127,3 @@ class _$ReplaceRedirectCallbackURLsRequestSerializer implements PrimitiveSeriali
     return result.build();
   }
 }
-

@@ -11,12 +11,17 @@ part 'roles_permission_response_inner.g.dart';
 /// RolesPermissionResponseInner
 ///
 /// Properties:
-/// * [id] 
-/// * [key] 
-/// * [name] 
-/// * [description] 
+/// * [id]
+/// * [key]
+/// * [name]
+/// * [description]
 @BuiltValue()
-abstract class RolesPermissionResponseInner implements Built<RolesPermissionResponseInner, RolesPermissionResponseInnerBuilder> {
+abstract class RolesPermissionResponseInner
+    implements
+        Built<
+          RolesPermissionResponseInner,
+          RolesPermissionResponseInnerBuilder
+        > {
   @BuiltValueField(wireName: r'id')
   String? get id;
 
@@ -31,18 +36,25 @@ abstract class RolesPermissionResponseInner implements Built<RolesPermissionResp
 
   RolesPermissionResponseInner._();
 
-  factory RolesPermissionResponseInner([void Function(RolesPermissionResponseInnerBuilder b) updates]) = _$RolesPermissionResponseInner;
+  factory RolesPermissionResponseInner([
+    void Function(RolesPermissionResponseInnerBuilder b) updates,
+  ]) = _$RolesPermissionResponseInner;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(RolesPermissionResponseInnerBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<RolesPermissionResponseInner> get serializer => _$RolesPermissionResponseInnerSerializer();
+  static Serializer<RolesPermissionResponseInner> get serializer =>
+      _$RolesPermissionResponseInnerSerializer();
 }
 
-class _$RolesPermissionResponseInnerSerializer implements PrimitiveSerializer<RolesPermissionResponseInner> {
+class _$RolesPermissionResponseInnerSerializer
+    implements PrimitiveSerializer<RolesPermissionResponseInner> {
   @override
-  final Iterable<Type> types = const [RolesPermissionResponseInner, _$RolesPermissionResponseInner];
+  final Iterable<Type> types = const [
+    RolesPermissionResponseInner,
+    _$RolesPermissionResponseInner,
+  ];
 
   @override
   final String wireName = r'RolesPermissionResponseInner';
@@ -88,7 +100,11 @@ class _$RolesPermissionResponseInnerSerializer implements PrimitiveSerializer<Ro
     RolesPermissionResponseInner object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -104,31 +120,39 @@ class _$RolesPermissionResponseInnerSerializer implements PrimitiveSerializer<Ro
       final value = serializedList[i + 1];
       switch (key) {
         case r'id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.id = valueDes;
           break;
         case r'key':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.key = valueDes;
           break;
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.name = valueDes;
           break;
         case r'description':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.description = valueDes;
           break;
         default:
@@ -159,4 +183,3 @@ class _$RolesPermissionResponseInnerSerializer implements PrimitiveSerializer<Ro
     return result.build();
   }
 }
-

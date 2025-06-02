@@ -37,21 +37,21 @@ class _$User extends User {
   factory _$User([void Function(UserBuilder)? updates]) =>
       (new UserBuilder()..update(updates))._build();
 
-  _$User._(
-      {this.id,
-      this.providedId,
-      this.preferredEmail,
-      this.lastName,
-      this.firstName,
-      this.isSuspended,
-      this.picture,
-      this.totalSignIns,
-      this.failedSignIns,
-      this.lastSignedIn,
-      this.createdOn,
-      this.organizations,
-      this.identities})
-      : super._();
+  _$User._({
+    this.id,
+    this.providedId,
+    this.preferredEmail,
+    this.lastName,
+    this.firstName,
+    this.isSuspended,
+    this.picture,
+    this.totalSignIns,
+    this.failedSignIns,
+    this.lastSignedIn,
+    this.createdOn,
+    this.organizations,
+    this.identities,
+  }) : super._();
 
   @override
   User rebuild(void Function(UserBuilder) updates) =>
@@ -222,21 +222,23 @@ class UserBuilder implements Builder<User, UserBuilder> {
   _$User _build() {
     _$User _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           new _$User._(
-              id: id,
-              providedId: providedId,
-              preferredEmail: preferredEmail,
-              lastName: lastName,
-              firstName: firstName,
-              isSuspended: isSuspended,
-              picture: picture,
-              totalSignIns: totalSignIns,
-              failedSignIns: failedSignIns,
-              lastSignedIn: lastSignedIn,
-              createdOn: createdOn,
-              organizations: _organizations?.build(),
-              identities: _identities?.build());
+            id: id,
+            providedId: providedId,
+            preferredEmail: preferredEmail,
+            lastName: lastName,
+            firstName: firstName,
+            isSuspended: isSuspended,
+            picture: picture,
+            totalSignIns: totalSignIns,
+            failedSignIns: failedSignIns,
+            lastSignedIn: lastSignedIn,
+            createdOn: createdOn,
+            organizations: _organizations?.build(),
+            identities: _identities?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -246,7 +248,10 @@ class UserBuilder implements Builder<User, UserBuilder> {
         _identities?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'User', _$failedField, e.toString());
+          r'User',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

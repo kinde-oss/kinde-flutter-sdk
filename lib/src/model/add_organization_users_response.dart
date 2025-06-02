@@ -14,9 +14,14 @@ part 'add_organization_users_response.g.dart';
 /// Properties:
 /// * [code] - Response code.
 /// * [message] - Response message.
-/// * [usersAdded] 
+/// * [usersAdded]
 @BuiltValue()
-abstract class AddOrganizationUsersResponse implements Built<AddOrganizationUsersResponse, AddOrganizationUsersResponseBuilder> {
+abstract class AddOrganizationUsersResponse
+    implements
+        Built<
+          AddOrganizationUsersResponse,
+          AddOrganizationUsersResponseBuilder
+        > {
   /// Response code.
   @BuiltValueField(wireName: r'code')
   String? get code;
@@ -30,18 +35,25 @@ abstract class AddOrganizationUsersResponse implements Built<AddOrganizationUser
 
   AddOrganizationUsersResponse._();
 
-  factory AddOrganizationUsersResponse([void Function(AddOrganizationUsersResponseBuilder b) updates]) = _$AddOrganizationUsersResponse;
+  factory AddOrganizationUsersResponse([
+    void Function(AddOrganizationUsersResponseBuilder b) updates,
+  ]) = _$AddOrganizationUsersResponse;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(AddOrganizationUsersResponseBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<AddOrganizationUsersResponse> get serializer => _$AddOrganizationUsersResponseSerializer();
+  static Serializer<AddOrganizationUsersResponse> get serializer =>
+      _$AddOrganizationUsersResponseSerializer();
 }
 
-class _$AddOrganizationUsersResponseSerializer implements PrimitiveSerializer<AddOrganizationUsersResponse> {
+class _$AddOrganizationUsersResponseSerializer
+    implements PrimitiveSerializer<AddOrganizationUsersResponse> {
   @override
-  final Iterable<Type> types = const [AddOrganizationUsersResponse, _$AddOrganizationUsersResponse];
+  final Iterable<Type> types = const [
+    AddOrganizationUsersResponse,
+    _$AddOrganizationUsersResponse,
+  ];
 
   @override
   final String wireName = r'AddOrganizationUsersResponse';
@@ -80,7 +92,11 @@ class _$AddOrganizationUsersResponseSerializer implements PrimitiveSerializer<Ad
     AddOrganizationUsersResponse object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -96,24 +112,32 @@ class _$AddOrganizationUsersResponseSerializer implements PrimitiveSerializer<Ad
       final value = serializedList[i + 1];
       switch (key) {
         case r'code':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.code = valueDes;
           break;
         case r'message':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.message = valueDes;
           break;
         case r'users_added':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(String)]),
-          ) as BuiltList<String>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(String),
+                    ]),
+                  )
+                  as BuiltList<String>;
           result.usersAdded.replace(valueDes);
           break;
         default:
@@ -144,4 +168,3 @@ class _$AddOrganizationUsersResponseSerializer implements PrimitiveSerializer<Ad
     return result.build();
   }
 }
-

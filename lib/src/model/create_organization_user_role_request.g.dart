@@ -11,8 +11,9 @@ class _$CreateOrganizationUserRoleRequest
   @override
   final String? roleId;
 
-  factory _$CreateOrganizationUserRoleRequest(
-          [void Function(CreateOrganizationUserRoleRequestBuilder)? updates]) =>
+  factory _$CreateOrganizationUserRoleRequest([
+    void Function(CreateOrganizationUserRoleRequestBuilder)? updates,
+  ]) =>
       (new CreateOrganizationUserRoleRequestBuilder()..update(updates))
           ._build();
 
@@ -20,8 +21,8 @@ class _$CreateOrganizationUserRoleRequest
 
   @override
   CreateOrganizationUserRoleRequest rebuild(
-          void Function(CreateOrganizationUserRoleRequestBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CreateOrganizationUserRoleRequestBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CreateOrganizationUserRoleRequestBuilder toBuilder() =>
@@ -44,15 +45,16 @@ class _$CreateOrganizationUserRoleRequest
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'CreateOrganizationUserRoleRequest')
-          ..add('roleId', roleId))
-        .toString();
+      ..add('roleId', roleId)).toString();
   }
 }
 
 class CreateOrganizationUserRoleRequestBuilder
     implements
-        Builder<CreateOrganizationUserRoleRequest,
-            CreateOrganizationUserRoleRequestBuilder> {
+        Builder<
+          CreateOrganizationUserRoleRequest,
+          CreateOrganizationUserRoleRequestBuilder
+        > {
   _$CreateOrganizationUserRoleRequest? _$v;
 
   String? _roleId;
@@ -80,7 +82,8 @@ class CreateOrganizationUserRoleRequestBuilder
 
   @override
   void update(
-      void Function(CreateOrganizationUserRoleRequestBuilder)? updates) {
+    void Function(CreateOrganizationUserRoleRequestBuilder)? updates,
+  ) {
     if (updates != null) updates(this);
   }
 

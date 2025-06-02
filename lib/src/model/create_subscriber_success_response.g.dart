@@ -11,16 +11,17 @@ class _$CreateSubscriberSuccessResponse
   @override
   final CreateSubscriberSuccessResponseSubscriber? subscriber;
 
-  factory _$CreateSubscriberSuccessResponse(
-          [void Function(CreateSubscriberSuccessResponseBuilder)? updates]) =>
+  factory _$CreateSubscriberSuccessResponse([
+    void Function(CreateSubscriberSuccessResponseBuilder)? updates,
+  ]) =>
       (new CreateSubscriberSuccessResponseBuilder()..update(updates))._build();
 
   _$CreateSubscriberSuccessResponse._({this.subscriber}) : super._();
 
   @override
   CreateSubscriberSuccessResponse rebuild(
-          void Function(CreateSubscriberSuccessResponseBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CreateSubscriberSuccessResponseBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CreateSubscriberSuccessResponseBuilder toBuilder() =>
@@ -44,15 +45,16 @@ class _$CreateSubscriberSuccessResponse
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'CreateSubscriberSuccessResponse')
-          ..add('subscriber', subscriber))
-        .toString();
+      ..add('subscriber', subscriber)).toString();
   }
 }
 
 class CreateSubscriberSuccessResponseBuilder
     implements
-        Builder<CreateSubscriberSuccessResponse,
-            CreateSubscriberSuccessResponseBuilder> {
+        Builder<
+          CreateSubscriberSuccessResponse,
+          CreateSubscriberSuccessResponseBuilder
+        > {
   _$CreateSubscriberSuccessResponse? _$v;
 
   CreateSubscriberSuccessResponseSubscriberBuilder? _subscriber;
@@ -60,8 +62,8 @@ class CreateSubscriberSuccessResponseBuilder
       _$this._subscriber ??=
           new CreateSubscriberSuccessResponseSubscriberBuilder();
   set subscriber(
-          CreateSubscriberSuccessResponseSubscriberBuilder? subscriber) =>
-      _$this._subscriber = subscriber;
+    CreateSubscriberSuccessResponseSubscriberBuilder? subscriber,
+  ) => _$this._subscriber = subscriber;
 
   CreateSubscriberSuccessResponseBuilder() {
     CreateSubscriberSuccessResponse._defaults(this);
@@ -93,9 +95,11 @@ class CreateSubscriberSuccessResponseBuilder
   _$CreateSubscriberSuccessResponse _build() {
     _$CreateSubscriberSuccessResponse _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           new _$CreateSubscriberSuccessResponse._(
-              subscriber: _subscriber?.build());
+            subscriber: _subscriber?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -103,7 +107,10 @@ class CreateSubscriberSuccessResponseBuilder
         _subscriber?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'CreateSubscriberSuccessResponse', _$failedField, e.toString());
+          r'CreateSubscriberSuccessResponse',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

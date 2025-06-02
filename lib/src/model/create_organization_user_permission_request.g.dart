@@ -11,9 +11,9 @@ class _$CreateOrganizationUserPermissionRequest
   @override
   final String? permissionId;
 
-  factory _$CreateOrganizationUserPermissionRequest(
-          [void Function(CreateOrganizationUserPermissionRequestBuilder)?
-              updates]) =>
+  factory _$CreateOrganizationUserPermissionRequest([
+    void Function(CreateOrganizationUserPermissionRequestBuilder)? updates,
+  ]) =>
       (new CreateOrganizationUserPermissionRequestBuilder()..update(updates))
           ._build();
 
@@ -21,9 +21,8 @@ class _$CreateOrganizationUserPermissionRequest
 
   @override
   CreateOrganizationUserPermissionRequest rebuild(
-          void Function(CreateOrganizationUserPermissionRequestBuilder)
-              updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CreateOrganizationUserPermissionRequestBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CreateOrganizationUserPermissionRequestBuilder toBuilder() =>
@@ -47,16 +46,17 @@ class _$CreateOrganizationUserPermissionRequest
   @override
   String toString() {
     return (newBuiltValueToStringHelper(
-            r'CreateOrganizationUserPermissionRequest')
-          ..add('permissionId', permissionId))
-        .toString();
+      r'CreateOrganizationUserPermissionRequest',
+    )..add('permissionId', permissionId)).toString();
   }
 }
 
 class CreateOrganizationUserPermissionRequestBuilder
     implements
-        Builder<CreateOrganizationUserPermissionRequest,
-            CreateOrganizationUserPermissionRequestBuilder> {
+        Builder<
+          CreateOrganizationUserPermissionRequest,
+          CreateOrganizationUserPermissionRequestBuilder
+        > {
   _$CreateOrganizationUserPermissionRequest? _$v;
 
   String? _permissionId;
@@ -84,7 +84,8 @@ class CreateOrganizationUserPermissionRequestBuilder
 
   @override
   void update(
-      void Function(CreateOrganizationUserPermissionRequestBuilder)? updates) {
+    void Function(CreateOrganizationUserPermissionRequestBuilder)? updates,
+  ) {
     if (updates != null) updates(this);
   }
 
@@ -92,9 +93,11 @@ class CreateOrganizationUserPermissionRequestBuilder
   CreateOrganizationUserPermissionRequest build() => _build();
 
   _$CreateOrganizationUserPermissionRequest _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         new _$CreateOrganizationUserPermissionRequest._(
-            permissionId: permissionId);
+          permissionId: permissionId,
+        );
     replace(_$result);
     return _$result;
   }

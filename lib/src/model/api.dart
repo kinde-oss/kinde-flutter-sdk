@@ -18,7 +18,7 @@ part 'api.g.dart';
 /// * [name] - The API's name.
 /// * [message] - Response message.
 /// * [audience] - The API's audience.
-/// * [applications] 
+/// * [applications]
 @BuiltValue()
 abstract class Api implements Built<Api, ApiBuilder> {
   /// The API's unique identifier.
@@ -106,7 +106,9 @@ class _$ApiSerializer implements PrimitiveSerializer<Api> {
       yield r'applications';
       yield serializers.serialize(
         object.applications,
-        specifiedType: const FullType(BuiltList, [FullType(ApiApplicationsInner)]),
+        specifiedType: const FullType(BuiltList, [
+          FullType(ApiApplicationsInner),
+        ]),
       );
     }
   }
@@ -117,7 +119,11 @@ class _$ApiSerializer implements PrimitiveSerializer<Api> {
     Api object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -133,45 +139,59 @@ class _$ApiSerializer implements PrimitiveSerializer<Api> {
       final value = serializedList[i + 1];
       switch (key) {
         case r'id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.id = valueDes;
           break;
         case r'code':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.code = valueDes;
           break;
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.name = valueDes;
           break;
         case r'message':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.message = valueDes;
           break;
         case r'audience':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.audience = valueDes;
           break;
         case r'applications':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(ApiApplicationsInner)]),
-          ) as BuiltList<ApiApplicationsInner>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(ApiApplicationsInner),
+                    ]),
+                  )
+                  as BuiltList<ApiApplicationsInner>;
           result.applications.replace(valueDes);
           break;
         default:
@@ -202,4 +222,3 @@ class _$ApiSerializer implements PrimitiveSerializer<Api> {
     return result.build();
   }
 }
-

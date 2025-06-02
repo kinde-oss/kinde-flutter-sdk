@@ -20,7 +20,9 @@ part 'create_organization_request.g.dart';
 /// * [buttonTextColor] - The organization's brand settings - button text color.
 /// * [linkColor] - The organization's brand settings - link color.
 @BuiltValue()
-abstract class CreateOrganizationRequest implements Built<CreateOrganizationRequest, CreateOrganizationRequestBuilder> {
+abstract class CreateOrganizationRequest
+    implements
+        Built<CreateOrganizationRequest, CreateOrganizationRequestBuilder> {
   /// The organization's name.
   @BuiltValueField(wireName: r'name')
   String? get name;
@@ -52,18 +54,25 @@ abstract class CreateOrganizationRequest implements Built<CreateOrganizationRequ
 
   CreateOrganizationRequest._();
 
-  factory CreateOrganizationRequest([void Function(CreateOrganizationRequestBuilder b) updates]) = _$CreateOrganizationRequest;
+  factory CreateOrganizationRequest([
+    void Function(CreateOrganizationRequestBuilder b) updates,
+  ]) = _$CreateOrganizationRequest;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CreateOrganizationRequestBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CreateOrganizationRequest> get serializer => _$CreateOrganizationRequestSerializer();
+  static Serializer<CreateOrganizationRequest> get serializer =>
+      _$CreateOrganizationRequestSerializer();
 }
 
-class _$CreateOrganizationRequestSerializer implements PrimitiveSerializer<CreateOrganizationRequest> {
+class _$CreateOrganizationRequestSerializer
+    implements PrimitiveSerializer<CreateOrganizationRequest> {
   @override
-  final Iterable<Type> types = const [CreateOrganizationRequest, _$CreateOrganizationRequest];
+  final Iterable<Type> types = const [
+    CreateOrganizationRequest,
+    _$CreateOrganizationRequest,
+  ];
 
   @override
   final String wireName = r'CreateOrganizationRequest';
@@ -84,7 +93,10 @@ class _$CreateOrganizationRequestSerializer implements PrimitiveSerializer<Creat
       yield r'feature_flags';
       yield serializers.serialize(
         object.featureFlags,
-        specifiedType: const FullType(BuiltMap, [FullType(String), FullType(CreateOrganizationRequestFeatureFlagsEnum)]),
+        specifiedType: const FullType(BuiltMap, [
+          FullType(String),
+          FullType(CreateOrganizationRequestFeatureFlagsEnum),
+        ]),
       );
     }
     if (object.externalId != null) {
@@ -130,7 +142,11 @@ class _$CreateOrganizationRequestSerializer implements PrimitiveSerializer<Creat
     CreateOrganizationRequest object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -146,52 +162,72 @@ class _$CreateOrganizationRequestSerializer implements PrimitiveSerializer<Creat
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.name = valueDes;
           break;
         case r'feature_flags':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltMap, [FullType(String), FullType(CreateOrganizationRequestFeatureFlagsEnum)]),
-          ) as BuiltMap<String, CreateOrganizationRequestFeatureFlagsEnum>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltMap, [
+                      FullType(String),
+                      FullType(CreateOrganizationRequestFeatureFlagsEnum),
+                    ]),
+                  )
+                  as BuiltMap<
+                    String,
+                    CreateOrganizationRequestFeatureFlagsEnum
+                  >;
           result.featureFlags.replace(valueDes);
           break;
         case r'external_id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.externalId = valueDes;
           break;
         case r'background_color':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.backgroundColor = valueDes;
           break;
         case r'button_color':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.buttonColor = valueDes;
           break;
         case r'button_text_color':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.buttonTextColor = valueDes;
           break;
         case r'link_color':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.linkColor = valueDes;
           break;
         default:
@@ -224,22 +260,28 @@ class _$CreateOrganizationRequestSerializer implements PrimitiveSerializer<Creat
 }
 
 class CreateOrganizationRequestFeatureFlagsEnum extends EnumClass {
-
   /// Value of the feature flag.
   @BuiltValueEnumConst(wireName: r'str')
-  static const CreateOrganizationRequestFeatureFlagsEnum str = _$createOrganizationRequestFeatureFlagsEnum_str;
+  static const CreateOrganizationRequestFeatureFlagsEnum str =
+      _$createOrganizationRequestFeatureFlagsEnum_str;
+
   /// Value of the feature flag.
   @BuiltValueEnumConst(wireName: r'int')
-  static const CreateOrganizationRequestFeatureFlagsEnum int_ = _$createOrganizationRequestFeatureFlagsEnum_int_;
+  static const CreateOrganizationRequestFeatureFlagsEnum int_ =
+      _$createOrganizationRequestFeatureFlagsEnum_int_;
+
   /// Value of the feature flag.
   @BuiltValueEnumConst(wireName: r'bool')
-  static const CreateOrganizationRequestFeatureFlagsEnum bool_ = _$createOrganizationRequestFeatureFlagsEnum_bool_;
+  static const CreateOrganizationRequestFeatureFlagsEnum bool_ =
+      _$createOrganizationRequestFeatureFlagsEnum_bool_;
 
-  static Serializer<CreateOrganizationRequestFeatureFlagsEnum> get serializer => _$createOrganizationRequestFeatureFlagsEnumSerializer;
+  static Serializer<CreateOrganizationRequestFeatureFlagsEnum> get serializer =>
+      _$createOrganizationRequestFeatureFlagsEnumSerializer;
 
-  const CreateOrganizationRequestFeatureFlagsEnum._(String name): super(name);
+  const CreateOrganizationRequestFeatureFlagsEnum._(String name) : super(name);
 
-  static BuiltSet<CreateOrganizationRequestFeatureFlagsEnum> get values => _$createOrganizationRequestFeatureFlagsEnumValues;
-  static CreateOrganizationRequestFeatureFlagsEnum valueOf(String name) => _$createOrganizationRequestFeatureFlagsEnumValueOf(name);
+  static BuiltSet<CreateOrganizationRequestFeatureFlagsEnum> get values =>
+      _$createOrganizationRequestFeatureFlagsEnumValues;
+  static CreateOrganizationRequestFeatureFlagsEnum valueOf(String name) =>
+      _$createOrganizationRequestFeatureFlagsEnumValueOf(name);
 }
-

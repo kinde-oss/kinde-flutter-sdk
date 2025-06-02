@@ -15,10 +15,11 @@ part 'users_response.g.dart';
 /// Properties:
 /// * [code] - Response code.
 /// * [message] - Response message.
-/// * [users] 
+/// * [users]
 /// * [nextToken] - Pagination token.
 @BuiltValue()
-abstract class UsersResponse implements Built<UsersResponse, UsersResponseBuilder> {
+abstract class UsersResponse
+    implements Built<UsersResponse, UsersResponseBuilder> {
   /// Response code.
   @BuiltValueField(wireName: r'code')
   String? get code;
@@ -36,13 +37,15 @@ abstract class UsersResponse implements Built<UsersResponse, UsersResponseBuilde
 
   UsersResponse._();
 
-  factory UsersResponse([void Function(UsersResponseBuilder b) updates]) = _$UsersResponse;
+  factory UsersResponse([void Function(UsersResponseBuilder b) updates]) =
+      _$UsersResponse;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(UsersResponseBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<UsersResponse> get serializer => _$UsersResponseSerializer();
+  static Serializer<UsersResponse> get serializer =>
+      _$UsersResponseSerializer();
 }
 
 class _$UsersResponseSerializer implements PrimitiveSerializer<UsersResponse> {
@@ -75,7 +78,9 @@ class _$UsersResponseSerializer implements PrimitiveSerializer<UsersResponse> {
       yield r'users';
       yield serializers.serialize(
         object.users,
-        specifiedType: const FullType(BuiltList, [FullType(UsersResponseUsersInner)]),
+        specifiedType: const FullType(BuiltList, [
+          FullType(UsersResponseUsersInner),
+        ]),
       );
     }
     if (object.nextToken != null) {
@@ -93,7 +98,11 @@ class _$UsersResponseSerializer implements PrimitiveSerializer<UsersResponse> {
     UsersResponse object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -109,31 +118,41 @@ class _$UsersResponseSerializer implements PrimitiveSerializer<UsersResponse> {
       final value = serializedList[i + 1];
       switch (key) {
         case r'code':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.code = valueDes;
           break;
         case r'message':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.message = valueDes;
           break;
         case r'users':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(UsersResponseUsersInner)]),
-          ) as BuiltList<UsersResponseUsersInner>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(UsersResponseUsersInner),
+                    ]),
+                  )
+                  as BuiltList<UsersResponseUsersInner>;
           result.users.replace(valueDes);
           break;
         case r'next_token':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.nextToken = valueDes;
           break;
         default:
@@ -164,4 +183,3 @@ class _$UsersResponseSerializer implements PrimitiveSerializer<UsersResponse> {
     return result.build();
   }
 }
-

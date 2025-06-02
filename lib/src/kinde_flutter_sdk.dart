@@ -72,21 +72,20 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
     }
 
     _serviceConfiguration = AuthorizationServiceConfiguration(
-        authorizationEndpoint: '$domainUrl$_authPath',
-        tokenEndpoint: '$domainUrl$_tokenPath',
-        endSessionEndpoint: '$domainUrl$_logoutPath');
+      authorizationEndpoint: '$domainUrl$_authPath',
+      tokenEndpoint: '$domainUrl$_tokenPath',
+      endSessionEndpoint: '$domainUrl$_logoutPath',
+    );
 
-    Dio dio = Dio(BaseOptions(
-      baseUrl: domainUrl,
-    ));
+    Dio dio = Dio(BaseOptions(baseUrl: domainUrl));
 
-    _kindeApi = KindeApi(dio: dio, interceptors: [
-      BearerAuthInterceptor(),
-      RefreshTokenInterceptor(
-        dio: dio,
-        refreshToken: getToken,
-      ),
-    ]);
+    _kindeApi = KindeApi(
+      dio: dio,
+      interceptors: [
+        BearerAuthInterceptor(),
+        RefreshTokenInterceptor(dio: dio, refreshToken: getToken),
+      ],
+    );
     _keysApi = KeysApi(_kindeApi.dio);
     _tokenApi = TokenApi(_kindeApi.dio);
 
@@ -104,33 +103,40 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
 
   Store get _store => Store.instance;
 
-  static Future<void> initializeSDK(
-      {required String authDomain,
-      required String authClientId,
-      required String loginRedirectUri,
-      required String logoutRedirectUri,
-      List<String> scopes = _defaultScopes,
-      String? audience}) async {
+  static Future<void> initializeSDK({
+    required String authDomain,
+    required String authClientId,
+    required String loginRedirectUri,
+    required String logoutRedirectUri,
+    List<String> scopes = _defaultScopes,
+    String? audience,
+  }) async {
     _config = AuthConfig(
-        authDomain: authDomain,
-        authClientId: authClientId,
-        loginRedirectUri: loginRedirectUri,
-        logoutRedirectUri: logoutRedirectUri,
-        scopes: scopes,
-        audience: audience);
+      authDomain: authDomain,
+      authClientId: authClientId,
+      loginRedirectUri: loginRedirectUri,
+      logoutRedirectUri: logoutRedirectUri,
+      scopes: scopes,
+      audience: audience,
+    );
 
     secure_store.FlutterSecureStorage secureStorage =
         const secure_store.FlutterSecureStorage(
-            aOptions: secure_store.AndroidOptions());
+          aOptions: secure_store.AndroidOptions(),
+        );
 
     Future<List<int>> getSecureKey(
-        secure_store.FlutterSecureStorage secureStorage) async {
-      var containsEncryptionKey =
-          await secureStorage.containsKey(key: 'encryptionKey');
+      secure_store.FlutterSecureStorage secureStorage,
+    ) async {
+      var containsEncryptionKey = await secureStorage.containsKey(
+        key: 'encryptionKey',
+      );
       if (!containsEncryptionKey) {
         var key = Hive.generateSecureKey();
         await secureStorage.write(
-            key: 'encryptionKey', value: base64UrlEncode(key));
+          key: 'encryptionKey',
+          value: base64UrlEncode(key),
+        );
         return key;
       } else {
         final base64 = await secureStorage.read(key: 'encryptionKey');
@@ -172,11 +178,12 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
     );
   }
 
-  Future<String?> _redirectToKinde(
-      {AuthFlowType? type,
-        String? orgCode,
-        String? loginHint,
-        Map<String, String> additionalParams = const {}}) async {
+  Future<String?> _redirectToKinde({
+    AuthFlowType? type,
+    String? orgCode,
+    String? loginHint,
+    Map<String, String> additionalParams = const {},
+  }) async {
     final params = HashMap<String, String>.from(additionalParams);
     if (orgCode != null) {
       params.putIfAbsent(_orgCodeParamName, () => orgCode);
@@ -199,41 +206,54 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
     AuthUrlParams? authUrlParams,
   }) async {
     final additionalParams = {
-      _registrationPageParamName: _registrationPageParamValue
+      _registrationPageParamName: _registrationPageParamValue,
     };
     if (authUrlParams != null) {
       additionalParams.addAll(authUrlParams.toMap());
     }
 
     await _redirectToKinde(
-        type: type,
-        orgCode: orgCode,
-        loginHint: loginHint,
-        additionalParams: additionalParams);
+      type: type,
+      orgCode: orgCode,
+      loginHint: loginHint,
+      additionalParams: additionalParams,
+    );
   }
 
   Future<UserProfileV2?> getUserProfileV2() async {
-    return _kindeApi.getOAuthApi().getUserProfileV2().then((value) {
-      return value.data;
-    }).catchError((error) {
-      throw handleError(error);
-    });
+    return _kindeApi
+        .getOAuthApi()
+        .getUserProfileV2()
+        .then((value) {
+          return value.data;
+        })
+        .catchError((error) {
+          throw handleError(error);
+        });
   }
 
   Future<UserProfile?> getUser() async {
-    return _kindeApi.getOAuthApi().getUser().then((value) {
-      return value.data;
-    }).catchError((error) {
-      throw handleError(error);
-    });
+    return _kindeApi
+        .getOAuthApi()
+        .getUser()
+        .then((value) {
+          return value.data;
+        })
+        .catchError((error) {
+          throw handleError(error);
+        });
   }
 
   Future<void> createOrg({required String orgName, AuthFlowType? type}) async {
-    await _redirectToKinde(type: type, orgCode: null, additionalParams: {
-      _registrationPageParamName: _registrationPageParamValue,
-      _createOrgParamName: "true",
-      _orgNameParamName: orgName
-    });
+    await _redirectToKinde(
+      type: type,
+      orgCode: null,
+      additionalParams: {
+        _registrationPageParamName: _registrationPageParamValue,
+        _createOrgParamName: "true",
+        _orgNameParamName: orgName,
+      },
+    );
   }
 
   Future<String?> getToken() async {
@@ -247,9 +267,10 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
         throw KindeError("Session expired or invalid");
       }
       final data = await _tokenApi.retrieveToken(
-          versionParam,
-          _store.authState!.createRequestTokenParam()
-            ..putIfAbsent(_clientIdParamName, () => _config!.authClientId));
+        versionParam,
+        _store.authState!.createRequestTokenParam()
+          ..putIfAbsent(_clientIdParamName, () => _config!.authClientId),
+      );
       _store.authState = AuthState.fromJson(data as Map<String, dynamic>);
       _kindeApi.setBearerAuth(_bearerAuth, _store.authState?.accessToken ?? '');
       return _store.authState?.accessToken;
@@ -264,33 +285,38 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
       authState != null && !authState!.isExpired() && await _checkToken();
 
   Future<String?> _normalLogin(
-      String? loginHint, Map<String, String> additionalParams) async {
+    String? loginHint,
+    Map<String, String> additionalParams,
+  ) async {
     const appAuth = FlutterAppAuth();
     return await appAuth
         .authorizeAndExchangeCode(
-      AuthorizationTokenRequest(
-        _config!.authClientId,
-        _config!.loginRedirectUri,
-        serviceConfiguration: _serviceConfiguration,
-        scopes: _config!.scopes,
-        promptValues: ['login'],
-        loginHint: loginHint,
-        additionalParameters: additionalParams,
-      ),
-    )
+          AuthorizationTokenRequest(
+            _config!.authClientId,
+            _config!.loginRedirectUri,
+            serviceConfiguration: _serviceConfiguration,
+            scopes: _config!.scopes,
+            promptValues: ['login'],
+            loginHint: loginHint,
+            additionalParameters: additionalParams,
+          ),
+        )
         .then((value) {
-      if (additionalParams.containsKey(_orgNameParamName)) {
-        return additionalParams[_orgNameParamName];
-      }
-      _saveState(value);
-      return value?.accessToken;
-    }).catchError((ex) {
-      return null;
-    });
+          if (additionalParams.containsKey(_orgNameParamName)) {
+            return additionalParams[_orgNameParamName];
+          }
+          _saveState(value);
+          return value?.accessToken;
+        })
+        .catchError((ex) {
+          return null;
+        });
   }
 
   Future<String?> _pkceLogin(
-      String? loginHint, Map<String, String> additionalParams) async {
+    String? loginHint,
+    Map<String, String> additionalParams,
+  ) async {
     const appAuth = FlutterAppAuth();
     try {
       final result = await appAuth.authorize(
@@ -327,11 +353,12 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
   }
 
   WebUri _buildEndSessionUrl() {
-    var uri = WebUri(_serviceConfiguration.endSessionEndpoint!)
-        .replace(queryParameters: {
-      _postLogoutRedirectParamName: _config!.logoutRedirectUri,
-      _redirectParamName: _config!.logoutRedirectUri,
-    });
+    var uri = WebUri(_serviceConfiguration.endSessionEndpoint!).replace(
+      queryParameters: {
+        _postLogoutRedirectParamName: _config!.logoutRedirectUri,
+        _redirectParamName: _config!.logoutRedirectUri,
+      },
+    );
     return WebUri.uri(uri);
   }
 
@@ -352,12 +379,13 @@ class KindeFlutterSDK with TokenUtils, HandleNetworkMixin {
 
   _saveState(TokenResponse? tokenResponse) {
     _store.authState = AuthState(
-        accessToken: tokenResponse?.accessToken,
-        idToken: tokenResponse?.idToken,
-        accessTokenExpirationDateTime:
-            tokenResponse?.accessTokenExpirationDateTime,
-        refreshToken: tokenResponse?.refreshToken,
-        scope: tokenResponse?.scopes?.join(' '));
+      accessToken: tokenResponse?.accessToken,
+      idToken: tokenResponse?.idToken,
+      accessTokenExpirationDateTime:
+          tokenResponse?.accessTokenExpirationDateTime,
+      refreshToken: tokenResponse?.refreshToken,
+      scope: tokenResponse?.scopes?.join(' '),
+    );
     _kindeApi.setBearerAuth(_bearerAuth, tokenResponse?.accessToken ?? '');
   }
 

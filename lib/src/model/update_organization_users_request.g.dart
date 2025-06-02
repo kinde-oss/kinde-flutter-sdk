@@ -10,16 +10,16 @@ class _$UpdateOrganizationUsersRequest extends UpdateOrganizationUsersRequest {
   @override
   final BuiltList<UpdateOrganizationUsersRequestUsersInner>? users;
 
-  factory _$UpdateOrganizationUsersRequest(
-          [void Function(UpdateOrganizationUsersRequestBuilder)? updates]) =>
-      (new UpdateOrganizationUsersRequestBuilder()..update(updates))._build();
+  factory _$UpdateOrganizationUsersRequest([
+    void Function(UpdateOrganizationUsersRequestBuilder)? updates,
+  ]) => (new UpdateOrganizationUsersRequestBuilder()..update(updates))._build();
 
   _$UpdateOrganizationUsersRequest._({this.users}) : super._();
 
   @override
   UpdateOrganizationUsersRequest rebuild(
-          void Function(UpdateOrganizationUsersRequestBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(UpdateOrganizationUsersRequestBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   UpdateOrganizationUsersRequestBuilder toBuilder() =>
@@ -42,15 +42,16 @@ class _$UpdateOrganizationUsersRequest extends UpdateOrganizationUsersRequest {
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'UpdateOrganizationUsersRequest')
-          ..add('users', users))
-        .toString();
+      ..add('users', users)).toString();
   }
 }
 
 class UpdateOrganizationUsersRequestBuilder
     implements
-        Builder<UpdateOrganizationUsersRequest,
-            UpdateOrganizationUsersRequestBuilder> {
+        Builder<
+          UpdateOrganizationUsersRequest,
+          UpdateOrganizationUsersRequestBuilder
+        > {
   _$UpdateOrganizationUsersRequest? _$v;
 
   ListBuilder<UpdateOrganizationUsersRequestUsersInner>? _users;
@@ -99,7 +100,10 @@ class UpdateOrganizationUsersRequestBuilder
         _users?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'UpdateOrganizationUsersRequest', _$failedField, e.toString());
+          r'UpdateOrganizationUsersRequest',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

@@ -7,11 +7,11 @@ part of 'create_user_request_identities_inner.dart';
 // **************************************************************************
 
 const CreateUserRequestIdentitiesInnerTypeEnum
-    _$createUserRequestIdentitiesInnerTypeEnum_email =
+_$createUserRequestIdentitiesInnerTypeEnum_email =
     const CreateUserRequestIdentitiesInnerTypeEnum._('email');
 
 CreateUserRequestIdentitiesInnerTypeEnum
-    _$createUserRequestIdentitiesInnerTypeEnumValueOf(String name) {
+_$createUserRequestIdentitiesInnerTypeEnumValueOf(String name) {
   switch (name) {
     case 'email':
       return _$createUserRequestIdentitiesInnerTypeEnum_email;
@@ -21,13 +21,15 @@ CreateUserRequestIdentitiesInnerTypeEnum
 }
 
 final BuiltSet<CreateUserRequestIdentitiesInnerTypeEnum>
-    _$createUserRequestIdentitiesInnerTypeEnumValues = new BuiltSet<
-        CreateUserRequestIdentitiesInnerTypeEnum>(const <CreateUserRequestIdentitiesInnerTypeEnum>[
-  _$createUserRequestIdentitiesInnerTypeEnum_email,
-]);
+_$createUserRequestIdentitiesInnerTypeEnumValues =
+    new BuiltSet<CreateUserRequestIdentitiesInnerTypeEnum>(
+      const <CreateUserRequestIdentitiesInnerTypeEnum>[
+        _$createUserRequestIdentitiesInnerTypeEnum_email,
+      ],
+    );
 
 Serializer<CreateUserRequestIdentitiesInnerTypeEnum>
-    _$createUserRequestIdentitiesInnerTypeEnumSerializer =
+_$createUserRequestIdentitiesInnerTypeEnumSerializer =
     new _$CreateUserRequestIdentitiesInnerTypeEnumSerializer();
 
 class _$CreateUserRequestIdentitiesInnerTypeEnumSerializer
@@ -41,23 +43,26 @@ class _$CreateUserRequestIdentitiesInnerTypeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    CreateUserRequestIdentitiesInnerTypeEnum
+    CreateUserRequestIdentitiesInnerTypeEnum,
   ];
   @override
   final String wireName = 'CreateUserRequestIdentitiesInnerTypeEnum';
 
   @override
-  Object serialize(Serializers serializers,
-          CreateUserRequestIdentitiesInnerTypeEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    CreateUserRequestIdentitiesInnerTypeEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   CreateUserRequestIdentitiesInnerTypeEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      CreateUserRequestIdentitiesInnerTypeEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => CreateUserRequestIdentitiesInnerTypeEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$CreateUserRequestIdentitiesInner
@@ -67,16 +72,17 @@ class _$CreateUserRequestIdentitiesInner
   @override
   final CreateUserRequestIdentitiesInnerDetails? details;
 
-  factory _$CreateUserRequestIdentitiesInner(
-          [void Function(CreateUserRequestIdentitiesInnerBuilder)? updates]) =>
+  factory _$CreateUserRequestIdentitiesInner([
+    void Function(CreateUserRequestIdentitiesInnerBuilder)? updates,
+  ]) =>
       (new CreateUserRequestIdentitiesInnerBuilder()..update(updates))._build();
 
   _$CreateUserRequestIdentitiesInner._({this.type, this.details}) : super._();
 
   @override
   CreateUserRequestIdentitiesInner rebuild(
-          void Function(CreateUserRequestIdentitiesInnerBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CreateUserRequestIdentitiesInnerBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CreateUserRequestIdentitiesInnerBuilder toBuilder() =>
@@ -110,8 +116,10 @@ class _$CreateUserRequestIdentitiesInner
 
 class CreateUserRequestIdentitiesInnerBuilder
     implements
-        Builder<CreateUserRequestIdentitiesInner,
-            CreateUserRequestIdentitiesInnerBuilder> {
+        Builder<
+          CreateUserRequestIdentitiesInner,
+          CreateUserRequestIdentitiesInnerBuilder
+        > {
   _$CreateUserRequestIdentitiesInner? _$v;
 
   CreateUserRequestIdentitiesInnerTypeEnum? _type;
@@ -156,9 +164,12 @@ class CreateUserRequestIdentitiesInnerBuilder
   _$CreateUserRequestIdentitiesInner _build() {
     _$CreateUserRequestIdentitiesInner _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           new _$CreateUserRequestIdentitiesInner._(
-              type: type, details: _details?.build());
+            type: type,
+            details: _details?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -166,7 +177,10 @@ class CreateUserRequestIdentitiesInnerBuilder
         _details?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'CreateUserRequestIdentitiesInner', _$failedField, e.toString());
+          r'CreateUserRequestIdentitiesInner',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

@@ -56,7 +56,11 @@ class _$ApiResultSerializer implements PrimitiveSerializer<ApiResult> {
     ApiResult object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -72,10 +76,12 @@ class _$ApiResultSerializer implements PrimitiveSerializer<ApiResult> {
       final value = serializedList[i + 1];
       switch (key) {
         case r'result':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.result = valueDes;
           break;
         default:
@@ -106,4 +112,3 @@ class _$ApiResultSerializer implements PrimitiveSerializer<ApiResult> {
     return result.build();
   }
 }
-

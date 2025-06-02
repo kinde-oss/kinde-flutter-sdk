@@ -19,7 +19,8 @@ part 'update_user_response.g.dart';
 /// * [isPasswordResetRequested] - Whether a password reset has been requested.
 /// * [picture] - User's profile picture URL.
 @BuiltValue()
-abstract class UpdateUserResponse implements Built<UpdateUserResponse, UpdateUserResponseBuilder> {
+abstract class UpdateUserResponse
+    implements Built<UpdateUserResponse, UpdateUserResponseBuilder> {
   /// Unique id of the user in Kinde.
   @BuiltValueField(wireName: r'id')
   String? get id;
@@ -50,16 +51,20 @@ abstract class UpdateUserResponse implements Built<UpdateUserResponse, UpdateUse
 
   UpdateUserResponse._();
 
-  factory UpdateUserResponse([void Function(UpdateUserResponseBuilder b) updates]) = _$UpdateUserResponse;
+  factory UpdateUserResponse([
+    void Function(UpdateUserResponseBuilder b) updates,
+  ]) = _$UpdateUserResponse;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(UpdateUserResponseBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<UpdateUserResponse> get serializer => _$UpdateUserResponseSerializer();
+  static Serializer<UpdateUserResponse> get serializer =>
+      _$UpdateUserResponseSerializer();
 }
 
-class _$UpdateUserResponseSerializer implements PrimitiveSerializer<UpdateUserResponse> {
+class _$UpdateUserResponseSerializer
+    implements PrimitiveSerializer<UpdateUserResponse> {
   @override
   final Iterable<Type> types = const [UpdateUserResponse, _$UpdateUserResponse];
 
@@ -128,7 +133,11 @@ class _$UpdateUserResponseSerializer implements PrimitiveSerializer<UpdateUserRe
     UpdateUserResponse object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -144,52 +153,66 @@ class _$UpdateUserResponseSerializer implements PrimitiveSerializer<UpdateUserRe
       final value = serializedList[i + 1];
       switch (key) {
         case r'id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.id = valueDes;
           break;
         case r'given_name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.givenName = valueDes;
           break;
         case r'family_name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.familyName = valueDes;
           break;
         case r'email':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.email = valueDes;
           break;
         case r'is_suspended':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(bool),
-          ) as bool;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(bool),
+                  )
+                  as bool;
           result.isSuspended = valueDes;
           break;
         case r'is_password_reset_requested':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(bool),
-          ) as bool;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(bool),
+                  )
+                  as bool;
           result.isPasswordResetRequested = valueDes;
           break;
         case r'picture':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.picture = valueDes;
           break;
         default:
@@ -220,4 +243,3 @@ class _$UpdateUserResponseSerializer implements PrimitiveSerializer<UpdateUserRe
     return result.build();
   }
 }
-

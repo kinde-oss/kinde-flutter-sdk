@@ -100,7 +100,8 @@ class PermissionsBuilder implements Builder<Permissions, PermissionsBuilder> {
   Permissions build() => _build();
 
   _$Permissions _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         new _$Permissions._(id: id, name: name, description: description);
     replace(_$result);
     return _$result;

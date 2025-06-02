@@ -14,16 +14,16 @@ class _$CreateUserResponse extends CreateUserResponse {
   @override
   final BuiltList<UserIdentity>? identities;
 
-  factory _$CreateUserResponse(
-          [void Function(CreateUserResponseBuilder)? updates]) =>
-      (new CreateUserResponseBuilder()..update(updates))._build();
+  factory _$CreateUserResponse([
+    void Function(CreateUserResponseBuilder)? updates,
+  ]) => (new CreateUserResponseBuilder()..update(updates))._build();
 
   _$CreateUserResponse._({this.id, this.created, this.identities}) : super._();
 
   @override
   CreateUserResponse rebuild(
-          void Function(CreateUserResponseBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CreateUserResponseBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CreateUserResponseBuilder toBuilder() =>
@@ -108,9 +108,13 @@ class CreateUserResponseBuilder
   _$CreateUserResponse _build() {
     _$CreateUserResponse _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           new _$CreateUserResponse._(
-              id: id, created: created, identities: _identities?.build());
+            id: id,
+            created: created,
+            identities: _identities?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -118,7 +122,10 @@ class CreateUserResponseBuilder
         _identities?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'CreateUserResponse', _$failedField, e.toString());
+          r'CreateUserResponse',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }
