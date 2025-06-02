@@ -9,6 +9,13 @@ var tokenResponseMap = {
   'scopes': ['openid', 'profile', 'email', 'offline']
 };
 
+var authorizeResponse = {
+  'authorizationCode': 'authorizationCode',
+  'codeVerifier': 'codeVerifier',
+  'nonce': null,
+  'authorizationAdditionalParameters': {},
+};
+
 final mockChannels = MockChannels();
 
 class MockChannels {
@@ -22,30 +29,44 @@ class MockChannels {
     const MethodChannel pathProvider =
     MethodChannel('plugins.flutter.io/path_provider');
 
-    const MethodChannel customTabs =
-    MethodChannel('plugins.flutter.droibit.github.io/custom_tabs');
+    const MethodChannel sharedPreferences =
+        MethodChannel('plugins.flutter.io/shared_preferences');
 
-    TestWidgetsFlutterBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(flutterSecureStorage, (MethodCall methodCall) async {
-      if(methodCall.method == 'read') {
-        return '';
+    TestWidgetsFlutterBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(sharedPreferences,
+            (MethodCall methodCall) async {
+      if (methodCall.method == 'getAll') {
+        return null;
       }
       return false;
     });
 
-    TestWidgetsFlutterBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(pathProvider, (MethodCall methodCall) async {
+    TestWidgetsFlutterBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(flutterSecureStorage,
+            (MethodCall methodCall) async {
+      if (methodCall.method == 'read') {
+        return null;
+      }
+      return false;
+    });
+
+    TestWidgetsFlutterBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(pathProvider, (MethodCall methodCall) async {
       return './';
     });
 
-    TestWidgetsFlutterBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(flutterAppauth, (MethodCall methodCall) async {
-      if(methodCall.method == 'authorizeAndExchangeCode') {
+    TestWidgetsFlutterBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(flutterAppauth,
+            (MethodCall methodCall) async {
+      if (methodCall.method == 'authorizeAndExchangeCode' ||
+          methodCall.method == 'token') {
         return tokenResponseMap;
       }
+      if (methodCall.method == 'authorize') {
+        return authorizeResponse;
+      }
       return null;
-    });
 
-    TestWidgetsFlutterBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(customTabs, (MethodCall methodCall) async {
-      return null;
-    
 
     });
   }

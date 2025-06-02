@@ -7,7 +7,7 @@ import 'dart:async';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 
-import 'package:kinde_flutter_sdk/src/api_util.dart';
+import 'package:kinde_flutter_sdk/src/utils/api_util.dart';
 import 'package:kinde_flutter_sdk/src/model/create_application_request.dart';
 import 'package:kinde_flutter_sdk/src/model/create_application_response.dart';
 import 'package:kinde_flutter_sdk/src/model/get_application_response.dart';

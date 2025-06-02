@@ -7,7 +7,7 @@ import 'dart:async';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 
-import 'package:kinde_flutter_sdk/src/api_util.dart';
+import 'package:kinde_flutter_sdk/src/utils/api_util.dart';
 import 'package:kinde_flutter_sdk/src/model/token_introspect.dart';
 import 'package:kinde_flutter_sdk/src/model/user_profile.dart';
 import 'package:kinde_flutter_sdk/src/model/user_profile_v2.dart';
@@ -97,6 +97,19 @@ class OAuthApi {
       statusMessage: response.statusMessage,
       extra: response.extra,
     );
+  }
+
+  Future<bool> logout({required String url, Dio? dio}) async {
+    final options = Options(
+      method: r'GET',
+    );
+    var dioClient = dio ?? Dio();
+    final response = await dioClient.request<Object>(
+      url,
+      options: options,
+    );
+
+    return response.statusCode == 200;
   }
 
   /// Returns the details of the currently logged in user

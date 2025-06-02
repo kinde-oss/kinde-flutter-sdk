@@ -1,26 +1,26 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kinde_flutter_sdk/kinde_flutter_sdk.dart';
-import 'package:kinde_flutter_sdk/src/keys/keys.dart';
-import 'package:kinde_flutter_sdk/src/store/store.dart';
+import 'package:kinde_flutter_sdk/src/kinde_flutter_sdk.dart';
 
 import 'mock_channels.dart';
+import 'test_helpers/dio_adapter.dart';
 
 void main() async {
 
   TestWidgetsFlutterBinding.ensureInitialized();
 
   mockChannels.setupMockChannel();
+  final mockDio = setupDioMock();
+  // final mockDio = DioAdapterMock();
 
   group(KindeFlutterSDK, () {
     test('test initializeSDK', () async {
-
-      await KindeFlutterSDK.initializeSDK(
+      await initializeKindeFlutterSdkForTest(
           authDomain: "authDomain",
           authClientId: "authClientId",
           loginRedirectUri: "loginRedirectUri",
-          logoutRedirectUri: "logoutRedirectUri");
-
-      Store.instance.keys = const Keys(keys: []);
+          logoutRedirectUri: "logoutRedirectUri",
+          dio: mockDio);
 
       expect(() => KindeFlutterSDK.instance, returnsNormally);
     });
@@ -54,9 +54,7 @@ void main() async {
     });
 
     test('test sdk logout', () async {
-
-      await KindeFlutterSDK.instance.logout();
-
+      await KindeFlutterSDK.instance.logout(dio: mockDio);
       expect(KindeFlutterSDK.instance.authState, isNull);
     });
 
@@ -67,9 +65,10 @@ void main() async {
     });
 
     test('test create org pkce', () async {
-
-      await KindeFlutterSDK.instance.createOrg(orgName: 'test', type: AuthFlowType.pkce);
-
+      await KindeFlutterSDK.instance.createOrg(
+        orgName: 'test',
+        type: AuthFlowType.pkce,
+      );
     });
   });
 }

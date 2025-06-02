@@ -2,8 +2,9 @@ library kinde_sdk;
 
 export './kinde_api.dart';
 export './src/auth_config.dart';
-export './src/auth_url_params.dart';
-export './src/kinde_flutter_sdk.dart';
+export './src/additional_params.dart' show AdditionalParameters;
+export './src/kinde_flutter_sdk.dart' hide initializeKindeFlutterSdkForTest;
+export 'src/error/kinde_error.dart';
 export './src/model/auth_flow_type.dart';
 export './src/model/claim/claim.dart';
 export './src/model/claim/claim_organization.dart';
