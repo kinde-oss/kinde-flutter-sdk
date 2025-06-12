@@ -74,10 +74,10 @@ class KindeError implements Exception {
         try {
           final jsonData = jsonDecode(jsonString!);
 
-          final error = jsonData['error'];
-          final errorDescription = jsonData['error_description'];
+          final error = jsonData['error'] as String?;
+          final errorDescription = jsonData['error_description'] as String?;
 
-          return KindeError(code: error, message: errorDescription);
+          return KindeError(code: error ?? KindeErrorCode.unknown, message: errorDescription ?? 'Unknown error');
         } catch (e) {
           return KindeError(
               code: KindeErrorCode.unknown, message: e.toString());

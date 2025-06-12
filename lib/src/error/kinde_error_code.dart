@@ -25,7 +25,7 @@ abstract class KindeErrorCode {
   static const noAuthStateStored = "no-auth-request-state-stored";
   /// Parameter 'state' used for login request isn't equal stored one.
   static const authStateNotMatch = "auth-request-state-not-match";
-  /// Parameter 'state' used for login request isn't equal stored one.
+  /// Parameter 'state' used for login request doesn't match the stored state value.
   static const notRedirect = "not-redirect-url";
   static const loginInProcess = "login-in-process";
   static const invalidRedirect = "invalid-redirect";

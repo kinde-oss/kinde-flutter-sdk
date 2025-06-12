@@ -283,8 +283,7 @@ class KindeFlutterSDK with TokenUtils {
       final response =
           await dioClient.get(_serviceConfiguration.endSessionEndpoint!);
 
-      _kindeApi.setBearerAuth(_bearerAuth, '');
-      await Store.instance.clear();
+      await _commonLogoutCleanup();
 
       if (response.statusCode != null && response.statusCode! >= 400) {
         final errorMessage = response.data is Map
@@ -556,9 +555,11 @@ class KindeFlutterSDK with TokenUtils {
   String? _isCurrentUrlContainWebAuthParams() {
     if (kIsWeb && authState == null) {
       final currentUrl = WebUtils.getCurrentUrl ?? "";
+      if (currentUrl.isEmpty) return null;
       final currentUri = Uri.tryParse(currentUrl);
-      return (currentUri?.queryParameters["code"]?.isNotEmpty ?? false) &&
-              (currentUri?.queryParameters["state"]?.isNotEmpty ?? false)
+      if (currentUri == null || !currentUri.hasScheme) return null;
+      return (currentUri.queryParameters["code"]?.isNotEmpty ?? false) &&
+              (currentUri.queryParameters["state"]?.isNotEmpty ?? false)
           ? currentUrl
           : null;
     }

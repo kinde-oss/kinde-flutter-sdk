@@ -50,8 +50,14 @@
         onEntrypointLoaded: function(engineInitializer) {
           engineInitializer.initializeEngine().then(function(appRunner) {
             appRunner.runApp();
+          }).catch(function(error) {
+            console.error('Failed to initialize Flutter app:', error);
+            document.body.innerHTML = '<div style="text-align: center; margin-top: 50px;">Failed to load application. Please refresh the page.</div>';
           });
         }
+      }).catch(function(error) {
+        console.error('Failed to load Flutter entrypoint:', error);
+        document.body.innerHTML = '<div style="text-align: center; margin-top: 50px;">Failed to load application. Please refresh the page.</div>';
       });
     });
   </script>

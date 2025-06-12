@@ -48,21 +48,43 @@ class KindeSecureStorage implements KindeSecureStorageInterface {
   }
 
   @override
-  Future<String?> getAuthRequestState() {
-    return _secureStorage.read(key: SecureStorageKey.authRequestState);
+  Future<String?> getAuthRequestState() async {
+    try {
+      return await _secureStorage.read(key: SecureStorageKey.authRequestState);
+    } catch (e) {
+      kindeDebugPrint(
+        methodName: "getAuthRequestState",
+        message: e.toString(),
+      );
+      return null;
+    }
   }
 
   @override
-  Future<void> saveAuthRequestState(String state) {
-    return _secureStorage.write(
-      key: SecureStorageKey.authRequestState,
-      value: state,
-    );
+  Future<void> saveAuthRequestState(String state) async {
+    try {
+      await _secureStorage.write(
+        key: SecureStorageKey.authRequestState,
+        value: state,
+      );
+    } catch (e) {
+      kindeDebugPrint(
+        methodName: "saveAuthRequestState",
+        message: e.toString(),
+      );
+    }
   }
 
   @override
-  Future<void> removeAuthRequestState() {
-    return _secureStorage.delete(key: SecureStorageKey.authRequestState);
+  Future<void> removeAuthRequestState() async {
+    try {
+      await _secureStorage.delete(key: SecureStorageKey.authRequestState);
+    } catch (e) {
+      kindeDebugPrint(
+        methodName: "removeAuthRequestState",
+        message: e.toString(),
+      );
+    }
   }
 }
 

@@ -107,8 +107,8 @@ class KindeWeb {
 
   bool _loginInProgress = false;
 
-  ///If multiple logins are triggered in parallel, then flow finished correctly only for
-  ///last triggered login, for others after finishing login will be thrown [KindeError] with code=[invalid_grant]
+  ///Starts the OAuth login flow. Only one login can be in progress at a time.
+  ///Throws [KindeError] with [KindeErrorCode.loginInProcess] if a login is already in progress.
   Future<void> startLoginFlow(AuthorizationRequest configuration,
       {required InternalAdditionalParameters additionalParameters}) async {
     if (_loginInProgress) {
