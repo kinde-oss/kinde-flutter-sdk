@@ -12,16 +12,16 @@ class _$TokenErrorResponse extends TokenErrorResponse {
   @override
   final String? errorDescription;
 
-  factory _$TokenErrorResponse(
-          [void Function(TokenErrorResponseBuilder)? updates]) =>
-      (new TokenErrorResponseBuilder()..update(updates))._build();
+  factory _$TokenErrorResponse([
+    void Function(TokenErrorResponseBuilder)? updates,
+  ]) => (new TokenErrorResponseBuilder()..update(updates))._build();
 
   _$TokenErrorResponse._({this.error, this.errorDescription}) : super._();
 
   @override
   TokenErrorResponse rebuild(
-          void Function(TokenErrorResponseBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(TokenErrorResponseBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   TokenErrorResponseBuilder toBuilder() =>
@@ -95,9 +95,12 @@ class TokenErrorResponseBuilder
   TokenErrorResponse build() => _build();
 
   _$TokenErrorResponse _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         new _$TokenErrorResponse._(
-            error: error, errorDescription: errorDescription);
+          error: error,
+          errorDescription: errorDescription,
+        );
     replace(_$result);
     return _$result;
   }

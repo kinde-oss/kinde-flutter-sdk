@@ -38,8 +38,8 @@ class _$ApiResult extends ApiResult {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'ApiResult')..add('result', result))
-        .toString();
+    return (newBuiltValueToStringHelper(r'ApiResult')
+      ..add('result', result)).toString();
   }
 }
 

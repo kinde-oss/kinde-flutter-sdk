@@ -14,17 +14,17 @@ class _$AddOrganizationUsersResponse extends AddOrganizationUsersResponse {
   @override
   final BuiltList<String>? usersAdded;
 
-  factory _$AddOrganizationUsersResponse(
-          [void Function(AddOrganizationUsersResponseBuilder)? updates]) =>
-      (new AddOrganizationUsersResponseBuilder()..update(updates))._build();
+  factory _$AddOrganizationUsersResponse([
+    void Function(AddOrganizationUsersResponseBuilder)? updates,
+  ]) => (new AddOrganizationUsersResponseBuilder()..update(updates))._build();
 
   _$AddOrganizationUsersResponse._({this.code, this.message, this.usersAdded})
-      : super._();
+    : super._();
 
   @override
   AddOrganizationUsersResponse rebuild(
-          void Function(AddOrganizationUsersResponseBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(AddOrganizationUsersResponseBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   AddOrganizationUsersResponseBuilder toBuilder() =>
@@ -61,8 +61,10 @@ class _$AddOrganizationUsersResponse extends AddOrganizationUsersResponse {
 
 class AddOrganizationUsersResponseBuilder
     implements
-        Builder<AddOrganizationUsersResponse,
-            AddOrganizationUsersResponseBuilder> {
+        Builder<
+          AddOrganizationUsersResponse,
+          AddOrganizationUsersResponseBuilder
+        > {
   _$AddOrganizationUsersResponse? _$v;
 
   String? _code;
@@ -111,9 +113,13 @@ class AddOrganizationUsersResponseBuilder
   _$AddOrganizationUsersResponse _build() {
     _$AddOrganizationUsersResponse _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           new _$AddOrganizationUsersResponse._(
-              code: code, message: message, usersAdded: _usersAdded?.build());
+            code: code,
+            message: message,
+            usersAdded: _usersAdded?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -121,7 +127,10 @@ class AddOrganizationUsersResponseBuilder
         _usersAdded?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'AddOrganizationUsersResponse', _$failedField, e.toString());
+          r'AddOrganizationUsersResponse',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

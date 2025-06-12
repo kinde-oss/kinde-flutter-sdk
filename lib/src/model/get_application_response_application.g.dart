@@ -19,19 +19,24 @@ class _$GetApplicationResponseApplication
   @override
   final String? clientSecret;
 
-  factory _$GetApplicationResponseApplication(
-          [void Function(GetApplicationResponseApplicationBuilder)? updates]) =>
+  factory _$GetApplicationResponseApplication([
+    void Function(GetApplicationResponseApplicationBuilder)? updates,
+  ]) =>
       (new GetApplicationResponseApplicationBuilder()..update(updates))
           ._build();
 
-  _$GetApplicationResponseApplication._(
-      {this.id, this.name, this.type, this.clientId, this.clientSecret})
-      : super._();
+  _$GetApplicationResponseApplication._({
+    this.id,
+    this.name,
+    this.type,
+    this.clientId,
+    this.clientSecret,
+  }) : super._();
 
   @override
   GetApplicationResponseApplication rebuild(
-          void Function(GetApplicationResponseApplicationBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(GetApplicationResponseApplicationBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   GetApplicationResponseApplicationBuilder toBuilder() =>
@@ -74,8 +79,10 @@ class _$GetApplicationResponseApplication
 
 class GetApplicationResponseApplicationBuilder
     implements
-        Builder<GetApplicationResponseApplication,
-            GetApplicationResponseApplicationBuilder> {
+        Builder<
+          GetApplicationResponseApplication,
+          GetApplicationResponseApplicationBuilder
+        > {
   _$GetApplicationResponseApplication? _$v;
 
   String? _id;
@@ -123,7 +130,8 @@ class GetApplicationResponseApplicationBuilder
 
   @override
   void update(
-      void Function(GetApplicationResponseApplicationBuilder)? updates) {
+    void Function(GetApplicationResponseApplicationBuilder)? updates,
+  ) {
     if (updates != null) updates(this);
   }
 
@@ -131,13 +139,15 @@ class GetApplicationResponseApplicationBuilder
   GetApplicationResponseApplication build() => _build();
 
   _$GetApplicationResponseApplication _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         new _$GetApplicationResponseApplication._(
-            id: id,
-            name: name,
-            type: type,
-            clientId: clientId,
-            clientSecret: clientSecret);
+          id: id,
+          name: name,
+          type: type,
+          clientId: clientId,
+          clientSecret: clientSecret,
+        );
     replace(_$result);
     return _$result;
   }

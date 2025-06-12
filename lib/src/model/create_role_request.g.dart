@@ -16,13 +16,16 @@ class _$CreateRoleRequest extends CreateRoleRequest {
   @override
   final bool? isDefaultRole;
 
-  factory _$CreateRoleRequest(
-          [void Function(CreateRoleRequestBuilder)? updates]) =>
-      (new CreateRoleRequestBuilder()..update(updates))._build();
+  factory _$CreateRoleRequest([
+    void Function(CreateRoleRequestBuilder)? updates,
+  ]) => (new CreateRoleRequestBuilder()..update(updates))._build();
 
-  _$CreateRoleRequest._(
-      {this.name, this.description, this.key, this.isDefaultRole})
-      : super._();
+  _$CreateRoleRequest._({
+    this.name,
+    this.description,
+    this.key,
+    this.isDefaultRole,
+  }) : super._();
 
   @override
   CreateRoleRequest rebuild(void Function(CreateRoleRequestBuilder) updates) =>
@@ -116,12 +119,14 @@ class CreateRoleRequestBuilder
   CreateRoleRequest build() => _build();
 
   _$CreateRoleRequest _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         new _$CreateRoleRequest._(
-            name: name,
-            description: description,
-            key: key,
-            isDefaultRole: isDefaultRole);
+          name: name,
+          description: description,
+          key: key,
+          isDefaultRole: isDefaultRole,
+        );
     replace(_$result);
     return _$result;
   }

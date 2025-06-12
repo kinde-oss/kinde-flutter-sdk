@@ -18,7 +18,8 @@ part 'token_introspect.g.dart';
 /// * [exp] - Token expiration timestamp.
 /// * [iat] - Token issuance timestamp.
 @BuiltValue()
-abstract class TokenIntrospect implements Built<TokenIntrospect, TokenIntrospectBuilder> {
+abstract class TokenIntrospect
+    implements Built<TokenIntrospect, TokenIntrospectBuilder> {
   /// Indicates the status of the token.
   @BuiltValueField(wireName: r'active')
   bool? get active;
@@ -41,16 +42,19 @@ abstract class TokenIntrospect implements Built<TokenIntrospect, TokenIntrospect
 
   TokenIntrospect._();
 
-  factory TokenIntrospect([void Function(TokenIntrospectBuilder b) updates]) = _$TokenIntrospect;
+  factory TokenIntrospect([void Function(TokenIntrospectBuilder b) updates]) =
+      _$TokenIntrospect;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(TokenIntrospectBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<TokenIntrospect> get serializer => _$TokenIntrospectSerializer();
+  static Serializer<TokenIntrospect> get serializer =>
+      _$TokenIntrospectSerializer();
 }
 
-class _$TokenIntrospectSerializer implements PrimitiveSerializer<TokenIntrospect> {
+class _$TokenIntrospectSerializer
+    implements PrimitiveSerializer<TokenIntrospect> {
   @override
   final Iterable<Type> types = const [TokenIntrospect, _$TokenIntrospect];
 
@@ -105,7 +109,11 @@ class _$TokenIntrospectSerializer implements PrimitiveSerializer<TokenIntrospect
     TokenIntrospect object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -121,38 +129,50 @@ class _$TokenIntrospectSerializer implements PrimitiveSerializer<TokenIntrospect
       final value = serializedList[i + 1];
       switch (key) {
         case r'active':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(bool),
-          ) as bool;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(bool),
+                  )
+                  as bool;
           result.active = valueDes;
           break;
         case r'aud':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(String)]),
-          ) as BuiltList<String>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(String),
+                    ]),
+                  )
+                  as BuiltList<String>;
           result.aud.replace(valueDes);
           break;
         case r'client_id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.clientId = valueDes;
           break;
         case r'exp':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.exp = valueDes;
           break;
         case r'iat':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.iat = valueDes;
           break;
         default:
@@ -183,4 +203,3 @@ class _$TokenIntrospectSerializer implements PrimitiveSerializer<TokenIntrospect
     return result.build();
   }
 }
-

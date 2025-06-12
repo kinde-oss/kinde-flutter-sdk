@@ -5,7 +5,13 @@ class UserDetails {
   final String email;
   final String picture;
 
-  UserDetails(this.id, this.givenName, this.familyName, this.email, this.picture);
+  UserDetails(
+    this.id,
+    this.givenName,
+    this.familyName,
+    this.email,
+    this.picture,
+  );
 
   @override
   String toString() {

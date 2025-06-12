@@ -15,10 +15,11 @@ part 'get_subscribers_response.g.dart';
 /// Properties:
 /// * [code] - Response code.
 /// * [message] - Response message.
-/// * [subscribers] 
+/// * [subscribers]
 /// * [nextToken] - Pagination token.
 @BuiltValue()
-abstract class GetSubscribersResponse implements Built<GetSubscribersResponse, GetSubscribersResponseBuilder> {
+abstract class GetSubscribersResponse
+    implements Built<GetSubscribersResponse, GetSubscribersResponseBuilder> {
   /// Response code.
   @BuiltValueField(wireName: r'code')
   String? get code;
@@ -36,18 +37,25 @@ abstract class GetSubscribersResponse implements Built<GetSubscribersResponse, G
 
   GetSubscribersResponse._();
 
-  factory GetSubscribersResponse([void Function(GetSubscribersResponseBuilder b) updates]) = _$GetSubscribersResponse;
+  factory GetSubscribersResponse([
+    void Function(GetSubscribersResponseBuilder b) updates,
+  ]) = _$GetSubscribersResponse;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(GetSubscribersResponseBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<GetSubscribersResponse> get serializer => _$GetSubscribersResponseSerializer();
+  static Serializer<GetSubscribersResponse> get serializer =>
+      _$GetSubscribersResponseSerializer();
 }
 
-class _$GetSubscribersResponseSerializer implements PrimitiveSerializer<GetSubscribersResponse> {
+class _$GetSubscribersResponseSerializer
+    implements PrimitiveSerializer<GetSubscribersResponse> {
   @override
-  final Iterable<Type> types = const [GetSubscribersResponse, _$GetSubscribersResponse];
+  final Iterable<Type> types = const [
+    GetSubscribersResponse,
+    _$GetSubscribersResponse,
+  ];
 
   @override
   final String wireName = r'GetSubscribersResponse';
@@ -75,7 +83,9 @@ class _$GetSubscribersResponseSerializer implements PrimitiveSerializer<GetSubsc
       yield r'subscribers';
       yield serializers.serialize(
         object.subscribers,
-        specifiedType: const FullType(BuiltList, [FullType(SubscribersSubscriber)]),
+        specifiedType: const FullType(BuiltList, [
+          FullType(SubscribersSubscriber),
+        ]),
       );
     }
     if (object.nextToken != null) {
@@ -93,7 +103,11 @@ class _$GetSubscribersResponseSerializer implements PrimitiveSerializer<GetSubsc
     GetSubscribersResponse object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -109,31 +123,41 @@ class _$GetSubscribersResponseSerializer implements PrimitiveSerializer<GetSubsc
       final value = serializedList[i + 1];
       switch (key) {
         case r'code':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.code = valueDes;
           break;
         case r'message':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.message = valueDes;
           break;
         case r'subscribers':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(SubscribersSubscriber)]),
-          ) as BuiltList<SubscribersSubscriber>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(SubscribersSubscriber),
+                    ]),
+                  )
+                  as BuiltList<SubscribersSubscriber>;
           result.subscribers.replace(valueDes);
           break;
         case r'next_token':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.nextToken = valueDes;
           break;
         default:
@@ -164,4 +188,3 @@ class _$GetSubscribersResponseSerializer implements PrimitiveSerializer<GetSubsc
     return result.build();
   }
 }
-

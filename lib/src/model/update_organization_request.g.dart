@@ -20,23 +20,23 @@ class _$UpdateOrganizationRequest extends UpdateOrganizationRequest {
   @override
   final String? linkColor;
 
-  factory _$UpdateOrganizationRequest(
-          [void Function(UpdateOrganizationRequestBuilder)? updates]) =>
-      (new UpdateOrganizationRequestBuilder()..update(updates))._build();
+  factory _$UpdateOrganizationRequest([
+    void Function(UpdateOrganizationRequestBuilder)? updates,
+  ]) => (new UpdateOrganizationRequestBuilder()..update(updates))._build();
 
-  _$UpdateOrganizationRequest._(
-      {this.name,
-      this.externalId,
-      this.backgroundColor,
-      this.buttonColor,
-      this.buttonTextColor,
-      this.linkColor})
-      : super._();
+  _$UpdateOrganizationRequest._({
+    this.name,
+    this.externalId,
+    this.backgroundColor,
+    this.buttonColor,
+    this.buttonTextColor,
+    this.linkColor,
+  }) : super._();
 
   @override
   UpdateOrganizationRequest rebuild(
-          void Function(UpdateOrganizationRequestBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(UpdateOrganizationRequestBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   UpdateOrganizationRequestBuilder toBuilder() =>
@@ -144,14 +144,16 @@ class UpdateOrganizationRequestBuilder
   UpdateOrganizationRequest build() => _build();
 
   _$UpdateOrganizationRequest _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         new _$UpdateOrganizationRequest._(
-            name: name,
-            externalId: externalId,
-            backgroundColor: backgroundColor,
-            buttonColor: buttonColor,
-            buttonTextColor: buttonTextColor,
-            linkColor: linkColor);
+          name: name,
+          externalId: externalId,
+          backgroundColor: backgroundColor,
+          buttonColor: buttonColor,
+          buttonTextColor: buttonTextColor,
+          linkColor: linkColor,
+        );
     replace(_$result);
     return _$result;
   }

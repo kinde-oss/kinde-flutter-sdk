@@ -13,9 +13,9 @@ class _$OrganizationUserPermissionRolesInner
   @override
   final String? key;
 
-  factory _$OrganizationUserPermissionRolesInner(
-          [void Function(OrganizationUserPermissionRolesInnerBuilder)?
-              updates]) =>
+  factory _$OrganizationUserPermissionRolesInner([
+    void Function(OrganizationUserPermissionRolesInnerBuilder)? updates,
+  ]) =>
       (new OrganizationUserPermissionRolesInnerBuilder()..update(updates))
           ._build();
 
@@ -23,8 +23,8 @@ class _$OrganizationUserPermissionRolesInner
 
   @override
   OrganizationUserPermissionRolesInner rebuild(
-          void Function(OrganizationUserPermissionRolesInnerBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(OrganizationUserPermissionRolesInnerBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   OrganizationUserPermissionRolesInnerBuilder toBuilder() =>
@@ -58,8 +58,10 @@ class _$OrganizationUserPermissionRolesInner
 
 class OrganizationUserPermissionRolesInnerBuilder
     implements
-        Builder<OrganizationUserPermissionRolesInner,
-            OrganizationUserPermissionRolesInnerBuilder> {
+        Builder<
+          OrganizationUserPermissionRolesInner,
+          OrganizationUserPermissionRolesInnerBuilder
+        > {
   _$OrganizationUserPermissionRolesInner? _$v;
 
   String? _id;
@@ -92,7 +94,8 @@ class OrganizationUserPermissionRolesInnerBuilder
 
   @override
   void update(
-      void Function(OrganizationUserPermissionRolesInnerBuilder)? updates) {
+    void Function(OrganizationUserPermissionRolesInnerBuilder)? updates,
+  ) {
     if (updates != null) updates(this);
   }
 

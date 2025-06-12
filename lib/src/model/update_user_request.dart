@@ -16,7 +16,8 @@ part 'update_user_request.g.dart';
 /// * [isSuspended] - Whether the user is currently suspended or not.
 /// * [isPasswordResetRequested] - Prompt the user to change their password on next sign in.
 @BuiltValue()
-abstract class UpdateUserRequest implements Built<UpdateUserRequest, UpdateUserRequestBuilder> {
+abstract class UpdateUserRequest
+    implements Built<UpdateUserRequest, UpdateUserRequestBuilder> {
   /// User's first name.
   @BuiltValueField(wireName: r'given_name')
   String? get givenName;
@@ -35,16 +36,20 @@ abstract class UpdateUserRequest implements Built<UpdateUserRequest, UpdateUserR
 
   UpdateUserRequest._();
 
-  factory UpdateUserRequest([void Function(UpdateUserRequestBuilder b) updates]) = _$UpdateUserRequest;
+  factory UpdateUserRequest([
+    void Function(UpdateUserRequestBuilder b) updates,
+  ]) = _$UpdateUserRequest;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(UpdateUserRequestBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<UpdateUserRequest> get serializer => _$UpdateUserRequestSerializer();
+  static Serializer<UpdateUserRequest> get serializer =>
+      _$UpdateUserRequestSerializer();
 }
 
-class _$UpdateUserRequestSerializer implements PrimitiveSerializer<UpdateUserRequest> {
+class _$UpdateUserRequestSerializer
+    implements PrimitiveSerializer<UpdateUserRequest> {
   @override
   final Iterable<Type> types = const [UpdateUserRequest, _$UpdateUserRequest];
 
@@ -92,7 +97,11 @@ class _$UpdateUserRequestSerializer implements PrimitiveSerializer<UpdateUserReq
     UpdateUserRequest object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -108,31 +117,39 @@ class _$UpdateUserRequestSerializer implements PrimitiveSerializer<UpdateUserReq
       final value = serializedList[i + 1];
       switch (key) {
         case r'given_name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.givenName = valueDes;
           break;
         case r'family_name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.familyName = valueDes;
           break;
         case r'is_suspended':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(bool),
-          ) as bool;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(bool),
+                  )
+                  as bool;
           result.isSuspended = valueDes;
           break;
         case r'is_password_reset_requested':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(bool),
-          ) as bool;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(bool),
+                  )
+                  as bool;
           result.isPasswordResetRequested = valueDes;
           break;
         default:
@@ -163,4 +180,3 @@ class _$UpdateUserRequestSerializer implements PrimitiveSerializer<UpdateUserReq
     return result.build();
   }
 }
-

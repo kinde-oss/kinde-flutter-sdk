@@ -17,18 +17,22 @@ class _$UpdateOrganizationUsersResponse
   @override
   final BuiltList<String>? usersRemoved;
 
-  factory _$UpdateOrganizationUsersResponse(
-          [void Function(UpdateOrganizationUsersResponseBuilder)? updates]) =>
+  factory _$UpdateOrganizationUsersResponse([
+    void Function(UpdateOrganizationUsersResponseBuilder)? updates,
+  ]) =>
       (new UpdateOrganizationUsersResponseBuilder()..update(updates))._build();
 
-  _$UpdateOrganizationUsersResponse._(
-      {this.message, this.usersAdded, this.usersUpdated, this.usersRemoved})
-      : super._();
+  _$UpdateOrganizationUsersResponse._({
+    this.message,
+    this.usersAdded,
+    this.usersUpdated,
+    this.usersRemoved,
+  }) : super._();
 
   @override
   UpdateOrganizationUsersResponse rebuild(
-          void Function(UpdateOrganizationUsersResponseBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(UpdateOrganizationUsersResponseBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   UpdateOrganizationUsersResponseBuilder toBuilder() =>
@@ -68,8 +72,10 @@ class _$UpdateOrganizationUsersResponse
 
 class UpdateOrganizationUsersResponseBuilder
     implements
-        Builder<UpdateOrganizationUsersResponse,
-            UpdateOrganizationUsersResponseBuilder> {
+        Builder<
+          UpdateOrganizationUsersResponse,
+          UpdateOrganizationUsersResponseBuilder
+        > {
   _$UpdateOrganizationUsersResponse? _$v;
 
   String? _message;
@@ -127,12 +133,14 @@ class UpdateOrganizationUsersResponseBuilder
   _$UpdateOrganizationUsersResponse _build() {
     _$UpdateOrganizationUsersResponse _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           new _$UpdateOrganizationUsersResponse._(
-              message: message,
-              usersAdded: _usersAdded?.build(),
-              usersUpdated: _usersUpdated?.build(),
-              usersRemoved: _usersRemoved?.build());
+            message: message,
+            usersAdded: _usersAdded?.build(),
+            usersUpdated: _usersUpdated?.build(),
+            usersRemoved: _usersRemoved?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -144,7 +152,10 @@ class UpdateOrganizationUsersResponseBuilder
         _usersRemoved?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'UpdateOrganizationUsersResponse', _$failedField, e.toString());
+          r'UpdateOrganizationUsersResponse',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

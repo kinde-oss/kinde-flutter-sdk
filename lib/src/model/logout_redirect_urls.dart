@@ -14,23 +14,28 @@ part 'logout_redirect_urls.g.dart';
 /// Properties:
 /// * [redirectUrls] - An application's logout URLs.
 @BuiltValue()
-abstract class LogoutRedirectUrls implements Built<LogoutRedirectUrls, LogoutRedirectUrlsBuilder> {
+abstract class LogoutRedirectUrls
+    implements Built<LogoutRedirectUrls, LogoutRedirectUrlsBuilder> {
   /// An application's logout URLs.
   @BuiltValueField(wireName: r'redirect_urls')
   BuiltList<String>? get redirectUrls;
 
   LogoutRedirectUrls._();
 
-  factory LogoutRedirectUrls([void Function(LogoutRedirectUrlsBuilder b) updates]) = _$LogoutRedirectUrls;
+  factory LogoutRedirectUrls([
+    void Function(LogoutRedirectUrlsBuilder b) updates,
+  ]) = _$LogoutRedirectUrls;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(LogoutRedirectUrlsBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<LogoutRedirectUrls> get serializer => _$LogoutRedirectUrlsSerializer();
+  static Serializer<LogoutRedirectUrls> get serializer =>
+      _$LogoutRedirectUrlsSerializer();
 }
 
-class _$LogoutRedirectUrlsSerializer implements PrimitiveSerializer<LogoutRedirectUrls> {
+class _$LogoutRedirectUrlsSerializer
+    implements PrimitiveSerializer<LogoutRedirectUrls> {
   @override
   final Iterable<Type> types = const [LogoutRedirectUrls, _$LogoutRedirectUrls];
 
@@ -57,7 +62,11 @@ class _$LogoutRedirectUrlsSerializer implements PrimitiveSerializer<LogoutRedire
     LogoutRedirectUrls object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -73,10 +82,14 @@ class _$LogoutRedirectUrlsSerializer implements PrimitiveSerializer<LogoutRedire
       final value = serializedList[i + 1];
       switch (key) {
         case r'redirect_urls':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(String)]),
-          ) as BuiltList<String>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(String),
+                    ]),
+                  )
+                  as BuiltList<String>;
           result.redirectUrls.replace(valueDes);
           break;
         default:
@@ -107,4 +120,3 @@ class _$LogoutRedirectUrlsSerializer implements PrimitiveSerializer<LogoutRedire
     return result.build();
   }
 }
-

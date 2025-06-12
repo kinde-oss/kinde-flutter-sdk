@@ -20,8 +20,14 @@ class RefreshTokenInterceptor<T> extends InterceptorsWrapper {
         return handler.resolve(await dio.fetch(err.requestOptions));
       } on DioException catch (error) {
         return handler.next(error);
-      } on KindeError catch (error){
-        return handler.reject(DioException(requestOptions: err.requestOptions, error: error, message: error.message));
+      } on KindeError catch (error) {
+        return handler.reject(
+          DioException(
+            requestOptions: err.requestOptions,
+            error: error,
+            message: error.message,
+          ),
+        );
       }
     }
     return handler.next(err);

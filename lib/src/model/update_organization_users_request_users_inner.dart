@@ -17,7 +17,12 @@ part 'update_organization_users_request_users_inner.g.dart';
 /// * [roles] - Role keys to assign to the user.
 /// * [permissions] - Permission keys to assign to the user.
 @BuiltValue()
-abstract class UpdateOrganizationUsersRequestUsersInner implements Built<UpdateOrganizationUsersRequestUsersInner, UpdateOrganizationUsersRequestUsersInnerBuilder> {
+abstract class UpdateOrganizationUsersRequestUsersInner
+    implements
+        Built<
+          UpdateOrganizationUsersRequestUsersInner,
+          UpdateOrganizationUsersRequestUsersInnerBuilder
+        > {
   /// The users id.
   @BuiltValueField(wireName: r'id')
   String? get id;
@@ -36,18 +41,25 @@ abstract class UpdateOrganizationUsersRequestUsersInner implements Built<UpdateO
 
   UpdateOrganizationUsersRequestUsersInner._();
 
-  factory UpdateOrganizationUsersRequestUsersInner([void Function(UpdateOrganizationUsersRequestUsersInnerBuilder b) updates]) = _$UpdateOrganizationUsersRequestUsersInner;
+  factory UpdateOrganizationUsersRequestUsersInner([
+    void Function(UpdateOrganizationUsersRequestUsersInnerBuilder b) updates,
+  ]) = _$UpdateOrganizationUsersRequestUsersInner;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(UpdateOrganizationUsersRequestUsersInnerBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<UpdateOrganizationUsersRequestUsersInner> get serializer => _$UpdateOrganizationUsersRequestUsersInnerSerializer();
+  static Serializer<UpdateOrganizationUsersRequestUsersInner> get serializer =>
+      _$UpdateOrganizationUsersRequestUsersInnerSerializer();
 }
 
-class _$UpdateOrganizationUsersRequestUsersInnerSerializer implements PrimitiveSerializer<UpdateOrganizationUsersRequestUsersInner> {
+class _$UpdateOrganizationUsersRequestUsersInnerSerializer
+    implements PrimitiveSerializer<UpdateOrganizationUsersRequestUsersInner> {
   @override
-  final Iterable<Type> types = const [UpdateOrganizationUsersRequestUsersInner, _$UpdateOrganizationUsersRequestUsersInner];
+  final Iterable<Type> types = const [
+    UpdateOrganizationUsersRequestUsersInner,
+    _$UpdateOrganizationUsersRequestUsersInner,
+  ];
 
   @override
   final String wireName = r'UpdateOrganizationUsersRequestUsersInner';
@@ -93,7 +105,11 @@ class _$UpdateOrganizationUsersRequestUsersInnerSerializer implements PrimitiveS
     UpdateOrganizationUsersRequestUsersInner object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -109,31 +125,43 @@ class _$UpdateOrganizationUsersRequestUsersInnerSerializer implements PrimitiveS
       final value = serializedList[i + 1];
       switch (key) {
         case r'id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.id = valueDes;
           break;
         case r'operation':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.operation = valueDes;
           break;
         case r'roles':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(String)]),
-          ) as BuiltList<String>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(String),
+                    ]),
+                  )
+                  as BuiltList<String>;
           result.roles.replace(valueDes);
           break;
         case r'permissions':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(String)]),
-          ) as BuiltList<String>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(String),
+                    ]),
+                  )
+                  as BuiltList<String>;
           result.permissions.replace(valueDes);
           break;
         default:
@@ -164,4 +192,3 @@ class _$UpdateOrganizationUsersRequestUsersInnerSerializer implements PrimitiveS
     return result.build();
   }
 }
-

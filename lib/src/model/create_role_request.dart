@@ -16,7 +16,8 @@ part 'create_role_request.g.dart';
 /// * [key] - The role identifier to use in code.
 /// * [isDefaultRole] - Set role as default for new users.
 @BuiltValue()
-abstract class CreateRoleRequest implements Built<CreateRoleRequest, CreateRoleRequestBuilder> {
+abstract class CreateRoleRequest
+    implements Built<CreateRoleRequest, CreateRoleRequestBuilder> {
   /// The role's name.
   @BuiltValueField(wireName: r'name')
   String? get name;
@@ -35,16 +36,20 @@ abstract class CreateRoleRequest implements Built<CreateRoleRequest, CreateRoleR
 
   CreateRoleRequest._();
 
-  factory CreateRoleRequest([void Function(CreateRoleRequestBuilder b) updates]) = _$CreateRoleRequest;
+  factory CreateRoleRequest([
+    void Function(CreateRoleRequestBuilder b) updates,
+  ]) = _$CreateRoleRequest;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CreateRoleRequestBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CreateRoleRequest> get serializer => _$CreateRoleRequestSerializer();
+  static Serializer<CreateRoleRequest> get serializer =>
+      _$CreateRoleRequestSerializer();
 }
 
-class _$CreateRoleRequestSerializer implements PrimitiveSerializer<CreateRoleRequest> {
+class _$CreateRoleRequestSerializer
+    implements PrimitiveSerializer<CreateRoleRequest> {
   @override
   final Iterable<Type> types = const [CreateRoleRequest, _$CreateRoleRequest];
 
@@ -92,7 +97,11 @@ class _$CreateRoleRequestSerializer implements PrimitiveSerializer<CreateRoleReq
     CreateRoleRequest object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -108,31 +117,39 @@ class _$CreateRoleRequestSerializer implements PrimitiveSerializer<CreateRoleReq
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.name = valueDes;
           break;
         case r'description':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.description = valueDes;
           break;
         case r'key':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.key = valueDes;
           break;
         case r'is_default_role':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(bool),
-          ) as bool;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(bool),
+                  )
+                  as bool;
           result.isDefaultRole = valueDes;
           break;
         default:
@@ -163,4 +180,3 @@ class _$CreateRoleRequestSerializer implements PrimitiveSerializer<CreateRoleReq
     return result.build();
   }
 }
-

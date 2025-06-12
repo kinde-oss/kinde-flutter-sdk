@@ -11,7 +11,6 @@ import 'package:kinde_flutter_sdk/src/api_util.dart';
 import 'package:kinde_flutter_sdk/src/model/success_response.dart';
 
 class IndustriesApi {
-
   final Dio _dio;
 
   final Serializers _serializers;
@@ -33,7 +32,7 @@ class IndustriesApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> getIndustries({ 
+  Future<Response<SuccessResponse>> getIndustries({
     String? industryKey,
     String? name,
     CancelToken? cancelToken,
@@ -46,16 +45,10 @@ class IndustriesApi {
     const path = r'/api/v1/industries';
     final options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -63,8 +56,18 @@ class IndustriesApi {
     );
 
     final queryParameters = <String, dynamic>{
-      if (industryKey != null) r'industry_key': encodeQueryParameter(_serializers, industryKey, const FullType(String)),
-      if (name != null) r'name': encodeQueryParameter(_serializers, name, const FullType(String)),
+      if (industryKey != null)
+        r'industry_key': encodeQueryParameter(
+          _serializers,
+          industryKey,
+          const FullType(String),
+        ),
+      if (name != null)
+        r'name': encodeQueryParameter(
+          _serializers,
+          name,
+          const FullType(String),
+        ),
     };
 
     final response = await _dio.request<Object>(
@@ -80,11 +83,14 @@ class IndustriesApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(SuccessResponse),
-      ) as SuccessResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(SuccessResponse),
+                  )
+                  as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -106,5 +112,4 @@ class IndustriesApi {
       extra: response.extra,
     );
   }
-
 }

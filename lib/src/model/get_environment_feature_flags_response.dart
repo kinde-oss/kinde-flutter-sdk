@@ -18,7 +18,12 @@ part 'get_environment_feature_flags_response.g.dart';
 /// * [featureFlags] - The environment's feature flag settings.
 /// * [nextToken] - Pagination token.
 @BuiltValue()
-abstract class GetEnvironmentFeatureFlagsResponse implements Built<GetEnvironmentFeatureFlagsResponse, GetEnvironmentFeatureFlagsResponseBuilder> {
+abstract class GetEnvironmentFeatureFlagsResponse
+    implements
+        Built<
+          GetEnvironmentFeatureFlagsResponse,
+          GetEnvironmentFeatureFlagsResponseBuilder
+        > {
   /// Response code.
   @BuiltValueField(wireName: r'code')
   String? get code;
@@ -29,7 +34,8 @@ abstract class GetEnvironmentFeatureFlagsResponse implements Built<GetEnvironmen
 
   /// The environment's feature flag settings.
   @BuiltValueField(wireName: r'feature_flags')
-  BuiltMap<String, GetOrganizationFeatureFlagsResponseFeatureFlagsValue>? get featureFlags;
+  BuiltMap<String, GetOrganizationFeatureFlagsResponseFeatureFlagsValue>?
+  get featureFlags;
 
   /// Pagination token.
   @BuiltValueField(wireName: r'next_token')
@@ -37,18 +43,25 @@ abstract class GetEnvironmentFeatureFlagsResponse implements Built<GetEnvironmen
 
   GetEnvironmentFeatureFlagsResponse._();
 
-  factory GetEnvironmentFeatureFlagsResponse([void Function(GetEnvironmentFeatureFlagsResponseBuilder b) updates]) = _$GetEnvironmentFeatureFlagsResponse;
+  factory GetEnvironmentFeatureFlagsResponse([
+    void Function(GetEnvironmentFeatureFlagsResponseBuilder b) updates,
+  ]) = _$GetEnvironmentFeatureFlagsResponse;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(GetEnvironmentFeatureFlagsResponseBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<GetEnvironmentFeatureFlagsResponse> get serializer => _$GetEnvironmentFeatureFlagsResponseSerializer();
+  static Serializer<GetEnvironmentFeatureFlagsResponse> get serializer =>
+      _$GetEnvironmentFeatureFlagsResponseSerializer();
 }
 
-class _$GetEnvironmentFeatureFlagsResponseSerializer implements PrimitiveSerializer<GetEnvironmentFeatureFlagsResponse> {
+class _$GetEnvironmentFeatureFlagsResponseSerializer
+    implements PrimitiveSerializer<GetEnvironmentFeatureFlagsResponse> {
   @override
-  final Iterable<Type> types = const [GetEnvironmentFeatureFlagsResponse, _$GetEnvironmentFeatureFlagsResponse];
+  final Iterable<Type> types = const [
+    GetEnvironmentFeatureFlagsResponse,
+    _$GetEnvironmentFeatureFlagsResponse,
+  ];
 
   @override
   final String wireName = r'GetEnvironmentFeatureFlagsResponse';
@@ -76,7 +89,10 @@ class _$GetEnvironmentFeatureFlagsResponseSerializer implements PrimitiveSeriali
       yield r'feature_flags';
       yield serializers.serialize(
         object.featureFlags,
-        specifiedType: const FullType(BuiltMap, [FullType(String), FullType(GetOrganizationFeatureFlagsResponseFeatureFlagsValue)]),
+        specifiedType: const FullType(BuiltMap, [
+          FullType(String),
+          FullType(GetOrganizationFeatureFlagsResponseFeatureFlagsValue),
+        ]),
       );
     }
     if (object.nextToken != null) {
@@ -94,7 +110,11 @@ class _$GetEnvironmentFeatureFlagsResponseSerializer implements PrimitiveSeriali
     GetEnvironmentFeatureFlagsResponse object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -110,31 +130,47 @@ class _$GetEnvironmentFeatureFlagsResponseSerializer implements PrimitiveSeriali
       final value = serializedList[i + 1];
       switch (key) {
         case r'code':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.code = valueDes;
           break;
         case r'message':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.message = valueDes;
           break;
         case r'feature_flags':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltMap, [FullType(String), FullType(GetOrganizationFeatureFlagsResponseFeatureFlagsValue)]),
-          ) as BuiltMap<String, GetOrganizationFeatureFlagsResponseFeatureFlagsValue>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltMap, [
+                      FullType(String),
+                      FullType(
+                        GetOrganizationFeatureFlagsResponseFeatureFlagsValue,
+                      ),
+                    ]),
+                  )
+                  as BuiltMap<
+                    String,
+                    GetOrganizationFeatureFlagsResponseFeatureFlagsValue
+                  >;
           result.featureFlags.replace(valueDes);
           break;
         case r'next_token':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.nextToken = valueDes;
           break;
         default:
@@ -165,4 +201,3 @@ class _$GetEnvironmentFeatureFlagsResponseSerializer implements PrimitiveSeriali
     return result.build();
   }
 }
-

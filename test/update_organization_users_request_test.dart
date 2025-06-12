@@ -14,7 +14,7 @@ void main() {
       final users = instance.users;
       expect(users.length, isZero);
       UpdateOrganizationUsersRequestUsersInner
-          updateOrganizationUsersRequestUsersInner =
+      updateOrganizationUsersRequestUsersInner =
           UpdateOrganizationUsersRequestUsersInner();
       instance.users.add(updateOrganizationUsersRequestUsersInner);
       final result = instance.build();

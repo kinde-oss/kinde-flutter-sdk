@@ -16,18 +16,21 @@ class _$GetApplicationsResponse extends GetApplicationsResponse {
   @override
   final String? nextToken;
 
-  factory _$GetApplicationsResponse(
-          [void Function(GetApplicationsResponseBuilder)? updates]) =>
-      (new GetApplicationsResponseBuilder()..update(updates))._build();
+  factory _$GetApplicationsResponse([
+    void Function(GetApplicationsResponseBuilder)? updates,
+  ]) => (new GetApplicationsResponseBuilder()..update(updates))._build();
 
-  _$GetApplicationsResponse._(
-      {this.code, this.message, this.applications, this.nextToken})
-      : super._();
+  _$GetApplicationsResponse._({
+    this.code,
+    this.message,
+    this.applications,
+    this.nextToken,
+  }) : super._();
 
   @override
   GetApplicationsResponse rebuild(
-          void Function(GetApplicationsResponseBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(GetApplicationsResponseBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   GetApplicationsResponseBuilder toBuilder() =>
@@ -121,12 +124,14 @@ class GetApplicationsResponseBuilder
   _$GetApplicationsResponse _build() {
     _$GetApplicationsResponse _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           new _$GetApplicationsResponse._(
-              code: code,
-              message: message,
-              applications: _applications?.build(),
-              nextToken: nextToken);
+            code: code,
+            message: message,
+            applications: _applications?.build(),
+            nextToken: nextToken,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -134,7 +139,10 @@ class GetApplicationsResponseBuilder
         _applications?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'GetApplicationsResponse', _$failedField, e.toString());
+          r'GetApplicationsResponse',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

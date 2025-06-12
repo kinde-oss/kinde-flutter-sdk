@@ -110,7 +110,8 @@ class RolesBuilder implements Builder<Roles, RolesBuilder> {
   Roles build() => _build();
 
   _$Roles _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         new _$Roles._(id: id, key: key, name: name, description: description);
     replace(_$result);
     return _$result;

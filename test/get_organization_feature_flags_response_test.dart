@@ -38,13 +38,20 @@ void main() {
       // TODO
       final featureFlags = instance.featureFlags;
       expect(
-          featureFlags,
-          isA<
-              MapBuilder<String,
-                  GetOrganizationFeatureFlagsResponseFeatureFlagsValue>>());
+        featureFlags,
+        isA<
+          MapBuilder<
+            String,
+            GetOrganizationFeatureFlagsResponseFeatureFlagsValue
+          >
+        >(),
+      );
       MapBuilder<String, GetOrganizationFeatureFlagsResponseFeatureFlagsValue>
-          mapBuilder = MapBuilder<String,
-              GetOrganizationFeatureFlagsResponseFeatureFlagsValue>();
+      mapBuilder =
+          MapBuilder<
+            String,
+            GetOrganizationFeatureFlagsResponseFeatureFlagsValue
+          >();
       mapBuilder['flag1'] =
           GetOrganizationFeatureFlagsResponseFeatureFlagsValue();
       instance.featureFlags = mapBuilder;
@@ -52,10 +59,11 @@ void main() {
       expect(result, isA<GetOrganizationFeatureFlagsResponse>());
       expect(result.featureFlags?.length, isNonZero);
       expect(
-          result.featureFlags,
-          isA<
-              BuiltMap<String,
-                  GetOrganizationFeatureFlagsResponseFeatureFlagsValue>>());
+        result.featureFlags,
+        isA<
+          BuiltMap<String, GetOrganizationFeatureFlagsResponseFeatureFlagsValue>
+        >(),
+      );
     });
   });
 }

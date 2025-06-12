@@ -19,7 +19,9 @@ void main() {
       expect(result.type, isA<CreateUserRequestIdentitiesInnerTypeEnum?>());
       expect(result.type, isNotNull);
       expect(
-          result.type, equals(CreateUserRequestIdentitiesInnerTypeEnum.email));
+        result.type,
+        equals(CreateUserRequestIdentitiesInnerTypeEnum.email),
+      );
     });
 
     // CreateUserRequestIdentitiesInnerDetails details

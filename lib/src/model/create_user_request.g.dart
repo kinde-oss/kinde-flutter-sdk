@@ -12,9 +12,9 @@ class _$CreateUserRequest extends CreateUserRequest {
   @override
   final BuiltList<CreateUserRequestIdentitiesInner>? identities;
 
-  factory _$CreateUserRequest(
-          [void Function(CreateUserRequestBuilder)? updates]) =>
-      (new CreateUserRequestBuilder()..update(updates))._build();
+  factory _$CreateUserRequest([
+    void Function(CreateUserRequestBuilder)? updates,
+  ]) => (new CreateUserRequestBuilder()..update(updates))._build();
 
   _$CreateUserRequest._({this.profile, this.identities}) : super._();
 
@@ -100,9 +100,12 @@ class CreateUserRequestBuilder
   _$CreateUserRequest _build() {
     _$CreateUserRequest _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           new _$CreateUserRequest._(
-              profile: _profile?.build(), identities: _identities?.build());
+            profile: _profile?.build(),
+            identities: _identities?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -112,7 +115,10 @@ class CreateUserRequestBuilder
         _identities?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'CreateUserRequest', _$failedField, e.toString());
+          r'CreateUserRequest',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

@@ -13,21 +13,20 @@ class _$UpdateRolePermissionsRequestPermissionsInner
   @override
   final String? operation;
 
-  factory _$UpdateRolePermissionsRequestPermissionsInner(
-          [void Function(UpdateRolePermissionsRequestPermissionsInnerBuilder)?
-              updates]) =>
+  factory _$UpdateRolePermissionsRequestPermissionsInner([
+    void Function(UpdateRolePermissionsRequestPermissionsInnerBuilder)? updates,
+  ]) =>
       (new UpdateRolePermissionsRequestPermissionsInnerBuilder()
             ..update(updates))
           ._build();
 
   _$UpdateRolePermissionsRequestPermissionsInner._({this.id, this.operation})
-      : super._();
+    : super._();
 
   @override
   UpdateRolePermissionsRequestPermissionsInner rebuild(
-          void Function(UpdateRolePermissionsRequestPermissionsInnerBuilder)
-              updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(UpdateRolePermissionsRequestPermissionsInnerBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   UpdateRolePermissionsRequestPermissionsInnerBuilder toBuilder() =>
@@ -53,7 +52,8 @@ class _$UpdateRolePermissionsRequestPermissionsInner
   @override
   String toString() {
     return (newBuiltValueToStringHelper(
-            r'UpdateRolePermissionsRequestPermissionsInner')
+            r'UpdateRolePermissionsRequestPermissionsInner',
+          )
           ..add('id', id)
           ..add('operation', operation))
         .toString();
@@ -62,8 +62,10 @@ class _$UpdateRolePermissionsRequestPermissionsInner
 
 class UpdateRolePermissionsRequestPermissionsInnerBuilder
     implements
-        Builder<UpdateRolePermissionsRequestPermissionsInner,
-            UpdateRolePermissionsRequestPermissionsInnerBuilder> {
+        Builder<
+          UpdateRolePermissionsRequestPermissionsInner,
+          UpdateRolePermissionsRequestPermissionsInnerBuilder
+        > {
   _$UpdateRolePermissionsRequestPermissionsInner? _$v;
 
   String? _id;
@@ -96,8 +98,8 @@ class UpdateRolePermissionsRequestPermissionsInnerBuilder
 
   @override
   void update(
-      void Function(UpdateRolePermissionsRequestPermissionsInnerBuilder)?
-          updates) {
+    void Function(UpdateRolePermissionsRequestPermissionsInnerBuilder)? updates,
+  ) {
     if (updates != null) updates(this);
   }
 
@@ -105,9 +107,12 @@ class UpdateRolePermissionsRequestPermissionsInnerBuilder
   UpdateRolePermissionsRequestPermissionsInner build() => _build();
 
   _$UpdateRolePermissionsRequestPermissionsInner _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         new _$UpdateRolePermissionsRequestPermissionsInner._(
-            id: id, operation: operation);
+          id: id,
+          operation: operation,
+        );
     replace(_$result);
     return _$result;
   }

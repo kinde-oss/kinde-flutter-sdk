@@ -14,13 +14,14 @@ class AuthState {
 
   final String? scope;
 
-  const AuthState(
-      {this.accessToken,
-      this.refreshToken,
-      this.accessTokenExpirationDateTime,
-      this.idToken,
-      this.grantType = GrantType.refreshToken,
-      this.scope});
+  const AuthState({
+    this.accessToken,
+    this.refreshToken,
+    this.accessTokenExpirationDateTime,
+    this.idToken,
+    this.grantType = GrantType.refreshToken,
+    this.scope,
+  });
 
   Map<String, dynamic> toJson() {
     return {
@@ -30,7 +31,7 @@ class AuthState {
           accessTokenExpirationDateTime?.toIso8601String(),
       'id_token': idToken,
       'grant_type': grantType,
-      'scope': scope
+      'scope': scope,
     };
   }
 

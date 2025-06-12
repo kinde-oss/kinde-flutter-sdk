@@ -16,18 +16,21 @@ class _$GetOrganizationsResponse extends GetOrganizationsResponse {
   @override
   final String? nextToken;
 
-  factory _$GetOrganizationsResponse(
-          [void Function(GetOrganizationsResponseBuilder)? updates]) =>
-      (new GetOrganizationsResponseBuilder()..update(updates))._build();
+  factory _$GetOrganizationsResponse([
+    void Function(GetOrganizationsResponseBuilder)? updates,
+  ]) => (new GetOrganizationsResponseBuilder()..update(updates))._build();
 
-  _$GetOrganizationsResponse._(
-      {this.code, this.message, this.organizations, this.nextToken})
-      : super._();
+  _$GetOrganizationsResponse._({
+    this.code,
+    this.message,
+    this.organizations,
+    this.nextToken,
+  }) : super._();
 
   @override
   GetOrganizationsResponse rebuild(
-          void Function(GetOrganizationsResponseBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(GetOrganizationsResponseBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   GetOrganizationsResponseBuilder toBuilder() =>
@@ -121,12 +124,14 @@ class GetOrganizationsResponseBuilder
   _$GetOrganizationsResponse _build() {
     _$GetOrganizationsResponse _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           new _$GetOrganizationsResponse._(
-              code: code,
-              message: message,
-              organizations: _organizations?.build(),
-              nextToken: nextToken);
+            code: code,
+            message: message,
+            organizations: _organizations?.build(),
+            nextToken: nextToken,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -134,7 +139,10 @@ class GetOrganizationsResponseBuilder
         _organizations?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'GetOrganizationsResponse', _$failedField, e.toString());
+          r'GetOrganizationsResponse',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

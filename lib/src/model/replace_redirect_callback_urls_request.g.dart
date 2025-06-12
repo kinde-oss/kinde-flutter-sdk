@@ -11,9 +11,9 @@ class _$ReplaceRedirectCallbackURLsRequest
   @override
   final BuiltList<String>? urls;
 
-  factory _$ReplaceRedirectCallbackURLsRequest(
-          [void Function(ReplaceRedirectCallbackURLsRequestBuilder)?
-              updates]) =>
+  factory _$ReplaceRedirectCallbackURLsRequest([
+    void Function(ReplaceRedirectCallbackURLsRequestBuilder)? updates,
+  ]) =>
       (new ReplaceRedirectCallbackURLsRequestBuilder()..update(updates))
           ._build();
 
@@ -21,8 +21,8 @@ class _$ReplaceRedirectCallbackURLsRequest
 
   @override
   ReplaceRedirectCallbackURLsRequest rebuild(
-          void Function(ReplaceRedirectCallbackURLsRequestBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(ReplaceRedirectCallbackURLsRequestBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   ReplaceRedirectCallbackURLsRequestBuilder toBuilder() =>
@@ -45,15 +45,16 @@ class _$ReplaceRedirectCallbackURLsRequest
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'ReplaceRedirectCallbackURLsRequest')
-          ..add('urls', urls))
-        .toString();
+      ..add('urls', urls)).toString();
   }
 }
 
 class ReplaceRedirectCallbackURLsRequestBuilder
     implements
-        Builder<ReplaceRedirectCallbackURLsRequest,
-            ReplaceRedirectCallbackURLsRequestBuilder> {
+        Builder<
+          ReplaceRedirectCallbackURLsRequest,
+          ReplaceRedirectCallbackURLsRequestBuilder
+        > {
   _$ReplaceRedirectCallbackURLsRequest? _$v;
 
   ListBuilder<String>? _urls;
@@ -81,7 +82,8 @@ class ReplaceRedirectCallbackURLsRequestBuilder
 
   @override
   void update(
-      void Function(ReplaceRedirectCallbackURLsRequestBuilder)? updates) {
+    void Function(ReplaceRedirectCallbackURLsRequestBuilder)? updates,
+  ) {
     if (updates != null) updates(this);
   }
 
@@ -91,7 +93,8 @@ class ReplaceRedirectCallbackURLsRequestBuilder
   _$ReplaceRedirectCallbackURLsRequest _build() {
     _$ReplaceRedirectCallbackURLsRequest _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           new _$ReplaceRedirectCallbackURLsRequest._(urls: _urls?.build());
     } catch (_) {
       late String _$failedField;
@@ -100,7 +103,10 @@ class ReplaceRedirectCallbackURLsRequestBuilder
         _urls?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'ReplaceRedirectCallbackURLsRequest', _$failedField, e.toString());
+          r'ReplaceRedirectCallbackURLsRequest',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

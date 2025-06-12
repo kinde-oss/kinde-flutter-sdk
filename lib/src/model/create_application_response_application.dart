@@ -15,7 +15,12 @@ part 'create_application_response_application.g.dart';
 /// * [clientId] - The application's client id.
 /// * [clientSecret] - The application's client secret.
 @BuiltValue()
-abstract class CreateApplicationResponseApplication implements Built<CreateApplicationResponseApplication, CreateApplicationResponseApplicationBuilder> {
+abstract class CreateApplicationResponseApplication
+    implements
+        Built<
+          CreateApplicationResponseApplication,
+          CreateApplicationResponseApplicationBuilder
+        > {
   /// The application's identifier.
   @BuiltValueField(wireName: r'id')
   String? get id;
@@ -30,18 +35,25 @@ abstract class CreateApplicationResponseApplication implements Built<CreateAppli
 
   CreateApplicationResponseApplication._();
 
-  factory CreateApplicationResponseApplication([void Function(CreateApplicationResponseApplicationBuilder b) updates]) = _$CreateApplicationResponseApplication;
+  factory CreateApplicationResponseApplication([
+    void Function(CreateApplicationResponseApplicationBuilder b) updates,
+  ]) = _$CreateApplicationResponseApplication;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CreateApplicationResponseApplicationBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CreateApplicationResponseApplication> get serializer => _$CreateApplicationResponseApplicationSerializer();
+  static Serializer<CreateApplicationResponseApplication> get serializer =>
+      _$CreateApplicationResponseApplicationSerializer();
 }
 
-class _$CreateApplicationResponseApplicationSerializer implements PrimitiveSerializer<CreateApplicationResponseApplication> {
+class _$CreateApplicationResponseApplicationSerializer
+    implements PrimitiveSerializer<CreateApplicationResponseApplication> {
   @override
-  final Iterable<Type> types = const [CreateApplicationResponseApplication, _$CreateApplicationResponseApplication];
+  final Iterable<Type> types = const [
+    CreateApplicationResponseApplication,
+    _$CreateApplicationResponseApplication,
+  ];
 
   @override
   final String wireName = r'CreateApplicationResponseApplication';
@@ -80,7 +92,11 @@ class _$CreateApplicationResponseApplicationSerializer implements PrimitiveSeria
     CreateApplicationResponseApplication object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -96,24 +112,30 @@ class _$CreateApplicationResponseApplicationSerializer implements PrimitiveSeria
       final value = serializedList[i + 1];
       switch (key) {
         case r'id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.id = valueDes;
           break;
         case r'client_id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.clientId = valueDes;
           break;
         case r'client_secret':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.clientSecret = valueDes;
           break;
         default:
@@ -144,4 +166,3 @@ class _$CreateApplicationResponseApplicationSerializer implements PrimitiveSeria
     return result.build();
   }
 }
-

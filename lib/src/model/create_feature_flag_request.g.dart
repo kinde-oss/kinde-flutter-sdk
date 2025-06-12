@@ -11,11 +11,12 @@ const CreateFeatureFlagRequestTypeEnum _$createFeatureFlagRequestTypeEnum_str =
 const CreateFeatureFlagRequestTypeEnum _$createFeatureFlagRequestTypeEnum_int_ =
     const CreateFeatureFlagRequestTypeEnum._('int_');
 const CreateFeatureFlagRequestTypeEnum
-    _$createFeatureFlagRequestTypeEnum_bool_ =
+_$createFeatureFlagRequestTypeEnum_bool_ =
     const CreateFeatureFlagRequestTypeEnum._('bool_');
 
 CreateFeatureFlagRequestTypeEnum _$createFeatureFlagRequestTypeEnumValueOf(
-    String name) {
+  String name,
+) {
   switch (name) {
     case 'str':
       return _$createFeatureFlagRequestTypeEnum_str;
@@ -29,22 +30,23 @@ CreateFeatureFlagRequestTypeEnum _$createFeatureFlagRequestTypeEnumValueOf(
 }
 
 final BuiltSet<CreateFeatureFlagRequestTypeEnum>
-    _$createFeatureFlagRequestTypeEnumValues = new BuiltSet<
-        CreateFeatureFlagRequestTypeEnum>(const <CreateFeatureFlagRequestTypeEnum>[
+_$createFeatureFlagRequestTypeEnumValues = new BuiltSet<
+  CreateFeatureFlagRequestTypeEnum
+>(const <CreateFeatureFlagRequestTypeEnum>[
   _$createFeatureFlagRequestTypeEnum_str,
   _$createFeatureFlagRequestTypeEnum_int_,
   _$createFeatureFlagRequestTypeEnum_bool_,
 ]);
 
 const CreateFeatureFlagRequestAllowOverrideLevelEnum
-    _$createFeatureFlagRequestAllowOverrideLevelEnum_env =
+_$createFeatureFlagRequestAllowOverrideLevelEnum_env =
     const CreateFeatureFlagRequestAllowOverrideLevelEnum._('env');
 const CreateFeatureFlagRequestAllowOverrideLevelEnum
-    _$createFeatureFlagRequestAllowOverrideLevelEnum_org =
+_$createFeatureFlagRequestAllowOverrideLevelEnum_org =
     const CreateFeatureFlagRequestAllowOverrideLevelEnum._('org');
 
 CreateFeatureFlagRequestAllowOverrideLevelEnum
-    _$createFeatureFlagRequestAllowOverrideLevelEnumValueOf(String name) {
+_$createFeatureFlagRequestAllowOverrideLevelEnumValueOf(String name) {
   switch (name) {
     case 'env':
       return _$createFeatureFlagRequestAllowOverrideLevelEnum_env;
@@ -56,17 +58,18 @@ CreateFeatureFlagRequestAllowOverrideLevelEnum
 }
 
 final BuiltSet<CreateFeatureFlagRequestAllowOverrideLevelEnum>
-    _$createFeatureFlagRequestAllowOverrideLevelEnumValues = new BuiltSet<
-        CreateFeatureFlagRequestAllowOverrideLevelEnum>(const <CreateFeatureFlagRequestAllowOverrideLevelEnum>[
+_$createFeatureFlagRequestAllowOverrideLevelEnumValues = new BuiltSet<
+  CreateFeatureFlagRequestAllowOverrideLevelEnum
+>(const <CreateFeatureFlagRequestAllowOverrideLevelEnum>[
   _$createFeatureFlagRequestAllowOverrideLevelEnum_env,
   _$createFeatureFlagRequestAllowOverrideLevelEnum_org,
 ]);
 
 Serializer<CreateFeatureFlagRequestTypeEnum>
-    _$createFeatureFlagRequestTypeEnumSerializer =
+_$createFeatureFlagRequestTypeEnumSerializer =
     new _$CreateFeatureFlagRequestTypeEnumSerializer();
 Serializer<CreateFeatureFlagRequestAllowOverrideLevelEnum>
-    _$createFeatureFlagRequestAllowOverrideLevelEnumSerializer =
+_$createFeatureFlagRequestAllowOverrideLevelEnumSerializer =
     new _$CreateFeatureFlagRequestAllowOverrideLevelEnumSerializer();
 
 class _$CreateFeatureFlagRequestTypeEnumSerializer
@@ -89,16 +92,19 @@ class _$CreateFeatureFlagRequestTypeEnumSerializer
 
   @override
   Object serialize(
-          Serializers serializers, CreateFeatureFlagRequestTypeEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+    Serializers serializers,
+    CreateFeatureFlagRequestTypeEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   CreateFeatureFlagRequestTypeEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      CreateFeatureFlagRequestTypeEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => CreateFeatureFlagRequestTypeEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$CreateFeatureFlagRequestAllowOverrideLevelEnumSerializer
@@ -115,23 +121,26 @@ class _$CreateFeatureFlagRequestAllowOverrideLevelEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    CreateFeatureFlagRequestAllowOverrideLevelEnum
+    CreateFeatureFlagRequestAllowOverrideLevelEnum,
   ];
   @override
   final String wireName = 'CreateFeatureFlagRequestAllowOverrideLevelEnum';
 
   @override
-  Object serialize(Serializers serializers,
-          CreateFeatureFlagRequestAllowOverrideLevelEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    CreateFeatureFlagRequestAllowOverrideLevelEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   CreateFeatureFlagRequestAllowOverrideLevelEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      CreateFeatureFlagRequestAllowOverrideLevelEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => CreateFeatureFlagRequestAllowOverrideLevelEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$CreateFeatureFlagRequest extends CreateFeatureFlagRequest {
@@ -148,32 +157,44 @@ class _$CreateFeatureFlagRequest extends CreateFeatureFlagRequest {
   @override
   final String defaultValue;
 
-  factory _$CreateFeatureFlagRequest(
-          [void Function(CreateFeatureFlagRequestBuilder)? updates]) =>
-      (new CreateFeatureFlagRequestBuilder()..update(updates))._build();
+  factory _$CreateFeatureFlagRequest([
+    void Function(CreateFeatureFlagRequestBuilder)? updates,
+  ]) => (new CreateFeatureFlagRequestBuilder()..update(updates))._build();
 
-  _$CreateFeatureFlagRequest._(
-      {required this.name,
-      this.description,
-      required this.key,
-      required this.type,
-      this.allowOverrideLevel,
-      required this.defaultValue})
-      : super._() {
+  _$CreateFeatureFlagRequest._({
+    required this.name,
+    this.description,
+    required this.key,
+    required this.type,
+    this.allowOverrideLevel,
+    required this.defaultValue,
+  }) : super._() {
     BuiltValueNullFieldError.checkNotNull(
-        name, r'CreateFeatureFlagRequest', 'name');
+      name,
+      r'CreateFeatureFlagRequest',
+      'name',
+    );
     BuiltValueNullFieldError.checkNotNull(
-        key, r'CreateFeatureFlagRequest', 'key');
+      key,
+      r'CreateFeatureFlagRequest',
+      'key',
+    );
     BuiltValueNullFieldError.checkNotNull(
-        type, r'CreateFeatureFlagRequest', 'type');
+      type,
+      r'CreateFeatureFlagRequest',
+      'type',
+    );
     BuiltValueNullFieldError.checkNotNull(
-        defaultValue, r'CreateFeatureFlagRequest', 'defaultValue');
+      defaultValue,
+      r'CreateFeatureFlagRequest',
+      'defaultValue',
+    );
   }
 
   @override
   CreateFeatureFlagRequest rebuild(
-          void Function(CreateFeatureFlagRequestBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CreateFeatureFlagRequestBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CreateFeatureFlagRequestBuilder toBuilder() =>
@@ -242,8 +263,8 @@ class CreateFeatureFlagRequestBuilder
   CreateFeatureFlagRequestAllowOverrideLevelEnum? get allowOverrideLevel =>
       _$this._allowOverrideLevel;
   set allowOverrideLevel(
-          CreateFeatureFlagRequestAllowOverrideLevelEnum? allowOverrideLevel) =>
-      _$this._allowOverrideLevel = allowOverrideLevel;
+    CreateFeatureFlagRequestAllowOverrideLevelEnum? allowOverrideLevel,
+  ) => _$this._allowOverrideLevel = allowOverrideLevel;
 
   String? _defaultValue;
   String? get defaultValue => _$this._defaultValue;
@@ -282,18 +303,32 @@ class CreateFeatureFlagRequestBuilder
   CreateFeatureFlagRequest build() => _build();
 
   _$CreateFeatureFlagRequest _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         new _$CreateFeatureFlagRequest._(
-            name: BuiltValueNullFieldError.checkNotNull(
-                name, r'CreateFeatureFlagRequest', 'name'),
-            description: description,
-            key: BuiltValueNullFieldError.checkNotNull(
-                key, r'CreateFeatureFlagRequest', 'key'),
-            type: BuiltValueNullFieldError.checkNotNull(
-                type, r'CreateFeatureFlagRequest', 'type'),
-            allowOverrideLevel: allowOverrideLevel,
-            defaultValue: BuiltValueNullFieldError.checkNotNull(
-                defaultValue, r'CreateFeatureFlagRequest', 'defaultValue'));
+          name: BuiltValueNullFieldError.checkNotNull(
+            name,
+            r'CreateFeatureFlagRequest',
+            'name',
+          ),
+          description: description,
+          key: BuiltValueNullFieldError.checkNotNull(
+            key,
+            r'CreateFeatureFlagRequest',
+            'key',
+          ),
+          type: BuiltValueNullFieldError.checkNotNull(
+            type,
+            r'CreateFeatureFlagRequest',
+            'type',
+          ),
+          allowOverrideLevel: allowOverrideLevel,
+          defaultValue: BuiltValueNullFieldError.checkNotNull(
+            defaultValue,
+            r'CreateFeatureFlagRequest',
+            'defaultValue',
+          ),
+        );
     replace(_$result);
     return _$result;
   }

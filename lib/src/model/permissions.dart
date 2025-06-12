@@ -30,7 +30,8 @@ abstract class Permissions implements Built<Permissions, PermissionsBuilder> {
 
   Permissions._();
 
-  factory Permissions([void Function(PermissionsBuilder b) updates]) = _$Permissions;
+  factory Permissions([void Function(PermissionsBuilder b) updates]) =
+      _$Permissions;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(PermissionsBuilder b) => b;
@@ -80,7 +81,11 @@ class _$PermissionsSerializer implements PrimitiveSerializer<Permissions> {
     Permissions object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -96,24 +101,30 @@ class _$PermissionsSerializer implements PrimitiveSerializer<Permissions> {
       final value = serializedList[i + 1];
       switch (key) {
         case r'id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.id = valueDes;
           break;
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.name = valueDes;
           break;
         case r'description':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.description = valueDes;
           break;
         default:
@@ -144,4 +155,3 @@ class _$PermissionsSerializer implements PrimitiveSerializer<Permissions> {
     return result.build();
   }
 }
-

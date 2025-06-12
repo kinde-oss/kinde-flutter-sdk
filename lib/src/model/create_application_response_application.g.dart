@@ -15,20 +15,22 @@ class _$CreateApplicationResponseApplication
   @override
   final String? clientSecret;
 
-  factory _$CreateApplicationResponseApplication(
-          [void Function(CreateApplicationResponseApplicationBuilder)?
-              updates]) =>
+  factory _$CreateApplicationResponseApplication([
+    void Function(CreateApplicationResponseApplicationBuilder)? updates,
+  ]) =>
       (new CreateApplicationResponseApplicationBuilder()..update(updates))
           ._build();
 
-  _$CreateApplicationResponseApplication._(
-      {this.id, this.clientId, this.clientSecret})
-      : super._();
+  _$CreateApplicationResponseApplication._({
+    this.id,
+    this.clientId,
+    this.clientSecret,
+  }) : super._();
 
   @override
   CreateApplicationResponseApplication rebuild(
-          void Function(CreateApplicationResponseApplicationBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CreateApplicationResponseApplicationBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CreateApplicationResponseApplicationBuilder toBuilder() =>
@@ -65,8 +67,10 @@ class _$CreateApplicationResponseApplication
 
 class CreateApplicationResponseApplicationBuilder
     implements
-        Builder<CreateApplicationResponseApplication,
-            CreateApplicationResponseApplicationBuilder> {
+        Builder<
+          CreateApplicationResponseApplication,
+          CreateApplicationResponseApplicationBuilder
+        > {
   _$CreateApplicationResponseApplication? _$v;
 
   String? _id;
@@ -104,7 +108,8 @@ class CreateApplicationResponseApplicationBuilder
 
   @override
   void update(
-      void Function(CreateApplicationResponseApplicationBuilder)? updates) {
+    void Function(CreateApplicationResponseApplicationBuilder)? updates,
+  ) {
     if (updates != null) updates(this);
   }
 
@@ -112,9 +117,13 @@ class CreateApplicationResponseApplicationBuilder
   CreateApplicationResponseApplication build() => _build();
 
   _$CreateApplicationResponseApplication _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         new _$CreateApplicationResponseApplication._(
-            id: id, clientId: clientId, clientSecret: clientSecret);
+          id: id,
+          clientId: clientId,
+          clientSecret: clientSecret,
+        );
     replace(_$result);
     return _$result;
   }

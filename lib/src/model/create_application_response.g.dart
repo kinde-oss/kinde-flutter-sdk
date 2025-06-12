@@ -14,17 +14,17 @@ class _$CreateApplicationResponse extends CreateApplicationResponse {
   @override
   final CreateApplicationResponseApplication? application;
 
-  factory _$CreateApplicationResponse(
-          [void Function(CreateApplicationResponseBuilder)? updates]) =>
-      (new CreateApplicationResponseBuilder()..update(updates))._build();
+  factory _$CreateApplicationResponse([
+    void Function(CreateApplicationResponseBuilder)? updates,
+  ]) => (new CreateApplicationResponseBuilder()..update(updates))._build();
 
   _$CreateApplicationResponse._({this.code, this.message, this.application})
-      : super._();
+    : super._();
 
   @override
   CreateApplicationResponse rebuild(
-          void Function(CreateApplicationResponseBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CreateApplicationResponseBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CreateApplicationResponseBuilder toBuilder() =>
@@ -110,9 +110,13 @@ class CreateApplicationResponseBuilder
   _$CreateApplicationResponse _build() {
     _$CreateApplicationResponse _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           new _$CreateApplicationResponse._(
-              code: code, message: message, application: _application?.build());
+            code: code,
+            message: message,
+            application: _application?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -120,7 +124,10 @@ class CreateApplicationResponseBuilder
         _application?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'CreateApplicationResponse', _$failedField, e.toString());
+          r'CreateApplicationResponse',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

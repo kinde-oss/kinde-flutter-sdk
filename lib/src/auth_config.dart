@@ -12,6 +12,6 @@ class AuthConfig {
     required this.loginRedirectUri,
     required this.logoutRedirectUri,
     required this.scopes,
-    this.audience
+    this.audience,
   });
 }

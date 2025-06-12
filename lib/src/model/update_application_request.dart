@@ -17,7 +17,9 @@ part 'update_application_request.g.dart';
 /// * [logoutUris] - The application's logout uris.
 /// * [redirectUris] - The application's redirect uris.
 @BuiltValue()
-abstract class UpdateApplicationRequest implements Built<UpdateApplicationRequest, UpdateApplicationRequestBuilder> {
+abstract class UpdateApplicationRequest
+    implements
+        Built<UpdateApplicationRequest, UpdateApplicationRequestBuilder> {
   /// The application's name.
   @BuiltValueField(wireName: r'name')
   String? get name;
@@ -36,18 +38,25 @@ abstract class UpdateApplicationRequest implements Built<UpdateApplicationReques
 
   UpdateApplicationRequest._();
 
-  factory UpdateApplicationRequest([void Function(UpdateApplicationRequestBuilder b) updates]) = _$UpdateApplicationRequest;
+  factory UpdateApplicationRequest([
+    void Function(UpdateApplicationRequestBuilder b) updates,
+  ]) = _$UpdateApplicationRequest;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(UpdateApplicationRequestBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<UpdateApplicationRequest> get serializer => _$UpdateApplicationRequestSerializer();
+  static Serializer<UpdateApplicationRequest> get serializer =>
+      _$UpdateApplicationRequestSerializer();
 }
 
-class _$UpdateApplicationRequestSerializer implements PrimitiveSerializer<UpdateApplicationRequest> {
+class _$UpdateApplicationRequestSerializer
+    implements PrimitiveSerializer<UpdateApplicationRequest> {
   @override
-  final Iterable<Type> types = const [UpdateApplicationRequest, _$UpdateApplicationRequest];
+  final Iterable<Type> types = const [
+    UpdateApplicationRequest,
+    _$UpdateApplicationRequest,
+  ];
 
   @override
   final String wireName = r'UpdateApplicationRequest';
@@ -93,7 +102,11 @@ class _$UpdateApplicationRequestSerializer implements PrimitiveSerializer<Update
     UpdateApplicationRequest object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -109,31 +122,43 @@ class _$UpdateApplicationRequestSerializer implements PrimitiveSerializer<Update
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.name = valueDes;
           break;
         case r'language_key':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.languageKey = valueDes;
           break;
         case r'logout_uris':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(String)]),
-          ) as BuiltList<String>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(String),
+                    ]),
+                  )
+                  as BuiltList<String>;
           result.logoutUris.replace(valueDes);
           break;
         case r'redirect_uris':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(String)]),
-          ) as BuiltList<String>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(String),
+                    ]),
+                  )
+                  as BuiltList<String>;
           result.redirectUris.replace(valueDes);
           break;
         default:
@@ -164,4 +189,3 @@ class _$UpdateApplicationRequestSerializer implements PrimitiveSerializer<Update
     return result.build();
   }
 }
-

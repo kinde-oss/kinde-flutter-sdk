@@ -18,7 +18,10 @@ class _$AddAPIsRequest extends AddAPIsRequest {
   _$AddAPIsRequest._({required this.name, required this.audience}) : super._() {
     BuiltValueNullFieldError.checkNotNull(name, r'AddAPIsRequest', 'name');
     BuiltValueNullFieldError.checkNotNull(
-        audience, r'AddAPIsRequest', 'audience');
+      audience,
+      r'AddAPIsRequest',
+      'audience',
+    );
   }
 
   @override
@@ -96,12 +99,20 @@ class AddAPIsRequestBuilder
   AddAPIsRequest build() => _build();
 
   _$AddAPIsRequest _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         new _$AddAPIsRequest._(
-            name: BuiltValueNullFieldError.checkNotNull(
-                name, r'AddAPIsRequest', 'name'),
-            audience: BuiltValueNullFieldError.checkNotNull(
-                audience, r'AddAPIsRequest', 'audience'));
+          name: BuiltValueNullFieldError.checkNotNull(
+            name,
+            r'AddAPIsRequest',
+            'name',
+          ),
+          audience: BuiltValueNullFieldError.checkNotNull(
+            audience,
+            r'AddAPIsRequest',
+            'audience',
+          ),
+        );
     replace(_$result);
     return _$result;
   }

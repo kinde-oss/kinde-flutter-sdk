@@ -14,7 +14,9 @@ part 'connected_apps_access_token.g.dart';
 /// * [accessToken] - The access token to access a third-party provider.
 /// * [accessTokenExpiry] - The date and time that the access token expires.
 @BuiltValue()
-abstract class ConnectedAppsAccessToken implements Built<ConnectedAppsAccessToken, ConnectedAppsAccessTokenBuilder> {
+abstract class ConnectedAppsAccessToken
+    implements
+        Built<ConnectedAppsAccessToken, ConnectedAppsAccessTokenBuilder> {
   /// The access token to access a third-party provider.
   @BuiltValueField(wireName: r'access_token')
   String? get accessToken;
@@ -25,18 +27,25 @@ abstract class ConnectedAppsAccessToken implements Built<ConnectedAppsAccessToke
 
   ConnectedAppsAccessToken._();
 
-  factory ConnectedAppsAccessToken([void Function(ConnectedAppsAccessTokenBuilder b) updates]) = _$ConnectedAppsAccessToken;
+  factory ConnectedAppsAccessToken([
+    void Function(ConnectedAppsAccessTokenBuilder b) updates,
+  ]) = _$ConnectedAppsAccessToken;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(ConnectedAppsAccessTokenBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<ConnectedAppsAccessToken> get serializer => _$ConnectedAppsAccessTokenSerializer();
+  static Serializer<ConnectedAppsAccessToken> get serializer =>
+      _$ConnectedAppsAccessTokenSerializer();
 }
 
-class _$ConnectedAppsAccessTokenSerializer implements PrimitiveSerializer<ConnectedAppsAccessToken> {
+class _$ConnectedAppsAccessTokenSerializer
+    implements PrimitiveSerializer<ConnectedAppsAccessToken> {
   @override
-  final Iterable<Type> types = const [ConnectedAppsAccessToken, _$ConnectedAppsAccessToken];
+  final Iterable<Type> types = const [
+    ConnectedAppsAccessToken,
+    _$ConnectedAppsAccessToken,
+  ];
 
   @override
   final String wireName = r'ConnectedAppsAccessToken';
@@ -68,7 +77,11 @@ class _$ConnectedAppsAccessTokenSerializer implements PrimitiveSerializer<Connec
     ConnectedAppsAccessToken object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -84,17 +97,21 @@ class _$ConnectedAppsAccessTokenSerializer implements PrimitiveSerializer<Connec
       final value = serializedList[i + 1];
       switch (key) {
         case r'access_token':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.accessToken = valueDes;
           break;
         case r'access_token_expiry':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.accessTokenExpiry = valueDes;
           break;
         default:
@@ -125,4 +142,3 @@ class _$ConnectedAppsAccessTokenSerializer implements PrimitiveSerializer<Connec
     return result.build();
   }
 }
-

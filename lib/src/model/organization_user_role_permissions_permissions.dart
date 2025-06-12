@@ -11,26 +11,39 @@ part 'organization_user_role_permissions_permissions.g.dart';
 /// OrganizationUserRolePermissionsPermissions
 ///
 /// Properties:
-/// * [key] 
+/// * [key]
 @BuiltValue()
-abstract class OrganizationUserRolePermissionsPermissions implements Built<OrganizationUserRolePermissionsPermissions, OrganizationUserRolePermissionsPermissionsBuilder> {
+abstract class OrganizationUserRolePermissionsPermissions
+    implements
+        Built<
+          OrganizationUserRolePermissionsPermissions,
+          OrganizationUserRolePermissionsPermissionsBuilder
+        > {
   @BuiltValueField(wireName: r'key')
   String? get key;
 
   OrganizationUserRolePermissionsPermissions._();
 
-  factory OrganizationUserRolePermissionsPermissions([void Function(OrganizationUserRolePermissionsPermissionsBuilder b) updates]) = _$OrganizationUserRolePermissionsPermissions;
+  factory OrganizationUserRolePermissionsPermissions([
+    void Function(OrganizationUserRolePermissionsPermissionsBuilder b) updates,
+  ]) = _$OrganizationUserRolePermissionsPermissions;
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _defaults(OrganizationUserRolePermissionsPermissionsBuilder b) => b;
+  static void _defaults(OrganizationUserRolePermissionsPermissionsBuilder b) =>
+      b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<OrganizationUserRolePermissionsPermissions> get serializer => _$OrganizationUserRolePermissionsPermissionsSerializer();
+  static Serializer<OrganizationUserRolePermissionsPermissions>
+  get serializer => _$OrganizationUserRolePermissionsPermissionsSerializer();
 }
 
-class _$OrganizationUserRolePermissionsPermissionsSerializer implements PrimitiveSerializer<OrganizationUserRolePermissionsPermissions> {
+class _$OrganizationUserRolePermissionsPermissionsSerializer
+    implements PrimitiveSerializer<OrganizationUserRolePermissionsPermissions> {
   @override
-  final Iterable<Type> types = const [OrganizationUserRolePermissionsPermissions, _$OrganizationUserRolePermissionsPermissions];
+  final Iterable<Type> types = const [
+    OrganizationUserRolePermissionsPermissions,
+    _$OrganizationUserRolePermissionsPermissions,
+  ];
 
   @override
   final String wireName = r'OrganizationUserRolePermissionsPermissions';
@@ -55,7 +68,11 @@ class _$OrganizationUserRolePermissionsPermissionsSerializer implements Primitiv
     OrganizationUserRolePermissionsPermissions object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -71,10 +88,12 @@ class _$OrganizationUserRolePermissionsPermissionsSerializer implements Primitiv
       final value = serializedList[i + 1];
       switch (key) {
         case r'key':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.key = valueDes;
           break;
         default:
@@ -105,4 +124,3 @@ class _$OrganizationUserRolePermissionsPermissionsSerializer implements Primitiv
     return result.build();
   }
 }
-

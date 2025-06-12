@@ -30,7 +30,9 @@ class Store {
     if (currentData == null || currentData.toLowerCase() == "null") {
       return null;
     } else {
-      return AuthState.fromJson(jsonDecode(currentData) as Map<String, dynamic>);
+      return AuthState.fromJson(
+        jsonDecode(currentData) as Map<String, dynamic>,
+      );
     }
   }
 
@@ -57,4 +59,3 @@ class Store {
     await _box.clear();
   }
 }
-

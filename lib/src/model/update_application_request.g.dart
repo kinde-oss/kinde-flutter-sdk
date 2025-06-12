@@ -16,18 +16,21 @@ class _$UpdateApplicationRequest extends UpdateApplicationRequest {
   @override
   final BuiltList<String>? redirectUris;
 
-  factory _$UpdateApplicationRequest(
-          [void Function(UpdateApplicationRequestBuilder)? updates]) =>
-      (new UpdateApplicationRequestBuilder()..update(updates))._build();
+  factory _$UpdateApplicationRequest([
+    void Function(UpdateApplicationRequestBuilder)? updates,
+  ]) => (new UpdateApplicationRequestBuilder()..update(updates))._build();
 
-  _$UpdateApplicationRequest._(
-      {this.name, this.languageKey, this.logoutUris, this.redirectUris})
-      : super._();
+  _$UpdateApplicationRequest._({
+    this.name,
+    this.languageKey,
+    this.logoutUris,
+    this.redirectUris,
+  }) : super._();
 
   @override
   UpdateApplicationRequest rebuild(
-          void Function(UpdateApplicationRequestBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(UpdateApplicationRequestBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   UpdateApplicationRequestBuilder toBuilder() =>
@@ -123,12 +126,14 @@ class UpdateApplicationRequestBuilder
   _$UpdateApplicationRequest _build() {
     _$UpdateApplicationRequest _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           new _$UpdateApplicationRequest._(
-              name: name,
-              languageKey: languageKey,
-              logoutUris: _logoutUris?.build(),
-              redirectUris: _redirectUris?.build());
+            name: name,
+            languageKey: languageKey,
+            logoutUris: _logoutUris?.build(),
+            redirectUris: _redirectUris?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -138,7 +143,10 @@ class UpdateApplicationRequestBuilder
         _redirectUris?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'UpdateApplicationRequest', _$failedField, e.toString());
+          r'UpdateApplicationRequest',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

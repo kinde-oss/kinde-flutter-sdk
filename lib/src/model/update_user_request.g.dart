@@ -16,16 +16,16 @@ class _$UpdateUserRequest extends UpdateUserRequest {
   @override
   final bool? isPasswordResetRequested;
 
-  factory _$UpdateUserRequest(
-          [void Function(UpdateUserRequestBuilder)? updates]) =>
-      (new UpdateUserRequestBuilder()..update(updates))._build();
+  factory _$UpdateUserRequest([
+    void Function(UpdateUserRequestBuilder)? updates,
+  ]) => (new UpdateUserRequestBuilder()..update(updates))._build();
 
-  _$UpdateUserRequest._(
-      {this.givenName,
-      this.familyName,
-      this.isSuspended,
-      this.isPasswordResetRequested})
-      : super._();
+  _$UpdateUserRequest._({
+    this.givenName,
+    this.familyName,
+    this.isSuspended,
+    this.isPasswordResetRequested,
+  }) : super._();
 
   @override
   UpdateUserRequest rebuild(void Function(UpdateUserRequestBuilder) updates) =>
@@ -119,12 +119,14 @@ class UpdateUserRequestBuilder
   UpdateUserRequest build() => _build();
 
   _$UpdateUserRequest _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         new _$UpdateUserRequest._(
-            givenName: givenName,
-            familyName: familyName,
-            isSuspended: isSuspended,
-            isPasswordResetRequested: isPasswordResetRequested);
+          givenName: givenName,
+          familyName: familyName,
+          isSuspended: isSuspended,
+          isPasswordResetRequested: isPasswordResetRequested,
+        );
     replace(_$result);
     return _$result;
   }

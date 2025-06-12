@@ -11,10 +11,11 @@ part 'user_identities_inner.g.dart';
 /// UserIdentitiesInner
 ///
 /// Properties:
-/// * [type] 
-/// * [identity] 
+/// * [type]
+/// * [identity]
 @BuiltValue()
-abstract class UserIdentitiesInner implements Built<UserIdentitiesInner, UserIdentitiesInnerBuilder> {
+abstract class UserIdentitiesInner
+    implements Built<UserIdentitiesInner, UserIdentitiesInnerBuilder> {
   @BuiltValueField(wireName: r'type')
   String? get type;
 
@@ -23,18 +24,25 @@ abstract class UserIdentitiesInner implements Built<UserIdentitiesInner, UserIde
 
   UserIdentitiesInner._();
 
-  factory UserIdentitiesInner([void Function(UserIdentitiesInnerBuilder b) updates]) = _$UserIdentitiesInner;
+  factory UserIdentitiesInner([
+    void Function(UserIdentitiesInnerBuilder b) updates,
+  ]) = _$UserIdentitiesInner;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(UserIdentitiesInnerBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<UserIdentitiesInner> get serializer => _$UserIdentitiesInnerSerializer();
+  static Serializer<UserIdentitiesInner> get serializer =>
+      _$UserIdentitiesInnerSerializer();
 }
 
-class _$UserIdentitiesInnerSerializer implements PrimitiveSerializer<UserIdentitiesInner> {
+class _$UserIdentitiesInnerSerializer
+    implements PrimitiveSerializer<UserIdentitiesInner> {
   @override
-  final Iterable<Type> types = const [UserIdentitiesInner, _$UserIdentitiesInner];
+  final Iterable<Type> types = const [
+    UserIdentitiesInner,
+    _$UserIdentitiesInner,
+  ];
 
   @override
   final String wireName = r'UserIdentitiesInner';
@@ -66,7 +74,11 @@ class _$UserIdentitiesInnerSerializer implements PrimitiveSerializer<UserIdentit
     UserIdentitiesInner object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -82,17 +94,21 @@ class _$UserIdentitiesInnerSerializer implements PrimitiveSerializer<UserIdentit
       final value = serializedList[i + 1];
       switch (key) {
         case r'type':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.type = valueDes;
           break;
         case r'identity':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.identity = valueDes;
           break;
         default:
@@ -123,4 +139,3 @@ class _$UserIdentitiesInnerSerializer implements PrimitiveSerializer<UserIdentit
     return result.build();
   }
 }
-

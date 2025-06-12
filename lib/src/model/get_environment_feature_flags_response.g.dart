@@ -14,24 +14,27 @@ class _$GetEnvironmentFeatureFlagsResponse
   final String? message;
   @override
   final BuiltMap<String, GetOrganizationFeatureFlagsResponseFeatureFlagsValue>?
-      featureFlags;
+  featureFlags;
   @override
   final String? nextToken;
 
-  factory _$GetEnvironmentFeatureFlagsResponse(
-          [void Function(GetEnvironmentFeatureFlagsResponseBuilder)?
-              updates]) =>
+  factory _$GetEnvironmentFeatureFlagsResponse([
+    void Function(GetEnvironmentFeatureFlagsResponseBuilder)? updates,
+  ]) =>
       (new GetEnvironmentFeatureFlagsResponseBuilder()..update(updates))
           ._build();
 
-  _$GetEnvironmentFeatureFlagsResponse._(
-      {this.code, this.message, this.featureFlags, this.nextToken})
-      : super._();
+  _$GetEnvironmentFeatureFlagsResponse._({
+    this.code,
+    this.message,
+    this.featureFlags,
+    this.nextToken,
+  }) : super._();
 
   @override
   GetEnvironmentFeatureFlagsResponse rebuild(
-          void Function(GetEnvironmentFeatureFlagsResponseBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(GetEnvironmentFeatureFlagsResponseBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   GetEnvironmentFeatureFlagsResponseBuilder toBuilder() =>
@@ -71,8 +74,10 @@ class _$GetEnvironmentFeatureFlagsResponse
 
 class GetEnvironmentFeatureFlagsResponseBuilder
     implements
-        Builder<GetEnvironmentFeatureFlagsResponse,
-            GetEnvironmentFeatureFlagsResponseBuilder> {
+        Builder<
+          GetEnvironmentFeatureFlagsResponse,
+          GetEnvironmentFeatureFlagsResponseBuilder
+        > {
   _$GetEnvironmentFeatureFlagsResponse? _$v;
 
   String? _code;
@@ -84,15 +89,18 @@ class GetEnvironmentFeatureFlagsResponseBuilder
   set message(String? message) => _$this._message = message;
 
   MapBuilder<String, GetOrganizationFeatureFlagsResponseFeatureFlagsValue>?
-      _featureFlags;
+  _featureFlags;
   MapBuilder<String, GetOrganizationFeatureFlagsResponseFeatureFlagsValue>
-      get featureFlags => _$this._featureFlags ??= new MapBuilder<String,
-          GetOrganizationFeatureFlagsResponseFeatureFlagsValue>();
+  get featureFlags =>
+      _$this._featureFlags ??=
+          new MapBuilder<
+            String,
+            GetOrganizationFeatureFlagsResponseFeatureFlagsValue
+          >();
   set featureFlags(
-          MapBuilder<String,
-                  GetOrganizationFeatureFlagsResponseFeatureFlagsValue>?
-              featureFlags) =>
-      _$this._featureFlags = featureFlags;
+    MapBuilder<String, GetOrganizationFeatureFlagsResponseFeatureFlagsValue>?
+    featureFlags,
+  ) => _$this._featureFlags = featureFlags;
 
   String? _nextToken;
   String? get nextToken => _$this._nextToken;
@@ -122,7 +130,8 @@ class GetEnvironmentFeatureFlagsResponseBuilder
 
   @override
   void update(
-      void Function(GetEnvironmentFeatureFlagsResponseBuilder)? updates) {
+    void Function(GetEnvironmentFeatureFlagsResponseBuilder)? updates,
+  ) {
     if (updates != null) updates(this);
   }
 
@@ -132,12 +141,14 @@ class GetEnvironmentFeatureFlagsResponseBuilder
   _$GetEnvironmentFeatureFlagsResponse _build() {
     _$GetEnvironmentFeatureFlagsResponse _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           new _$GetEnvironmentFeatureFlagsResponse._(
-              code: code,
-              message: message,
-              featureFlags: _featureFlags?.build(),
-              nextToken: nextToken);
+            code: code,
+            message: message,
+            featureFlags: _featureFlags?.build(),
+            nextToken: nextToken,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -145,7 +156,10 @@ class GetEnvironmentFeatureFlagsResponseBuilder
         _featureFlags?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'GetEnvironmentFeatureFlagsResponse', _$failedField, e.toString());
+          r'GetEnvironmentFeatureFlagsResponse',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }
