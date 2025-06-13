@@ -15,10 +15,11 @@ part 'get_permissions_response.g.dart';
 /// Properties:
 /// * [code] - Response code.
 /// * [message] - Response message.
-/// * [permissions] 
+/// * [permissions]
 /// * [nextToken] - Pagination token.
 @BuiltValue()
-abstract class GetPermissionsResponse implements Built<GetPermissionsResponse, GetPermissionsResponseBuilder> {
+abstract class GetPermissionsResponse
+    implements Built<GetPermissionsResponse, GetPermissionsResponseBuilder> {
   /// Response code.
   @BuiltValueField(wireName: r'code')
   String? get code;
@@ -36,18 +37,25 @@ abstract class GetPermissionsResponse implements Built<GetPermissionsResponse, G
 
   GetPermissionsResponse._();
 
-  factory GetPermissionsResponse([void Function(GetPermissionsResponseBuilder b) updates]) = _$GetPermissionsResponse;
+  factory GetPermissionsResponse([
+    void Function(GetPermissionsResponseBuilder b) updates,
+  ]) = _$GetPermissionsResponse;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(GetPermissionsResponseBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<GetPermissionsResponse> get serializer => _$GetPermissionsResponseSerializer();
+  static Serializer<GetPermissionsResponse> get serializer =>
+      _$GetPermissionsResponseSerializer();
 }
 
-class _$GetPermissionsResponseSerializer implements PrimitiveSerializer<GetPermissionsResponse> {
+class _$GetPermissionsResponseSerializer
+    implements PrimitiveSerializer<GetPermissionsResponse> {
   @override
-  final Iterable<Type> types = const [GetPermissionsResponse, _$GetPermissionsResponse];
+  final Iterable<Type> types = const [
+    GetPermissionsResponse,
+    _$GetPermissionsResponse,
+  ];
 
   @override
   final String wireName = r'GetPermissionsResponse';
@@ -93,7 +101,11 @@ class _$GetPermissionsResponseSerializer implements PrimitiveSerializer<GetPermi
     GetPermissionsResponse object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -109,31 +121,41 @@ class _$GetPermissionsResponseSerializer implements PrimitiveSerializer<GetPermi
       final value = serializedList[i + 1];
       switch (key) {
         case r'code':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.code = valueDes;
           break;
         case r'message':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.message = valueDes;
           break;
         case r'permissions':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(Permissions)]),
-          ) as BuiltList<Permissions>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(Permissions),
+                    ]),
+                  )
+                  as BuiltList<Permissions>;
           result.permissions.replace(valueDes);
           break;
         case r'next_token':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.nextToken = valueDes;
           break;
         default:
@@ -164,4 +186,3 @@ class _$GetPermissionsResponseSerializer implements PrimitiveSerializer<GetPermi
     return result.build();
   }
 }
-

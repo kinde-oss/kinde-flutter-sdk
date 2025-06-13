@@ -10,16 +10,16 @@ class _$UpdateRolePermissionsRequest extends UpdateRolePermissionsRequest {
   @override
   final BuiltList<UpdateRolePermissionsRequestPermissionsInner>? permissions;
 
-  factory _$UpdateRolePermissionsRequest(
-          [void Function(UpdateRolePermissionsRequestBuilder)? updates]) =>
-      (new UpdateRolePermissionsRequestBuilder()..update(updates))._build();
+  factory _$UpdateRolePermissionsRequest([
+    void Function(UpdateRolePermissionsRequestBuilder)? updates,
+  ]) => (new UpdateRolePermissionsRequestBuilder()..update(updates))._build();
 
   _$UpdateRolePermissionsRequest._({this.permissions}) : super._();
 
   @override
   UpdateRolePermissionsRequest rebuild(
-          void Function(UpdateRolePermissionsRequestBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(UpdateRolePermissionsRequestBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   UpdateRolePermissionsRequestBuilder toBuilder() =>
@@ -43,15 +43,16 @@ class _$UpdateRolePermissionsRequest extends UpdateRolePermissionsRequest {
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'UpdateRolePermissionsRequest')
-          ..add('permissions', permissions))
-        .toString();
+      ..add('permissions', permissions)).toString();
   }
 }
 
 class UpdateRolePermissionsRequestBuilder
     implements
-        Builder<UpdateRolePermissionsRequest,
-            UpdateRolePermissionsRequestBuilder> {
+        Builder<
+          UpdateRolePermissionsRequest,
+          UpdateRolePermissionsRequestBuilder
+        > {
   _$UpdateRolePermissionsRequest? _$v;
 
   ListBuilder<UpdateRolePermissionsRequestPermissionsInner>? _permissions;
@@ -59,9 +60,8 @@ class UpdateRolePermissionsRequestBuilder
       _$this._permissions ??=
           new ListBuilder<UpdateRolePermissionsRequestPermissionsInner>();
   set permissions(
-          ListBuilder<UpdateRolePermissionsRequestPermissionsInner>?
-              permissions) =>
-      _$this._permissions = permissions;
+    ListBuilder<UpdateRolePermissionsRequestPermissionsInner>? permissions,
+  ) => _$this._permissions = permissions;
 
   UpdateRolePermissionsRequestBuilder() {
     UpdateRolePermissionsRequest._defaults(this);
@@ -93,9 +93,11 @@ class UpdateRolePermissionsRequestBuilder
   _$UpdateRolePermissionsRequest _build() {
     _$UpdateRolePermissionsRequest _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           new _$UpdateRolePermissionsRequest._(
-              permissions: _permissions?.build());
+            permissions: _permissions?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -103,7 +105,10 @@ class UpdateRolePermissionsRequestBuilder
         _permissions?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'UpdateRolePermissionsRequest', _$failedField, e.toString());
+          r'UpdateRolePermissionsRequest',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

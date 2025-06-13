@@ -17,7 +17,12 @@ part 'get_organization_feature_flags_response.g.dart';
 /// * [message] - Response message.
 /// * [featureFlags] - The environment's feature flag settings.
 @BuiltValue()
-abstract class GetOrganizationFeatureFlagsResponse implements Built<GetOrganizationFeatureFlagsResponse, GetOrganizationFeatureFlagsResponseBuilder> {
+abstract class GetOrganizationFeatureFlagsResponse
+    implements
+        Built<
+          GetOrganizationFeatureFlagsResponse,
+          GetOrganizationFeatureFlagsResponseBuilder
+        > {
   /// Response code.
   @BuiltValueField(wireName: r'code')
   String? get code;
@@ -28,22 +33,30 @@ abstract class GetOrganizationFeatureFlagsResponse implements Built<GetOrganizat
 
   /// The environment's feature flag settings.
   @BuiltValueField(wireName: r'feature_flags')
-  BuiltMap<String, GetOrganizationFeatureFlagsResponseFeatureFlagsValue>? get featureFlags;
+  BuiltMap<String, GetOrganizationFeatureFlagsResponseFeatureFlagsValue>?
+  get featureFlags;
 
   GetOrganizationFeatureFlagsResponse._();
 
-  factory GetOrganizationFeatureFlagsResponse([void Function(GetOrganizationFeatureFlagsResponseBuilder b) updates]) = _$GetOrganizationFeatureFlagsResponse;
+  factory GetOrganizationFeatureFlagsResponse([
+    void Function(GetOrganizationFeatureFlagsResponseBuilder b) updates,
+  ]) = _$GetOrganizationFeatureFlagsResponse;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(GetOrganizationFeatureFlagsResponseBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<GetOrganizationFeatureFlagsResponse> get serializer => _$GetOrganizationFeatureFlagsResponseSerializer();
+  static Serializer<GetOrganizationFeatureFlagsResponse> get serializer =>
+      _$GetOrganizationFeatureFlagsResponseSerializer();
 }
 
-class _$GetOrganizationFeatureFlagsResponseSerializer implements PrimitiveSerializer<GetOrganizationFeatureFlagsResponse> {
+class _$GetOrganizationFeatureFlagsResponseSerializer
+    implements PrimitiveSerializer<GetOrganizationFeatureFlagsResponse> {
   @override
-  final Iterable<Type> types = const [GetOrganizationFeatureFlagsResponse, _$GetOrganizationFeatureFlagsResponse];
+  final Iterable<Type> types = const [
+    GetOrganizationFeatureFlagsResponse,
+    _$GetOrganizationFeatureFlagsResponse,
+  ];
 
   @override
   final String wireName = r'GetOrganizationFeatureFlagsResponse';
@@ -71,7 +84,10 @@ class _$GetOrganizationFeatureFlagsResponseSerializer implements PrimitiveSerial
       yield r'feature_flags';
       yield serializers.serialize(
         object.featureFlags,
-        specifiedType: const FullType(BuiltMap, [FullType(String), FullType(GetOrganizationFeatureFlagsResponseFeatureFlagsValue)]),
+        specifiedType: const FullType(BuiltMap, [
+          FullType(String),
+          FullType(GetOrganizationFeatureFlagsResponseFeatureFlagsValue),
+        ]),
       );
     }
   }
@@ -82,7 +98,11 @@ class _$GetOrganizationFeatureFlagsResponseSerializer implements PrimitiveSerial
     GetOrganizationFeatureFlagsResponse object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -98,24 +118,38 @@ class _$GetOrganizationFeatureFlagsResponseSerializer implements PrimitiveSerial
       final value = serializedList[i + 1];
       switch (key) {
         case r'code':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.code = valueDes;
           break;
         case r'message':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.message = valueDes;
           break;
         case r'feature_flags':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltMap, [FullType(String), FullType(GetOrganizationFeatureFlagsResponseFeatureFlagsValue)]),
-          ) as BuiltMap<String, GetOrganizationFeatureFlagsResponseFeatureFlagsValue>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltMap, [
+                      FullType(String),
+                      FullType(
+                        GetOrganizationFeatureFlagsResponseFeatureFlagsValue,
+                      ),
+                    ]),
+                  )
+                  as BuiltMap<
+                    String,
+                    GetOrganizationFeatureFlagsResponseFeatureFlagsValue
+                  >;
           result.featureFlags.replace(valueDes);
           break;
         default:
@@ -146,4 +180,3 @@ class _$GetOrganizationFeatureFlagsResponseSerializer implements PrimitiveSerial
     return result.build();
   }
 }
-

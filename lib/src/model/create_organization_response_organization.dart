@@ -13,25 +13,37 @@ part 'create_organization_response_organization.g.dart';
 /// Properties:
 /// * [code] - The organization's code.
 @BuiltValue()
-abstract class CreateOrganizationResponseOrganization implements Built<CreateOrganizationResponseOrganization, CreateOrganizationResponseOrganizationBuilder> {
+abstract class CreateOrganizationResponseOrganization
+    implements
+        Built<
+          CreateOrganizationResponseOrganization,
+          CreateOrganizationResponseOrganizationBuilder
+        > {
   /// The organization's code.
   @BuiltValueField(wireName: r'code')
   String? get code;
 
   CreateOrganizationResponseOrganization._();
 
-  factory CreateOrganizationResponseOrganization([void Function(CreateOrganizationResponseOrganizationBuilder b) updates]) = _$CreateOrganizationResponseOrganization;
+  factory CreateOrganizationResponseOrganization([
+    void Function(CreateOrganizationResponseOrganizationBuilder b) updates,
+  ]) = _$CreateOrganizationResponseOrganization;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CreateOrganizationResponseOrganizationBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CreateOrganizationResponseOrganization> get serializer => _$CreateOrganizationResponseOrganizationSerializer();
+  static Serializer<CreateOrganizationResponseOrganization> get serializer =>
+      _$CreateOrganizationResponseOrganizationSerializer();
 }
 
-class _$CreateOrganizationResponseOrganizationSerializer implements PrimitiveSerializer<CreateOrganizationResponseOrganization> {
+class _$CreateOrganizationResponseOrganizationSerializer
+    implements PrimitiveSerializer<CreateOrganizationResponseOrganization> {
   @override
-  final Iterable<Type> types = const [CreateOrganizationResponseOrganization, _$CreateOrganizationResponseOrganization];
+  final Iterable<Type> types = const [
+    CreateOrganizationResponseOrganization,
+    _$CreateOrganizationResponseOrganization,
+  ];
 
   @override
   final String wireName = r'CreateOrganizationResponseOrganization';
@@ -56,7 +68,11 @@ class _$CreateOrganizationResponseOrganizationSerializer implements PrimitiveSer
     CreateOrganizationResponseOrganization object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -72,10 +88,12 @@ class _$CreateOrganizationResponseOrganizationSerializer implements PrimitiveSer
       final value = serializedList[i + 1];
       switch (key) {
         case r'code':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.code = valueDes;
           break;
         default:
@@ -106,4 +124,3 @@ class _$CreateOrganizationResponseOrganizationSerializer implements PrimitiveSer
     return result.build();
   }
 }
-

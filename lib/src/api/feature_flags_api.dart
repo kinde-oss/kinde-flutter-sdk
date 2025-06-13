@@ -12,7 +12,6 @@ import 'package:kinde_flutter_sdk/src/model/create_feature_flag_request.dart';
 import 'package:kinde_flutter_sdk/src/model/success_response.dart';
 
 class FeatureFlagsApi {
-
   final Dio _dio;
 
   final Serializers _serializers;
@@ -33,7 +32,7 @@ class FeatureFlagsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> createFeatureFlag({ 
+  Future<Response<SuccessResponse>> createFeatureFlag({
     required CreateFeatureFlagRequest createFeatureFlagRequest,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -45,16 +44,10 @@ class FeatureFlagsApi {
     const path = r'/api/v1/feature_flags';
     final options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -66,14 +59,13 @@ class FeatureFlagsApi {
 
     try {
       const type = FullType(CreateFeatureFlagRequest);
-      bodyData = _serializers.serialize(createFeatureFlagRequest, specifiedType: type);
-
-    } catch(error, stackTrace) {
+      bodyData = _serializers.serialize(
+        createFeatureFlagRequest,
+        specifiedType: type,
+      );
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: options.compose(
-          _dio.options,
-          path,
-        ),
+        requestOptions: options.compose(_dio.options, path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -93,11 +85,14 @@ class FeatureFlagsApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(SuccessResponse),
-      ) as SuccessResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(SuccessResponse),
+                  )
+                  as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -134,7 +129,7 @@ class FeatureFlagsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> deleteFeatureFlag({ 
+  Future<Response<SuccessResponse>> deleteFeatureFlag({
     required String featureFlagKey,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -143,19 +138,22 @@ class FeatureFlagsApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/api/v1/feature_flags/{feature_flag_key}'.replaceAll('{' r'feature_flag_key' '}', encodeQueryParameter(_serializers, featureFlagKey, const FullType(String)).toString());
+    final path = r'/api/v1/feature_flags/{feature_flag_key}'.replaceAll(
+      '{'
+      r'feature_flag_key'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        featureFlagKey,
+        const FullType(String),
+      ).toString(),
+    );
     final options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -174,11 +172,14 @@ class FeatureFlagsApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(SuccessResponse),
-      ) as SuccessResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(SuccessResponse),
+                  )
+                  as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -220,7 +221,7 @@ class FeatureFlagsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> updateFeatureFlag({ 
+  Future<Response<SuccessResponse>> updateFeatureFlag({
     required String featureFlagKey,
     required String name,
     required String description,
@@ -234,19 +235,22 @@ class FeatureFlagsApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/api/v1/feature_flags/{feature_flag_key}'.replaceAll('{' r'feature_flag_key' '}', encodeQueryParameter(_serializers, featureFlagKey, const FullType(String)).toString());
+    final path = r'/api/v1/feature_flags/{feature_flag_key}'.replaceAll(
+      '{'
+      r'feature_flag_key'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        featureFlagKey,
+        const FullType(String),
+      ).toString(),
+    );
     final options = Options(
       method: r'PUT',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -255,10 +259,22 @@ class FeatureFlagsApi {
 
     final queryParameters = <String, dynamic>{
       r'name': encodeQueryParameter(_serializers, name, const FullType(String)),
-      r'description': encodeQueryParameter(_serializers, description, const FullType(String)),
+      r'description': encodeQueryParameter(
+        _serializers,
+        description,
+        const FullType(String),
+      ),
       r'type': encodeQueryParameter(_serializers, type, const FullType(String)),
-      r'allow_override_level': encodeQueryParameter(_serializers, allowOverrideLevel, const FullType(String)),
-      r'default_value': encodeQueryParameter(_serializers, defaultValue, const FullType(String)),
+      r'allow_override_level': encodeQueryParameter(
+        _serializers,
+        allowOverrideLevel,
+        const FullType(String),
+      ),
+      r'default_value': encodeQueryParameter(
+        _serializers,
+        defaultValue,
+        const FullType(String),
+      ),
     };
 
     final response = await _dio.request<Object>(
@@ -274,11 +290,14 @@ class FeatureFlagsApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(SuccessResponse),
-      ) as SuccessResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(SuccessResponse),
+                  )
+                  as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -300,5 +319,4 @@ class FeatureFlagsApi {
       extra: response.extra,
     );
   }
-
 }

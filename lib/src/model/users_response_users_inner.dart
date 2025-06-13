@@ -27,7 +27,8 @@ part 'users_response_users_inner.g.dart';
 /// * [organizations] - Array of organizations a user belongs to.
 /// * [identities] - Array of identities belonging to the user.
 @BuiltValue()
-abstract class UsersResponseUsersInner implements Built<UsersResponseUsersInner, UsersResponseUsersInnerBuilder> {
+abstract class UsersResponseUsersInner
+    implements Built<UsersResponseUsersInner, UsersResponseUsersInnerBuilder> {
   /// Unique id of the user in Kinde.
   @BuiltValueField(wireName: r'id')
   String? get id;
@@ -82,18 +83,25 @@ abstract class UsersResponseUsersInner implements Built<UsersResponseUsersInner,
 
   UsersResponseUsersInner._();
 
-  factory UsersResponseUsersInner([void Function(UsersResponseUsersInnerBuilder b) updates]) = _$UsersResponseUsersInner;
+  factory UsersResponseUsersInner([
+    void Function(UsersResponseUsersInnerBuilder b) updates,
+  ]) = _$UsersResponseUsersInner;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(UsersResponseUsersInnerBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<UsersResponseUsersInner> get serializer => _$UsersResponseUsersInnerSerializer();
+  static Serializer<UsersResponseUsersInner> get serializer =>
+      _$UsersResponseUsersInnerSerializer();
 }
 
-class _$UsersResponseUsersInnerSerializer implements PrimitiveSerializer<UsersResponseUsersInner> {
+class _$UsersResponseUsersInnerSerializer
+    implements PrimitiveSerializer<UsersResponseUsersInner> {
   @override
-  final Iterable<Type> types = const [UsersResponseUsersInner, _$UsersResponseUsersInner];
+  final Iterable<Type> types = const [
+    UsersResponseUsersInner,
+    _$UsersResponseUsersInner,
+  ];
 
   @override
   final String wireName = r'UsersResponseUsersInner';
@@ -191,7 +199,9 @@ class _$UsersResponseUsersInnerSerializer implements PrimitiveSerializer<UsersRe
       yield r'identities';
       yield serializers.serialize(
         object.identities,
-        specifiedType: const FullType(BuiltList, [FullType(UserIdentitiesInner)]),
+        specifiedType: const FullType(BuiltList, [
+          FullType(UserIdentitiesInner),
+        ]),
       );
     }
   }
@@ -202,7 +212,11 @@ class _$UsersResponseUsersInnerSerializer implements PrimitiveSerializer<UsersRe
     UsersResponseUsersInner object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -218,98 +232,128 @@ class _$UsersResponseUsersInnerSerializer implements PrimitiveSerializer<UsersRe
       final value = serializedList[i + 1];
       switch (key) {
         case r'id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.id = valueDes;
           break;
         case r'provided_id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.providedId = valueDes;
           break;
         case r'email':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.email = valueDes;
           break;
         case r'last_name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.lastName = valueDes;
           break;
         case r'first_name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.firstName = valueDes;
           break;
         case r'is_suspended':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(bool),
-          ) as bool;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(bool),
+                  )
+                  as bool;
           result.isSuspended = valueDes;
           break;
         case r'picture':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.picture = valueDes;
           break;
         case r'total_sign_ins':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType.nullable(int),
-          ) as int?;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType.nullable(int),
+                  )
+                  as int?;
           if (valueDes == null) continue;
           result.totalSignIns = valueDes;
           break;
         case r'failed_sign_ins':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType.nullable(int),
-          ) as int?;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType.nullable(int),
+                  )
+                  as int?;
           if (valueDes == null) continue;
           result.failedSignIns = valueDes;
           break;
         case r'last_signed_in':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType.nullable(String),
-          ) as String?;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType.nullable(String),
+                  )
+                  as String?;
           if (valueDes == null) continue;
           result.lastSignedIn = valueDes;
           break;
         case r'created_on':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType.nullable(String),
-          ) as String?;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType.nullable(String),
+                  )
+                  as String?;
           if (valueDes == null) continue;
           result.createdOn = valueDes;
           break;
         case r'organizations':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(String)]),
-          ) as BuiltList<String>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(String),
+                    ]),
+                  )
+                  as BuiltList<String>;
           result.organizations.replace(valueDes);
           break;
         case r'identities':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(UserIdentitiesInner)]),
-          ) as BuiltList<UserIdentitiesInner>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(UserIdentitiesInner),
+                    ]),
+                  )
+                  as BuiltList<UserIdentitiesInner>;
           result.identities.replace(valueDes);
           break;
         default:
@@ -340,4 +384,3 @@ class _$UsersResponseUsersInnerSerializer implements PrimitiveSerializer<UsersRe
     return result.build();
   }
 }
-

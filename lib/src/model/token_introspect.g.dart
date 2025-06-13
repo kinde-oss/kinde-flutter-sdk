@@ -21,9 +21,13 @@ class _$TokenIntrospect extends TokenIntrospect {
   factory _$TokenIntrospect([void Function(TokenIntrospectBuilder)? updates]) =>
       (new TokenIntrospectBuilder()..update(updates))._build();
 
-  _$TokenIntrospect._(
-      {this.active, this.aud, this.clientId, this.exp, this.iat})
-      : super._();
+  _$TokenIntrospect._({
+    this.active,
+    this.aud,
+    this.clientId,
+    this.exp,
+    this.iat,
+  }) : super._();
 
   @override
   TokenIntrospect rebuild(void Function(TokenIntrospectBuilder) updates) =>
@@ -126,13 +130,15 @@ class TokenIntrospectBuilder
   _$TokenIntrospect _build() {
     _$TokenIntrospect _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           new _$TokenIntrospect._(
-              active: active,
-              aud: _aud?.build(),
-              clientId: clientId,
-              exp: exp,
-              iat: iat);
+            active: active,
+            aud: _aud?.build(),
+            clientId: clientId,
+            exp: exp,
+            iat: iat,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -140,7 +146,10 @@ class TokenIntrospectBuilder
         _aud?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'TokenIntrospect', _$failedField, e.toString());
+          r'TokenIntrospect',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

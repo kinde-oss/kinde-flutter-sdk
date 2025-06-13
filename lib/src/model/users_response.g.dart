@@ -20,7 +20,7 @@ class _$UsersResponse extends UsersResponse {
       (new UsersResponseBuilder()..update(updates))._build();
 
   _$UsersResponse._({this.code, this.message, this.users, this.nextToken})
-      : super._();
+    : super._();
 
   @override
   UsersResponse rebuild(void Function(UsersResponseBuilder) updates) =>
@@ -116,12 +116,14 @@ class UsersResponseBuilder
   _$UsersResponse _build() {
     _$UsersResponse _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           new _$UsersResponse._(
-              code: code,
-              message: message,
-              users: _users?.build(),
-              nextToken: nextToken);
+            code: code,
+            message: message,
+            users: _users?.build(),
+            nextToken: nextToken,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -129,7 +131,10 @@ class UsersResponseBuilder
         _users?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'UsersResponse', _$failedField, e.toString());
+          r'UsersResponse',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

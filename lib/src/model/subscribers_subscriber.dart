@@ -11,13 +11,14 @@ part 'subscribers_subscriber.g.dart';
 /// SubscribersSubscriber
 ///
 /// Properties:
-/// * [id] 
-/// * [email] 
-/// * [fullName] 
-/// * [firstName] 
-/// * [lastName] 
+/// * [id]
+/// * [email]
+/// * [fullName]
+/// * [firstName]
+/// * [lastName]
 @BuiltValue()
-abstract class SubscribersSubscriber implements Built<SubscribersSubscriber, SubscribersSubscriberBuilder> {
+abstract class SubscribersSubscriber
+    implements Built<SubscribersSubscriber, SubscribersSubscriberBuilder> {
   @BuiltValueField(wireName: r'id')
   String? get id;
 
@@ -35,18 +36,25 @@ abstract class SubscribersSubscriber implements Built<SubscribersSubscriber, Sub
 
   SubscribersSubscriber._();
 
-  factory SubscribersSubscriber([void Function(SubscribersSubscriberBuilder b) updates]) = _$SubscribersSubscriber;
+  factory SubscribersSubscriber([
+    void Function(SubscribersSubscriberBuilder b) updates,
+  ]) = _$SubscribersSubscriber;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(SubscribersSubscriberBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<SubscribersSubscriber> get serializer => _$SubscribersSubscriberSerializer();
+  static Serializer<SubscribersSubscriber> get serializer =>
+      _$SubscribersSubscriberSerializer();
 }
 
-class _$SubscribersSubscriberSerializer implements PrimitiveSerializer<SubscribersSubscriber> {
+class _$SubscribersSubscriberSerializer
+    implements PrimitiveSerializer<SubscribersSubscriber> {
   @override
-  final Iterable<Type> types = const [SubscribersSubscriber, _$SubscribersSubscriber];
+  final Iterable<Type> types = const [
+    SubscribersSubscriber,
+    _$SubscribersSubscriber,
+  ];
 
   @override
   final String wireName = r'SubscribersSubscriber';
@@ -99,7 +107,11 @@ class _$SubscribersSubscriberSerializer implements PrimitiveSerializer<Subscribe
     SubscribersSubscriber object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -115,38 +127,48 @@ class _$SubscribersSubscriberSerializer implements PrimitiveSerializer<Subscribe
       final value = serializedList[i + 1];
       switch (key) {
         case r'id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.id = valueDes;
           break;
         case r'email':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.email = valueDes;
           break;
         case r'full_name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.fullName = valueDes;
           break;
         case r'first_name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.firstName = valueDes;
           break;
         case r'last_name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.lastName = valueDes;
           break;
         default:
@@ -177,4 +199,3 @@ class _$SubscribersSubscriberSerializer implements PrimitiveSerializer<Subscribe
     return result.build();
   }
 }
-

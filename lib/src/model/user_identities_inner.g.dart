@@ -12,16 +12,16 @@ class _$UserIdentitiesInner extends UserIdentitiesInner {
   @override
   final String? identity;
 
-  factory _$UserIdentitiesInner(
-          [void Function(UserIdentitiesInnerBuilder)? updates]) =>
-      (new UserIdentitiesInnerBuilder()..update(updates))._build();
+  factory _$UserIdentitiesInner([
+    void Function(UserIdentitiesInnerBuilder)? updates,
+  ]) => (new UserIdentitiesInnerBuilder()..update(updates))._build();
 
   _$UserIdentitiesInner._({this.type, this.identity}) : super._();
 
   @override
   UserIdentitiesInner rebuild(
-          void Function(UserIdentitiesInnerBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(UserIdentitiesInnerBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   UserIdentitiesInnerBuilder toBuilder() =>

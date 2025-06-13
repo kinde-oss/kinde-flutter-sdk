@@ -15,7 +15,6 @@ import 'package:kinde_flutter_sdk/src/model/replace_redirect_callback_urls_reque
 import 'package:kinde_flutter_sdk/src/model/success_response.dart';
 
 class CallbacksApi {
-
   final Dio _dio;
 
   final Serializers _serializers;
@@ -23,7 +22,7 @@ class CallbacksApi {
   const CallbacksApi(this._dio, this._serializers);
 
   /// Add Logout Redirect URLs
-  /// Add additional logout redirect URLs. 
+  /// Add additional logout redirect URLs.
   ///
   /// Parameters:
   /// * [appId] - The identifier for the application.
@@ -37,7 +36,7 @@ class CallbacksApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> addLogoutRedirectURLs({ 
+  Future<Response<SuccessResponse>> addLogoutRedirectURLs({
     required String appId,
     required ReplaceLogoutRedirectURLsRequest replaceLogoutRedirectURLsRequest,
     CancelToken? cancelToken,
@@ -47,19 +46,22 @@ class CallbacksApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/api/v1/applications/{app_id}/auth_logout_urls'.replaceAll('{' r'app_id' '}', encodeQueryParameter(_serializers, appId, const FullType(String)).toString());
+    final path = r'/api/v1/applications/{app_id}/auth_logout_urls'.replaceAll(
+      '{'
+      r'app_id'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        appId,
+        const FullType(String),
+      ).toString(),
+    );
     final options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -71,14 +73,13 @@ class CallbacksApi {
 
     try {
       const type = FullType(ReplaceLogoutRedirectURLsRequest);
-      bodyData = _serializers.serialize(replaceLogoutRedirectURLsRequest, specifiedType: type);
-
-    } catch(error, stackTrace) {
+      bodyData = _serializers.serialize(
+        replaceLogoutRedirectURLsRequest,
+        specifiedType: type,
+      );
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: options.compose(
-          _dio.options,
-          path,
-        ),
+        requestOptions: options.compose(_dio.options, path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -98,11 +99,14 @@ class CallbacksApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(SuccessResponse),
-      ) as SuccessResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(SuccessResponse),
+                  )
+                  as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -126,7 +130,7 @@ class CallbacksApi {
   }
 
   /// Add Redirect Callback URLs
-  /// Add additional redirect callback URLs. 
+  /// Add additional redirect callback URLs.
   ///
   /// Parameters:
   /// * [appId] - The identifier for the application.
@@ -140,9 +144,10 @@ class CallbacksApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> addRedirectCallbackURLs({ 
+  Future<Response<SuccessResponse>> addRedirectCallbackURLs({
     required String appId,
-    required ReplaceRedirectCallbackURLsRequest replaceRedirectCallbackURLsRequest,
+    required ReplaceRedirectCallbackURLsRequest
+    replaceRedirectCallbackURLsRequest,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -150,19 +155,22 @@ class CallbacksApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/api/v1/applications/{app_id}/auth_redirect_urls'.replaceAll('{' r'app_id' '}', encodeQueryParameter(_serializers, appId, const FullType(String)).toString());
+    final path = r'/api/v1/applications/{app_id}/auth_redirect_urls'.replaceAll(
+      '{'
+      r'app_id'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        appId,
+        const FullType(String),
+      ).toString(),
+    );
     final options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -174,14 +182,13 @@ class CallbacksApi {
 
     try {
       const type = FullType(ReplaceRedirectCallbackURLsRequest);
-      bodyData = _serializers.serialize(replaceRedirectCallbackURLsRequest, specifiedType: type);
-
-    } catch(error, stackTrace) {
+      bodyData = _serializers.serialize(
+        replaceRedirectCallbackURLsRequest,
+        specifiedType: type,
+      );
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: options.compose(
-          _dio.options,
-          path,
-        ),
+        requestOptions: options.compose(_dio.options, path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -201,11 +208,14 @@ class CallbacksApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(SuccessResponse),
-      ) as SuccessResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(SuccessResponse),
+                  )
+                  as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -229,7 +239,7 @@ class CallbacksApi {
   }
 
   /// Delete Callback URLs
-  /// Delete callback URLs. 
+  /// Delete callback URLs.
   ///
   /// Parameters:
   /// * [appId] - The identifier for the application.
@@ -243,7 +253,7 @@ class CallbacksApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> deleteCallbackURLs({ 
+  Future<Response<SuccessResponse>> deleteCallbackURLs({
     required String appId,
     required String urls,
     CancelToken? cancelToken,
@@ -253,19 +263,22 @@ class CallbacksApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/api/v1/applications/{app_id}/auth_redirect_urls'.replaceAll('{' r'app_id' '}', encodeQueryParameter(_serializers, appId, const FullType(String)).toString());
+    final path = r'/api/v1/applications/{app_id}/auth_redirect_urls'.replaceAll(
+      '{'
+      r'app_id'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        appId,
+        const FullType(String),
+      ).toString(),
+    );
     final options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -289,11 +302,14 @@ class CallbacksApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(SuccessResponse),
-      ) as SuccessResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(SuccessResponse),
+                  )
+                  as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -317,7 +333,7 @@ class CallbacksApi {
   }
 
   /// Delete Logout URLs
-  /// Delete logout URLs. 
+  /// Delete logout URLs.
   ///
   /// Parameters:
   /// * [appId] - The identifier for the application.
@@ -331,7 +347,7 @@ class CallbacksApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> deleteLogoutURLs({ 
+  Future<Response<SuccessResponse>> deleteLogoutURLs({
     required String appId,
     required String urls,
     CancelToken? cancelToken,
@@ -341,19 +357,22 @@ class CallbacksApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/api/v1/applications/{app_id}/auth_logout_urls'.replaceAll('{' r'app_id' '}', encodeQueryParameter(_serializers, appId, const FullType(String)).toString());
+    final path = r'/api/v1/applications/{app_id}/auth_logout_urls'.replaceAll(
+      '{'
+      r'app_id'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        appId,
+        const FullType(String),
+      ).toString(),
+    );
     final options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -377,11 +396,14 @@ class CallbacksApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(SuccessResponse),
-      ) as SuccessResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(SuccessResponse),
+                  )
+                  as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -405,7 +427,7 @@ class CallbacksApi {
   }
 
   /// List Callback URLs
-  /// Returns an application&#39;s redirect callback URLs. 
+  /// Returns an application&#39;s redirect callback URLs.
   ///
   /// Parameters:
   /// * [appId] - The identifier for the application.
@@ -418,7 +440,7 @@ class CallbacksApi {
   ///
   /// Returns a [Future] containing a [Response] with a [RedirectCallbackUrls] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<RedirectCallbackUrls>> getCallbackURLs({ 
+  Future<Response<RedirectCallbackUrls>> getCallbackURLs({
     required String appId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -427,19 +449,22 @@ class CallbacksApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/api/v1/applications/{app_id}/auth_redirect_urls'.replaceAll('{' r'app_id' '}', encodeQueryParameter(_serializers, appId, const FullType(String)).toString());
+    final path = r'/api/v1/applications/{app_id}/auth_redirect_urls'.replaceAll(
+      '{'
+      r'app_id'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        appId,
+        const FullType(String),
+      ).toString(),
+    );
     final options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -458,11 +483,14 @@ class CallbacksApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(RedirectCallbackUrls),
-      ) as RedirectCallbackUrls;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(RedirectCallbackUrls),
+                  )
+                  as RedirectCallbackUrls;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -486,7 +514,7 @@ class CallbacksApi {
   }
 
   /// List Logout URLs
-  /// Returns an application&#39;s logout redirect URLs. 
+  /// Returns an application&#39;s logout redirect URLs.
   ///
   /// Parameters:
   /// * [appId] - The identifier for the application.
@@ -499,7 +527,7 @@ class CallbacksApi {
   ///
   /// Returns a [Future] containing a [Response] with a [LogoutRedirectUrls] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<LogoutRedirectUrls>> getLogoutURLs({ 
+  Future<Response<LogoutRedirectUrls>> getLogoutURLs({
     required String appId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -508,19 +536,22 @@ class CallbacksApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/api/v1/applications/{app_id}/auth_logout_urls'.replaceAll('{' r'app_id' '}', encodeQueryParameter(_serializers, appId, const FullType(String)).toString());
+    final path = r'/api/v1/applications/{app_id}/auth_logout_urls'.replaceAll(
+      '{'
+      r'app_id'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        appId,
+        const FullType(String),
+      ).toString(),
+    );
     final options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -539,11 +570,14 @@ class CallbacksApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(LogoutRedirectUrls),
-      ) as LogoutRedirectUrls;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(LogoutRedirectUrls),
+                  )
+                  as LogoutRedirectUrls;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -567,7 +601,7 @@ class CallbacksApi {
   }
 
   /// Replace Logout Redirect URLs
-  /// Replace all logout redirect URLs. 
+  /// Replace all logout redirect URLs.
   ///
   /// Parameters:
   /// * [appId] - The identifier for the application.
@@ -581,7 +615,7 @@ class CallbacksApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> replaceLogoutRedirectURLs({ 
+  Future<Response<SuccessResponse>> replaceLogoutRedirectURLs({
     required String appId,
     required ReplaceLogoutRedirectURLsRequest replaceLogoutRedirectURLsRequest,
     CancelToken? cancelToken,
@@ -591,19 +625,22 @@ class CallbacksApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/api/v1/applications/{app_id}/auth_logout_urls'.replaceAll('{' r'app_id' '}', encodeQueryParameter(_serializers, appId, const FullType(String)).toString());
+    final path = r'/api/v1/applications/{app_id}/auth_logout_urls'.replaceAll(
+      '{'
+      r'app_id'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        appId,
+        const FullType(String),
+      ).toString(),
+    );
     final options = Options(
       method: r'PUT',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -615,14 +652,13 @@ class CallbacksApi {
 
     try {
       const type = FullType(ReplaceLogoutRedirectURLsRequest);
-      bodyData = _serializers.serialize(replaceLogoutRedirectURLsRequest, specifiedType: type);
-
-    } catch(error, stackTrace) {
+      bodyData = _serializers.serialize(
+        replaceLogoutRedirectURLsRequest,
+        specifiedType: type,
+      );
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: options.compose(
-          _dio.options,
-          path,
-        ),
+        requestOptions: options.compose(_dio.options, path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -642,11 +678,14 @@ class CallbacksApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(SuccessResponse),
-      ) as SuccessResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(SuccessResponse),
+                  )
+                  as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -670,7 +709,7 @@ class CallbacksApi {
   }
 
   /// Replace Redirect Callback URLs
-  /// Replace all redirect callback URLs. 
+  /// Replace all redirect callback URLs.
   ///
   /// Parameters:
   /// * [appId] - The identifier for the application.
@@ -684,9 +723,10 @@ class CallbacksApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> replaceRedirectCallbackURLs({ 
+  Future<Response<SuccessResponse>> replaceRedirectCallbackURLs({
     required String appId,
-    required ReplaceRedirectCallbackURLsRequest replaceRedirectCallbackURLsRequest,
+    required ReplaceRedirectCallbackURLsRequest
+    replaceRedirectCallbackURLsRequest,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -694,19 +734,22 @@ class CallbacksApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/api/v1/applications/{app_id}/auth_redirect_urls'.replaceAll('{' r'app_id' '}', encodeQueryParameter(_serializers, appId, const FullType(String)).toString());
+    final path = r'/api/v1/applications/{app_id}/auth_redirect_urls'.replaceAll(
+      '{'
+      r'app_id'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        appId,
+        const FullType(String),
+      ).toString(),
+    );
     final options = Options(
       method: r'PUT',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -718,14 +761,13 @@ class CallbacksApi {
 
     try {
       const type = FullType(ReplaceRedirectCallbackURLsRequest);
-      bodyData = _serializers.serialize(replaceRedirectCallbackURLsRequest, specifiedType: type);
-
-    } catch(error, stackTrace) {
+      bodyData = _serializers.serialize(
+        replaceRedirectCallbackURLsRequest,
+        specifiedType: type,
+      );
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: options.compose(
-          _dio.options,
-          path,
-        ),
+        requestOptions: options.compose(_dio.options, path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -745,11 +787,14 @@ class CallbacksApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(SuccessResponse),
-      ) as SuccessResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(SuccessResponse),
+                  )
+                  as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -771,5 +816,4 @@ class CallbacksApi {
       extra: response.extra,
     );
   }
-
 }

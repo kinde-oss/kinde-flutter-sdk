@@ -103,7 +103,10 @@ class UserIdentityBuilder
         _result?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'UserIdentity', _$failedField, e.toString());
+          r'UserIdentity',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

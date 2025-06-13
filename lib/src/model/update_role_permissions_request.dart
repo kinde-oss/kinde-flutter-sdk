@@ -15,25 +15,37 @@ part 'update_role_permissions_request.g.dart';
 /// Properties:
 /// * [permissions] - Permissions to add or remove from the role.
 @BuiltValue()
-abstract class UpdateRolePermissionsRequest implements Built<UpdateRolePermissionsRequest, UpdateRolePermissionsRequestBuilder> {
+abstract class UpdateRolePermissionsRequest
+    implements
+        Built<
+          UpdateRolePermissionsRequest,
+          UpdateRolePermissionsRequestBuilder
+        > {
   /// Permissions to add or remove from the role.
   @BuiltValueField(wireName: r'permissions')
   BuiltList<UpdateRolePermissionsRequestPermissionsInner>? get permissions;
 
   UpdateRolePermissionsRequest._();
 
-  factory UpdateRolePermissionsRequest([void Function(UpdateRolePermissionsRequestBuilder b) updates]) = _$UpdateRolePermissionsRequest;
+  factory UpdateRolePermissionsRequest([
+    void Function(UpdateRolePermissionsRequestBuilder b) updates,
+  ]) = _$UpdateRolePermissionsRequest;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(UpdateRolePermissionsRequestBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<UpdateRolePermissionsRequest> get serializer => _$UpdateRolePermissionsRequestSerializer();
+  static Serializer<UpdateRolePermissionsRequest> get serializer =>
+      _$UpdateRolePermissionsRequestSerializer();
 }
 
-class _$UpdateRolePermissionsRequestSerializer implements PrimitiveSerializer<UpdateRolePermissionsRequest> {
+class _$UpdateRolePermissionsRequestSerializer
+    implements PrimitiveSerializer<UpdateRolePermissionsRequest> {
   @override
-  final Iterable<Type> types = const [UpdateRolePermissionsRequest, _$UpdateRolePermissionsRequest];
+  final Iterable<Type> types = const [
+    UpdateRolePermissionsRequest,
+    _$UpdateRolePermissionsRequest,
+  ];
 
   @override
   final String wireName = r'UpdateRolePermissionsRequest';
@@ -47,7 +59,9 @@ class _$UpdateRolePermissionsRequestSerializer implements PrimitiveSerializer<Up
       yield r'permissions';
       yield serializers.serialize(
         object.permissions,
-        specifiedType: const FullType(BuiltList, [FullType(UpdateRolePermissionsRequestPermissionsInner)]),
+        specifiedType: const FullType(BuiltList, [
+          FullType(UpdateRolePermissionsRequestPermissionsInner),
+        ]),
       );
     }
   }
@@ -58,7 +72,11 @@ class _$UpdateRolePermissionsRequestSerializer implements PrimitiveSerializer<Up
     UpdateRolePermissionsRequest object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -74,10 +92,14 @@ class _$UpdateRolePermissionsRequestSerializer implements PrimitiveSerializer<Up
       final value = serializedList[i + 1];
       switch (key) {
         case r'permissions':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(UpdateRolePermissionsRequestPermissionsInner)]),
-          ) as BuiltList<UpdateRolePermissionsRequestPermissionsInner>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(UpdateRolePermissionsRequestPermissionsInner),
+                    ]),
+                  )
+                  as BuiltList<UpdateRolePermissionsRequestPermissionsInner>;
           result.permissions.replace(valueDes);
           break;
         default:
@@ -108,4 +130,3 @@ class _$UpdateRolePermissionsRequestSerializer implements PrimitiveSerializer<Up
     return result.build();
   }
 }
-

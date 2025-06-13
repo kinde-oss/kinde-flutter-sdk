@@ -1,19 +1,16 @@
 class Keys {
   final List<Key> keys;
 
-  const Keys({
-    required this.keys,
-  });
+  const Keys({required this.keys});
 
   Map<String, dynamic> toJson() {
-    return {
-      'keys': keys,
-    };
+    return {'keys': keys};
   }
 
   factory Keys.fromJson(Map<String, dynamic> map) {
     return Keys(
-      keys: (map['keys'] as List<dynamic>?)
+      keys:
+          (map['keys'] as List<dynamic>?)
               ?.map((e) => Key.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const <Key>[],

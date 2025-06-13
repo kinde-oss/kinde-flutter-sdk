@@ -16,24 +16,24 @@ class _$UpdateRolesRequest extends UpdateRolesRequest {
   @override
   final bool? isDefaultRole;
 
-  factory _$UpdateRolesRequest(
-          [void Function(UpdateRolesRequestBuilder)? updates]) =>
-      (new UpdateRolesRequestBuilder()..update(updates))._build();
+  factory _$UpdateRolesRequest([
+    void Function(UpdateRolesRequestBuilder)? updates,
+  ]) => (new UpdateRolesRequestBuilder()..update(updates))._build();
 
-  _$UpdateRolesRequest._(
-      {required this.name,
-      this.description,
-      required this.key,
-      this.isDefaultRole})
-      : super._() {
+  _$UpdateRolesRequest._({
+    required this.name,
+    this.description,
+    required this.key,
+    this.isDefaultRole,
+  }) : super._() {
     BuiltValueNullFieldError.checkNotNull(name, r'UpdateRolesRequest', 'name');
     BuiltValueNullFieldError.checkNotNull(key, r'UpdateRolesRequest', 'key');
   }
 
   @override
   UpdateRolesRequest rebuild(
-          void Function(UpdateRolesRequestBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(UpdateRolesRequestBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   UpdateRolesRequestBuilder toBuilder() =>
@@ -123,14 +123,22 @@ class UpdateRolesRequestBuilder
   UpdateRolesRequest build() => _build();
 
   _$UpdateRolesRequest _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         new _$UpdateRolesRequest._(
-            name: BuiltValueNullFieldError.checkNotNull(
-                name, r'UpdateRolesRequest', 'name'),
-            description: description,
-            key: BuiltValueNullFieldError.checkNotNull(
-                key, r'UpdateRolesRequest', 'key'),
-            isDefaultRole: isDefaultRole);
+          name: BuiltValueNullFieldError.checkNotNull(
+            name,
+            r'UpdateRolesRequest',
+            'name',
+          ),
+          description: description,
+          key: BuiltValueNullFieldError.checkNotNull(
+            key,
+            r'UpdateRolesRequest',
+            'key',
+          ),
+          isDefaultRole: isDefaultRole,
+        );
     replace(_$result);
     return _$result;
   }

@@ -11,9 +11,9 @@ class _$CreateOrganizationResponseOrganization
   @override
   final String? code;
 
-  factory _$CreateOrganizationResponseOrganization(
-          [void Function(CreateOrganizationResponseOrganizationBuilder)?
-              updates]) =>
+  factory _$CreateOrganizationResponseOrganization([
+    void Function(CreateOrganizationResponseOrganizationBuilder)? updates,
+  ]) =>
       (new CreateOrganizationResponseOrganizationBuilder()..update(updates))
           ._build();
 
@@ -21,9 +21,8 @@ class _$CreateOrganizationResponseOrganization
 
   @override
   CreateOrganizationResponseOrganization rebuild(
-          void Function(CreateOrganizationResponseOrganizationBuilder)
-              updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CreateOrganizationResponseOrganizationBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CreateOrganizationResponseOrganizationBuilder toBuilder() =>
@@ -47,16 +46,17 @@ class _$CreateOrganizationResponseOrganization
   @override
   String toString() {
     return (newBuiltValueToStringHelper(
-            r'CreateOrganizationResponseOrganization')
-          ..add('code', code))
-        .toString();
+      r'CreateOrganizationResponseOrganization',
+    )..add('code', code)).toString();
   }
 }
 
 class CreateOrganizationResponseOrganizationBuilder
     implements
-        Builder<CreateOrganizationResponseOrganization,
-            CreateOrganizationResponseOrganizationBuilder> {
+        Builder<
+          CreateOrganizationResponseOrganization,
+          CreateOrganizationResponseOrganizationBuilder
+        > {
   _$CreateOrganizationResponseOrganization? _$v;
 
   String? _code;
@@ -84,7 +84,8 @@ class CreateOrganizationResponseOrganizationBuilder
 
   @override
   void update(
-      void Function(CreateOrganizationResponseOrganizationBuilder)? updates) {
+    void Function(CreateOrganizationResponseOrganizationBuilder)? updates,
+  ) {
     if (updates != null) updates(this);
   }
 

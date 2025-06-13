@@ -14,7 +14,8 @@ part 'token_error_response.g.dart';
 /// * [error] - Error.
 /// * [errorDescription] - The error description.
 @BuiltValue()
-abstract class TokenErrorResponse implements Built<TokenErrorResponse, TokenErrorResponseBuilder> {
+abstract class TokenErrorResponse
+    implements Built<TokenErrorResponse, TokenErrorResponseBuilder> {
   /// Error.
   @BuiltValueField(wireName: r'error')
   String? get error;
@@ -25,16 +26,20 @@ abstract class TokenErrorResponse implements Built<TokenErrorResponse, TokenErro
 
   TokenErrorResponse._();
 
-  factory TokenErrorResponse([void Function(TokenErrorResponseBuilder b) updates]) = _$TokenErrorResponse;
+  factory TokenErrorResponse([
+    void Function(TokenErrorResponseBuilder b) updates,
+  ]) = _$TokenErrorResponse;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(TokenErrorResponseBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<TokenErrorResponse> get serializer => _$TokenErrorResponseSerializer();
+  static Serializer<TokenErrorResponse> get serializer =>
+      _$TokenErrorResponseSerializer();
 }
 
-class _$TokenErrorResponseSerializer implements PrimitiveSerializer<TokenErrorResponse> {
+class _$TokenErrorResponseSerializer
+    implements PrimitiveSerializer<TokenErrorResponse> {
   @override
   final Iterable<Type> types = const [TokenErrorResponse, _$TokenErrorResponse];
 
@@ -68,7 +73,11 @@ class _$TokenErrorResponseSerializer implements PrimitiveSerializer<TokenErrorRe
     TokenErrorResponse object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -84,17 +93,21 @@ class _$TokenErrorResponseSerializer implements PrimitiveSerializer<TokenErrorRe
       final value = serializedList[i + 1];
       switch (key) {
         case r'error':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.error = valueDes;
           break;
         case r'error_description':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.errorDescription = valueDes;
           break;
         default:
@@ -125,4 +138,3 @@ class _$TokenErrorResponseSerializer implements PrimitiveSerializer<TokenErrorRe
     return result.build();
   }
 }
-

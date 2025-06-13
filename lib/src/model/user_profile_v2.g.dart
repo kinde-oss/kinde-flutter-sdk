@@ -29,17 +29,17 @@ class _$UserProfileV2 extends UserProfileV2 {
   factory _$UserProfileV2([void Function(UserProfileV2Builder)? updates]) =>
       (new UserProfileV2Builder()..update(updates))._build();
 
-  _$UserProfileV2._(
-      {this.id,
-      this.sub,
-      this.providedId,
-      this.name,
-      this.givenName,
-      this.familyName,
-      this.updatedAt,
-      this.email,
-      this.picture})
-      : super._();
+  _$UserProfileV2._({
+    this.id,
+    this.sub,
+    this.providedId,
+    this.name,
+    this.givenName,
+    this.familyName,
+    this.updatedAt,
+    this.email,
+    this.picture,
+  }) : super._();
 
   @override
   UserProfileV2 rebuild(void Function(UserProfileV2Builder) updates) =>
@@ -171,17 +171,19 @@ class UserProfileV2Builder
   UserProfileV2 build() => _build();
 
   _$UserProfileV2 _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         new _$UserProfileV2._(
-            id: id,
-            sub: sub,
-            providedId: providedId,
-            name: name,
-            givenName: givenName,
-            familyName: familyName,
-            updatedAt: updatedAt,
-            email: email,
-            picture: picture);
+          id: id,
+          sub: sub,
+          providedId: providedId,
+          name: name,
+          givenName: givenName,
+          familyName: familyName,
+          updatedAt: updatedAt,
+          email: email,
+          picture: picture,
+        );
     replace(_$result);
     return _$result;
   }

@@ -13,7 +13,6 @@ import 'package:kinde_flutter_sdk/src/model/connected_apps_auth_url.dart';
 import 'package:kinde_flutter_sdk/src/model/success_response.dart';
 
 class ConnectedAppsApi {
-
   final Dio _dio;
 
   final Serializers _serializers;
@@ -35,7 +34,7 @@ class ConnectedAppsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [ConnectedAppsAuthUrl] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<ConnectedAppsAuthUrl>> getConnectedAppAuthUrl({ 
+  Future<Response<ConnectedAppsAuthUrl>> getConnectedAppAuthUrl({
     required String keyCodeRef,
     required String userId,
     CancelToken? cancelToken,
@@ -48,16 +47,10 @@ class ConnectedAppsApi {
     const path = r'/api/v1/connected_apps/auth_url';
     final options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -65,8 +58,16 @@ class ConnectedAppsApi {
     );
 
     final queryParameters = <String, dynamic>{
-      r'key_code_ref': encodeQueryParameter(_serializers, keyCodeRef, const FullType(String)),
-      r'user_id': encodeQueryParameter(_serializers, userId, const FullType(String)),
+      r'key_code_ref': encodeQueryParameter(
+        _serializers,
+        keyCodeRef,
+        const FullType(String),
+      ),
+      r'user_id': encodeQueryParameter(
+        _serializers,
+        userId,
+        const FullType(String),
+      ),
     };
 
     final response = await _dio.request<Object>(
@@ -82,11 +83,14 @@ class ConnectedAppsApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(ConnectedAppsAuthUrl),
-      ) as ConnectedAppsAuthUrl;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(ConnectedAppsAuthUrl),
+                  )
+                  as ConnectedAppsAuthUrl;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -123,7 +127,7 @@ class ConnectedAppsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [ConnectedAppsAccessToken] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<ConnectedAppsAccessToken>> getConnectedAppToken({ 
+  Future<Response<ConnectedAppsAccessToken>> getConnectedAppToken({
     required String sessionId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -135,16 +139,10 @@ class ConnectedAppsApi {
     const path = r'/api/v1/connected_apps/token';
     final options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -152,7 +150,11 @@ class ConnectedAppsApi {
     );
 
     final queryParameters = <String, dynamic>{
-      r'session_id': encodeQueryParameter(_serializers, sessionId, const FullType(String)),
+      r'session_id': encodeQueryParameter(
+        _serializers,
+        sessionId,
+        const FullType(String),
+      ),
     };
 
     final response = await _dio.request<Object>(
@@ -168,11 +170,14 @@ class ConnectedAppsApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(ConnectedAppsAccessToken),
-      ) as ConnectedAppsAccessToken;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(ConnectedAppsAccessToken),
+                  )
+                  as ConnectedAppsAccessToken;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -209,7 +214,7 @@ class ConnectedAppsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> revokeConnectedAppToken({ 
+  Future<Response<SuccessResponse>> revokeConnectedAppToken({
     required String sessionId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -221,16 +226,10 @@ class ConnectedAppsApi {
     const path = r'/api/v1/connected_apps/revoke';
     final options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -238,7 +237,11 @@ class ConnectedAppsApi {
     );
 
     final queryParameters = <String, dynamic>{
-      r'session_id': encodeQueryParameter(_serializers, sessionId, const FullType(String)),
+      r'session_id': encodeQueryParameter(
+        _serializers,
+        sessionId,
+        const FullType(String),
+      ),
     };
 
     final response = await _dio.request<Object>(
@@ -254,11 +257,14 @@ class ConnectedAppsApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(SuccessResponse),
-      ) as SuccessResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(SuccessResponse),
+                  )
+                  as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -280,5 +286,4 @@ class ConnectedAppsApi {
       extra: response.extra,
     );
   }
-
 }

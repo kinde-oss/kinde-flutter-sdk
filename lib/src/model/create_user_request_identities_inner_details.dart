@@ -13,25 +13,37 @@ part 'create_user_request_identities_inner_details.g.dart';
 /// Properties:
 /// * [email] - The email address of the user.
 @BuiltValue()
-abstract class CreateUserRequestIdentitiesInnerDetails implements Built<CreateUserRequestIdentitiesInnerDetails, CreateUserRequestIdentitiesInnerDetailsBuilder> {
+abstract class CreateUserRequestIdentitiesInnerDetails
+    implements
+        Built<
+          CreateUserRequestIdentitiesInnerDetails,
+          CreateUserRequestIdentitiesInnerDetailsBuilder
+        > {
   /// The email address of the user.
   @BuiltValueField(wireName: r'email')
   String? get email;
 
   CreateUserRequestIdentitiesInnerDetails._();
 
-  factory CreateUserRequestIdentitiesInnerDetails([void Function(CreateUserRequestIdentitiesInnerDetailsBuilder b) updates]) = _$CreateUserRequestIdentitiesInnerDetails;
+  factory CreateUserRequestIdentitiesInnerDetails([
+    void Function(CreateUserRequestIdentitiesInnerDetailsBuilder b) updates,
+  ]) = _$CreateUserRequestIdentitiesInnerDetails;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CreateUserRequestIdentitiesInnerDetailsBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CreateUserRequestIdentitiesInnerDetails> get serializer => _$CreateUserRequestIdentitiesInnerDetailsSerializer();
+  static Serializer<CreateUserRequestIdentitiesInnerDetails> get serializer =>
+      _$CreateUserRequestIdentitiesInnerDetailsSerializer();
 }
 
-class _$CreateUserRequestIdentitiesInnerDetailsSerializer implements PrimitiveSerializer<CreateUserRequestIdentitiesInnerDetails> {
+class _$CreateUserRequestIdentitiesInnerDetailsSerializer
+    implements PrimitiveSerializer<CreateUserRequestIdentitiesInnerDetails> {
   @override
-  final Iterable<Type> types = const [CreateUserRequestIdentitiesInnerDetails, _$CreateUserRequestIdentitiesInnerDetails];
+  final Iterable<Type> types = const [
+    CreateUserRequestIdentitiesInnerDetails,
+    _$CreateUserRequestIdentitiesInnerDetails,
+  ];
 
   @override
   final String wireName = r'CreateUserRequestIdentitiesInnerDetails';
@@ -56,7 +68,11 @@ class _$CreateUserRequestIdentitiesInnerDetailsSerializer implements PrimitiveSe
     CreateUserRequestIdentitiesInnerDetails object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -72,10 +88,12 @@ class _$CreateUserRequestIdentitiesInnerDetailsSerializer implements PrimitiveSe
       final value = serializedList[i + 1];
       switch (key) {
         case r'email':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.email = valueDes;
           break;
         default:
@@ -106,4 +124,3 @@ class _$CreateUserRequestIdentitiesInnerDetailsSerializer implements PrimitiveSe
     return result.build();
   }
 }
-

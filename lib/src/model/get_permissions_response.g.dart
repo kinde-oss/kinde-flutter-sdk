@@ -16,18 +16,21 @@ class _$GetPermissionsResponse extends GetPermissionsResponse {
   @override
   final String? nextToken;
 
-  factory _$GetPermissionsResponse(
-          [void Function(GetPermissionsResponseBuilder)? updates]) =>
-      (new GetPermissionsResponseBuilder()..update(updates))._build();
+  factory _$GetPermissionsResponse([
+    void Function(GetPermissionsResponseBuilder)? updates,
+  ]) => (new GetPermissionsResponseBuilder()..update(updates))._build();
 
-  _$GetPermissionsResponse._(
-      {this.code, this.message, this.permissions, this.nextToken})
-      : super._();
+  _$GetPermissionsResponse._({
+    this.code,
+    this.message,
+    this.permissions,
+    this.nextToken,
+  }) : super._();
 
   @override
   GetPermissionsResponse rebuild(
-          void Function(GetPermissionsResponseBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(GetPermissionsResponseBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   GetPermissionsResponseBuilder toBuilder() =>
@@ -120,12 +123,14 @@ class GetPermissionsResponseBuilder
   _$GetPermissionsResponse _build() {
     _$GetPermissionsResponse _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           new _$GetPermissionsResponse._(
-              code: code,
-              message: message,
-              permissions: _permissions?.build(),
-              nextToken: nextToken);
+            code: code,
+            message: message,
+            permissions: _permissions?.build(),
+            nextToken: nextToken,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -133,7 +138,10 @@ class GetPermissionsResponseBuilder
         _permissions?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'GetPermissionsResponse', _$failedField, e.toString());
+          r'GetPermissionsResponse',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

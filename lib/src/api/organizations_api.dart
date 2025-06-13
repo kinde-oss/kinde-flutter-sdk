@@ -26,7 +26,6 @@ import 'package:kinde_flutter_sdk/src/model/update_organization_users_request.da
 import 'package:kinde_flutter_sdk/src/model/update_organization_users_response.dart';
 
 class OrganizationsApi {
-
   final Dio _dio;
 
   final Serializers _serializers;
@@ -38,7 +37,7 @@ class OrganizationsApi {
   ///
   /// Parameters:
   /// * [orgCode] - The organization's code.
-  /// * [addOrganizationUsersRequest] 
+  /// * [addOrganizationUsersRequest]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -48,7 +47,7 @@ class OrganizationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [AddOrganizationUsersResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<AddOrganizationUsersResponse>> addOrganizationUsers({ 
+  Future<Response<AddOrganizationUsersResponse>> addOrganizationUsers({
     required String orgCode,
     AddOrganizationUsersRequest? addOrganizationUsersRequest,
     CancelToken? cancelToken,
@@ -58,19 +57,22 @@ class OrganizationsApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/api/v1/organizations/{org_code}/users'.replaceAll('{' r'org_code' '}', encodeQueryParameter(_serializers, orgCode, const FullType(String)).toString());
+    final path = r'/api/v1/organizations/{org_code}/users'.replaceAll(
+      '{'
+      r'org_code'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        orgCode,
+        const FullType(String),
+      ).toString(),
+    );
     final options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -82,14 +84,16 @@ class OrganizationsApi {
 
     try {
       const type = FullType(AddOrganizationUsersRequest);
-      bodyData = addOrganizationUsersRequest == null ? null : _serializers.serialize(addOrganizationUsersRequest, specifiedType: type);
-
-    } catch(error, stackTrace) {
+      bodyData =
+          addOrganizationUsersRequest == null
+              ? null
+              : _serializers.serialize(
+                addOrganizationUsersRequest,
+                specifiedType: type,
+              );
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: options.compose(
-          _dio.options,
-          path,
-        ),
+        requestOptions: options.compose(_dio.options, path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -109,11 +113,14 @@ class OrganizationsApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(AddOrganizationUsersResponse),
-      ) as AddOrganizationUsersResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(AddOrganizationUsersResponse),
+                  )
+                  as AddOrganizationUsersResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -150,7 +157,7 @@ class OrganizationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [CreateOrganizationResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<CreateOrganizationResponse>> createOrganization({ 
+  Future<Response<CreateOrganizationResponse>> createOrganization({
     CreateOrganizationRequest? createOrganizationRequest,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -162,16 +169,10 @@ class OrganizationsApi {
     const path = r'/api/v1/organization';
     final options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -183,14 +184,16 @@ class OrganizationsApi {
 
     try {
       const type = FullType(CreateOrganizationRequest);
-      bodyData = createOrganizationRequest == null ? null : _serializers.serialize(createOrganizationRequest, specifiedType: type);
-
-    } catch(error, stackTrace) {
+      bodyData =
+          createOrganizationRequest == null
+              ? null
+              : _serializers.serialize(
+                createOrganizationRequest,
+                specifiedType: type,
+              );
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: options.compose(
-          _dio.options,
-          path,
-        ),
+        requestOptions: options.compose(_dio.options, path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -210,11 +213,14 @@ class OrganizationsApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(CreateOrganizationResponse),
-      ) as CreateOrganizationResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(CreateOrganizationResponse),
+                  )
+                  as CreateOrganizationResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -253,10 +259,11 @@ class OrganizationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> createOrganizationUserPermission({ 
+  Future<Response<SuccessResponse>> createOrganizationUserPermission({
     required String orgCode,
     required String userId,
-    required CreateOrganizationUserPermissionRequest createOrganizationUserPermissionRequest,
+    required CreateOrganizationUserPermissionRequest
+    createOrganizationUserPermissionRequest,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -264,19 +271,33 @@ class OrganizationsApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/api/v1/organizations/{org_code}/users/{user_id}/permissions'.replaceAll('{' r'org_code' '}', encodeQueryParameter(_serializers, orgCode, const FullType(String)).toString()).replaceAll('{' r'user_id' '}', encodeQueryParameter(_serializers, userId, const FullType(String)).toString());
+    final path = r'/api/v1/organizations/{org_code}/users/{user_id}/permissions'
+        .replaceAll(
+          '{'
+          r'org_code'
+          '}',
+          encodeQueryParameter(
+            _serializers,
+            orgCode,
+            const FullType(String),
+          ).toString(),
+        )
+        .replaceAll(
+          '{'
+          r'user_id'
+          '}',
+          encodeQueryParameter(
+            _serializers,
+            userId,
+            const FullType(String),
+          ).toString(),
+        );
     final options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -288,14 +309,13 @@ class OrganizationsApi {
 
     try {
       const type = FullType(CreateOrganizationUserPermissionRequest);
-      bodyData = _serializers.serialize(createOrganizationUserPermissionRequest, specifiedType: type);
-
-    } catch(error, stackTrace) {
+      bodyData = _serializers.serialize(
+        createOrganizationUserPermissionRequest,
+        specifiedType: type,
+      );
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: options.compose(
-          _dio.options,
-          path,
-        ),
+        requestOptions: options.compose(_dio.options, path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -315,11 +335,14 @@ class OrganizationsApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(SuccessResponse),
-      ) as SuccessResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(SuccessResponse),
+                  )
+                  as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -358,10 +381,11 @@ class OrganizationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> createOrganizationUserRole({ 
+  Future<Response<SuccessResponse>> createOrganizationUserRole({
     required String orgCode,
     required String userId,
-    required CreateOrganizationUserRoleRequest createOrganizationUserRoleRequest,
+    required CreateOrganizationUserRoleRequest
+    createOrganizationUserRoleRequest,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -369,19 +393,33 @@ class OrganizationsApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/api/v1/organizations/{org_code}/users/{user_id}/roles'.replaceAll('{' r'org_code' '}', encodeQueryParameter(_serializers, orgCode, const FullType(String)).toString()).replaceAll('{' r'user_id' '}', encodeQueryParameter(_serializers, userId, const FullType(String)).toString());
+    final path = r'/api/v1/organizations/{org_code}/users/{user_id}/roles'
+        .replaceAll(
+          '{'
+          r'org_code'
+          '}',
+          encodeQueryParameter(
+            _serializers,
+            orgCode,
+            const FullType(String),
+          ).toString(),
+        )
+        .replaceAll(
+          '{'
+          r'user_id'
+          '}',
+          encodeQueryParameter(
+            _serializers,
+            userId,
+            const FullType(String),
+          ).toString(),
+        );
     final options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -393,14 +431,13 @@ class OrganizationsApi {
 
     try {
       const type = FullType(CreateOrganizationUserRoleRequest);
-      bodyData = _serializers.serialize(createOrganizationUserRoleRequest, specifiedType: type);
-
-    } catch(error, stackTrace) {
+      bodyData = _serializers.serialize(
+        createOrganizationUserRoleRequest,
+        specifiedType: type,
+      );
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: options.compose(
-          _dio.options,
-          path,
-        ),
+        requestOptions: options.compose(_dio.options, path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -420,11 +457,14 @@ class OrganizationsApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(SuccessResponse),
-      ) as SuccessResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(SuccessResponse),
+                  )
+                  as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -461,7 +501,7 @@ class OrganizationsApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> deleteOrganization({ 
+  Future<Response<void>> deleteOrganization({
     required String orgCode,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -470,19 +510,22 @@ class OrganizationsApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/api/v1/organization/{org_code}'.replaceAll('{' r'org_code' '}', encodeQueryParameter(_serializers, orgCode, const FullType(String)).toString());
+    final path = r'/api/v1/organization/{org_code}'.replaceAll(
+      '{'
+      r'org_code'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        orgCode,
+        const FullType(String),
+      ).toString(),
+    );
     final options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -515,7 +558,7 @@ class OrganizationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> deleteOrganizationFeatureFlagOverride({ 
+  Future<Response<SuccessResponse>> deleteOrganizationFeatureFlagOverride({
     required String orgCode,
     required String featureFlagKey,
     CancelToken? cancelToken,
@@ -525,19 +568,34 @@ class OrganizationsApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/api/v1/organizations/{org_code}/feature_flags/{feature_flag_key}'.replaceAll('{' r'org_code' '}', encodeQueryParameter(_serializers, orgCode, const FullType(String)).toString()).replaceAll('{' r'feature_flag_key' '}', encodeQueryParameter(_serializers, featureFlagKey, const FullType(String)).toString());
+    final path =
+        r'/api/v1/organizations/{org_code}/feature_flags/{feature_flag_key}'
+            .replaceAll(
+              '{'
+              r'org_code'
+              '}',
+              encodeQueryParameter(
+                _serializers,
+                orgCode,
+                const FullType(String),
+              ).toString(),
+            )
+            .replaceAll(
+              '{'
+              r'feature_flag_key'
+              '}',
+              encodeQueryParameter(
+                _serializers,
+                featureFlagKey,
+                const FullType(String),
+              ).toString(),
+            );
     final options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -556,11 +614,14 @@ class OrganizationsApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(SuccessResponse),
-      ) as SuccessResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(SuccessResponse),
+                  )
+                  as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -597,7 +658,7 @@ class OrganizationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> deleteOrganizationFeatureFlagOverrides({ 
+  Future<Response<SuccessResponse>> deleteOrganizationFeatureFlagOverrides({
     required String orgCode,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -606,19 +667,22 @@ class OrganizationsApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/api/v1/organizations/{org_code}/feature_flags'.replaceAll('{' r'org_code' '}', encodeQueryParameter(_serializers, orgCode, const FullType(String)).toString());
+    final path = r'/api/v1/organizations/{org_code}/feature_flags'.replaceAll(
+      '{'
+      r'org_code'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        orgCode,
+        const FullType(String),
+      ).toString(),
+    );
     final options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -637,11 +701,14 @@ class OrganizationsApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(SuccessResponse),
-      ) as SuccessResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(SuccessResponse),
+                  )
+                  as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -680,7 +747,7 @@ class OrganizationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> deleteOrganizationUserPermission({ 
+  Future<Response<SuccessResponse>> deleteOrganizationUserPermission({
     required String orgCode,
     required String userId,
     required String permissionId,
@@ -691,19 +758,44 @@ class OrganizationsApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/api/v1/organizations/{org_code}/users/{user_id}/permissions/{permission_id}'.replaceAll('{' r'org_code' '}', encodeQueryParameter(_serializers, orgCode, const FullType(String)).toString()).replaceAll('{' r'user_id' '}', encodeQueryParameter(_serializers, userId, const FullType(String)).toString()).replaceAll('{' r'permission_id' '}', encodeQueryParameter(_serializers, permissionId, const FullType(String)).toString());
+    final path =
+        r'/api/v1/organizations/{org_code}/users/{user_id}/permissions/{permission_id}'
+            .replaceAll(
+              '{'
+              r'org_code'
+              '}',
+              encodeQueryParameter(
+                _serializers,
+                orgCode,
+                const FullType(String),
+              ).toString(),
+            )
+            .replaceAll(
+              '{'
+              r'user_id'
+              '}',
+              encodeQueryParameter(
+                _serializers,
+                userId,
+                const FullType(String),
+              ).toString(),
+            )
+            .replaceAll(
+              '{'
+              r'permission_id'
+              '}',
+              encodeQueryParameter(
+                _serializers,
+                permissionId,
+                const FullType(String),
+              ).toString(),
+            );
     final options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -722,11 +814,14 @@ class OrganizationsApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(SuccessResponse),
-      ) as SuccessResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(SuccessResponse),
+                  )
+                  as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -765,7 +860,7 @@ class OrganizationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> deleteOrganizationUserRole({ 
+  Future<Response<SuccessResponse>> deleteOrganizationUserRole({
     required String orgCode,
     required String userId,
     required String roleId,
@@ -776,19 +871,44 @@ class OrganizationsApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/api/v1/organizations/{org_code}/users/{user_id}/roles/{role_id}'.replaceAll('{' r'org_code' '}', encodeQueryParameter(_serializers, orgCode, const FullType(String)).toString()).replaceAll('{' r'user_id' '}', encodeQueryParameter(_serializers, userId, const FullType(String)).toString()).replaceAll('{' r'role_id' '}', encodeQueryParameter(_serializers, roleId, const FullType(String)).toString());
+    final path =
+        r'/api/v1/organizations/{org_code}/users/{user_id}/roles/{role_id}'
+            .replaceAll(
+              '{'
+              r'org_code'
+              '}',
+              encodeQueryParameter(
+                _serializers,
+                orgCode,
+                const FullType(String),
+              ).toString(),
+            )
+            .replaceAll(
+              '{'
+              r'user_id'
+              '}',
+              encodeQueryParameter(
+                _serializers,
+                userId,
+                const FullType(String),
+              ).toString(),
+            )
+            .replaceAll(
+              '{'
+              r'role_id'
+              '}',
+              encodeQueryParameter(
+                _serializers,
+                roleId,
+                const FullType(String),
+              ).toString(),
+            );
     final options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -807,11 +927,14 @@ class OrganizationsApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(SuccessResponse),
-      ) as SuccessResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(SuccessResponse),
+                  )
+                  as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -835,7 +958,7 @@ class OrganizationsApi {
   }
 
   /// Get Organization
-  /// Gets an organization given the organization&#39;s code. 
+  /// Gets an organization given the organization&#39;s code.
   ///
   /// Parameters:
   /// * [code] - The organization's code.
@@ -848,7 +971,7 @@ class OrganizationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [Organization] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Organization>> getOrganization({ 
+  Future<Response<Organization>> getOrganization({
     String? code,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -860,16 +983,10 @@ class OrganizationsApi {
     const path = r'/api/v1/organization';
     final options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -877,7 +994,12 @@ class OrganizationsApi {
     );
 
     final queryParameters = <String, dynamic>{
-      if (code != null) r'code': encodeQueryParameter(_serializers, code, const FullType(String)),
+      if (code != null)
+        r'code': encodeQueryParameter(
+          _serializers,
+          code,
+          const FullType(String),
+        ),
     };
 
     final response = await _dio.request<Object>(
@@ -893,11 +1015,14 @@ class OrganizationsApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(Organization),
-      ) as Organization;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(Organization),
+                  )
+                  as Organization;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -934,7 +1059,8 @@ class OrganizationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [GetOrganizationFeatureFlagsResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<GetOrganizationFeatureFlagsResponse>> getOrganizationFeatureFlags({ 
+  Future<Response<GetOrganizationFeatureFlagsResponse>>
+  getOrganizationFeatureFlags({
     required String orgCode,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -943,19 +1069,22 @@ class OrganizationsApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/api/v1/organizations/{org_code}/feature_flags'.replaceAll('{' r'org_code' '}', encodeQueryParameter(_serializers, orgCode, const FullType(String)).toString());
+    final path = r'/api/v1/organizations/{org_code}/feature_flags'.replaceAll(
+      '{'
+      r'org_code'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        orgCode,
+        const FullType(String),
+      ).toString(),
+    );
     final options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -974,11 +1103,16 @@ class OrganizationsApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(GetOrganizationFeatureFlagsResponse),
-      ) as GetOrganizationFeatureFlagsResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(
+                      GetOrganizationFeatureFlagsResponse,
+                    ),
+                  )
+                  as GetOrganizationFeatureFlagsResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -1017,7 +1151,8 @@ class OrganizationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [GetOrganizationsUserPermissionsResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<GetOrganizationsUserPermissionsResponse>> getOrganizationUserPermissions({ 
+  Future<Response<GetOrganizationsUserPermissionsResponse>>
+  getOrganizationUserPermissions({
     required String orgCode,
     required String userId,
     String? expand,
@@ -1028,19 +1163,33 @@ class OrganizationsApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/api/v1/organizations/{org_code}/users/{user_id}/permissions'.replaceAll('{' r'org_code' '}', encodeQueryParameter(_serializers, orgCode, const FullType(String)).toString()).replaceAll('{' r'user_id' '}', encodeQueryParameter(_serializers, userId, const FullType(String)).toString());
+    final path = r'/api/v1/organizations/{org_code}/users/{user_id}/permissions'
+        .replaceAll(
+          '{'
+          r'org_code'
+          '}',
+          encodeQueryParameter(
+            _serializers,
+            orgCode,
+            const FullType(String),
+          ).toString(),
+        )
+        .replaceAll(
+          '{'
+          r'user_id'
+          '}',
+          encodeQueryParameter(
+            _serializers,
+            userId,
+            const FullType(String),
+          ).toString(),
+        );
     final options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -1048,7 +1197,11 @@ class OrganizationsApi {
     );
 
     final queryParameters = <String, dynamic>{
-      r'expand': encodeQueryParameter(_serializers, expand, const FullType(String)),
+      r'expand': encodeQueryParameter(
+        _serializers,
+        expand,
+        const FullType(String),
+      ),
     };
 
     final response = await _dio.request<Object>(
@@ -1064,11 +1217,16 @@ class OrganizationsApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(GetOrganizationsUserPermissionsResponse),
-      ) as GetOrganizationsUserPermissionsResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(
+                      GetOrganizationsUserPermissionsResponse,
+                    ),
+                  )
+                  as GetOrganizationsUserPermissionsResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -1106,7 +1264,7 @@ class OrganizationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [GetOrganizationsUserRolesResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<GetOrganizationsUserRolesResponse>> getOrganizationUserRoles({ 
+  Future<Response<GetOrganizationsUserRolesResponse>> getOrganizationUserRoles({
     required String orgCode,
     required String userId,
     CancelToken? cancelToken,
@@ -1116,19 +1274,33 @@ class OrganizationsApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/api/v1/organizations/{org_code}/users/{user_id}/roles'.replaceAll('{' r'org_code' '}', encodeQueryParameter(_serializers, orgCode, const FullType(String)).toString()).replaceAll('{' r'user_id' '}', encodeQueryParameter(_serializers, userId, const FullType(String)).toString());
+    final path = r'/api/v1/organizations/{org_code}/users/{user_id}/roles'
+        .replaceAll(
+          '{'
+          r'org_code'
+          '}',
+          encodeQueryParameter(
+            _serializers,
+            orgCode,
+            const FullType(String),
+          ).toString(),
+        )
+        .replaceAll(
+          '{'
+          r'user_id'
+          '}',
+          encodeQueryParameter(
+            _serializers,
+            userId,
+            const FullType(String),
+          ).toString(),
+        );
     final options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -1147,11 +1319,16 @@ class OrganizationsApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(GetOrganizationsUserRolesResponse),
-      ) as GetOrganizationsUserRolesResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(
+                      GetOrganizationsUserRolesResponse,
+                    ),
+                  )
+                  as GetOrganizationsUserRolesResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -1193,7 +1370,7 @@ class OrganizationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [GetOrganizationUsersResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<GetOrganizationUsersResponse>> getOrganizationUsers({ 
+  Future<Response<GetOrganizationUsersResponse>> getOrganizationUsers({
     required String orgCode,
     String? sort,
     int? pageSize,
@@ -1207,19 +1384,22 @@ class OrganizationsApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/api/v1/organizations/{org_code}/users'.replaceAll('{' r'org_code' '}', encodeQueryParameter(_serializers, orgCode, const FullType(String)).toString());
+    final path = r'/api/v1/organizations/{org_code}/users'.replaceAll(
+      '{'
+      r'org_code'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        orgCode,
+        const FullType(String),
+      ).toString(),
+    );
     final options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -1228,10 +1408,28 @@ class OrganizationsApi {
 
     final queryParameters = <String, dynamic>{
       r'sort': encodeQueryParameter(_serializers, sort, const FullType(String)),
-      r'page_size': encodeQueryParameter(_serializers, pageSize, const FullType(int)),
-      r'next_token': encodeQueryParameter(_serializers, nextToken, const FullType(String)),
-      if (permissions != null) r'permissions': encodeQueryParameter(_serializers, permissions, const FullType(String)),
-      if (roles != null) r'roles': encodeQueryParameter(_serializers, roles, const FullType(String)),
+      r'page_size': encodeQueryParameter(
+        _serializers,
+        pageSize,
+        const FullType(int),
+      ),
+      r'next_token': encodeQueryParameter(
+        _serializers,
+        nextToken,
+        const FullType(String),
+      ),
+      if (permissions != null)
+        r'permissions': encodeQueryParameter(
+          _serializers,
+          permissions,
+          const FullType(String),
+        ),
+      if (roles != null)
+        r'roles': encodeQueryParameter(
+          _serializers,
+          roles,
+          const FullType(String),
+        ),
     };
 
     final response = await _dio.request<Object>(
@@ -1247,11 +1445,14 @@ class OrganizationsApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(GetOrganizationUsersResponse),
-      ) as GetOrganizationUsersResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(GetOrganizationUsersResponse),
+                  )
+                  as GetOrganizationUsersResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -1275,7 +1476,7 @@ class OrganizationsApi {
   }
 
   /// List Organizations
-  /// Get a list of organizations. 
+  /// Get a list of organizations.
   ///
   /// Parameters:
   /// * [sort] - Field and order to sort the result by.
@@ -1290,7 +1491,7 @@ class OrganizationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [GetOrganizationsResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<GetOrganizationsResponse>> getOrganizations({ 
+  Future<Response<GetOrganizationsResponse>> getOrganizations({
     String? sort,
     int? pageSize,
     String? nextToken,
@@ -1304,16 +1505,10 @@ class OrganizationsApi {
     const path = r'/api/v1/organizations';
     final options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -1322,8 +1517,16 @@ class OrganizationsApi {
 
     final queryParameters = <String, dynamic>{
       r'sort': encodeQueryParameter(_serializers, sort, const FullType(String)),
-      r'page_size': encodeQueryParameter(_serializers, pageSize, const FullType(int)),
-      r'next_token': encodeQueryParameter(_serializers, nextToken, const FullType(String)),
+      r'page_size': encodeQueryParameter(
+        _serializers,
+        pageSize,
+        const FullType(int),
+      ),
+      r'next_token': encodeQueryParameter(
+        _serializers,
+        nextToken,
+        const FullType(String),
+      ),
     };
 
     final response = await _dio.request<Object>(
@@ -1339,11 +1542,14 @@ class OrganizationsApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(GetOrganizationsResponse),
-      ) as GetOrganizationsResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(GetOrganizationsResponse),
+                  )
+                  as GetOrganizationsResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -1381,7 +1587,7 @@ class OrganizationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> removeOrganizationUser({ 
+  Future<Response<SuccessResponse>> removeOrganizationUser({
     required String orgCode,
     required String userId,
     CancelToken? cancelToken,
@@ -1391,19 +1597,33 @@ class OrganizationsApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/api/v1/organizations/{org_code}/users/{user_id}'.replaceAll('{' r'org_code' '}', encodeQueryParameter(_serializers, orgCode, const FullType(String)).toString()).replaceAll('{' r'user_id' '}', encodeQueryParameter(_serializers, userId, const FullType(String)).toString());
+    final path = r'/api/v1/organizations/{org_code}/users/{user_id}'
+        .replaceAll(
+          '{'
+          r'org_code'
+          '}',
+          encodeQueryParameter(
+            _serializers,
+            orgCode,
+            const FullType(String),
+          ).toString(),
+        )
+        .replaceAll(
+          '{'
+          r'user_id'
+          '}',
+          encodeQueryParameter(
+            _serializers,
+            userId,
+            const FullType(String),
+          ).toString(),
+        );
     final options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -1422,11 +1642,14 @@ class OrganizationsApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(SuccessResponse),
-      ) as SuccessResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(SuccessResponse),
+                  )
+                  as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -1464,7 +1687,7 @@ class OrganizationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> updateOrganization({ 
+  Future<Response<SuccessResponse>> updateOrganization({
     required String orgCode,
     UpdateOrganizationRequest? updateOrganizationRequest,
     CancelToken? cancelToken,
@@ -1474,19 +1697,22 @@ class OrganizationsApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/api/v1/organization/{org_code}'.replaceAll('{' r'org_code' '}', encodeQueryParameter(_serializers, orgCode, const FullType(String)).toString());
+    final path = r'/api/v1/organization/{org_code}'.replaceAll(
+      '{'
+      r'org_code'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        orgCode,
+        const FullType(String),
+      ).toString(),
+    );
     final options = Options(
       method: r'PATCH',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -1498,14 +1724,16 @@ class OrganizationsApi {
 
     try {
       const type = FullType(UpdateOrganizationRequest);
-      bodyData = updateOrganizationRequest == null ? null : _serializers.serialize(updateOrganizationRequest, specifiedType: type);
-
-    } catch(error, stackTrace) {
+      bodyData =
+          updateOrganizationRequest == null
+              ? null
+              : _serializers.serialize(
+                updateOrganizationRequest,
+                specifiedType: type,
+              );
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: options.compose(
-          _dio.options,
-          path,
-        ),
+        requestOptions: options.compose(_dio.options, path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -1525,11 +1753,14 @@ class OrganizationsApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(SuccessResponse),
-      ) as SuccessResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(SuccessResponse),
+                  )
+                  as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -1568,7 +1799,7 @@ class OrganizationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> updateOrganizationFeatureFlagOverride({ 
+  Future<Response<SuccessResponse>> updateOrganizationFeatureFlagOverride({
     required String orgCode,
     required String featureFlagKey,
     required String value,
@@ -1579,19 +1810,34 @@ class OrganizationsApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/api/v1/organizations/{org_code}/feature_flags/{feature_flag_key}'.replaceAll('{' r'org_code' '}', encodeQueryParameter(_serializers, orgCode, const FullType(String)).toString()).replaceAll('{' r'feature_flag_key' '}', encodeQueryParameter(_serializers, featureFlagKey, const FullType(String)).toString());
+    final path =
+        r'/api/v1/organizations/{org_code}/feature_flags/{feature_flag_key}'
+            .replaceAll(
+              '{'
+              r'org_code'
+              '}',
+              encodeQueryParameter(
+                _serializers,
+                orgCode,
+                const FullType(String),
+              ).toString(),
+            )
+            .replaceAll(
+              '{'
+              r'feature_flag_key'
+              '}',
+              encodeQueryParameter(
+                _serializers,
+                featureFlagKey,
+                const FullType(String),
+              ).toString(),
+            );
     final options = Options(
       method: r'PATCH',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -1599,7 +1845,11 @@ class OrganizationsApi {
     );
 
     final queryParameters = <String, dynamic>{
-      r'value': encodeQueryParameter(_serializers, value, const FullType(String)),
+      r'value': encodeQueryParameter(
+        _serializers,
+        value,
+        const FullType(String),
+      ),
     };
 
     final response = await _dio.request<Object>(
@@ -1615,11 +1865,14 @@ class OrganizationsApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(SuccessResponse),
-      ) as SuccessResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(SuccessResponse),
+                  )
+                  as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -1647,7 +1900,7 @@ class OrganizationsApi {
   ///
   /// Parameters:
   /// * [orgCode] - The organization's code.
-  /// * [updateOrganizationUsersRequest] 
+  /// * [updateOrganizationUsersRequest]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -1657,7 +1910,7 @@ class OrganizationsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [UpdateOrganizationUsersResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<UpdateOrganizationUsersResponse>> updateOrganizationUsers({ 
+  Future<Response<UpdateOrganizationUsersResponse>> updateOrganizationUsers({
     required String orgCode,
     UpdateOrganizationUsersRequest? updateOrganizationUsersRequest,
     CancelToken? cancelToken,
@@ -1667,19 +1920,22 @@ class OrganizationsApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/api/v1/organizations/{org_code}/users'.replaceAll('{' r'org_code' '}', encodeQueryParameter(_serializers, orgCode, const FullType(String)).toString());
+    final path = r'/api/v1/organizations/{org_code}/users'.replaceAll(
+      '{'
+      r'org_code'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        orgCode,
+        const FullType(String),
+      ).toString(),
+    );
     final options = Options(
       method: r'PATCH',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -1691,14 +1947,16 @@ class OrganizationsApi {
 
     try {
       const type = FullType(UpdateOrganizationUsersRequest);
-      bodyData = updateOrganizationUsersRequest == null ? null : _serializers.serialize(updateOrganizationUsersRequest, specifiedType: type);
-
-    } catch(error, stackTrace) {
+      bodyData =
+          updateOrganizationUsersRequest == null
+              ? null
+              : _serializers.serialize(
+                updateOrganizationUsersRequest,
+                specifiedType: type,
+              );
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: options.compose(
-          _dio.options,
-          path,
-        ),
+        requestOptions: options.compose(_dio.options, path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -1718,11 +1976,16 @@ class OrganizationsApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(UpdateOrganizationUsersResponse),
-      ) as UpdateOrganizationUsersResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(
+                      UpdateOrganizationUsersResponse,
+                    ),
+                  )
+                  as UpdateOrganizationUsersResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -1744,5 +2007,4 @@ class OrganizationsApi {
       extra: response.extra,
     );
   }
-
 }

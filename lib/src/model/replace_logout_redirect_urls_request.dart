@@ -14,25 +14,37 @@ part 'replace_logout_redirect_urls_request.g.dart';
 /// Properties:
 /// * [urls] - Array of logout urls.
 @BuiltValue()
-abstract class ReplaceLogoutRedirectURLsRequest implements Built<ReplaceLogoutRedirectURLsRequest, ReplaceLogoutRedirectURLsRequestBuilder> {
+abstract class ReplaceLogoutRedirectURLsRequest
+    implements
+        Built<
+          ReplaceLogoutRedirectURLsRequest,
+          ReplaceLogoutRedirectURLsRequestBuilder
+        > {
   /// Array of logout urls.
   @BuiltValueField(wireName: r'urls')
   BuiltList<String>? get urls;
 
   ReplaceLogoutRedirectURLsRequest._();
 
-  factory ReplaceLogoutRedirectURLsRequest([void Function(ReplaceLogoutRedirectURLsRequestBuilder b) updates]) = _$ReplaceLogoutRedirectURLsRequest;
+  factory ReplaceLogoutRedirectURLsRequest([
+    void Function(ReplaceLogoutRedirectURLsRequestBuilder b) updates,
+  ]) = _$ReplaceLogoutRedirectURLsRequest;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(ReplaceLogoutRedirectURLsRequestBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<ReplaceLogoutRedirectURLsRequest> get serializer => _$ReplaceLogoutRedirectURLsRequestSerializer();
+  static Serializer<ReplaceLogoutRedirectURLsRequest> get serializer =>
+      _$ReplaceLogoutRedirectURLsRequestSerializer();
 }
 
-class _$ReplaceLogoutRedirectURLsRequestSerializer implements PrimitiveSerializer<ReplaceLogoutRedirectURLsRequest> {
+class _$ReplaceLogoutRedirectURLsRequestSerializer
+    implements PrimitiveSerializer<ReplaceLogoutRedirectURLsRequest> {
   @override
-  final Iterable<Type> types = const [ReplaceLogoutRedirectURLsRequest, _$ReplaceLogoutRedirectURLsRequest];
+  final Iterable<Type> types = const [
+    ReplaceLogoutRedirectURLsRequest,
+    _$ReplaceLogoutRedirectURLsRequest,
+  ];
 
   @override
   final String wireName = r'ReplaceLogoutRedirectURLsRequest';
@@ -57,7 +69,11 @@ class _$ReplaceLogoutRedirectURLsRequestSerializer implements PrimitiveSerialize
     ReplaceLogoutRedirectURLsRequest object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -73,10 +89,14 @@ class _$ReplaceLogoutRedirectURLsRequestSerializer implements PrimitiveSerialize
       final value = serializedList[i + 1];
       switch (key) {
         case r'urls':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(String)]),
-          ) as BuiltList<String>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(String),
+                    ]),
+                  )
+                  as BuiltList<String>;
           result.urls.replace(valueDes);
           break;
         default:
@@ -107,4 +127,3 @@ class _$ReplaceLogoutRedirectURLsRequestSerializer implements PrimitiveSerialize
     return result.build();
   }
 }
-

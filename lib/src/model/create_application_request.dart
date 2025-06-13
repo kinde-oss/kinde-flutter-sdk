@@ -15,7 +15,9 @@ part 'create_application_request.g.dart';
 /// * [name] - The application's name.
 /// * [type] - The application's type.
 @BuiltValue()
-abstract class CreateApplicationRequest implements Built<CreateApplicationRequest, CreateApplicationRequestBuilder> {
+abstract class CreateApplicationRequest
+    implements
+        Built<CreateApplicationRequest, CreateApplicationRequestBuilder> {
   /// The application's name.
   @BuiltValueField(wireName: r'name')
   String? get name;
@@ -27,18 +29,25 @@ abstract class CreateApplicationRequest implements Built<CreateApplicationReques
 
   CreateApplicationRequest._();
 
-  factory CreateApplicationRequest([void Function(CreateApplicationRequestBuilder b) updates]) = _$CreateApplicationRequest;
+  factory CreateApplicationRequest([
+    void Function(CreateApplicationRequestBuilder b) updates,
+  ]) = _$CreateApplicationRequest;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CreateApplicationRequestBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CreateApplicationRequest> get serializer => _$CreateApplicationRequestSerializer();
+  static Serializer<CreateApplicationRequest> get serializer =>
+      _$CreateApplicationRequestSerializer();
 }
 
-class _$CreateApplicationRequestSerializer implements PrimitiveSerializer<CreateApplicationRequest> {
+class _$CreateApplicationRequestSerializer
+    implements PrimitiveSerializer<CreateApplicationRequest> {
   @override
-  final Iterable<Type> types = const [CreateApplicationRequest, _$CreateApplicationRequest];
+  final Iterable<Type> types = const [
+    CreateApplicationRequest,
+    _$CreateApplicationRequest,
+  ];
 
   @override
   final String wireName = r'CreateApplicationRequest';
@@ -70,7 +79,11 @@ class _$CreateApplicationRequestSerializer implements PrimitiveSerializer<Create
     CreateApplicationRequest object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -86,17 +99,23 @@ class _$CreateApplicationRequestSerializer implements PrimitiveSerializer<Create
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.name = valueDes;
           break;
         case r'type':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(CreateApplicationRequestTypeEnum),
-          ) as CreateApplicationRequestTypeEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      CreateApplicationRequestTypeEnum,
+                    ),
+                  )
+                  as CreateApplicationRequestTypeEnum;
           result.type = valueDes;
           break;
         default:
@@ -129,22 +148,28 @@ class _$CreateApplicationRequestSerializer implements PrimitiveSerializer<Create
 }
 
 class CreateApplicationRequestTypeEnum extends EnumClass {
-
   /// The application's type.
   @BuiltValueEnumConst(wireName: r'reg')
-  static const CreateApplicationRequestTypeEnum reg = _$createApplicationRequestTypeEnum_reg;
+  static const CreateApplicationRequestTypeEnum reg =
+      _$createApplicationRequestTypeEnum_reg;
+
   /// The application's type.
   @BuiltValueEnumConst(wireName: r'spa')
-  static const CreateApplicationRequestTypeEnum spa = _$createApplicationRequestTypeEnum_spa;
+  static const CreateApplicationRequestTypeEnum spa =
+      _$createApplicationRequestTypeEnum_spa;
+
   /// The application's type.
   @BuiltValueEnumConst(wireName: r'm2m')
-  static const CreateApplicationRequestTypeEnum m2m = _$createApplicationRequestTypeEnum_m2m;
+  static const CreateApplicationRequestTypeEnum m2m =
+      _$createApplicationRequestTypeEnum_m2m;
 
-  static Serializer<CreateApplicationRequestTypeEnum> get serializer => _$createApplicationRequestTypeEnumSerializer;
+  static Serializer<CreateApplicationRequestTypeEnum> get serializer =>
+      _$createApplicationRequestTypeEnumSerializer;
 
-  const CreateApplicationRequestTypeEnum._(String name): super(name);
+  const CreateApplicationRequestTypeEnum._(String name) : super(name);
 
-  static BuiltSet<CreateApplicationRequestTypeEnum> get values => _$createApplicationRequestTypeEnumValues;
-  static CreateApplicationRequestTypeEnum valueOf(String name) => _$createApplicationRequestTypeEnumValueOf(name);
+  static BuiltSet<CreateApplicationRequestTypeEnum> get values =>
+      _$createApplicationRequestTypeEnumValues;
+  static CreateApplicationRequestTypeEnum valueOf(String name) =>
+      _$createApplicationRequestTypeEnumValueOf(name);
 }
-

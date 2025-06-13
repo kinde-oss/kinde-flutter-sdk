@@ -18,18 +18,22 @@ class _$OrganizationUserPermission extends OrganizationUserPermission {
   @override
   final BuiltList<OrganizationUserPermissionRolesInner>? roles;
 
-  factory _$OrganizationUserPermission(
-          [void Function(OrganizationUserPermissionBuilder)? updates]) =>
-      (new OrganizationUserPermissionBuilder()..update(updates))._build();
+  factory _$OrganizationUserPermission([
+    void Function(OrganizationUserPermissionBuilder)? updates,
+  ]) => (new OrganizationUserPermissionBuilder()..update(updates))._build();
 
-  _$OrganizationUserPermission._(
-      {this.id, this.key, this.name, this.description, this.roles})
-      : super._();
+  _$OrganizationUserPermission._({
+    this.id,
+    this.key,
+    this.name,
+    this.description,
+    this.roles,
+  }) : super._();
 
   @override
   OrganizationUserPermission rebuild(
-          void Function(OrganizationUserPermissionBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(OrganizationUserPermissionBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   OrganizationUserPermissionBuilder toBuilder() =>
@@ -131,13 +135,15 @@ class OrganizationUserPermissionBuilder
   _$OrganizationUserPermission _build() {
     _$OrganizationUserPermission _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           new _$OrganizationUserPermission._(
-              id: id,
-              key: key,
-              name: name,
-              description: description,
-              roles: _roles?.build());
+            id: id,
+            key: key,
+            name: name,
+            description: description,
+            roles: _roles?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -145,7 +151,10 @@ class OrganizationUserPermissionBuilder
         _roles?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'OrganizationUserPermission', _$failedField, e.toString());
+          r'OrganizationUserPermission',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

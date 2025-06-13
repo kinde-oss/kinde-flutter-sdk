@@ -16,18 +16,21 @@ class _$GetSubscribersResponse extends GetSubscribersResponse {
   @override
   final String? nextToken;
 
-  factory _$GetSubscribersResponse(
-          [void Function(GetSubscribersResponseBuilder)? updates]) =>
-      (new GetSubscribersResponseBuilder()..update(updates))._build();
+  factory _$GetSubscribersResponse([
+    void Function(GetSubscribersResponseBuilder)? updates,
+  ]) => (new GetSubscribersResponseBuilder()..update(updates))._build();
 
-  _$GetSubscribersResponse._(
-      {this.code, this.message, this.subscribers, this.nextToken})
-      : super._();
+  _$GetSubscribersResponse._({
+    this.code,
+    this.message,
+    this.subscribers,
+    this.nextToken,
+  }) : super._();
 
   @override
   GetSubscribersResponse rebuild(
-          void Function(GetSubscribersResponseBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(GetSubscribersResponseBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   GetSubscribersResponseBuilder toBuilder() =>
@@ -120,12 +123,14 @@ class GetSubscribersResponseBuilder
   _$GetSubscribersResponse _build() {
     _$GetSubscribersResponse _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           new _$GetSubscribersResponse._(
-              code: code,
-              message: message,
-              subscribers: _subscribers?.build(),
-              nextToken: nextToken);
+            code: code,
+            message: message,
+            subscribers: _subscribers?.build(),
+            nextToken: nextToken,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -133,7 +138,10 @@ class GetSubscribersResponseBuilder
         _subscribers?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'GetSubscribersResponse', _$failedField, e.toString());
+          r'GetSubscribersResponse',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

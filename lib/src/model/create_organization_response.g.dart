@@ -14,17 +14,17 @@ class _$CreateOrganizationResponse extends CreateOrganizationResponse {
   @override
   final CreateOrganizationResponseOrganization? organization;
 
-  factory _$CreateOrganizationResponse(
-          [void Function(CreateOrganizationResponseBuilder)? updates]) =>
-      (new CreateOrganizationResponseBuilder()..update(updates))._build();
+  factory _$CreateOrganizationResponse([
+    void Function(CreateOrganizationResponseBuilder)? updates,
+  ]) => (new CreateOrganizationResponseBuilder()..update(updates))._build();
 
   _$CreateOrganizationResponse._({this.message, this.code, this.organization})
-      : super._();
+    : super._();
 
   @override
   CreateOrganizationResponse rebuild(
-          void Function(CreateOrganizationResponseBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CreateOrganizationResponseBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CreateOrganizationResponseBuilder toBuilder() =>
@@ -77,8 +77,8 @@ class CreateOrganizationResponseBuilder
       _$this._organization ??=
           new CreateOrganizationResponseOrganizationBuilder();
   set organization(
-          CreateOrganizationResponseOrganizationBuilder? organization) =>
-      _$this._organization = organization;
+    CreateOrganizationResponseOrganizationBuilder? organization,
+  ) => _$this._organization = organization;
 
   CreateOrganizationResponseBuilder() {
     CreateOrganizationResponse._defaults(this);
@@ -112,11 +112,13 @@ class CreateOrganizationResponseBuilder
   _$CreateOrganizationResponse _build() {
     _$CreateOrganizationResponse _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           new _$CreateOrganizationResponse._(
-              message: message,
-              code: code,
-              organization: _organization?.build());
+            message: message,
+            code: code,
+            organization: _organization?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -124,7 +126,10 @@ class CreateOrganizationResponseBuilder
         _organization?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'CreateOrganizationResponse', _$failedField, e.toString());
+          r'CreateOrganizationResponse',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

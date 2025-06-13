@@ -20,7 +20,7 @@ class _$Organization extends Organization {
       (new OrganizationBuilder()..update(updates))._build();
 
   _$Organization._({this.code, this.name, this.isDefault, this.externalId})
-      : super._();
+    : super._();
 
   @override
   Organization rebuild(void Function(OrganizationBuilder) updates) =>
@@ -112,12 +112,14 @@ class OrganizationBuilder
   Organization build() => _build();
 
   _$Organization _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         new _$Organization._(
-            code: code,
-            name: name,
-            isDefault: isDefault,
-            externalId: externalId);
+          code: code,
+          name: name,
+          isDefault: isDefault,
+          externalId: externalId,
+        );
     replace(_$result);
     return _$result;
   }

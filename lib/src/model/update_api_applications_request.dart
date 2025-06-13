@@ -13,26 +13,38 @@ part 'update_api_applications_request.g.dart';
 /// UpdateAPIApplicationsRequest
 ///
 /// Properties:
-/// * [applications] 
+/// * [applications]
 @BuiltValue()
-abstract class UpdateAPIApplicationsRequest implements Built<UpdateAPIApplicationsRequest, UpdateAPIApplicationsRequestBuilder> {
+abstract class UpdateAPIApplicationsRequest
+    implements
+        Built<
+          UpdateAPIApplicationsRequest,
+          UpdateAPIApplicationsRequestBuilder
+        > {
   @BuiltValueField(wireName: r'applications')
   BuiltList<UpdateAPIApplicationsRequestApplicationsInner> get applications;
 
   UpdateAPIApplicationsRequest._();
 
-  factory UpdateAPIApplicationsRequest([void Function(UpdateAPIApplicationsRequestBuilder b) updates]) = _$UpdateAPIApplicationsRequest;
+  factory UpdateAPIApplicationsRequest([
+    void Function(UpdateAPIApplicationsRequestBuilder b) updates,
+  ]) = _$UpdateAPIApplicationsRequest;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(UpdateAPIApplicationsRequestBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<UpdateAPIApplicationsRequest> get serializer => _$UpdateAPIApplicationsRequestSerializer();
+  static Serializer<UpdateAPIApplicationsRequest> get serializer =>
+      _$UpdateAPIApplicationsRequestSerializer();
 }
 
-class _$UpdateAPIApplicationsRequestSerializer implements PrimitiveSerializer<UpdateAPIApplicationsRequest> {
+class _$UpdateAPIApplicationsRequestSerializer
+    implements PrimitiveSerializer<UpdateAPIApplicationsRequest> {
   @override
-  final Iterable<Type> types = const [UpdateAPIApplicationsRequest, _$UpdateAPIApplicationsRequest];
+  final Iterable<Type> types = const [
+    UpdateAPIApplicationsRequest,
+    _$UpdateAPIApplicationsRequest,
+  ];
 
   @override
   final String wireName = r'UpdateAPIApplicationsRequest';
@@ -45,7 +57,9 @@ class _$UpdateAPIApplicationsRequestSerializer implements PrimitiveSerializer<Up
     yield r'applications';
     yield serializers.serialize(
       object.applications,
-      specifiedType: const FullType(BuiltList, [FullType(UpdateAPIApplicationsRequestApplicationsInner)]),
+      specifiedType: const FullType(BuiltList, [
+        FullType(UpdateAPIApplicationsRequestApplicationsInner),
+      ]),
     );
   }
 
@@ -55,7 +69,11 @@ class _$UpdateAPIApplicationsRequestSerializer implements PrimitiveSerializer<Up
     UpdateAPIApplicationsRequest object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -71,10 +89,14 @@ class _$UpdateAPIApplicationsRequestSerializer implements PrimitiveSerializer<Up
       final value = serializedList[i + 1];
       switch (key) {
         case r'applications':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(UpdateAPIApplicationsRequestApplicationsInner)]),
-          ) as BuiltList<UpdateAPIApplicationsRequestApplicationsInner>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(UpdateAPIApplicationsRequestApplicationsInner),
+                    ]),
+                  )
+                  as BuiltList<UpdateAPIApplicationsRequestApplicationsInner>;
           result.applications.replace(valueDes);
           break;
         default:
@@ -105,4 +127,3 @@ class _$UpdateAPIApplicationsRequestSerializer implements PrimitiveSerializer<Up
     return result.build();
   }
 }
-

@@ -12,12 +12,17 @@ part 'update_organization_users_response.g.dart';
 /// UpdateOrganizationUsersResponse
 ///
 /// Properties:
-/// * [message] 
-/// * [usersAdded] 
-/// * [usersUpdated] 
-/// * [usersRemoved] 
+/// * [message]
+/// * [usersAdded]
+/// * [usersUpdated]
+/// * [usersRemoved]
 @BuiltValue()
-abstract class UpdateOrganizationUsersResponse implements Built<UpdateOrganizationUsersResponse, UpdateOrganizationUsersResponseBuilder> {
+abstract class UpdateOrganizationUsersResponse
+    implements
+        Built<
+          UpdateOrganizationUsersResponse,
+          UpdateOrganizationUsersResponseBuilder
+        > {
   @BuiltValueField(wireName: r'message')
   String? get message;
 
@@ -32,18 +37,25 @@ abstract class UpdateOrganizationUsersResponse implements Built<UpdateOrganizati
 
   UpdateOrganizationUsersResponse._();
 
-  factory UpdateOrganizationUsersResponse([void Function(UpdateOrganizationUsersResponseBuilder b) updates]) = _$UpdateOrganizationUsersResponse;
+  factory UpdateOrganizationUsersResponse([
+    void Function(UpdateOrganizationUsersResponseBuilder b) updates,
+  ]) = _$UpdateOrganizationUsersResponse;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(UpdateOrganizationUsersResponseBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<UpdateOrganizationUsersResponse> get serializer => _$UpdateOrganizationUsersResponseSerializer();
+  static Serializer<UpdateOrganizationUsersResponse> get serializer =>
+      _$UpdateOrganizationUsersResponseSerializer();
 }
 
-class _$UpdateOrganizationUsersResponseSerializer implements PrimitiveSerializer<UpdateOrganizationUsersResponse> {
+class _$UpdateOrganizationUsersResponseSerializer
+    implements PrimitiveSerializer<UpdateOrganizationUsersResponse> {
   @override
-  final Iterable<Type> types = const [UpdateOrganizationUsersResponse, _$UpdateOrganizationUsersResponse];
+  final Iterable<Type> types = const [
+    UpdateOrganizationUsersResponse,
+    _$UpdateOrganizationUsersResponse,
+  ];
 
   @override
   final String wireName = r'UpdateOrganizationUsersResponse';
@@ -89,7 +101,11 @@ class _$UpdateOrganizationUsersResponseSerializer implements PrimitiveSerializer
     UpdateOrganizationUsersResponse object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -105,31 +121,45 @@ class _$UpdateOrganizationUsersResponseSerializer implements PrimitiveSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'message':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.message = valueDes;
           break;
         case r'users_added':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(String)]),
-          ) as BuiltList<String>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(String),
+                    ]),
+                  )
+                  as BuiltList<String>;
           result.usersAdded.replace(valueDes);
           break;
         case r'users_updated':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(String)]),
-          ) as BuiltList<String>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(String),
+                    ]),
+                  )
+                  as BuiltList<String>;
           result.usersUpdated.replace(valueDes);
           break;
         case r'users_removed':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(String)]),
-          ) as BuiltList<String>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(String),
+                    ]),
+                  )
+                  as BuiltList<String>;
           result.usersRemoved.replace(valueDes);
           break;
         default:
@@ -160,4 +190,3 @@ class _$UpdateOrganizationUsersResponseSerializer implements PrimitiveSerializer
     return result.build();
   }
 }
-

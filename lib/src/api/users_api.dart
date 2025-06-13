@@ -17,7 +17,6 @@ import 'package:kinde_flutter_sdk/src/model/user.dart';
 import 'package:kinde_flutter_sdk/src/model/users_response.dart';
 
 class UsersApi {
-
   final Dio _dio;
 
   final Serializers _serializers;
@@ -25,7 +24,7 @@ class UsersApi {
   const UsersApi(this._dio, this._serializers);
 
   /// Create User
-  /// Creates a user record and optionally zero or more identities for the user. An example identity could be the email address of the user. 
+  /// Creates a user record and optionally zero or more identities for the user. An example identity could be the email address of the user.
   ///
   /// Parameters:
   /// * [createUserRequest] - The details of the user to create.
@@ -38,7 +37,7 @@ class UsersApi {
   ///
   /// Returns a [Future] containing a [Response] with a [CreateUserResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<CreateUserResponse>> createUser({ 
+  Future<Response<CreateUserResponse>> createUser({
     CreateUserRequest? createUserRequest,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -50,16 +49,10 @@ class UsersApi {
     const path = r'/api/v1/user';
     final options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -71,14 +64,13 @@ class UsersApi {
 
     try {
       const type = FullType(CreateUserRequest);
-      bodyData = createUserRequest == null ? null : _serializers.serialize(createUserRequest, specifiedType: type);
-
-    } catch(error, stackTrace) {
+      bodyData =
+          createUserRequest == null
+              ? null
+              : _serializers.serialize(createUserRequest, specifiedType: type);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: options.compose(
-          _dio.options,
-          path,
-        ),
+        requestOptions: options.compose(_dio.options, path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -98,11 +90,14 @@ class UsersApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(CreateUserResponse),
-      ) as CreateUserResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(CreateUserResponse),
+                  )
+                  as CreateUserResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -126,7 +121,7 @@ class UsersApi {
   }
 
   /// Delete User
-  /// Delete a user record. 
+  /// Delete a user record.
   ///
   /// Parameters:
   /// * [id] - The user's id.
@@ -140,7 +135,7 @@ class UsersApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> deleteUser({ 
+  Future<Response<SuccessResponse>> deleteUser({
     required String id,
     bool? isDeleteProfile,
     CancelToken? cancelToken,
@@ -153,16 +148,10 @@ class UsersApi {
     const path = r'/api/v1/user';
     final options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -171,7 +160,12 @@ class UsersApi {
 
     final queryParameters = <String, dynamic>{
       r'id': encodeQueryParameter(_serializers, id, const FullType(String)),
-      if (isDeleteProfile != null) r'is_delete_profile': encodeQueryParameter(_serializers, isDeleteProfile, const FullType(bool)),
+      if (isDeleteProfile != null)
+        r'is_delete_profile': encodeQueryParameter(
+          _serializers,
+          isDeleteProfile,
+          const FullType(bool),
+        ),
     };
 
     final response = await _dio.request<Object>(
@@ -187,11 +181,14 @@ class UsersApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(SuccessResponse),
-      ) as SuccessResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(SuccessResponse),
+                  )
+                  as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -215,7 +212,7 @@ class UsersApi {
   }
 
   /// Get User
-  /// Retrieve a user record. 
+  /// Retrieve a user record.
   ///
   /// Parameters:
   /// * [id] - The user's id.
@@ -229,7 +226,7 @@ class UsersApi {
   ///
   /// Returns a [Future] containing a [Response] with a [User] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<User>> getUserData({ 
+  Future<Response<User>> getUserData({
     required String id,
     String? expand,
     CancelToken? cancelToken,
@@ -242,16 +239,10 @@ class UsersApi {
     const path = r'/api/v1/user';
     final options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -260,7 +251,11 @@ class UsersApi {
 
     final queryParameters = <String, dynamic>{
       r'id': encodeQueryParameter(_serializers, id, const FullType(String)),
-      r'expand': encodeQueryParameter(_serializers, expand, const FullType(String)),
+      r'expand': encodeQueryParameter(
+        _serializers,
+        expand,
+        const FullType(String),
+      ),
     };
 
     final response = await _dio.request<Object>(
@@ -276,11 +271,14 @@ class UsersApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(User),
-      ) as User;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(User),
+                  )
+                  as User;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -304,7 +302,7 @@ class UsersApi {
   }
 
   /// List Users
-  /// The returned list can be sorted by full name or email address in ascending or descending order. The number of records to return at a time can also be controlled using the &#x60;page_size&#x60; query string parameter. 
+  /// The returned list can be sorted by full name or email address in ascending or descending order. The number of records to return at a time can also be controlled using the &#x60;page_size&#x60; query string parameter.
   ///
   /// Parameters:
   /// * [sort] - Field and order to sort the result by.
@@ -322,7 +320,7 @@ class UsersApi {
   ///
   /// Returns a [Future] containing a [Response] with a [UsersResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<UsersResponse>> getUsers({ 
+  Future<Response<UsersResponse>> getUsers({
     String? sort,
     int? pageSize,
     String? userId,
@@ -339,16 +337,10 @@ class UsersApi {
     const path = r'/api/v1/users';
     final options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -357,11 +349,31 @@ class UsersApi {
 
     final queryParameters = <String, dynamic>{
       r'sort': encodeQueryParameter(_serializers, sort, const FullType(String)),
-      r'page_size': encodeQueryParameter(_serializers, pageSize, const FullType(int)),
-      r'user_id': encodeQueryParameter(_serializers, userId, const FullType(String)),
-      r'next_token': encodeQueryParameter(_serializers, nextToken, const FullType(String)),
-      r'email': encodeQueryParameter(_serializers, email, const FullType(String)),
-      r'expand': encodeQueryParameter(_serializers, expand, const FullType(String)),
+      r'page_size': encodeQueryParameter(
+        _serializers,
+        pageSize,
+        const FullType(int),
+      ),
+      r'user_id': encodeQueryParameter(
+        _serializers,
+        userId,
+        const FullType(String),
+      ),
+      r'next_token': encodeQueryParameter(
+        _serializers,
+        nextToken,
+        const FullType(String),
+      ),
+      r'email': encodeQueryParameter(
+        _serializers,
+        email,
+        const FullType(String),
+      ),
+      r'expand': encodeQueryParameter(
+        _serializers,
+        expand,
+        const FullType(String),
+      ),
     };
 
     final response = await _dio.request<Object>(
@@ -377,11 +389,14 @@ class UsersApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(UsersResponse),
-      ) as UsersResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(UsersResponse),
+                  )
+                  as UsersResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -405,7 +420,7 @@ class UsersApi {
   }
 
   /// Refresh User Claims and Invalidate Cache
-  /// Refreshes the user&#39;s claims and invalidates the current cache. 
+  /// Refreshes the user&#39;s claims and invalidates the current cache.
   ///
   /// Parameters:
   /// * [userId] - The id of the user whose claims needs to be updated.
@@ -418,7 +433,7 @@ class UsersApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> refreshUserClaims({ 
+  Future<Response<SuccessResponse>> refreshUserClaims({
     required String userId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -427,19 +442,22 @@ class UsersApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/api/v1/users/{user_id}/refresh_claims'.replaceAll('{' r'user_id' '}', encodeQueryParameter(_serializers, userId, const FullType(String)).toString());
+    final path = r'/api/v1/users/{user_id}/refresh_claims'.replaceAll(
+      '{'
+      r'user_id'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        userId,
+        const FullType(String),
+      ).toString(),
+    );
     final options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -458,11 +476,14 @@ class UsersApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(SuccessResponse),
-      ) as SuccessResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(SuccessResponse),
+                  )
+                  as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -486,7 +507,7 @@ class UsersApi {
   }
 
   /// Update User
-  /// Update a user record. 
+  /// Update a user record.
   ///
   /// Parameters:
   /// * [updateUserRequest] - The user to update.
@@ -500,7 +521,7 @@ class UsersApi {
   ///
   /// Returns a [Future] containing a [Response] with a [UpdateUserResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<UpdateUserResponse>> updateUser({ 
+  Future<Response<UpdateUserResponse>> updateUser({
     required UpdateUserRequest updateUserRequest,
     String? id,
     CancelToken? cancelToken,
@@ -513,16 +534,10 @@ class UsersApi {
     const path = r'/api/v1/user';
     final options = Options(
       method: r'PATCH',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -531,7 +546,8 @@ class UsersApi {
     );
 
     final queryParameters = <String, dynamic>{
-      if (id != null) r'id': encodeQueryParameter(_serializers, id, const FullType(String)),
+      if (id != null)
+        r'id': encodeQueryParameter(_serializers, id, const FullType(String)),
     };
 
     dynamic bodyData;
@@ -539,10 +555,9 @@ class UsersApi {
     try {
       const type = FullType(UpdateUserRequest);
       bodyData = _serializers.serialize(updateUserRequest, specifiedType: type);
-
-    } catch(error, stackTrace) {
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: options.compose(
+        requestOptions: options.compose(
           _dio.options,
           path,
           queryParameters: queryParameters,
@@ -567,11 +582,14 @@ class UsersApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(UpdateUserResponse),
-      ) as UpdateUserResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(UpdateUserResponse),
+                  )
+                  as UpdateUserResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -593,5 +611,4 @@ class UsersApi {
       extra: response.extra,
     );
   }
-
 }

@@ -14,17 +14,17 @@ class _$CreatePermissionRequest extends CreatePermissionRequest {
   @override
   final String? key;
 
-  factory _$CreatePermissionRequest(
-          [void Function(CreatePermissionRequestBuilder)? updates]) =>
-      (new CreatePermissionRequestBuilder()..update(updates))._build();
+  factory _$CreatePermissionRequest([
+    void Function(CreatePermissionRequestBuilder)? updates,
+  ]) => (new CreatePermissionRequestBuilder()..update(updates))._build();
 
   _$CreatePermissionRequest._({this.name, this.description, this.key})
-      : super._();
+    : super._();
 
   @override
   CreatePermissionRequest rebuild(
-          void Function(CreatePermissionRequestBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CreatePermissionRequestBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CreatePermissionRequestBuilder toBuilder() =>
@@ -106,9 +106,13 @@ class CreatePermissionRequestBuilder
   CreatePermissionRequest build() => _build();
 
   _$CreatePermissionRequest _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         new _$CreatePermissionRequest._(
-            name: name, description: description, key: key);
+          name: name,
+          description: description,
+          key: key,
+        );
     replace(_$result);
     return _$result;
   }

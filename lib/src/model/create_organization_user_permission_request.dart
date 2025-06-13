@@ -13,25 +13,37 @@ part 'create_organization_user_permission_request.g.dart';
 /// Properties:
 /// * [permissionId] - The permission id.
 @BuiltValue()
-abstract class CreateOrganizationUserPermissionRequest implements Built<CreateOrganizationUserPermissionRequest, CreateOrganizationUserPermissionRequestBuilder> {
+abstract class CreateOrganizationUserPermissionRequest
+    implements
+        Built<
+          CreateOrganizationUserPermissionRequest,
+          CreateOrganizationUserPermissionRequestBuilder
+        > {
   /// The permission id.
   @BuiltValueField(wireName: r'permission_id')
   String? get permissionId;
 
   CreateOrganizationUserPermissionRequest._();
 
-  factory CreateOrganizationUserPermissionRequest([void Function(CreateOrganizationUserPermissionRequestBuilder b) updates]) = _$CreateOrganizationUserPermissionRequest;
+  factory CreateOrganizationUserPermissionRequest([
+    void Function(CreateOrganizationUserPermissionRequestBuilder b) updates,
+  ]) = _$CreateOrganizationUserPermissionRequest;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CreateOrganizationUserPermissionRequestBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CreateOrganizationUserPermissionRequest> get serializer => _$CreateOrganizationUserPermissionRequestSerializer();
+  static Serializer<CreateOrganizationUserPermissionRequest> get serializer =>
+      _$CreateOrganizationUserPermissionRequestSerializer();
 }
 
-class _$CreateOrganizationUserPermissionRequestSerializer implements PrimitiveSerializer<CreateOrganizationUserPermissionRequest> {
+class _$CreateOrganizationUserPermissionRequestSerializer
+    implements PrimitiveSerializer<CreateOrganizationUserPermissionRequest> {
   @override
-  final Iterable<Type> types = const [CreateOrganizationUserPermissionRequest, _$CreateOrganizationUserPermissionRequest];
+  final Iterable<Type> types = const [
+    CreateOrganizationUserPermissionRequest,
+    _$CreateOrganizationUserPermissionRequest,
+  ];
 
   @override
   final String wireName = r'CreateOrganizationUserPermissionRequest';
@@ -56,7 +68,11 @@ class _$CreateOrganizationUserPermissionRequestSerializer implements PrimitiveSe
     CreateOrganizationUserPermissionRequest object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -72,10 +88,12 @@ class _$CreateOrganizationUserPermissionRequestSerializer implements PrimitiveSe
       final value = serializedList[i + 1];
       switch (key) {
         case r'permission_id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.permissionId = valueDes;
           break;
         default:
@@ -106,4 +124,3 @@ class _$CreateOrganizationUserPermissionRequestSerializer implements PrimitiveSe
     return result.build();
   }
 }
-

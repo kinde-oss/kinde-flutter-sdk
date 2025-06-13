@@ -10,16 +10,16 @@ class _$LogoutRedirectUrls extends LogoutRedirectUrls {
   @override
   final BuiltList<String>? redirectUrls;
 
-  factory _$LogoutRedirectUrls(
-          [void Function(LogoutRedirectUrlsBuilder)? updates]) =>
-      (new LogoutRedirectUrlsBuilder()..update(updates))._build();
+  factory _$LogoutRedirectUrls([
+    void Function(LogoutRedirectUrlsBuilder)? updates,
+  ]) => (new LogoutRedirectUrlsBuilder()..update(updates))._build();
 
   _$LogoutRedirectUrls._({this.redirectUrls}) : super._();
 
   @override
   LogoutRedirectUrls rebuild(
-          void Function(LogoutRedirectUrlsBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(LogoutRedirectUrlsBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   LogoutRedirectUrlsBuilder toBuilder() =>
@@ -42,8 +42,7 @@ class _$LogoutRedirectUrls extends LogoutRedirectUrls {
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'LogoutRedirectUrls')
-          ..add('redirectUrls', redirectUrls))
-        .toString();
+      ..add('redirectUrls', redirectUrls)).toString();
   }
 }
 
@@ -87,7 +86,8 @@ class LogoutRedirectUrlsBuilder
   _$LogoutRedirectUrls _build() {
     _$LogoutRedirectUrls _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           new _$LogoutRedirectUrls._(redirectUrls: _redirectUrls?.build());
     } catch (_) {
       late String _$failedField;
@@ -96,7 +96,10 @@ class LogoutRedirectUrlsBuilder
         _redirectUrls?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'LogoutRedirectUrls', _$failedField, e.toString());
+          r'LogoutRedirectUrls',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

@@ -21,7 +21,8 @@ part 'user_profile_v2.g.dart';
 /// * [email] - User's email address if available.
 /// * [picture] - URL that point's to the user's picture or avatar
 @BuiltValue()
-abstract class UserProfileV2 implements Built<UserProfileV2, UserProfileV2Builder> {
+abstract class UserProfileV2
+    implements Built<UserProfileV2, UserProfileV2Builder> {
   /// Unique id of the user in Kinde (deprecated).
   @BuiltValueField(wireName: r'id')
   String? get id;
@@ -60,13 +61,15 @@ abstract class UserProfileV2 implements Built<UserProfileV2, UserProfileV2Builde
 
   UserProfileV2._();
 
-  factory UserProfileV2([void Function(UserProfileV2Builder b) updates]) = _$UserProfileV2;
+  factory UserProfileV2([void Function(UserProfileV2Builder b) updates]) =
+      _$UserProfileV2;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(UserProfileV2Builder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<UserProfileV2> get serializer => _$UserProfileV2Serializer();
+  static Serializer<UserProfileV2> get serializer =>
+      _$UserProfileV2Serializer();
 }
 
 class _$UserProfileV2Serializer implements PrimitiveSerializer<UserProfileV2> {
@@ -152,7 +155,11 @@ class _$UserProfileV2Serializer implements PrimitiveSerializer<UserProfileV2> {
     UserProfileV2 object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -168,67 +175,82 @@ class _$UserProfileV2Serializer implements PrimitiveSerializer<UserProfileV2> {
       final value = serializedList[i + 1];
       switch (key) {
         case r'id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.id = valueDes;
           break;
         case r'sub':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.sub = valueDes;
           break;
         case r'provided_id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType.nullable(String),
-          ) as String?;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType.nullable(String),
+                  )
+                  as String?;
           if (valueDes == null) continue;
           result.providedId = valueDes;
           break;
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.name = valueDes;
           break;
         case r'given_name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.givenName = valueDes;
           break;
         case r'family_name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.familyName = valueDes;
           break;
         case r'updated_at':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(int),
-          ) as int;
+          final valueDes =
+              serializers.deserialize(value, specifiedType: const FullType(int))
+                  as int;
           result.updatedAt = valueDes;
           break;
         case r'email':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.email = valueDes;
           break;
         case r'picture':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.picture = valueDes;
           break;
         default:
@@ -259,4 +281,3 @@ class _$UserProfileV2Serializer implements PrimitiveSerializer<UserProfileV2> {
     return result.build();
   }
 }
-

@@ -20,18 +20,18 @@ class _$OrganizationUser extends OrganizationUser {
   @override
   final BuiltList<String>? roles;
 
-  factory _$OrganizationUser(
-          [void Function(OrganizationUserBuilder)? updates]) =>
-      (new OrganizationUserBuilder()..update(updates))._build();
+  factory _$OrganizationUser([
+    void Function(OrganizationUserBuilder)? updates,
+  ]) => (new OrganizationUserBuilder()..update(updates))._build();
 
-  _$OrganizationUser._(
-      {this.id,
-      this.email,
-      this.fullName,
-      this.lastName,
-      this.firstName,
-      this.roles})
-      : super._();
+  _$OrganizationUser._({
+    this.id,
+    this.email,
+    this.fullName,
+    this.lastName,
+    this.firstName,
+    this.roles,
+  }) : super._();
 
   @override
   OrganizationUser rebuild(void Function(OrganizationUserBuilder) updates) =>
@@ -142,14 +142,16 @@ class OrganizationUserBuilder
   _$OrganizationUser _build() {
     _$OrganizationUser _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           new _$OrganizationUser._(
-              id: id,
-              email: email,
-              fullName: fullName,
-              lastName: lastName,
-              firstName: firstName,
-              roles: _roles?.build());
+            id: id,
+            email: email,
+            fullName: fullName,
+            lastName: lastName,
+            firstName: firstName,
+            roles: _roles?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -157,7 +159,10 @@ class OrganizationUserBuilder
         _roles?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'OrganizationUser', _$failedField, e.toString());
+          r'OrganizationUser',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

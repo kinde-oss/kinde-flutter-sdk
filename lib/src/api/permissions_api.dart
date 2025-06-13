@@ -13,7 +13,6 @@ import 'package:kinde_flutter_sdk/src/model/get_permissions_response.dart';
 import 'package:kinde_flutter_sdk/src/model/success_response.dart';
 
 class PermissionsApi {
-
   final Dio _dio;
 
   final Serializers _serializers;
@@ -34,7 +33,7 @@ class PermissionsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> createPermission({ 
+  Future<Response<SuccessResponse>> createPermission({
     CreatePermissionRequest? createPermissionRequest,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -46,16 +45,10 @@ class PermissionsApi {
     const path = r'/api/v1/permissions';
     final options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -67,14 +60,16 @@ class PermissionsApi {
 
     try {
       const type = FullType(CreatePermissionRequest);
-      bodyData = createPermissionRequest == null ? null : _serializers.serialize(createPermissionRequest, specifiedType: type);
-
-    } catch(error, stackTrace) {
+      bodyData =
+          createPermissionRequest == null
+              ? null
+              : _serializers.serialize(
+                createPermissionRequest,
+                specifiedType: type,
+              );
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: options.compose(
-          _dio.options,
-          path,
-        ),
+        requestOptions: options.compose(_dio.options, path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -94,11 +89,14 @@ class PermissionsApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(SuccessResponse),
-      ) as SuccessResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(SuccessResponse),
+                  )
+                  as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -135,7 +133,7 @@ class PermissionsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> deletePermission({ 
+  Future<Response<SuccessResponse>> deletePermission({
     required String permissionId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -144,19 +142,22 @@ class PermissionsApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/api/v1/permissions/{permission_id}'.replaceAll('{' r'permission_id' '}', encodeQueryParameter(_serializers, permissionId, const FullType(String)).toString());
+    final path = r'/api/v1/permissions/{permission_id}'.replaceAll(
+      '{'
+      r'permission_id'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        permissionId,
+        const FullType(String),
+      ).toString(),
+    );
     final options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -175,11 +176,14 @@ class PermissionsApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(SuccessResponse),
-      ) as SuccessResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(SuccessResponse),
+                  )
+                  as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -203,7 +207,7 @@ class PermissionsApi {
   }
 
   /// List Permissions
-  /// The returned list can be sorted by permission name or permission ID in ascending or descending order. The number of records to return at a time can also be controlled using the &#x60;page_size&#x60; query string parameter. 
+  /// The returned list can be sorted by permission name or permission ID in ascending or descending order. The number of records to return at a time can also be controlled using the &#x60;page_size&#x60; query string parameter.
   ///
   /// Parameters:
   /// * [sort] - Field and order to sort the result by.
@@ -218,7 +222,7 @@ class PermissionsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [GetPermissionsResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<GetPermissionsResponse>> getPermissions({ 
+  Future<Response<GetPermissionsResponse>> getPermissions({
     String? sort,
     int? pageSize,
     String? nextToken,
@@ -232,16 +236,10 @@ class PermissionsApi {
     const path = r'/api/v1/permissions';
     final options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -250,8 +248,16 @@ class PermissionsApi {
 
     final queryParameters = <String, dynamic>{
       r'sort': encodeQueryParameter(_serializers, sort, const FullType(String)),
-      r'page_size': encodeQueryParameter(_serializers, pageSize, const FullType(int)),
-      r'next_token': encodeQueryParameter(_serializers, nextToken, const FullType(String)),
+      r'page_size': encodeQueryParameter(
+        _serializers,
+        pageSize,
+        const FullType(int),
+      ),
+      r'next_token': encodeQueryParameter(
+        _serializers,
+        nextToken,
+        const FullType(String),
+      ),
     };
 
     final response = await _dio.request<Object>(
@@ -267,11 +273,14 @@ class PermissionsApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(GetPermissionsResponse),
-      ) as GetPermissionsResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(GetPermissionsResponse),
+                  )
+                  as GetPermissionsResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -309,7 +318,7 @@ class PermissionsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> updatePermissions({ 
+  Future<Response<SuccessResponse>> updatePermissions({
     required int permissionId,
     CreatePermissionRequest? createPermissionRequest,
     CancelToken? cancelToken,
@@ -319,19 +328,22 @@ class PermissionsApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/api/v1/permissions/{permission_id}'.replaceAll('{' r'permission_id' '}', encodeQueryParameter(_serializers, permissionId, const FullType(int)).toString());
+    final path = r'/api/v1/permissions/{permission_id}'.replaceAll(
+      '{'
+      r'permission_id'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        permissionId,
+        const FullType(int),
+      ).toString(),
+    );
     final options = Options(
       method: r'PATCH',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -343,14 +355,16 @@ class PermissionsApi {
 
     try {
       const type = FullType(CreatePermissionRequest);
-      bodyData = createPermissionRequest == null ? null : _serializers.serialize(createPermissionRequest, specifiedType: type);
-
-    } catch(error, stackTrace) {
+      bodyData =
+          createPermissionRequest == null
+              ? null
+              : _serializers.serialize(
+                createPermissionRequest,
+                specifiedType: type,
+              );
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: options.compose(
-          _dio.options,
-          path,
-        ),
+        requestOptions: options.compose(_dio.options, path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -370,11 +384,14 @@ class PermissionsApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(SuccessResponse),
-      ) as SuccessResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(SuccessResponse),
+                  )
+                  as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -396,5 +413,4 @@ class PermissionsApi {
       extra: response.extra,
     );
   }
-
 }

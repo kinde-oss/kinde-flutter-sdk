@@ -11,11 +11,12 @@ part 'applications.g.dart';
 /// Applications
 ///
 /// Properties:
-/// * [id] 
-/// * [name] 
-/// * [type] 
+/// * [id]
+/// * [name]
+/// * [type]
 @BuiltValue()
-abstract class Applications implements Built<Applications, ApplicationsBuilder> {
+abstract class Applications
+    implements Built<Applications, ApplicationsBuilder> {
   @BuiltValueField(wireName: r'id')
   String? get id;
 
@@ -27,7 +28,8 @@ abstract class Applications implements Built<Applications, ApplicationsBuilder> 
 
   Applications._();
 
-  factory Applications([void Function(ApplicationsBuilder b) updates]) = _$Applications;
+  factory Applications([void Function(ApplicationsBuilder b) updates]) =
+      _$Applications;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(ApplicationsBuilder b) => b;
@@ -77,7 +79,11 @@ class _$ApplicationsSerializer implements PrimitiveSerializer<Applications> {
     Applications object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -93,24 +99,30 @@ class _$ApplicationsSerializer implements PrimitiveSerializer<Applications> {
       final value = serializedList[i + 1];
       switch (key) {
         case r'id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.id = valueDes;
           break;
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.name = valueDes;
           break;
         case r'type':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.type = valueDes;
           break;
         default:
@@ -141,4 +153,3 @@ class _$ApplicationsSerializer implements PrimitiveSerializer<Applications> {
     return result.build();
   }
 }
-

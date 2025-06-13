@@ -12,11 +12,16 @@ part 'organization_user_role_permissions.g.dart';
 /// OrganizationUserRolePermissions
 ///
 /// Properties:
-/// * [id] 
-/// * [role] 
-/// * [permissions] 
+/// * [id]
+/// * [role]
+/// * [permissions]
 @BuiltValue()
-abstract class OrganizationUserRolePermissions implements Built<OrganizationUserRolePermissions, OrganizationUserRolePermissionsBuilder> {
+abstract class OrganizationUserRolePermissions
+    implements
+        Built<
+          OrganizationUserRolePermissions,
+          OrganizationUserRolePermissionsBuilder
+        > {
   @BuiltValueField(wireName: r'id')
   String? get id;
 
@@ -28,18 +33,25 @@ abstract class OrganizationUserRolePermissions implements Built<OrganizationUser
 
   OrganizationUserRolePermissions._();
 
-  factory OrganizationUserRolePermissions([void Function(OrganizationUserRolePermissionsBuilder b) updates]) = _$OrganizationUserRolePermissions;
+  factory OrganizationUserRolePermissions([
+    void Function(OrganizationUserRolePermissionsBuilder b) updates,
+  ]) = _$OrganizationUserRolePermissions;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(OrganizationUserRolePermissionsBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<OrganizationUserRolePermissions> get serializer => _$OrganizationUserRolePermissionsSerializer();
+  static Serializer<OrganizationUserRolePermissions> get serializer =>
+      _$OrganizationUserRolePermissionsSerializer();
 }
 
-class _$OrganizationUserRolePermissionsSerializer implements PrimitiveSerializer<OrganizationUserRolePermissions> {
+class _$OrganizationUserRolePermissionsSerializer
+    implements PrimitiveSerializer<OrganizationUserRolePermissions> {
   @override
-  final Iterable<Type> types = const [OrganizationUserRolePermissions, _$OrganizationUserRolePermissions];
+  final Iterable<Type> types = const [
+    OrganizationUserRolePermissions,
+    _$OrganizationUserRolePermissions,
+  ];
 
   @override
   final String wireName = r'OrganizationUserRolePermissions';
@@ -67,7 +79,9 @@ class _$OrganizationUserRolePermissionsSerializer implements PrimitiveSerializer
       yield r'permissions';
       yield serializers.serialize(
         object.permissions,
-        specifiedType: const FullType(OrganizationUserRolePermissionsPermissions),
+        specifiedType: const FullType(
+          OrganizationUserRolePermissionsPermissions,
+        ),
       );
     }
   }
@@ -78,7 +92,11 @@ class _$OrganizationUserRolePermissionsSerializer implements PrimitiveSerializer
     OrganizationUserRolePermissions object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -94,24 +112,32 @@ class _$OrganizationUserRolePermissionsSerializer implements PrimitiveSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.id = valueDes;
           break;
         case r'role':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.role = valueDes;
           break;
         case r'permissions':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(OrganizationUserRolePermissionsPermissions),
-          ) as OrganizationUserRolePermissionsPermissions;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      OrganizationUserRolePermissionsPermissions,
+                    ),
+                  )
+                  as OrganizationUserRolePermissionsPermissions;
           result.permissions.replace(valueDes);
           break;
         default:
@@ -142,4 +168,3 @@ class _$OrganizationUserRolePermissionsSerializer implements PrimitiveSerializer
     return result.build();
   }
 }
-

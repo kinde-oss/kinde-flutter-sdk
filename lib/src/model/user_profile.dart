@@ -45,7 +45,8 @@ abstract class UserProfile implements Built<UserProfile, UserProfileBuilder> {
 
   UserProfile._();
 
-  factory UserProfile([void Function(UserProfileBuilder b) updates]) = _$UserProfile;
+  factory UserProfile([void Function(UserProfileBuilder b) updates]) =
+      _$UserProfile;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(UserProfileBuilder b) => b;
@@ -116,7 +117,11 @@ class _$UserProfileSerializer implements PrimitiveSerializer<UserProfile> {
     UserProfile object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -132,46 +137,58 @@ class _$UserProfileSerializer implements PrimitiveSerializer<UserProfile> {
       final value = serializedList[i + 1];
       switch (key) {
         case r'id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.id = valueDes;
           break;
         case r'preferred_email':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.preferredEmail = valueDes;
           break;
         case r'provided_id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType.nullable(String),
-          ) as String?;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType.nullable(String),
+                  )
+                  as String?;
           if (valueDes == null) continue;
           result.providedId = valueDes;
           break;
         case r'last_name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.lastName = valueDes;
           break;
         case r'first_name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.firstName = valueDes;
           break;
         case r'picture':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.picture = valueDes;
           break;
         default:
@@ -202,4 +219,3 @@ class _$UserProfileSerializer implements PrimitiveSerializer<UserProfile> {
     return result.build();
   }
 }
-

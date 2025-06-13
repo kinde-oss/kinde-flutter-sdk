@@ -18,8 +18,9 @@ void main() {
     test('test addOrganizationUsers', () async {
       // TODO
       final responseData = await instance.addOrganizationUsers(
-          orgCode: 'test_org_code',
-          addOrganizationUsersRequest: AddOrganizationUsersRequest());
+        orgCode: 'test_org_code',
+        addOrganizationUsersRequest: AddOrganizationUsersRequest(),
+      );
       expect(responseData, isNotNull);
     });
 
@@ -31,7 +32,8 @@ void main() {
     test('test createOrganization', () async {
       // TODO
       final responseData = await instance.createOrganization(
-          createOrganizationRequest: CreateOrganizationRequest());
+        createOrganizationRequest: CreateOrganizationRequest(),
+      );
       expect(responseData, isNotNull);
     });
 
@@ -43,10 +45,10 @@ void main() {
     test('test createOrganizationUserRole', () async {
       // TODO
       final responseData = await instance.createOrganizationUserRole(
-          orgCode: 'test_org_code',
-          userId: 'test_user_id',
-          createOrganizationUserRoleRequest:
-              CreateOrganizationUserRoleRequest());
+        orgCode: 'test_org_code',
+        userId: 'test_user_id',
+        createOrganizationUserRoleRequest: CreateOrganizationUserRoleRequest(),
+      );
       expect(responseData, isNotNull);
     });
 
@@ -57,8 +59,9 @@ void main() {
     //Future deleteOrganization(String orgCode) async
     test('test deleteOrganization', () async {
       // TODO
-      final responseData =
-          await instance.deleteOrganization(orgCode: 'test_org_code');
+      final responseData = await instance.deleteOrganization(
+        orgCode: 'test_org_code',
+      );
       expect(responseData, isNotNull);
     });
 
@@ -70,7 +73,9 @@ void main() {
     test('test deleteOrganizationFeatureFlagOverride', () async {
       // TODO
       final responseData = await instance.deleteOrganizationFeatureFlagOverride(
-          orgCode: 'test_org_code', featureFlagKey: 'test_key');
+        orgCode: 'test_org_code',
+        featureFlagKey: 'test_key',
+      );
       expect(responseData, isNotNull);
     });
 
@@ -94,9 +99,10 @@ void main() {
     test('test deleteOrganizationUserRole', () async {
       // TODO
       final responseData = await instance.deleteOrganizationUserRole(
-          orgCode: 'test_org_code',
-          userId: 'test_user_id',
-          roleId: 'test_role_id');
+        orgCode: 'test_org_code',
+        userId: 'test_user_id',
+        roleId: 'test_role_id',
+      );
       expect(responseData, isNotNull);
     });
 
@@ -107,8 +113,9 @@ void main() {
     //Future<Organization> getOrganization({ String code }) async
     test('test getOrganization', () async {
       // TODO
-      final responseData =
-          await instance.getOrganization(code: 'test_org_code');
+      final responseData = await instance.getOrganization(
+        code: 'test_org_code',
+      );
       expect(responseData, isNotNull);
     });
 
@@ -119,8 +126,9 @@ void main() {
     //Future<GetOrganizationFeatureFlagsResponse> getOrganizationFeatureFlags(String orgCode) async
     test('test getOrganizationFeatureFlags', () async {
       // TODO
-      final responseData =
-          await instance.getOrganizationFeatureFlags(orgCode: 'test_org_code');
+      final responseData = await instance.getOrganizationFeatureFlags(
+        orgCode: 'test_org_code',
+      );
       expect(responseData, isNotNull);
     });
 
@@ -132,7 +140,9 @@ void main() {
     test('test getOrganizationUserRoles', () async {
       // TODO
       final responseData = await instance.getOrganizationUserRoles(
-          orgCode: 'test_org_code', userId: 'test_user_id');
+        orgCode: 'test_org_code',
+        userId: 'test_user_id',
+      );
       expect(responseData, isNotNull);
     });
 
@@ -143,8 +153,9 @@ void main() {
     //Future<GetOrganizationUsersResponse> getOrganizationUsers(String orgCode, { String sort, int pageSize, String nextToken, String permissions }) async
     test('test getOrganizationUsers', () async {
       // TODO
-      final responseData =
-          await instance.getOrganizationUsers(orgCode: 'test_org_code');
+      final responseData = await instance.getOrganizationUsers(
+        orgCode: 'test_org_code',
+      );
       expect(responseData, isNotNull);
     });
 
@@ -167,7 +178,9 @@ void main() {
     test('test removeOrganizationUser', () async {
       // TODO
       final responseData = await instance.removeOrganizationUser(
-          orgCode: 'test_org_code', userId: 'test_user_id');
+        orgCode: 'test_org_code',
+        userId: 'test_user_id',
+      );
       expect(responseData, isNotNull);
     });
 
@@ -179,8 +192,9 @@ void main() {
     test('test updateOrganization', () async {
       // TODO
       final responseData = await instance.updateOrganization(
-          orgCode: 'test_org_code',
-          updateOrganizationRequest: UpdateOrganizationRequest());
+        orgCode: 'test_org_code',
+        updateOrganizationRequest: UpdateOrganizationRequest(),
+      );
       expect(responseData, isNotNull);
     });
 
@@ -192,9 +206,10 @@ void main() {
     test('test updateOrganizationFeatureFlagOverride', () async {
       // TODO
       final responseData = await instance.updateOrganizationFeatureFlagOverride(
-          orgCode: 'test_org_code',
-          featureFlagKey: 'test_key',
-          value: 'test_value');
+        orgCode: 'test_org_code',
+        featureFlagKey: 'test_key',
+        value: 'test_value',
+      );
       expect(responseData, isNotNull);
     });
 
@@ -206,8 +221,9 @@ void main() {
     test('test updateOrganizationUsers', () async {
       // TODO
       final responseData = await instance.updateOrganizationUsers(
-          orgCode: 'test_org_code',
-          updateOrganizationUsersRequest: UpdateOrganizationUsersRequest());
+        orgCode: 'test_org_code',
+        updateOrganizationUsersRequest: UpdateOrganizationUsersRequest(),
+      );
       expect(responseData, isNotNull);
     });
   });

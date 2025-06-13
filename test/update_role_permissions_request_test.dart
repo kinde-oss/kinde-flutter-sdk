@@ -13,15 +13,19 @@ void main() {
     test('to test the property `permissions`', () async {
       // TODO
       final permissions = instance.permissions;
-      expect(permissions,
-          isA<ListBuilder<UpdateRolePermissionsRequestPermissionsInner>>());
+      expect(
+        permissions,
+        isA<ListBuilder<UpdateRolePermissionsRequestPermissionsInner>>(),
+      );
       expect(permissions.length, isZero);
       instance.permissions.add(UpdateRolePermissionsRequestPermissionsInner());
       final result = instance.build();
       expect(result, isA<UpdateRolePermissionsRequest>());
       expect(result.permissions, isNotNull);
-      expect(result.permissions,
-          isA<BuiltList<UpdateRolePermissionsRequestPermissionsInner>?>());
+      expect(
+        result.permissions,
+        isA<BuiltList<UpdateRolePermissionsRequestPermissionsInner>?>(),
+      );
       expect(result.permissions?.length, equals(1));
     });
   });

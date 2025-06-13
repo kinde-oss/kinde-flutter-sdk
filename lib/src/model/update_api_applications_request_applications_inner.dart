@@ -14,7 +14,12 @@ part 'update_api_applications_request_applications_inner.g.dart';
 /// * [id] - The application's id.
 /// * [operation] - Optional operation, set to 'delete' to remove the user from the organization.
 @BuiltValue()
-abstract class UpdateAPIApplicationsRequestApplicationsInner implements Built<UpdateAPIApplicationsRequestApplicationsInner, UpdateAPIApplicationsRequestApplicationsInnerBuilder> {
+abstract class UpdateAPIApplicationsRequestApplicationsInner
+    implements
+        Built<
+          UpdateAPIApplicationsRequestApplicationsInner,
+          UpdateAPIApplicationsRequestApplicationsInnerBuilder
+        > {
   /// The application's id.
   @BuiltValueField(wireName: r'id')
   String get id;
@@ -25,18 +30,29 @@ abstract class UpdateAPIApplicationsRequestApplicationsInner implements Built<Up
 
   UpdateAPIApplicationsRequestApplicationsInner._();
 
-  factory UpdateAPIApplicationsRequestApplicationsInner([void Function(UpdateAPIApplicationsRequestApplicationsInnerBuilder b) updates]) = _$UpdateAPIApplicationsRequestApplicationsInner;
+  factory UpdateAPIApplicationsRequestApplicationsInner([
+    void Function(UpdateAPIApplicationsRequestApplicationsInnerBuilder b)
+    updates,
+  ]) = _$UpdateAPIApplicationsRequestApplicationsInner;
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _defaults(UpdateAPIApplicationsRequestApplicationsInnerBuilder b) => b;
+  static void _defaults(
+    UpdateAPIApplicationsRequestApplicationsInnerBuilder b,
+  ) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<UpdateAPIApplicationsRequestApplicationsInner> get serializer => _$UpdateAPIApplicationsRequestApplicationsInnerSerializer();
+  static Serializer<UpdateAPIApplicationsRequestApplicationsInner>
+  get serializer => _$UpdateAPIApplicationsRequestApplicationsInnerSerializer();
 }
 
-class _$UpdateAPIApplicationsRequestApplicationsInnerSerializer implements PrimitiveSerializer<UpdateAPIApplicationsRequestApplicationsInner> {
+class _$UpdateAPIApplicationsRequestApplicationsInnerSerializer
+    implements
+        PrimitiveSerializer<UpdateAPIApplicationsRequestApplicationsInner> {
   @override
-  final Iterable<Type> types = const [UpdateAPIApplicationsRequestApplicationsInner, _$UpdateAPIApplicationsRequestApplicationsInner];
+  final Iterable<Type> types = const [
+    UpdateAPIApplicationsRequestApplicationsInner,
+    _$UpdateAPIApplicationsRequestApplicationsInner,
+  ];
 
   @override
   final String wireName = r'UpdateAPIApplicationsRequestApplicationsInner';
@@ -66,7 +82,11 @@ class _$UpdateAPIApplicationsRequestApplicationsInnerSerializer implements Primi
     UpdateAPIApplicationsRequestApplicationsInner object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -82,17 +102,21 @@ class _$UpdateAPIApplicationsRequestApplicationsInnerSerializer implements Primi
       final value = serializedList[i + 1];
       switch (key) {
         case r'id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.id = valueDes;
           break;
         case r'operation':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.operation = valueDes;
           break;
         default:
@@ -123,4 +147,3 @@ class _$UpdateAPIApplicationsRequestApplicationsInnerSerializer implements Primi
     return result.build();
   }
 }
-

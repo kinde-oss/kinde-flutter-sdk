@@ -14,7 +14,8 @@ const CreateApplicationRequestTypeEnum _$createApplicationRequestTypeEnum_m2m =
     const CreateApplicationRequestTypeEnum._('m2m');
 
 CreateApplicationRequestTypeEnum _$createApplicationRequestTypeEnumValueOf(
-    String name) {
+  String name,
+) {
   switch (name) {
     case 'reg':
       return _$createApplicationRequestTypeEnum_reg;
@@ -28,15 +29,16 @@ CreateApplicationRequestTypeEnum _$createApplicationRequestTypeEnumValueOf(
 }
 
 final BuiltSet<CreateApplicationRequestTypeEnum>
-    _$createApplicationRequestTypeEnumValues = new BuiltSet<
-        CreateApplicationRequestTypeEnum>(const <CreateApplicationRequestTypeEnum>[
+_$createApplicationRequestTypeEnumValues = new BuiltSet<
+  CreateApplicationRequestTypeEnum
+>(const <CreateApplicationRequestTypeEnum>[
   _$createApplicationRequestTypeEnum_reg,
   _$createApplicationRequestTypeEnum_spa,
   _$createApplicationRequestTypeEnum_m2m,
 ]);
 
 Serializer<CreateApplicationRequestTypeEnum>
-    _$createApplicationRequestTypeEnumSerializer =
+_$createApplicationRequestTypeEnumSerializer =
     new _$CreateApplicationRequestTypeEnumSerializer();
 
 class _$CreateApplicationRequestTypeEnumSerializer
@@ -59,16 +61,19 @@ class _$CreateApplicationRequestTypeEnumSerializer
 
   @override
   Object serialize(
-          Serializers serializers, CreateApplicationRequestTypeEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+    Serializers serializers,
+    CreateApplicationRequestTypeEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   CreateApplicationRequestTypeEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      CreateApplicationRequestTypeEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => CreateApplicationRequestTypeEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$CreateApplicationRequest extends CreateApplicationRequest {
@@ -77,16 +82,16 @@ class _$CreateApplicationRequest extends CreateApplicationRequest {
   @override
   final CreateApplicationRequestTypeEnum? type;
 
-  factory _$CreateApplicationRequest(
-          [void Function(CreateApplicationRequestBuilder)? updates]) =>
-      (new CreateApplicationRequestBuilder()..update(updates))._build();
+  factory _$CreateApplicationRequest([
+    void Function(CreateApplicationRequestBuilder)? updates,
+  ]) => (new CreateApplicationRequestBuilder()..update(updates))._build();
 
   _$CreateApplicationRequest._({this.name, this.type}) : super._();
 
   @override
   CreateApplicationRequest rebuild(
-          void Function(CreateApplicationRequestBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CreateApplicationRequestBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CreateApplicationRequestBuilder toBuilder() =>

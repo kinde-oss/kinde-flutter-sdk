@@ -16,8 +16,9 @@ void main() {
     //Future<CreateUserResponse> createUser({ CreateUserRequest createUserRequest }) async
     test('test createUser', () async {
       // TODO
-      final responseData =
-          await instance.createUser(createUserRequest: CreateUserRequest());
+      final responseData = await instance.createUser(
+        createUserRequest: CreateUserRequest(),
+      );
       expect(responseData, isNotNull);
     });
 
@@ -61,8 +62,9 @@ void main() {
     //Future<User> updateUser(UpdateUserRequest updateUserRequest, { String id }) async
     test('test updateUser', () async {
       // TODO
-      final responseData =
-          await instance.updateUser(updateUserRequest: UpdateUserRequest());
+      final responseData = await instance.updateUser(
+        updateUserRequest: UpdateUserRequest(),
+      );
       expect(responseData, isNotNull);
     });
   });

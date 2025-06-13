@@ -89,16 +89,20 @@ void main() {
       final resultEnv = instance.build();
       expect(resultEnv, isA<CreateFeatureFlagRequest>());
       expect(resultEnv.allowOverrideLevel, isNotNull);
-      expect(resultEnv.allowOverrideLevel,
-          equals(CreateFeatureFlagRequestAllowOverrideLevelEnum.env));
+      expect(
+        resultEnv.allowOverrideLevel,
+        equals(CreateFeatureFlagRequestAllowOverrideLevelEnum.env),
+      );
 
       instance.allowOverrideLevel =
           CreateFeatureFlagRequestAllowOverrideLevelEnum.org;
       final resultOrg = instance.build();
       expect(resultOrg, isA<CreateFeatureFlagRequest>());
       expect(resultOrg.allowOverrideLevel, isNotNull);
-      expect(resultOrg.allowOverrideLevel,
-          equals(CreateFeatureFlagRequestAllowOverrideLevelEnum.org));
+      expect(
+        resultOrg.allowOverrideLevel,
+        equals(CreateFeatureFlagRequestAllowOverrideLevelEnum.org),
+      );
     });
 
     // Default value for the flag used by environments and organizations.
