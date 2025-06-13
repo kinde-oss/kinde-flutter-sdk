@@ -7,7 +7,7 @@ import 'dart:async';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 
-import 'package:kinde_flutter_sdk/src/api_util.dart';
+import 'package:kinde_flutter_sdk/src/utils/api_util.dart';
 import 'package:kinde_flutter_sdk/src/model/logout_redirect_urls.dart';
 import 'package:kinde_flutter_sdk/src/model/redirect_callback_urls.dart';
 import 'package:kinde_flutter_sdk/src/model/replace_logout_redirect_urls_request.dart';

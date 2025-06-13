@@ -11,7 +11,7 @@ import 'package:built_value/json_object.dart';
 import 'package:built_value/serializer.dart';
 import 'package:built_value/standard_json_plugin.dart';
 import 'package:built_value/iso_8601_date_time_serializer.dart';
-import 'package:kinde_flutter_sdk/src/date_serializer.dart';
+import 'package:kinde_flutter_sdk/src/utils/date_serializer.dart';
 import 'package:kinde_flutter_sdk/src/model/date.dart';
 
 import 'package:kinde_flutter_sdk/src/model/add_apis_request.dart';

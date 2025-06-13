@@ -8,7 +8,7 @@ import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 
 import 'package:built_collection/built_collection.dart';
-import 'package:kinde_flutter_sdk/src/api_util.dart';
+import 'package:kinde_flutter_sdk/src/utils/api_util.dart';
 import 'package:kinde_flutter_sdk/src/model/create_role_request.dart';
 import 'package:kinde_flutter_sdk/src/model/get_roles_response.dart';
 import 'package:kinde_flutter_sdk/src/model/roles_permission_response_inner.dart';

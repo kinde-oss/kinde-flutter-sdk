@@ -5,13 +5,14 @@
 Pod::Spec.new do |s|
   s.name             = 'kinde_flutter_sdk'
   s.version          = '0.0.1'
-  s.summary          = 'A new Flutter project.'
+  s.summary          = 'Flutter SDK for Kinde authentication service.'
   s.description      = <<-DESC
-A new Flutter project.
+A Flutter SDK that provides OAuth authentication capabilities for Kinde authentication service,
+supporting multiple platforms including macOS.
                        DESC
-  s.homepage         = 'http://example.com'
+  s.homepage         = 'https://github.com/kinde-oss/kinde-flutter-sdk'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Your Company' => 'email@example.com' }
+  s.authors          = 'kinde.com'
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'

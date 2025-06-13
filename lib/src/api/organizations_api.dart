@@ -7,7 +7,7 @@ import 'dart:async';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 
-import 'package:kinde_flutter_sdk/src/api_util.dart';
+import 'package:kinde_flutter_sdk/src/utils/api_util.dart';
 import 'package:kinde_flutter_sdk/src/model/add_organization_users_request.dart';
 import 'package:kinde_flutter_sdk/src/model/add_organization_users_response.dart';
 import 'package:kinde_flutter_sdk/src/model/create_organization_request.dart';
