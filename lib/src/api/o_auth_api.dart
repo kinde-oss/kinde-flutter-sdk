@@ -96,16 +96,25 @@ class OAuthApi {
   }
 
   Future<bool> logout({required String url, Dio? dio}) async {
+    if (url.isEmpty) {
+      throw ArgumentError('URL cannot be empty');
+    }
+
     final options = Options(
       method: r'GET',
     );
     var dioClient = dio ?? Dio();
+
+    try {
     final response = await dioClient.request<Object>(
       url,
       options: options,
     );
 
     return response.statusCode == 200;
+    } on DioException {
+      return false;
+    }
   }
 
   /// Returns the details of the currently logged in user
