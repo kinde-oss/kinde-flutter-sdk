@@ -15,10 +15,12 @@ part 'get_organizations_response.g.dart';
 /// Properties:
 /// * [code] - Response code.
 /// * [message] - Response message.
-/// * [organizations] 
+/// * [organizations]
 /// * [nextToken] - Pagination token.
 @BuiltValue()
-abstract class GetOrganizationsResponse implements Built<GetOrganizationsResponse, GetOrganizationsResponseBuilder> {
+abstract class GetOrganizationsResponse
+    implements
+        Built<GetOrganizationsResponse, GetOrganizationsResponseBuilder> {
   /// Response code.
   @BuiltValueField(wireName: r'code')
   String? get code;
@@ -36,18 +38,25 @@ abstract class GetOrganizationsResponse implements Built<GetOrganizationsRespons
 
   GetOrganizationsResponse._();
 
-  factory GetOrganizationsResponse([void Function(GetOrganizationsResponseBuilder b) updates]) = _$GetOrganizationsResponse;
+  factory GetOrganizationsResponse([
+    void Function(GetOrganizationsResponseBuilder b) updates,
+  ]) = _$GetOrganizationsResponse;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(GetOrganizationsResponseBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<GetOrganizationsResponse> get serializer => _$GetOrganizationsResponseSerializer();
+  static Serializer<GetOrganizationsResponse> get serializer =>
+      _$GetOrganizationsResponseSerializer();
 }
 
-class _$GetOrganizationsResponseSerializer implements PrimitiveSerializer<GetOrganizationsResponse> {
+class _$GetOrganizationsResponseSerializer
+    implements PrimitiveSerializer<GetOrganizationsResponse> {
   @override
-  final Iterable<Type> types = const [GetOrganizationsResponse, _$GetOrganizationsResponse];
+  final Iterable<Type> types = const [
+    GetOrganizationsResponse,
+    _$GetOrganizationsResponse,
+  ];
 
   @override
   final String wireName = r'GetOrganizationsResponse';
@@ -93,7 +102,11 @@ class _$GetOrganizationsResponseSerializer implements PrimitiveSerializer<GetOrg
     GetOrganizationsResponse object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -109,31 +122,41 @@ class _$GetOrganizationsResponseSerializer implements PrimitiveSerializer<GetOrg
       final value = serializedList[i + 1];
       switch (key) {
         case r'code':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.code = valueDes;
           break;
         case r'message':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.message = valueDes;
           break;
         case r'organizations':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(Organization)]),
-          ) as BuiltList<Organization>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(Organization),
+                    ]),
+                  )
+                  as BuiltList<Organization>;
           result.organizations.replace(valueDes);
           break;
         case r'next_token':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.nextToken = valueDes;
           break;
         default:
@@ -164,4 +187,3 @@ class _$GetOrganizationsResponseSerializer implements PrimitiveSerializer<GetOrg
     return result.build();
   }
 }
-

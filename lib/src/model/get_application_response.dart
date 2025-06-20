@@ -14,9 +14,10 @@ part 'get_application_response.g.dart';
 /// Properties:
 /// * [code] - Response code.
 /// * [message] - Response message.
-/// * [application] 
+/// * [application]
 @BuiltValue()
-abstract class GetApplicationResponse implements Built<GetApplicationResponse, GetApplicationResponseBuilder> {
+abstract class GetApplicationResponse
+    implements Built<GetApplicationResponse, GetApplicationResponseBuilder> {
   /// Response code.
   @BuiltValueField(wireName: r'code')
   String? get code;
@@ -30,18 +31,25 @@ abstract class GetApplicationResponse implements Built<GetApplicationResponse, G
 
   GetApplicationResponse._();
 
-  factory GetApplicationResponse([void Function(GetApplicationResponseBuilder b) updates]) = _$GetApplicationResponse;
+  factory GetApplicationResponse([
+    void Function(GetApplicationResponseBuilder b) updates,
+  ]) = _$GetApplicationResponse;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(GetApplicationResponseBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<GetApplicationResponse> get serializer => _$GetApplicationResponseSerializer();
+  static Serializer<GetApplicationResponse> get serializer =>
+      _$GetApplicationResponseSerializer();
 }
 
-class _$GetApplicationResponseSerializer implements PrimitiveSerializer<GetApplicationResponse> {
+class _$GetApplicationResponseSerializer
+    implements PrimitiveSerializer<GetApplicationResponse> {
   @override
-  final Iterable<Type> types = const [GetApplicationResponse, _$GetApplicationResponse];
+  final Iterable<Type> types = const [
+    GetApplicationResponse,
+    _$GetApplicationResponse,
+  ];
 
   @override
   final String wireName = r'GetApplicationResponse';
@@ -80,7 +88,11 @@ class _$GetApplicationResponseSerializer implements PrimitiveSerializer<GetAppli
     GetApplicationResponse object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -96,24 +108,32 @@ class _$GetApplicationResponseSerializer implements PrimitiveSerializer<GetAppli
       final value = serializedList[i + 1];
       switch (key) {
         case r'code':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.code = valueDes;
           break;
         case r'message':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.message = valueDes;
           break;
         case r'application':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(GetApplicationResponseApplication),
-          ) as GetApplicationResponseApplication;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      GetApplicationResponseApplication,
+                    ),
+                  )
+                  as GetApplicationResponseApplication;
           result.application.replace(valueDes);
           break;
         default:
@@ -144,4 +164,3 @@ class _$GetApplicationResponseSerializer implements PrimitiveSerializer<GetAppli
     return result.build();
   }
 }
-

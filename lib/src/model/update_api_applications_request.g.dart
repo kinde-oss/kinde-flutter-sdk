@@ -10,19 +10,22 @@ class _$UpdateAPIApplicationsRequest extends UpdateAPIApplicationsRequest {
   @override
   final BuiltList<UpdateAPIApplicationsRequestApplicationsInner> applications;
 
-  factory _$UpdateAPIApplicationsRequest(
-          [void Function(UpdateAPIApplicationsRequestBuilder)? updates]) =>
-      (new UpdateAPIApplicationsRequestBuilder()..update(updates))._build();
+  factory _$UpdateAPIApplicationsRequest([
+    void Function(UpdateAPIApplicationsRequestBuilder)? updates,
+  ]) => (new UpdateAPIApplicationsRequestBuilder()..update(updates))._build();
 
   _$UpdateAPIApplicationsRequest._({required this.applications}) : super._() {
     BuiltValueNullFieldError.checkNotNull(
-        applications, r'UpdateAPIApplicationsRequest', 'applications');
+      applications,
+      r'UpdateAPIApplicationsRequest',
+      'applications',
+    );
   }
 
   @override
   UpdateAPIApplicationsRequest rebuild(
-          void Function(UpdateAPIApplicationsRequestBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(UpdateAPIApplicationsRequestBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   UpdateAPIApplicationsRequestBuilder toBuilder() =>
@@ -46,15 +49,16 @@ class _$UpdateAPIApplicationsRequest extends UpdateAPIApplicationsRequest {
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'UpdateAPIApplicationsRequest')
-          ..add('applications', applications))
-        .toString();
+      ..add('applications', applications)).toString();
   }
 }
 
 class UpdateAPIApplicationsRequestBuilder
     implements
-        Builder<UpdateAPIApplicationsRequest,
-            UpdateAPIApplicationsRequestBuilder> {
+        Builder<
+          UpdateAPIApplicationsRequest,
+          UpdateAPIApplicationsRequestBuilder
+        > {
   _$UpdateAPIApplicationsRequest? _$v;
 
   ListBuilder<UpdateAPIApplicationsRequestApplicationsInner>? _applications;
@@ -62,9 +66,8 @@ class UpdateAPIApplicationsRequestBuilder
       _$this._applications ??=
           new ListBuilder<UpdateAPIApplicationsRequestApplicationsInner>();
   set applications(
-          ListBuilder<UpdateAPIApplicationsRequestApplicationsInner>?
-              applications) =>
-      _$this._applications = applications;
+    ListBuilder<UpdateAPIApplicationsRequestApplicationsInner>? applications,
+  ) => _$this._applications = applications;
 
   UpdateAPIApplicationsRequestBuilder() {
     UpdateAPIApplicationsRequest._defaults(this);
@@ -96,9 +99,11 @@ class UpdateAPIApplicationsRequestBuilder
   _$UpdateAPIApplicationsRequest _build() {
     _$UpdateAPIApplicationsRequest _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           new _$UpdateAPIApplicationsRequest._(
-              applications: applications.build());
+            applications: applications.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -106,7 +111,10 @@ class UpdateAPIApplicationsRequestBuilder
         applications.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'UpdateAPIApplicationsRequest', _$failedField, e.toString());
+          r'UpdateAPIApplicationsRequest',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

@@ -15,7 +15,8 @@ part 'create_permission_request.g.dart';
 /// * [description] - The permission's description.
 /// * [key] - The permission identifier to use in code.
 @BuiltValue()
-abstract class CreatePermissionRequest implements Built<CreatePermissionRequest, CreatePermissionRequestBuilder> {
+abstract class CreatePermissionRequest
+    implements Built<CreatePermissionRequest, CreatePermissionRequestBuilder> {
   /// The permission's name.
   @BuiltValueField(wireName: r'name')
   String? get name;
@@ -30,18 +31,25 @@ abstract class CreatePermissionRequest implements Built<CreatePermissionRequest,
 
   CreatePermissionRequest._();
 
-  factory CreatePermissionRequest([void Function(CreatePermissionRequestBuilder b) updates]) = _$CreatePermissionRequest;
+  factory CreatePermissionRequest([
+    void Function(CreatePermissionRequestBuilder b) updates,
+  ]) = _$CreatePermissionRequest;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CreatePermissionRequestBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CreatePermissionRequest> get serializer => _$CreatePermissionRequestSerializer();
+  static Serializer<CreatePermissionRequest> get serializer =>
+      _$CreatePermissionRequestSerializer();
 }
 
-class _$CreatePermissionRequestSerializer implements PrimitiveSerializer<CreatePermissionRequest> {
+class _$CreatePermissionRequestSerializer
+    implements PrimitiveSerializer<CreatePermissionRequest> {
   @override
-  final Iterable<Type> types = const [CreatePermissionRequest, _$CreatePermissionRequest];
+  final Iterable<Type> types = const [
+    CreatePermissionRequest,
+    _$CreatePermissionRequest,
+  ];
 
   @override
   final String wireName = r'CreatePermissionRequest';
@@ -80,7 +88,11 @@ class _$CreatePermissionRequestSerializer implements PrimitiveSerializer<CreateP
     CreatePermissionRequest object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -96,24 +108,30 @@ class _$CreatePermissionRequestSerializer implements PrimitiveSerializer<CreateP
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.name = valueDes;
           break;
         case r'description':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.description = valueDes;
           break;
         case r'key':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.key = valueDes;
           break;
         default:
@@ -144,4 +162,3 @@ class _$CreatePermissionRequestSerializer implements PrimitiveSerializer<CreateP
     return result.build();
   }
 }
-

@@ -11,16 +11,17 @@ class _$GetRedirectCallbackUrlsResponse
   @override
   final BuiltList<RedirectCallbackUrls>? redirectUrls;
 
-  factory _$GetRedirectCallbackUrlsResponse(
-          [void Function(GetRedirectCallbackUrlsResponseBuilder)? updates]) =>
+  factory _$GetRedirectCallbackUrlsResponse([
+    void Function(GetRedirectCallbackUrlsResponseBuilder)? updates,
+  ]) =>
       (new GetRedirectCallbackUrlsResponseBuilder()..update(updates))._build();
 
   _$GetRedirectCallbackUrlsResponse._({this.redirectUrls}) : super._();
 
   @override
   GetRedirectCallbackUrlsResponse rebuild(
-          void Function(GetRedirectCallbackUrlsResponseBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(GetRedirectCallbackUrlsResponseBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   GetRedirectCallbackUrlsResponseBuilder toBuilder() =>
@@ -44,15 +45,16 @@ class _$GetRedirectCallbackUrlsResponse
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'GetRedirectCallbackUrlsResponse')
-          ..add('redirectUrls', redirectUrls))
-        .toString();
+      ..add('redirectUrls', redirectUrls)).toString();
   }
 }
 
 class GetRedirectCallbackUrlsResponseBuilder
     implements
-        Builder<GetRedirectCallbackUrlsResponse,
-            GetRedirectCallbackUrlsResponseBuilder> {
+        Builder<
+          GetRedirectCallbackUrlsResponse,
+          GetRedirectCallbackUrlsResponseBuilder
+        > {
   _$GetRedirectCallbackUrlsResponse? _$v;
 
   ListBuilder<RedirectCallbackUrls>? _redirectUrls;
@@ -91,9 +93,11 @@ class GetRedirectCallbackUrlsResponseBuilder
   _$GetRedirectCallbackUrlsResponse _build() {
     _$GetRedirectCallbackUrlsResponse _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           new _$GetRedirectCallbackUrlsResponse._(
-              redirectUrls: _redirectUrls?.build());
+            redirectUrls: _redirectUrls?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -101,7 +105,10 @@ class GetRedirectCallbackUrlsResponseBuilder
         _redirectUrls?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'GetRedirectCallbackUrlsResponse', _$failedField, e.toString());
+          r'GetRedirectCallbackUrlsResponse',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

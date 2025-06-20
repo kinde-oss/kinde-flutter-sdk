@@ -11,24 +11,26 @@ class _$UpdateEnvironementFeatureFlagOverrideRequest
   @override
   final String value;
 
-  factory _$UpdateEnvironementFeatureFlagOverrideRequest(
-          [void Function(UpdateEnvironementFeatureFlagOverrideRequestBuilder)?
-              updates]) =>
+  factory _$UpdateEnvironementFeatureFlagOverrideRequest([
+    void Function(UpdateEnvironementFeatureFlagOverrideRequestBuilder)? updates,
+  ]) =>
       (new UpdateEnvironementFeatureFlagOverrideRequestBuilder()
             ..update(updates))
           ._build();
 
   _$UpdateEnvironementFeatureFlagOverrideRequest._({required this.value})
-      : super._() {
+    : super._() {
     BuiltValueNullFieldError.checkNotNull(
-        value, r'UpdateEnvironementFeatureFlagOverrideRequest', 'value');
+      value,
+      r'UpdateEnvironementFeatureFlagOverrideRequest',
+      'value',
+    );
   }
 
   @override
   UpdateEnvironementFeatureFlagOverrideRequest rebuild(
-          void Function(UpdateEnvironementFeatureFlagOverrideRequestBuilder)
-              updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(UpdateEnvironementFeatureFlagOverrideRequestBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   UpdateEnvironementFeatureFlagOverrideRequestBuilder toBuilder() =>
@@ -52,16 +54,17 @@ class _$UpdateEnvironementFeatureFlagOverrideRequest
   @override
   String toString() {
     return (newBuiltValueToStringHelper(
-            r'UpdateEnvironementFeatureFlagOverrideRequest')
-          ..add('value', value))
-        .toString();
+      r'UpdateEnvironementFeatureFlagOverrideRequest',
+    )..add('value', value)).toString();
   }
 }
 
 class UpdateEnvironementFeatureFlagOverrideRequestBuilder
     implements
-        Builder<UpdateEnvironementFeatureFlagOverrideRequest,
-            UpdateEnvironementFeatureFlagOverrideRequestBuilder> {
+        Builder<
+          UpdateEnvironementFeatureFlagOverrideRequest,
+          UpdateEnvironementFeatureFlagOverrideRequestBuilder
+        > {
   _$UpdateEnvironementFeatureFlagOverrideRequest? _$v;
 
   String? _value;
@@ -89,8 +92,8 @@ class UpdateEnvironementFeatureFlagOverrideRequestBuilder
 
   @override
   void update(
-      void Function(UpdateEnvironementFeatureFlagOverrideRequestBuilder)?
-          updates) {
+    void Function(UpdateEnvironementFeatureFlagOverrideRequestBuilder)? updates,
+  ) {
     if (updates != null) updates(this);
   }
 
@@ -98,10 +101,15 @@ class UpdateEnvironementFeatureFlagOverrideRequestBuilder
   UpdateEnvironementFeatureFlagOverrideRequest build() => _build();
 
   _$UpdateEnvironementFeatureFlagOverrideRequest _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         new _$UpdateEnvironementFeatureFlagOverrideRequest._(
-            value: BuiltValueNullFieldError.checkNotNull(value,
-                r'UpdateEnvironementFeatureFlagOverrideRequest', 'value'));
+          value: BuiltValueNullFieldError.checkNotNull(
+            value,
+            r'UpdateEnvironementFeatureFlagOverrideRequest',
+            'value',
+          ),
+        );
     replace(_$result);
     return _$result;
   }

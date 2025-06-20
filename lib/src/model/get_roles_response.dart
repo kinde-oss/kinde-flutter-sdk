@@ -15,10 +15,11 @@ part 'get_roles_response.g.dart';
 /// Properties:
 /// * [code] - Response code.
 /// * [message] - Response message.
-/// * [roles] 
+/// * [roles]
 /// * [nextToken] - Pagination token.
 @BuiltValue()
-abstract class GetRolesResponse implements Built<GetRolesResponse, GetRolesResponseBuilder> {
+abstract class GetRolesResponse
+    implements Built<GetRolesResponse, GetRolesResponseBuilder> {
   /// Response code.
   @BuiltValueField(wireName: r'code')
   String? get code;
@@ -36,16 +37,19 @@ abstract class GetRolesResponse implements Built<GetRolesResponse, GetRolesRespo
 
   GetRolesResponse._();
 
-  factory GetRolesResponse([void Function(GetRolesResponseBuilder b) updates]) = _$GetRolesResponse;
+  factory GetRolesResponse([void Function(GetRolesResponseBuilder b) updates]) =
+      _$GetRolesResponse;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(GetRolesResponseBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<GetRolesResponse> get serializer => _$GetRolesResponseSerializer();
+  static Serializer<GetRolesResponse> get serializer =>
+      _$GetRolesResponseSerializer();
 }
 
-class _$GetRolesResponseSerializer implements PrimitiveSerializer<GetRolesResponse> {
+class _$GetRolesResponseSerializer
+    implements PrimitiveSerializer<GetRolesResponse> {
   @override
   final Iterable<Type> types = const [GetRolesResponse, _$GetRolesResponse];
 
@@ -93,7 +97,11 @@ class _$GetRolesResponseSerializer implements PrimitiveSerializer<GetRolesRespon
     GetRolesResponse object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -109,31 +117,39 @@ class _$GetRolesResponseSerializer implements PrimitiveSerializer<GetRolesRespon
       final value = serializedList[i + 1];
       switch (key) {
         case r'code':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.code = valueDes;
           break;
         case r'message':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.message = valueDes;
           break;
         case r'roles':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(Roles)]),
-          ) as BuiltList<Roles>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [FullType(Roles)]),
+                  )
+                  as BuiltList<Roles>;
           result.roles.replace(valueDes);
           break;
         case r'next_token':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.nextToken = valueDes;
           break;
         default:
@@ -164,4 +180,3 @@ class _$GetRolesResponseSerializer implements PrimitiveSerializer<GetRolesRespon
     return result.build();
   }
 }
-

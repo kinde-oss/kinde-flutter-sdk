@@ -16,7 +16,8 @@ part 'update_roles_request.g.dart';
 /// * [key] - The role identifier to use in code.
 /// * [isDefaultRole] - Set role as default for new users.
 @BuiltValue()
-abstract class UpdateRolesRequest implements Built<UpdateRolesRequest, UpdateRolesRequestBuilder> {
+abstract class UpdateRolesRequest
+    implements Built<UpdateRolesRequest, UpdateRolesRequestBuilder> {
   /// The role's name.
   @BuiltValueField(wireName: r'name')
   String get name;
@@ -35,16 +36,20 @@ abstract class UpdateRolesRequest implements Built<UpdateRolesRequest, UpdateRol
 
   UpdateRolesRequest._();
 
-  factory UpdateRolesRequest([void Function(UpdateRolesRequestBuilder b) updates]) = _$UpdateRolesRequest;
+  factory UpdateRolesRequest([
+    void Function(UpdateRolesRequestBuilder b) updates,
+  ]) = _$UpdateRolesRequest;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(UpdateRolesRequestBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<UpdateRolesRequest> get serializer => _$UpdateRolesRequestSerializer();
+  static Serializer<UpdateRolesRequest> get serializer =>
+      _$UpdateRolesRequestSerializer();
 }
 
-class _$UpdateRolesRequestSerializer implements PrimitiveSerializer<UpdateRolesRequest> {
+class _$UpdateRolesRequestSerializer
+    implements PrimitiveSerializer<UpdateRolesRequest> {
   @override
   final Iterable<Type> types = const [UpdateRolesRequest, _$UpdateRolesRequest];
 
@@ -88,7 +93,11 @@ class _$UpdateRolesRequestSerializer implements PrimitiveSerializer<UpdateRolesR
     UpdateRolesRequest object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -104,31 +113,39 @@ class _$UpdateRolesRequestSerializer implements PrimitiveSerializer<UpdateRolesR
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.name = valueDes;
           break;
         case r'description':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.description = valueDes;
           break;
         case r'key':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.key = valueDes;
           break;
         case r'is_default_role':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(bool),
-          ) as bool;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(bool),
+                  )
+                  as bool;
           result.isDefaultRole = valueDes;
           break;
         default:
@@ -159,4 +176,3 @@ class _$UpdateRolesRequestSerializer implements PrimitiveSerializer<UpdateRolesR
     return result.build();
   }
 }
-

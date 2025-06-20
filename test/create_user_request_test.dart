@@ -37,8 +37,10 @@ void main() {
       instance.identities.add(identitiesInner);
       final result = instance.build();
       expect(result, isA<CreateUserRequest>());
-      expect(result.identities,
-          isA<BuiltList<CreateUserRequestIdentitiesInner>?>());
+      expect(
+        result.identities,
+        isA<BuiltList<CreateUserRequestIdentitiesInner>?>(),
+      );
       expect(result.identities?.length, isNonZero);
     });
   });

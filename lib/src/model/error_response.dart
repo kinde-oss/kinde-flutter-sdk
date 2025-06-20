@@ -13,21 +13,24 @@ part 'error_response.g.dart';
 /// ErrorResponse
 ///
 /// Properties:
-/// * [errors] 
+/// * [errors]
 @BuiltValue()
-abstract class ErrorResponse implements Built<ErrorResponse, ErrorResponseBuilder> {
+abstract class ErrorResponse
+    implements Built<ErrorResponse, ErrorResponseBuilder> {
   @BuiltValueField(wireName: r'errors')
   BuiltList<Error>? get errors;
 
   ErrorResponse._();
 
-  factory ErrorResponse([void Function(ErrorResponseBuilder b) updates]) = _$ErrorResponse;
+  factory ErrorResponse([void Function(ErrorResponseBuilder b) updates]) =
+      _$ErrorResponse;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(ErrorResponseBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<ErrorResponse> get serializer => _$ErrorResponseSerializer();
+  static Serializer<ErrorResponse> get serializer =>
+      _$ErrorResponseSerializer();
 }
 
 class _$ErrorResponseSerializer implements PrimitiveSerializer<ErrorResponse> {
@@ -57,7 +60,11 @@ class _$ErrorResponseSerializer implements PrimitiveSerializer<ErrorResponse> {
     ErrorResponse object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -73,10 +80,12 @@ class _$ErrorResponseSerializer implements PrimitiveSerializer<ErrorResponse> {
       final value = serializedList[i + 1];
       switch (key) {
         case r'errors':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(Error)]),
-          ) as BuiltList<Error>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [FullType(Error)]),
+                  )
+                  as BuiltList<Error>;
           result.errors.replace(valueDes);
           break;
         default:
@@ -107,4 +116,3 @@ class _$ErrorResponseSerializer implements PrimitiveSerializer<ErrorResponse> {
     return result.build();
   }
 }
-

@@ -14,10 +14,11 @@ part 'create_user_request.g.dart';
 /// CreateUserRequest
 ///
 /// Properties:
-/// * [profile] 
+/// * [profile]
 /// * [identities] - Array of identities to assign to the created user
 @BuiltValue()
-abstract class CreateUserRequest implements Built<CreateUserRequest, CreateUserRequestBuilder> {
+abstract class CreateUserRequest
+    implements Built<CreateUserRequest, CreateUserRequestBuilder> {
   @BuiltValueField(wireName: r'profile')
   CreateUserRequestProfile? get profile;
 
@@ -27,16 +28,20 @@ abstract class CreateUserRequest implements Built<CreateUserRequest, CreateUserR
 
   CreateUserRequest._();
 
-  factory CreateUserRequest([void Function(CreateUserRequestBuilder b) updates]) = _$CreateUserRequest;
+  factory CreateUserRequest([
+    void Function(CreateUserRequestBuilder b) updates,
+  ]) = _$CreateUserRequest;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CreateUserRequestBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CreateUserRequest> get serializer => _$CreateUserRequestSerializer();
+  static Serializer<CreateUserRequest> get serializer =>
+      _$CreateUserRequestSerializer();
 }
 
-class _$CreateUserRequestSerializer implements PrimitiveSerializer<CreateUserRequest> {
+class _$CreateUserRequestSerializer
+    implements PrimitiveSerializer<CreateUserRequest> {
   @override
   final Iterable<Type> types = const [CreateUserRequest, _$CreateUserRequest];
 
@@ -59,7 +64,9 @@ class _$CreateUserRequestSerializer implements PrimitiveSerializer<CreateUserReq
       yield r'identities';
       yield serializers.serialize(
         object.identities,
-        specifiedType: const FullType(BuiltList, [FullType(CreateUserRequestIdentitiesInner)]),
+        specifiedType: const FullType(BuiltList, [
+          FullType(CreateUserRequestIdentitiesInner),
+        ]),
       );
     }
   }
@@ -70,7 +77,11 @@ class _$CreateUserRequestSerializer implements PrimitiveSerializer<CreateUserReq
     CreateUserRequest object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -86,17 +97,23 @@ class _$CreateUserRequestSerializer implements PrimitiveSerializer<CreateUserReq
       final value = serializedList[i + 1];
       switch (key) {
         case r'profile':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(CreateUserRequestProfile),
-          ) as CreateUserRequestProfile;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(CreateUserRequestProfile),
+                  )
+                  as CreateUserRequestProfile;
           result.profile.replace(valueDes);
           break;
         case r'identities':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(CreateUserRequestIdentitiesInner)]),
-          ) as BuiltList<CreateUserRequestIdentitiesInner>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(CreateUserRequestIdentitiesInner),
+                    ]),
+                  )
+                  as BuiltList<CreateUserRequestIdentitiesInner>;
           result.identities.replace(valueDes);
           break;
         default:
@@ -127,4 +144,3 @@ class _$CreateUserRequestSerializer implements PrimitiveSerializer<CreateUserReq
     return result.build();
   }
 }
-

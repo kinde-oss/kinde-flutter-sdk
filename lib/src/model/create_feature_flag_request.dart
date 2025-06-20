@@ -19,7 +19,9 @@ part 'create_feature_flag_request.g.dart';
 /// * [allowOverrideLevel] - Allow the flag to be overridden at a different level.
 /// * [defaultValue] - Default value for the flag used by environments and organizations.
 @BuiltValue()
-abstract class CreateFeatureFlagRequest implements Built<CreateFeatureFlagRequest, CreateFeatureFlagRequestBuilder> {
+abstract class CreateFeatureFlagRequest
+    implements
+        Built<CreateFeatureFlagRequest, CreateFeatureFlagRequestBuilder> {
   /// The name of the flag.
   @BuiltValueField(wireName: r'name')
   String get name;
@@ -48,18 +50,25 @@ abstract class CreateFeatureFlagRequest implements Built<CreateFeatureFlagReques
 
   CreateFeatureFlagRequest._();
 
-  factory CreateFeatureFlagRequest([void Function(CreateFeatureFlagRequestBuilder b) updates]) = _$CreateFeatureFlagRequest;
+  factory CreateFeatureFlagRequest([
+    void Function(CreateFeatureFlagRequestBuilder b) updates,
+  ]) = _$CreateFeatureFlagRequest;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CreateFeatureFlagRequestBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CreateFeatureFlagRequest> get serializer => _$CreateFeatureFlagRequestSerializer();
+  static Serializer<CreateFeatureFlagRequest> get serializer =>
+      _$CreateFeatureFlagRequestSerializer();
 }
 
-class _$CreateFeatureFlagRequestSerializer implements PrimitiveSerializer<CreateFeatureFlagRequest> {
+class _$CreateFeatureFlagRequestSerializer
+    implements PrimitiveSerializer<CreateFeatureFlagRequest> {
   @override
-  final Iterable<Type> types = const [CreateFeatureFlagRequest, _$CreateFeatureFlagRequest];
+  final Iterable<Type> types = const [
+    CreateFeatureFlagRequest,
+    _$CreateFeatureFlagRequest,
+  ];
 
   @override
   final String wireName = r'CreateFeatureFlagRequest';
@@ -95,7 +104,9 @@ class _$CreateFeatureFlagRequestSerializer implements PrimitiveSerializer<Create
       yield r'allow_override_level';
       yield serializers.serialize(
         object.allowOverrideLevel,
-        specifiedType: const FullType(CreateFeatureFlagRequestAllowOverrideLevelEnum),
+        specifiedType: const FullType(
+          CreateFeatureFlagRequestAllowOverrideLevelEnum,
+        ),
       );
     }
     yield r'default_value';
@@ -111,7 +122,11 @@ class _$CreateFeatureFlagRequestSerializer implements PrimitiveSerializer<Create
     CreateFeatureFlagRequest object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -127,45 +142,61 @@ class _$CreateFeatureFlagRequestSerializer implements PrimitiveSerializer<Create
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.name = valueDes;
           break;
         case r'description':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.description = valueDes;
           break;
         case r'key':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.key = valueDes;
           break;
         case r'type':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(CreateFeatureFlagRequestTypeEnum),
-          ) as CreateFeatureFlagRequestTypeEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      CreateFeatureFlagRequestTypeEnum,
+                    ),
+                  )
+                  as CreateFeatureFlagRequestTypeEnum;
           result.type = valueDes;
           break;
         case r'allow_override_level':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(CreateFeatureFlagRequestAllowOverrideLevelEnum),
-          ) as CreateFeatureFlagRequestAllowOverrideLevelEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      CreateFeatureFlagRequestAllowOverrideLevelEnum,
+                    ),
+                  )
+                  as CreateFeatureFlagRequestAllowOverrideLevelEnum;
           result.allowOverrideLevel = valueDes;
           break;
         case r'default_value':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.defaultValue = valueDes;
           break;
         default:
@@ -198,39 +229,51 @@ class _$CreateFeatureFlagRequestSerializer implements PrimitiveSerializer<Create
 }
 
 class CreateFeatureFlagRequestTypeEnum extends EnumClass {
-
   /// The variable type.
   @BuiltValueEnumConst(wireName: r'str')
-  static const CreateFeatureFlagRequestTypeEnum str = _$createFeatureFlagRequestTypeEnum_str;
+  static const CreateFeatureFlagRequestTypeEnum str =
+      _$createFeatureFlagRequestTypeEnum_str;
+
   /// The variable type.
   @BuiltValueEnumConst(wireName: r'int')
-  static const CreateFeatureFlagRequestTypeEnum int_ = _$createFeatureFlagRequestTypeEnum_int_;
+  static const CreateFeatureFlagRequestTypeEnum int_ =
+      _$createFeatureFlagRequestTypeEnum_int_;
+
   /// The variable type.
   @BuiltValueEnumConst(wireName: r'bool')
-  static const CreateFeatureFlagRequestTypeEnum bool_ = _$createFeatureFlagRequestTypeEnum_bool_;
+  static const CreateFeatureFlagRequestTypeEnum bool_ =
+      _$createFeatureFlagRequestTypeEnum_bool_;
 
-  static Serializer<CreateFeatureFlagRequestTypeEnum> get serializer => _$createFeatureFlagRequestTypeEnumSerializer;
+  static Serializer<CreateFeatureFlagRequestTypeEnum> get serializer =>
+      _$createFeatureFlagRequestTypeEnumSerializer;
 
-  const CreateFeatureFlagRequestTypeEnum._(String name): super(name);
+  const CreateFeatureFlagRequestTypeEnum._(String name) : super(name);
 
-  static BuiltSet<CreateFeatureFlagRequestTypeEnum> get values => _$createFeatureFlagRequestTypeEnumValues;
-  static CreateFeatureFlagRequestTypeEnum valueOf(String name) => _$createFeatureFlagRequestTypeEnumValueOf(name);
+  static BuiltSet<CreateFeatureFlagRequestTypeEnum> get values =>
+      _$createFeatureFlagRequestTypeEnumValues;
+  static CreateFeatureFlagRequestTypeEnum valueOf(String name) =>
+      _$createFeatureFlagRequestTypeEnumValueOf(name);
 }
 
 class CreateFeatureFlagRequestAllowOverrideLevelEnum extends EnumClass {
-
   /// Allow the flag to be overridden at a different level.
   @BuiltValueEnumConst(wireName: r'env')
-  static const CreateFeatureFlagRequestAllowOverrideLevelEnum env = _$createFeatureFlagRequestAllowOverrideLevelEnum_env;
+  static const CreateFeatureFlagRequestAllowOverrideLevelEnum env =
+      _$createFeatureFlagRequestAllowOverrideLevelEnum_env;
+
   /// Allow the flag to be overridden at a different level.
   @BuiltValueEnumConst(wireName: r'org')
-  static const CreateFeatureFlagRequestAllowOverrideLevelEnum org = _$createFeatureFlagRequestAllowOverrideLevelEnum_org;
+  static const CreateFeatureFlagRequestAllowOverrideLevelEnum org =
+      _$createFeatureFlagRequestAllowOverrideLevelEnum_org;
 
-  static Serializer<CreateFeatureFlagRequestAllowOverrideLevelEnum> get serializer => _$createFeatureFlagRequestAllowOverrideLevelEnumSerializer;
+  static Serializer<CreateFeatureFlagRequestAllowOverrideLevelEnum>
+  get serializer => _$createFeatureFlagRequestAllowOverrideLevelEnumSerializer;
 
-  const CreateFeatureFlagRequestAllowOverrideLevelEnum._(String name): super(name);
+  const CreateFeatureFlagRequestAllowOverrideLevelEnum._(String name)
+    : super(name);
 
-  static BuiltSet<CreateFeatureFlagRequestAllowOverrideLevelEnum> get values => _$createFeatureFlagRequestAllowOverrideLevelEnumValues;
-  static CreateFeatureFlagRequestAllowOverrideLevelEnum valueOf(String name) => _$createFeatureFlagRequestAllowOverrideLevelEnumValueOf(name);
+  static BuiltSet<CreateFeatureFlagRequestAllowOverrideLevelEnum> get values =>
+      _$createFeatureFlagRequestAllowOverrideLevelEnumValues;
+  static CreateFeatureFlagRequestAllowOverrideLevelEnum valueOf(String name) =>
+      _$createFeatureFlagRequestAllowOverrideLevelEnumValueOf(name);
 }
-

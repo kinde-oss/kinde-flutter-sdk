@@ -10,16 +10,16 @@ class _$RedirectCallbackUrls extends RedirectCallbackUrls {
   @override
   final BuiltList<String>? redirectUrls;
 
-  factory _$RedirectCallbackUrls(
-          [void Function(RedirectCallbackUrlsBuilder)? updates]) =>
-      (new RedirectCallbackUrlsBuilder()..update(updates))._build();
+  factory _$RedirectCallbackUrls([
+    void Function(RedirectCallbackUrlsBuilder)? updates,
+  ]) => (new RedirectCallbackUrlsBuilder()..update(updates))._build();
 
   _$RedirectCallbackUrls._({this.redirectUrls}) : super._();
 
   @override
   RedirectCallbackUrls rebuild(
-          void Function(RedirectCallbackUrlsBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(RedirectCallbackUrlsBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   RedirectCallbackUrlsBuilder toBuilder() =>
@@ -42,8 +42,7 @@ class _$RedirectCallbackUrls extends RedirectCallbackUrls {
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'RedirectCallbackUrls')
-          ..add('redirectUrls', redirectUrls))
-        .toString();
+      ..add('redirectUrls', redirectUrls)).toString();
   }
 }
 
@@ -87,7 +86,8 @@ class RedirectCallbackUrlsBuilder
   _$RedirectCallbackUrls _build() {
     _$RedirectCallbackUrls _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           new _$RedirectCallbackUrls._(redirectUrls: _redirectUrls?.build());
     } catch (_) {
       late String _$failedField;
@@ -96,7 +96,10 @@ class RedirectCallbackUrlsBuilder
         _redirectUrls?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'RedirectCallbackUrls', _$failedField, e.toString());
+          r'RedirectCallbackUrls',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

@@ -11,10 +11,11 @@ part 'success_response.g.dart';
 /// SuccessResponse
 ///
 /// Properties:
-/// * [message] 
-/// * [code] 
+/// * [message]
+/// * [code]
 @BuiltValue()
-abstract class SuccessResponse implements Built<SuccessResponse, SuccessResponseBuilder> {
+abstract class SuccessResponse
+    implements Built<SuccessResponse, SuccessResponseBuilder> {
   @BuiltValueField(wireName: r'message')
   String? get message;
 
@@ -23,16 +24,19 @@ abstract class SuccessResponse implements Built<SuccessResponse, SuccessResponse
 
   SuccessResponse._();
 
-  factory SuccessResponse([void Function(SuccessResponseBuilder b) updates]) = _$SuccessResponse;
+  factory SuccessResponse([void Function(SuccessResponseBuilder b) updates]) =
+      _$SuccessResponse;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(SuccessResponseBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<SuccessResponse> get serializer => _$SuccessResponseSerializer();
+  static Serializer<SuccessResponse> get serializer =>
+      _$SuccessResponseSerializer();
 }
 
-class _$SuccessResponseSerializer implements PrimitiveSerializer<SuccessResponse> {
+class _$SuccessResponseSerializer
+    implements PrimitiveSerializer<SuccessResponse> {
   @override
   final Iterable<Type> types = const [SuccessResponse, _$SuccessResponse];
 
@@ -66,7 +70,11 @@ class _$SuccessResponseSerializer implements PrimitiveSerializer<SuccessResponse
     SuccessResponse object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -82,17 +90,21 @@ class _$SuccessResponseSerializer implements PrimitiveSerializer<SuccessResponse
       final value = serializedList[i + 1];
       switch (key) {
         case r'message':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.message = valueDes;
           break;
         case r'code':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.code = valueDes;
           break;
         default:
@@ -123,4 +135,3 @@ class _$SuccessResponseSerializer implements PrimitiveSerializer<SuccessResponse
     return result.build();
   }
 }
-

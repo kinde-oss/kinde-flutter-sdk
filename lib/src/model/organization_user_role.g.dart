@@ -14,16 +14,16 @@ class _$OrganizationUserRole extends OrganizationUserRole {
   @override
   final String? name;
 
-  factory _$OrganizationUserRole(
-          [void Function(OrganizationUserRoleBuilder)? updates]) =>
-      (new OrganizationUserRoleBuilder()..update(updates))._build();
+  factory _$OrganizationUserRole([
+    void Function(OrganizationUserRoleBuilder)? updates,
+  ]) => (new OrganizationUserRoleBuilder()..update(updates))._build();
 
   _$OrganizationUserRole._({this.id, this.key, this.name}) : super._();
 
   @override
   OrganizationUserRole rebuild(
-          void Function(OrganizationUserRoleBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(OrganizationUserRoleBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   OrganizationUserRoleBuilder toBuilder() =>

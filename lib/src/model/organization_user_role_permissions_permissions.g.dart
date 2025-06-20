@@ -11,9 +11,9 @@ class _$OrganizationUserRolePermissionsPermissions
   @override
   final String? key;
 
-  factory _$OrganizationUserRolePermissionsPermissions(
-          [void Function(OrganizationUserRolePermissionsPermissionsBuilder)?
-              updates]) =>
+  factory _$OrganizationUserRolePermissionsPermissions([
+    void Function(OrganizationUserRolePermissionsPermissionsBuilder)? updates,
+  ]) =>
       (new OrganizationUserRolePermissionsPermissionsBuilder()..update(updates))
           ._build();
 
@@ -21,9 +21,8 @@ class _$OrganizationUserRolePermissionsPermissions
 
   @override
   OrganizationUserRolePermissionsPermissions rebuild(
-          void Function(OrganizationUserRolePermissionsPermissionsBuilder)
-              updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(OrganizationUserRolePermissionsPermissionsBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   OrganizationUserRolePermissionsPermissionsBuilder toBuilder() =>
@@ -47,16 +46,17 @@ class _$OrganizationUserRolePermissionsPermissions
   @override
   String toString() {
     return (newBuiltValueToStringHelper(
-            r'OrganizationUserRolePermissionsPermissions')
-          ..add('key', key))
-        .toString();
+      r'OrganizationUserRolePermissionsPermissions',
+    )..add('key', key)).toString();
   }
 }
 
 class OrganizationUserRolePermissionsPermissionsBuilder
     implements
-        Builder<OrganizationUserRolePermissionsPermissions,
-            OrganizationUserRolePermissionsPermissionsBuilder> {
+        Builder<
+          OrganizationUserRolePermissionsPermissions,
+          OrganizationUserRolePermissionsPermissionsBuilder
+        > {
   _$OrganizationUserRolePermissionsPermissions? _$v;
 
   String? _key;
@@ -84,8 +84,8 @@ class OrganizationUserRolePermissionsPermissionsBuilder
 
   @override
   void update(
-      void Function(OrganizationUserRolePermissionsPermissionsBuilder)?
-          updates) {
+    void Function(OrganizationUserRolePermissionsPermissionsBuilder)? updates,
+  ) {
     if (updates != null) updates(this);
   }
 

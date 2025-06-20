@@ -14,25 +14,33 @@ part 'redirect_callback_urls.g.dart';
 /// Properties:
 /// * [redirectUrls] - An application's redirect URLs.
 @BuiltValue()
-abstract class RedirectCallbackUrls implements Built<RedirectCallbackUrls, RedirectCallbackUrlsBuilder> {
+abstract class RedirectCallbackUrls
+    implements Built<RedirectCallbackUrls, RedirectCallbackUrlsBuilder> {
   /// An application's redirect URLs.
   @BuiltValueField(wireName: r'redirect_urls')
   BuiltList<String>? get redirectUrls;
 
   RedirectCallbackUrls._();
 
-  factory RedirectCallbackUrls([void Function(RedirectCallbackUrlsBuilder b) updates]) = _$RedirectCallbackUrls;
+  factory RedirectCallbackUrls([
+    void Function(RedirectCallbackUrlsBuilder b) updates,
+  ]) = _$RedirectCallbackUrls;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(RedirectCallbackUrlsBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<RedirectCallbackUrls> get serializer => _$RedirectCallbackUrlsSerializer();
+  static Serializer<RedirectCallbackUrls> get serializer =>
+      _$RedirectCallbackUrlsSerializer();
 }
 
-class _$RedirectCallbackUrlsSerializer implements PrimitiveSerializer<RedirectCallbackUrls> {
+class _$RedirectCallbackUrlsSerializer
+    implements PrimitiveSerializer<RedirectCallbackUrls> {
   @override
-  final Iterable<Type> types = const [RedirectCallbackUrls, _$RedirectCallbackUrls];
+  final Iterable<Type> types = const [
+    RedirectCallbackUrls,
+    _$RedirectCallbackUrls,
+  ];
 
   @override
   final String wireName = r'RedirectCallbackUrls';
@@ -57,7 +65,11 @@ class _$RedirectCallbackUrlsSerializer implements PrimitiveSerializer<RedirectCa
     RedirectCallbackUrls object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -73,10 +85,14 @@ class _$RedirectCallbackUrlsSerializer implements PrimitiveSerializer<RedirectCa
       final value = serializedList[i + 1];
       switch (key) {
         case r'redirect_urls':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(String)]),
-          ) as BuiltList<String>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(String),
+                    ]),
+                  )
+                  as BuiltList<String>;
           result.redirectUrls.replace(valueDes);
           break;
         default:
@@ -107,4 +123,3 @@ class _$RedirectCallbackUrlsSerializer implements PrimitiveSerializer<RedirectCa
     return result.build();
   }
 }
-

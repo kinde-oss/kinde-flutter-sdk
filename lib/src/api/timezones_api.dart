@@ -11,7 +11,6 @@ import 'package:kinde_flutter_sdk/src/api_util.dart';
 import 'package:kinde_flutter_sdk/src/model/success_response.dart';
 
 class TimezonesApi {
-
   final Dio _dio;
 
   final Serializers _serializers;
@@ -33,7 +32,7 @@ class TimezonesApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> getTimezones({ 
+  Future<Response<SuccessResponse>> getTimezones({
     String? timezoneKey,
     String? name,
     CancelToken? cancelToken,
@@ -46,16 +45,10 @@ class TimezonesApi {
     const path = r'/api/v1/timezones';
     final options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -63,8 +56,18 @@ class TimezonesApi {
     );
 
     final queryParameters = <String, dynamic>{
-      if (timezoneKey != null) r'timezone_key': encodeQueryParameter(_serializers, timezoneKey, const FullType(String)),
-      if (name != null) r'name': encodeQueryParameter(_serializers, name, const FullType(String)),
+      if (timezoneKey != null)
+        r'timezone_key': encodeQueryParameter(
+          _serializers,
+          timezoneKey,
+          const FullType(String),
+        ),
+      if (name != null)
+        r'name': encodeQueryParameter(
+          _serializers,
+          name,
+          const FullType(String),
+        ),
     };
 
     final response = await _dio.request<Object>(
@@ -80,11 +83,14 @@ class TimezonesApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(SuccessResponse),
-      ) as SuccessResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(SuccessResponse),
+                  )
+                  as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -106,5 +112,4 @@ class TimezonesApi {
       extra: response.extra,
     );
   }
-
 }

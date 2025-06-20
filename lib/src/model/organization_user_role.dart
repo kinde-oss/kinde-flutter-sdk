@@ -11,11 +11,12 @@ part 'organization_user_role.g.dart';
 /// OrganizationUserRole
 ///
 /// Properties:
-/// * [id] 
-/// * [key] 
-/// * [name] 
+/// * [id]
+/// * [key]
+/// * [name]
 @BuiltValue()
-abstract class OrganizationUserRole implements Built<OrganizationUserRole, OrganizationUserRoleBuilder> {
+abstract class OrganizationUserRole
+    implements Built<OrganizationUserRole, OrganizationUserRoleBuilder> {
   @BuiltValueField(wireName: r'id')
   String? get id;
 
@@ -27,18 +28,25 @@ abstract class OrganizationUserRole implements Built<OrganizationUserRole, Organ
 
   OrganizationUserRole._();
 
-  factory OrganizationUserRole([void Function(OrganizationUserRoleBuilder b) updates]) = _$OrganizationUserRole;
+  factory OrganizationUserRole([
+    void Function(OrganizationUserRoleBuilder b) updates,
+  ]) = _$OrganizationUserRole;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(OrganizationUserRoleBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<OrganizationUserRole> get serializer => _$OrganizationUserRoleSerializer();
+  static Serializer<OrganizationUserRole> get serializer =>
+      _$OrganizationUserRoleSerializer();
 }
 
-class _$OrganizationUserRoleSerializer implements PrimitiveSerializer<OrganizationUserRole> {
+class _$OrganizationUserRoleSerializer
+    implements PrimitiveSerializer<OrganizationUserRole> {
   @override
-  final Iterable<Type> types = const [OrganizationUserRole, _$OrganizationUserRole];
+  final Iterable<Type> types = const [
+    OrganizationUserRole,
+    _$OrganizationUserRole,
+  ];
 
   @override
   final String wireName = r'OrganizationUserRole';
@@ -77,7 +85,11 @@ class _$OrganizationUserRoleSerializer implements PrimitiveSerializer<Organizati
     OrganizationUserRole object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -93,24 +105,30 @@ class _$OrganizationUserRoleSerializer implements PrimitiveSerializer<Organizati
       final value = serializedList[i + 1];
       switch (key) {
         case r'id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.id = valueDes;
           break;
         case r'key':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.key = valueDes;
           break;
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.name = valueDes;
           break;
         default:
@@ -141,4 +159,3 @@ class _$OrganizationUserRoleSerializer implements PrimitiveSerializer<Organizati
     return result.build();
   }
 }
-

@@ -18,7 +18,9 @@ part 'update_organization_request.g.dart';
 /// * [buttonTextColor] - The organization's brand settings - button text color.
 /// * [linkColor] - The organization's brand settings - link color.
 @BuiltValue()
-abstract class UpdateOrganizationRequest implements Built<UpdateOrganizationRequest, UpdateOrganizationRequestBuilder> {
+abstract class UpdateOrganizationRequest
+    implements
+        Built<UpdateOrganizationRequest, UpdateOrganizationRequestBuilder> {
   /// The organization's name.
   @BuiltValueField(wireName: r'name')
   String? get name;
@@ -45,18 +47,25 @@ abstract class UpdateOrganizationRequest implements Built<UpdateOrganizationRequ
 
   UpdateOrganizationRequest._();
 
-  factory UpdateOrganizationRequest([void Function(UpdateOrganizationRequestBuilder b) updates]) = _$UpdateOrganizationRequest;
+  factory UpdateOrganizationRequest([
+    void Function(UpdateOrganizationRequestBuilder b) updates,
+  ]) = _$UpdateOrganizationRequest;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(UpdateOrganizationRequestBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<UpdateOrganizationRequest> get serializer => _$UpdateOrganizationRequestSerializer();
+  static Serializer<UpdateOrganizationRequest> get serializer =>
+      _$UpdateOrganizationRequestSerializer();
 }
 
-class _$UpdateOrganizationRequestSerializer implements PrimitiveSerializer<UpdateOrganizationRequest> {
+class _$UpdateOrganizationRequestSerializer
+    implements PrimitiveSerializer<UpdateOrganizationRequest> {
   @override
-  final Iterable<Type> types = const [UpdateOrganizationRequest, _$UpdateOrganizationRequest];
+  final Iterable<Type> types = const [
+    UpdateOrganizationRequest,
+    _$UpdateOrganizationRequest,
+  ];
 
   @override
   final String wireName = r'UpdateOrganizationRequest';
@@ -116,7 +125,11 @@ class _$UpdateOrganizationRequestSerializer implements PrimitiveSerializer<Updat
     UpdateOrganizationRequest object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -132,45 +145,57 @@ class _$UpdateOrganizationRequestSerializer implements PrimitiveSerializer<Updat
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.name = valueDes;
           break;
         case r'external_id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.externalId = valueDes;
           break;
         case r'background_color':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.backgroundColor = valueDes;
           break;
         case r'button_color':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.buttonColor = valueDes;
           break;
         case r'button_text_color':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.buttonTextColor = valueDes;
           break;
         case r'link_color':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.linkColor = valueDes;
           break;
         default:
@@ -201,4 +226,3 @@ class _$UpdateOrganizationRequestSerializer implements PrimitiveSerializer<Updat
     return result.build();
   }
 }
-

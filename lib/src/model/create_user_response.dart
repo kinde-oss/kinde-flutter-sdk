@@ -15,9 +15,10 @@ part 'create_user_response.g.dart';
 /// Properties:
 /// * [id] - Unique id of the user in Kinde.
 /// * [created] - True if the user was successfully created.
-/// * [identities] 
+/// * [identities]
 @BuiltValue()
-abstract class CreateUserResponse implements Built<CreateUserResponse, CreateUserResponseBuilder> {
+abstract class CreateUserResponse
+    implements Built<CreateUserResponse, CreateUserResponseBuilder> {
   /// Unique id of the user in Kinde.
   @BuiltValueField(wireName: r'id')
   String? get id;
@@ -31,16 +32,20 @@ abstract class CreateUserResponse implements Built<CreateUserResponse, CreateUse
 
   CreateUserResponse._();
 
-  factory CreateUserResponse([void Function(CreateUserResponseBuilder b) updates]) = _$CreateUserResponse;
+  factory CreateUserResponse([
+    void Function(CreateUserResponseBuilder b) updates,
+  ]) = _$CreateUserResponse;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CreateUserResponseBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CreateUserResponse> get serializer => _$CreateUserResponseSerializer();
+  static Serializer<CreateUserResponse> get serializer =>
+      _$CreateUserResponseSerializer();
 }
 
-class _$CreateUserResponseSerializer implements PrimitiveSerializer<CreateUserResponse> {
+class _$CreateUserResponseSerializer
+    implements PrimitiveSerializer<CreateUserResponse> {
   @override
   final Iterable<Type> types = const [CreateUserResponse, _$CreateUserResponse];
 
@@ -81,7 +86,11 @@ class _$CreateUserResponseSerializer implements PrimitiveSerializer<CreateUserRe
     CreateUserResponse object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -97,24 +106,32 @@ class _$CreateUserResponseSerializer implements PrimitiveSerializer<CreateUserRe
       final value = serializedList[i + 1];
       switch (key) {
         case r'id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.id = valueDes;
           break;
         case r'created':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(bool),
-          ) as bool;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(bool),
+                  )
+                  as bool;
           result.created = valueDes;
           break;
         case r'identities':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(UserIdentity)]),
-          ) as BuiltList<UserIdentity>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(UserIdentity),
+                    ]),
+                  )
+                  as BuiltList<UserIdentity>;
           result.identities.replace(valueDes);
           break;
         default:
@@ -145,4 +162,3 @@ class _$CreateUserResponseSerializer implements PrimitiveSerializer<CreateUserRe
     return result.build();
   }
 }
-

@@ -23,14 +23,14 @@ class _$Api extends Api {
   factory _$Api([void Function(ApiBuilder)? updates]) =>
       (new ApiBuilder()..update(updates))._build();
 
-  _$Api._(
-      {this.id,
-      this.code,
-      this.name,
-      this.message,
-      this.audience,
-      this.applications})
-      : super._();
+  _$Api._({
+    this.id,
+    this.code,
+    this.name,
+    this.message,
+    this.audience,
+    this.applications,
+  }) : super._();
 
   @override
   Api rebuild(void Function(ApiBuilder) updates) =>
@@ -141,14 +141,16 @@ class ApiBuilder implements Builder<Api, ApiBuilder> {
   _$Api _build() {
     _$Api _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           new _$Api._(
-              id: id,
-              code: code,
-              name: name,
-              message: message,
-              audience: audience,
-              applications: _applications?.build());
+            id: id,
+            code: code,
+            name: name,
+            message: message,
+            audience: audience,
+            applications: _applications?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -156,7 +158,10 @@ class ApiBuilder implements Builder<Api, ApiBuilder> {
         _applications?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'Api', _$failedField, e.toString());
+          r'Api',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

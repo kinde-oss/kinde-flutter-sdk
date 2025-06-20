@@ -34,30 +34,30 @@ class _$UsersResponseUsersInner extends UsersResponseUsersInner {
   @override
   final BuiltList<UserIdentitiesInner>? identities;
 
-  factory _$UsersResponseUsersInner(
-          [void Function(UsersResponseUsersInnerBuilder)? updates]) =>
-      (new UsersResponseUsersInnerBuilder()..update(updates))._build();
+  factory _$UsersResponseUsersInner([
+    void Function(UsersResponseUsersInnerBuilder)? updates,
+  ]) => (new UsersResponseUsersInnerBuilder()..update(updates))._build();
 
-  _$UsersResponseUsersInner._(
-      {this.id,
-      this.providedId,
-      this.email,
-      this.lastName,
-      this.firstName,
-      this.isSuspended,
-      this.picture,
-      this.totalSignIns,
-      this.failedSignIns,
-      this.lastSignedIn,
-      this.createdOn,
-      this.organizations,
-      this.identities})
-      : super._();
+  _$UsersResponseUsersInner._({
+    this.id,
+    this.providedId,
+    this.email,
+    this.lastName,
+    this.firstName,
+    this.isSuspended,
+    this.picture,
+    this.totalSignIns,
+    this.failedSignIns,
+    this.lastSignedIn,
+    this.createdOn,
+    this.organizations,
+    this.identities,
+  }) : super._();
 
   @override
   UsersResponseUsersInner rebuild(
-          void Function(UsersResponseUsersInnerBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(UsersResponseUsersInnerBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   UsersResponseUsersInnerBuilder toBuilder() =>
@@ -226,21 +226,23 @@ class UsersResponseUsersInnerBuilder
   _$UsersResponseUsersInner _build() {
     _$UsersResponseUsersInner _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           new _$UsersResponseUsersInner._(
-              id: id,
-              providedId: providedId,
-              email: email,
-              lastName: lastName,
-              firstName: firstName,
-              isSuspended: isSuspended,
-              picture: picture,
-              totalSignIns: totalSignIns,
-              failedSignIns: failedSignIns,
-              lastSignedIn: lastSignedIn,
-              createdOn: createdOn,
-              organizations: _organizations?.build(),
-              identities: _identities?.build());
+            id: id,
+            providedId: providedId,
+            email: email,
+            lastName: lastName,
+            firstName: firstName,
+            isSuspended: isSuspended,
+            picture: picture,
+            totalSignIns: totalSignIns,
+            failedSignIns: failedSignIns,
+            lastSignedIn: lastSignedIn,
+            createdOn: createdOn,
+            organizations: _organizations?.build(),
+            identities: _identities?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -250,7 +252,10 @@ class UsersResponseUsersInnerBuilder
         _identities?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'UsersResponseUsersInner', _$failedField, e.toString());
+          r'UsersResponseUsersInner',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

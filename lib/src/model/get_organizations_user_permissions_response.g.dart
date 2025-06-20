@@ -15,21 +15,22 @@ class _$GetOrganizationsUserPermissionsResponse
   @override
   final BuiltList<OrganizationUserPermission>? permissions;
 
-  factory _$GetOrganizationsUserPermissionsResponse(
-          [void Function(GetOrganizationsUserPermissionsResponseBuilder)?
-              updates]) =>
+  factory _$GetOrganizationsUserPermissionsResponse([
+    void Function(GetOrganizationsUserPermissionsResponseBuilder)? updates,
+  ]) =>
       (new GetOrganizationsUserPermissionsResponseBuilder()..update(updates))
           ._build();
 
-  _$GetOrganizationsUserPermissionsResponse._(
-      {this.code, this.message, this.permissions})
-      : super._();
+  _$GetOrganizationsUserPermissionsResponse._({
+    this.code,
+    this.message,
+    this.permissions,
+  }) : super._();
 
   @override
   GetOrganizationsUserPermissionsResponse rebuild(
-          void Function(GetOrganizationsUserPermissionsResponseBuilder)
-              updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(GetOrganizationsUserPermissionsResponseBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   GetOrganizationsUserPermissionsResponseBuilder toBuilder() =>
@@ -57,7 +58,8 @@ class _$GetOrganizationsUserPermissionsResponse
   @override
   String toString() {
     return (newBuiltValueToStringHelper(
-            r'GetOrganizationsUserPermissionsResponse')
+            r'GetOrganizationsUserPermissionsResponse',
+          )
           ..add('code', code)
           ..add('message', message)
           ..add('permissions', permissions))
@@ -67,8 +69,10 @@ class _$GetOrganizationsUserPermissionsResponse
 
 class GetOrganizationsUserPermissionsResponseBuilder
     implements
-        Builder<GetOrganizationsUserPermissionsResponse,
-            GetOrganizationsUserPermissionsResponseBuilder> {
+        Builder<
+          GetOrganizationsUserPermissionsResponse,
+          GetOrganizationsUserPermissionsResponseBuilder
+        > {
   _$GetOrganizationsUserPermissionsResponse? _$v;
 
   String? _code;
@@ -108,7 +112,8 @@ class GetOrganizationsUserPermissionsResponseBuilder
 
   @override
   void update(
-      void Function(GetOrganizationsUserPermissionsResponseBuilder)? updates) {
+    void Function(GetOrganizationsUserPermissionsResponseBuilder)? updates,
+  ) {
     if (updates != null) updates(this);
   }
 
@@ -118,9 +123,13 @@ class GetOrganizationsUserPermissionsResponseBuilder
   _$GetOrganizationsUserPermissionsResponse _build() {
     _$GetOrganizationsUserPermissionsResponse _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           new _$GetOrganizationsUserPermissionsResponse._(
-              code: code, message: message, permissions: _permissions?.build());
+            code: code,
+            message: message,
+            permissions: _permissions?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -128,9 +137,10 @@ class GetOrganizationsUserPermissionsResponseBuilder
         _permissions?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'GetOrganizationsUserPermissionsResponse',
-            _$failedField,
-            e.toString());
+          r'GetOrganizationsUserPermissionsResponse',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

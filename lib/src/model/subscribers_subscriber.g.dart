@@ -18,18 +18,22 @@ class _$SubscribersSubscriber extends SubscribersSubscriber {
   @override
   final String? lastName;
 
-  factory _$SubscribersSubscriber(
-          [void Function(SubscribersSubscriberBuilder)? updates]) =>
-      (new SubscribersSubscriberBuilder()..update(updates))._build();
+  factory _$SubscribersSubscriber([
+    void Function(SubscribersSubscriberBuilder)? updates,
+  ]) => (new SubscribersSubscriberBuilder()..update(updates))._build();
 
-  _$SubscribersSubscriber._(
-      {this.id, this.email, this.fullName, this.firstName, this.lastName})
-      : super._();
+  _$SubscribersSubscriber._({
+    this.id,
+    this.email,
+    this.fullName,
+    this.firstName,
+    this.lastName,
+  }) : super._();
 
   @override
   SubscribersSubscriber rebuild(
-          void Function(SubscribersSubscriberBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(SubscribersSubscriberBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   SubscribersSubscriberBuilder toBuilder() =>
@@ -126,13 +130,15 @@ class SubscribersSubscriberBuilder
   SubscribersSubscriber build() => _build();
 
   _$SubscribersSubscriber _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         new _$SubscribersSubscriber._(
-            id: id,
-            email: email,
-            fullName: fullName,
-            firstName: firstName,
-            lastName: lastName);
+          id: id,
+          email: email,
+          fullName: fullName,
+          firstName: firstName,
+          lastName: lastName,
+        );
     replace(_$result);
     return _$result;
   }

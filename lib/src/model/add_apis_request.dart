@@ -11,10 +11,11 @@ part 'add_apis_request.g.dart';
 /// AddAPIsRequest
 ///
 /// Properties:
-/// * [name] 
-/// * [audience] 
+/// * [name]
+/// * [audience]
 @BuiltValue()
-abstract class AddAPIsRequest implements Built<AddAPIsRequest, AddAPIsRequestBuilder> {
+abstract class AddAPIsRequest
+    implements Built<AddAPIsRequest, AddAPIsRequestBuilder> {
   @BuiltValueField(wireName: r'name')
   String get name;
 
@@ -23,16 +24,19 @@ abstract class AddAPIsRequest implements Built<AddAPIsRequest, AddAPIsRequestBui
 
   AddAPIsRequest._();
 
-  factory AddAPIsRequest([void Function(AddAPIsRequestBuilder b) updates]) = _$AddAPIsRequest;
+  factory AddAPIsRequest([void Function(AddAPIsRequestBuilder b) updates]) =
+      _$AddAPIsRequest;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(AddAPIsRequestBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<AddAPIsRequest> get serializer => _$AddAPIsRequestSerializer();
+  static Serializer<AddAPIsRequest> get serializer =>
+      _$AddAPIsRequestSerializer();
 }
 
-class _$AddAPIsRequestSerializer implements PrimitiveSerializer<AddAPIsRequest> {
+class _$AddAPIsRequestSerializer
+    implements PrimitiveSerializer<AddAPIsRequest> {
   @override
   final Iterable<Type> types = const [AddAPIsRequest, _$AddAPIsRequest];
 
@@ -62,7 +66,11 @@ class _$AddAPIsRequestSerializer implements PrimitiveSerializer<AddAPIsRequest> 
     AddAPIsRequest object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -78,17 +86,21 @@ class _$AddAPIsRequestSerializer implements PrimitiveSerializer<AddAPIsRequest> 
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.name = valueDes;
           break;
         case r'audience':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.audience = valueDes;
           break;
         default:
@@ -119,4 +131,3 @@ class _$AddAPIsRequestSerializer implements PrimitiveSerializer<AddAPIsRequest> 
     return result.build();
   }
 }
-

@@ -34,7 +34,9 @@ void main() {
       // TODO
       final organization = instance.organization;
       expect(
-          organization, isA<CreateOrganizationResponseOrganizationBuilder>());
+        organization,
+        isA<CreateOrganizationResponseOrganizationBuilder>(),
+      );
       var organizationValue = CreateOrganizationResponseOrganizationBuilder();
       organizationValue.code = 'code';
       instance.organization = organizationValue;

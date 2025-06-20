@@ -8,10 +8,7 @@ class AuthUrlParams {
   /// Connection id string corresponding to social sign in
   String? connectionId;
 
-  AuthUrlParams({
-    this.lang,
-    this.connectionId,
-  });
+  AuthUrlParams({this.lang, this.connectionId});
 
   Map<String, String> toMap() {
     final params = <String, String>{};

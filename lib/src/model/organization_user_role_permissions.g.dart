@@ -15,17 +15,18 @@ class _$OrganizationUserRolePermissions
   @override
   final OrganizationUserRolePermissionsPermissions? permissions;
 
-  factory _$OrganizationUserRolePermissions(
-          [void Function(OrganizationUserRolePermissionsBuilder)? updates]) =>
+  factory _$OrganizationUserRolePermissions([
+    void Function(OrganizationUserRolePermissionsBuilder)? updates,
+  ]) =>
       (new OrganizationUserRolePermissionsBuilder()..update(updates))._build();
 
   _$OrganizationUserRolePermissions._({this.id, this.role, this.permissions})
-      : super._();
+    : super._();
 
   @override
   OrganizationUserRolePermissions rebuild(
-          void Function(OrganizationUserRolePermissionsBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(OrganizationUserRolePermissionsBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   OrganizationUserRolePermissionsBuilder toBuilder() =>
@@ -62,8 +63,10 @@ class _$OrganizationUserRolePermissions
 
 class OrganizationUserRolePermissionsBuilder
     implements
-        Builder<OrganizationUserRolePermissions,
-            OrganizationUserRolePermissionsBuilder> {
+        Builder<
+          OrganizationUserRolePermissions,
+          OrganizationUserRolePermissionsBuilder
+        > {
   _$OrganizationUserRolePermissions? _$v;
 
   String? _id;
@@ -79,8 +82,8 @@ class OrganizationUserRolePermissionsBuilder
       _$this._permissions ??=
           new OrganizationUserRolePermissionsPermissionsBuilder();
   set permissions(
-          OrganizationUserRolePermissionsPermissionsBuilder? permissions) =>
-      _$this._permissions = permissions;
+    OrganizationUserRolePermissionsPermissionsBuilder? permissions,
+  ) => _$this._permissions = permissions;
 
   OrganizationUserRolePermissionsBuilder() {
     OrganizationUserRolePermissions._defaults(this);
@@ -114,9 +117,13 @@ class OrganizationUserRolePermissionsBuilder
   _$OrganizationUserRolePermissions _build() {
     _$OrganizationUserRolePermissions _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           new _$OrganizationUserRolePermissions._(
-              id: id, role: role, permissions: _permissions?.build());
+            id: id,
+            role: role,
+            permissions: _permissions?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -124,7 +131,10 @@ class OrganizationUserRolePermissionsBuilder
         _permissions?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'OrganizationUserRolePermissions', _$failedField, e.toString());
+          r'OrganizationUserRolePermissions',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

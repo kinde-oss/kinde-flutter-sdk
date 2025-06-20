@@ -17,7 +17,12 @@ part 'get_application_response_application.g.dart';
 /// * [clientId] - The application's client id.
 /// * [clientSecret] - The application's client secret.
 @BuiltValue()
-abstract class GetApplicationResponseApplication implements Built<GetApplicationResponseApplication, GetApplicationResponseApplicationBuilder> {
+abstract class GetApplicationResponseApplication
+    implements
+        Built<
+          GetApplicationResponseApplication,
+          GetApplicationResponseApplicationBuilder
+        > {
   /// The application's identifier.
   @BuiltValueField(wireName: r'id')
   String? get id;
@@ -40,18 +45,25 @@ abstract class GetApplicationResponseApplication implements Built<GetApplication
 
   GetApplicationResponseApplication._();
 
-  factory GetApplicationResponseApplication([void Function(GetApplicationResponseApplicationBuilder b) updates]) = _$GetApplicationResponseApplication;
+  factory GetApplicationResponseApplication([
+    void Function(GetApplicationResponseApplicationBuilder b) updates,
+  ]) = _$GetApplicationResponseApplication;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(GetApplicationResponseApplicationBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<GetApplicationResponseApplication> get serializer => _$GetApplicationResponseApplicationSerializer();
+  static Serializer<GetApplicationResponseApplication> get serializer =>
+      _$GetApplicationResponseApplicationSerializer();
 }
 
-class _$GetApplicationResponseApplicationSerializer implements PrimitiveSerializer<GetApplicationResponseApplication> {
+class _$GetApplicationResponseApplicationSerializer
+    implements PrimitiveSerializer<GetApplicationResponseApplication> {
   @override
-  final Iterable<Type> types = const [GetApplicationResponseApplication, _$GetApplicationResponseApplication];
+  final Iterable<Type> types = const [
+    GetApplicationResponseApplication,
+    _$GetApplicationResponseApplication,
+  ];
 
   @override
   final String wireName = r'GetApplicationResponseApplication';
@@ -104,7 +116,11 @@ class _$GetApplicationResponseApplicationSerializer implements PrimitiveSerializ
     GetApplicationResponseApplication object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -120,38 +136,48 @@ class _$GetApplicationResponseApplicationSerializer implements PrimitiveSerializ
       final value = serializedList[i + 1];
       switch (key) {
         case r'id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.id = valueDes;
           break;
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.name = valueDes;
           break;
         case r'type':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.type = valueDes;
           break;
         case r'client_id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.clientId = valueDes;
           break;
         case r'client_secret':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.clientSecret = valueDes;
           break;
         default:
@@ -182,4 +208,3 @@ class _$GetApplicationResponseApplicationSerializer implements PrimitiveSerializ
     return result.build();
   }
 }
-

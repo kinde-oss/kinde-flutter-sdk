@@ -14,22 +14,24 @@ class _$GetOrganizationFeatureFlagsResponse
   final String? message;
   @override
   final BuiltMap<String, GetOrganizationFeatureFlagsResponseFeatureFlagsValue>?
-      featureFlags;
+  featureFlags;
 
-  factory _$GetOrganizationFeatureFlagsResponse(
-          [void Function(GetOrganizationFeatureFlagsResponseBuilder)?
-              updates]) =>
+  factory _$GetOrganizationFeatureFlagsResponse([
+    void Function(GetOrganizationFeatureFlagsResponseBuilder)? updates,
+  ]) =>
       (new GetOrganizationFeatureFlagsResponseBuilder()..update(updates))
           ._build();
 
-  _$GetOrganizationFeatureFlagsResponse._(
-      {this.code, this.message, this.featureFlags})
-      : super._();
+  _$GetOrganizationFeatureFlagsResponse._({
+    this.code,
+    this.message,
+    this.featureFlags,
+  }) : super._();
 
   @override
   GetOrganizationFeatureFlagsResponse rebuild(
-          void Function(GetOrganizationFeatureFlagsResponseBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(GetOrganizationFeatureFlagsResponseBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   GetOrganizationFeatureFlagsResponseBuilder toBuilder() =>
@@ -66,8 +68,10 @@ class _$GetOrganizationFeatureFlagsResponse
 
 class GetOrganizationFeatureFlagsResponseBuilder
     implements
-        Builder<GetOrganizationFeatureFlagsResponse,
-            GetOrganizationFeatureFlagsResponseBuilder> {
+        Builder<
+          GetOrganizationFeatureFlagsResponse,
+          GetOrganizationFeatureFlagsResponseBuilder
+        > {
   _$GetOrganizationFeatureFlagsResponse? _$v;
 
   String? _code;
@@ -79,15 +83,18 @@ class GetOrganizationFeatureFlagsResponseBuilder
   set message(String? message) => _$this._message = message;
 
   MapBuilder<String, GetOrganizationFeatureFlagsResponseFeatureFlagsValue>?
-      _featureFlags;
+  _featureFlags;
   MapBuilder<String, GetOrganizationFeatureFlagsResponseFeatureFlagsValue>
-      get featureFlags => _$this._featureFlags ??= new MapBuilder<String,
-          GetOrganizationFeatureFlagsResponseFeatureFlagsValue>();
+  get featureFlags =>
+      _$this._featureFlags ??=
+          new MapBuilder<
+            String,
+            GetOrganizationFeatureFlagsResponseFeatureFlagsValue
+          >();
   set featureFlags(
-          MapBuilder<String,
-                  GetOrganizationFeatureFlagsResponseFeatureFlagsValue>?
-              featureFlags) =>
-      _$this._featureFlags = featureFlags;
+    MapBuilder<String, GetOrganizationFeatureFlagsResponseFeatureFlagsValue>?
+    featureFlags,
+  ) => _$this._featureFlags = featureFlags;
 
   GetOrganizationFeatureFlagsResponseBuilder() {
     GetOrganizationFeatureFlagsResponse._defaults(this);
@@ -112,7 +119,8 @@ class GetOrganizationFeatureFlagsResponseBuilder
 
   @override
   void update(
-      void Function(GetOrganizationFeatureFlagsResponseBuilder)? updates) {
+    void Function(GetOrganizationFeatureFlagsResponseBuilder)? updates,
+  ) {
     if (updates != null) updates(this);
   }
 
@@ -122,11 +130,13 @@ class GetOrganizationFeatureFlagsResponseBuilder
   _$GetOrganizationFeatureFlagsResponse _build() {
     _$GetOrganizationFeatureFlagsResponse _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           new _$GetOrganizationFeatureFlagsResponse._(
-              code: code,
-              message: message,
-              featureFlags: _featureFlags?.build());
+            code: code,
+            message: message,
+            featureFlags: _featureFlags?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -134,9 +144,10 @@ class GetOrganizationFeatureFlagsResponseBuilder
         _featureFlags?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'GetOrganizationFeatureFlagsResponse',
-            _$failedField,
-            e.toString());
+          r'GetOrganizationFeatureFlagsResponse',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

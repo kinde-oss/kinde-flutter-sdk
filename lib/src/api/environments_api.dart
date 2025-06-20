@@ -13,7 +13,6 @@ import 'package:kinde_flutter_sdk/src/model/success_response.dart';
 import 'package:kinde_flutter_sdk/src/model/update_environement_feature_flag_override_request.dart';
 
 class EnvironmentsApi {
-
   final Dio _dio;
 
   final Serializers _serializers;
@@ -34,7 +33,7 @@ class EnvironmentsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> deleteEnvironementFeatureFlagOverride({ 
+  Future<Response<SuccessResponse>> deleteEnvironementFeatureFlagOverride({
     required String featureFlagKey,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -43,19 +42,23 @@ class EnvironmentsApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/api/v1/environment/feature_flags/{feature_flag_key}'.replaceAll('{' r'feature_flag_key' '}', encodeQueryParameter(_serializers, featureFlagKey, const FullType(String)).toString());
+    final path = r'/api/v1/environment/feature_flags/{feature_flag_key}'
+        .replaceAll(
+          '{'
+          r'feature_flag_key'
+          '}',
+          encodeQueryParameter(
+            _serializers,
+            featureFlagKey,
+            const FullType(String),
+          ).toString(),
+        );
     final options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -74,11 +77,14 @@ class EnvironmentsApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(SuccessResponse),
-      ) as SuccessResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(SuccessResponse),
+                  )
+                  as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -114,7 +120,7 @@ class EnvironmentsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> deleteEnvironementFeatureFlagOverrides({ 
+  Future<Response<SuccessResponse>> deleteEnvironementFeatureFlagOverrides({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -125,16 +131,10 @@ class EnvironmentsApi {
     const path = r'/api/v1/environment/feature_flags';
     final options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -153,11 +153,14 @@ class EnvironmentsApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(SuccessResponse),
-      ) as SuccessResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(SuccessResponse),
+                  )
+                  as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -193,7 +196,8 @@ class EnvironmentsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [GetEnvironmentFeatureFlagsResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<GetEnvironmentFeatureFlagsResponse>> getEnvironementFeatureFlags({ 
+  Future<Response<GetEnvironmentFeatureFlagsResponse>>
+  getEnvironementFeatureFlags({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -204,16 +208,10 @@ class EnvironmentsApi {
     const path = r'/api/v1/environment/feature_flags';
     final options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -232,11 +230,16 @@ class EnvironmentsApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(GetEnvironmentFeatureFlagsResponse),
-      ) as GetEnvironmentFeatureFlagsResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(
+                      GetEnvironmentFeatureFlagsResponse,
+                    ),
+                  )
+                  as GetEnvironmentFeatureFlagsResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -274,9 +277,10 @@ class EnvironmentsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> updateEnvironementFeatureFlagOverride({ 
+  Future<Response<SuccessResponse>> updateEnvironementFeatureFlagOverride({
     required String featureFlagKey,
-    required UpdateEnvironementFeatureFlagOverrideRequest updateEnvironementFeatureFlagOverrideRequest,
+    required UpdateEnvironementFeatureFlagOverrideRequest
+    updateEnvironementFeatureFlagOverrideRequest,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -284,19 +288,23 @@ class EnvironmentsApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/api/v1/environment/feature_flags/{feature_flag_key}'.replaceAll('{' r'feature_flag_key' '}', encodeQueryParameter(_serializers, featureFlagKey, const FullType(String)).toString());
+    final path = r'/api/v1/environment/feature_flags/{feature_flag_key}'
+        .replaceAll(
+          '{'
+          r'feature_flag_key'
+          '}',
+          encodeQueryParameter(
+            _serializers,
+            featureFlagKey,
+            const FullType(String),
+          ).toString(),
+        );
     final options = Options(
       method: r'PATCH',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -308,14 +316,13 @@ class EnvironmentsApi {
 
     try {
       const type = FullType(UpdateEnvironementFeatureFlagOverrideRequest);
-      bodyData = _serializers.serialize(updateEnvironementFeatureFlagOverrideRequest, specifiedType: type);
-
-    } catch(error, stackTrace) {
+      bodyData = _serializers.serialize(
+        updateEnvironementFeatureFlagOverrideRequest,
+        specifiedType: type,
+      );
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: options.compose(
-          _dio.options,
-          path,
-        ),
+        requestOptions: options.compose(_dio.options, path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -335,11 +342,14 @@ class EnvironmentsApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(SuccessResponse),
-      ) as SuccessResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(SuccessResponse),
+                  )
+                  as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -361,5 +371,4 @@ class EnvironmentsApi {
       extra: response.extra,
     );
   }
-
 }

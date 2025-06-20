@@ -11,12 +11,13 @@ part 'api_applications_inner.g.dart';
 /// ApiApplicationsInner
 ///
 /// Properties:
-/// * [id] 
-/// * [name] 
-/// * [type] 
-/// * [isActive] 
+/// * [id]
+/// * [name]
+/// * [type]
+/// * [isActive]
 @BuiltValue()
-abstract class ApiApplicationsInner implements Built<ApiApplicationsInner, ApiApplicationsInnerBuilder> {
+abstract class ApiApplicationsInner
+    implements Built<ApiApplicationsInner, ApiApplicationsInnerBuilder> {
   @BuiltValueField(wireName: r'id')
   String? get id;
 
@@ -31,18 +32,25 @@ abstract class ApiApplicationsInner implements Built<ApiApplicationsInner, ApiAp
 
   ApiApplicationsInner._();
 
-  factory ApiApplicationsInner([void Function(ApiApplicationsInnerBuilder b) updates]) = _$ApiApplicationsInner;
+  factory ApiApplicationsInner([
+    void Function(ApiApplicationsInnerBuilder b) updates,
+  ]) = _$ApiApplicationsInner;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(ApiApplicationsInnerBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<ApiApplicationsInner> get serializer => _$ApiApplicationsInnerSerializer();
+  static Serializer<ApiApplicationsInner> get serializer =>
+      _$ApiApplicationsInnerSerializer();
 }
 
-class _$ApiApplicationsInnerSerializer implements PrimitiveSerializer<ApiApplicationsInner> {
+class _$ApiApplicationsInnerSerializer
+    implements PrimitiveSerializer<ApiApplicationsInner> {
   @override
-  final Iterable<Type> types = const [ApiApplicationsInner, _$ApiApplicationsInner];
+  final Iterable<Type> types = const [
+    ApiApplicationsInner,
+    _$ApiApplicationsInner,
+  ];
 
   @override
   final String wireName = r'ApiApplicationsInner';
@@ -88,7 +96,11 @@ class _$ApiApplicationsInnerSerializer implements PrimitiveSerializer<ApiApplica
     ApiApplicationsInner object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -104,31 +116,39 @@ class _$ApiApplicationsInnerSerializer implements PrimitiveSerializer<ApiApplica
       final value = serializedList[i + 1];
       switch (key) {
         case r'id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.id = valueDes;
           break;
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.name = valueDes;
           break;
         case r'type':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.type = valueDes;
           break;
         case r'is_active':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(bool),
-          ) as bool;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(bool),
+                  )
+                  as bool;
           result.isActive = valueDes;
           break;
         default:
@@ -159,4 +179,3 @@ class _$ApiApplicationsInnerSerializer implements PrimitiveSerializer<ApiApplica
     return result.build();
   }
 }
-

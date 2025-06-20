@@ -14,7 +14,12 @@ part 'update_role_permissions_request_permissions_inner.g.dart';
 /// * [id] - The permission id.
 /// * [operation] - Optional operation, set to 'delete' to remove the permission from the role.
 @BuiltValue()
-abstract class UpdateRolePermissionsRequestPermissionsInner implements Built<UpdateRolePermissionsRequestPermissionsInner, UpdateRolePermissionsRequestPermissionsInnerBuilder> {
+abstract class UpdateRolePermissionsRequestPermissionsInner
+    implements
+        Built<
+          UpdateRolePermissionsRequestPermissionsInner,
+          UpdateRolePermissionsRequestPermissionsInnerBuilder
+        > {
   /// The permission id.
   @BuiltValueField(wireName: r'id')
   String? get id;
@@ -25,18 +30,29 @@ abstract class UpdateRolePermissionsRequestPermissionsInner implements Built<Upd
 
   UpdateRolePermissionsRequestPermissionsInner._();
 
-  factory UpdateRolePermissionsRequestPermissionsInner([void Function(UpdateRolePermissionsRequestPermissionsInnerBuilder b) updates]) = _$UpdateRolePermissionsRequestPermissionsInner;
+  factory UpdateRolePermissionsRequestPermissionsInner([
+    void Function(UpdateRolePermissionsRequestPermissionsInnerBuilder b)
+    updates,
+  ]) = _$UpdateRolePermissionsRequestPermissionsInner;
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _defaults(UpdateRolePermissionsRequestPermissionsInnerBuilder b) => b;
+  static void _defaults(
+    UpdateRolePermissionsRequestPermissionsInnerBuilder b,
+  ) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<UpdateRolePermissionsRequestPermissionsInner> get serializer => _$UpdateRolePermissionsRequestPermissionsInnerSerializer();
+  static Serializer<UpdateRolePermissionsRequestPermissionsInner>
+  get serializer => _$UpdateRolePermissionsRequestPermissionsInnerSerializer();
 }
 
-class _$UpdateRolePermissionsRequestPermissionsInnerSerializer implements PrimitiveSerializer<UpdateRolePermissionsRequestPermissionsInner> {
+class _$UpdateRolePermissionsRequestPermissionsInnerSerializer
+    implements
+        PrimitiveSerializer<UpdateRolePermissionsRequestPermissionsInner> {
   @override
-  final Iterable<Type> types = const [UpdateRolePermissionsRequestPermissionsInner, _$UpdateRolePermissionsRequestPermissionsInner];
+  final Iterable<Type> types = const [
+    UpdateRolePermissionsRequestPermissionsInner,
+    _$UpdateRolePermissionsRequestPermissionsInner,
+  ];
 
   @override
   final String wireName = r'UpdateRolePermissionsRequestPermissionsInner';
@@ -68,7 +84,11 @@ class _$UpdateRolePermissionsRequestPermissionsInnerSerializer implements Primit
     UpdateRolePermissionsRequestPermissionsInner object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -84,17 +104,21 @@ class _$UpdateRolePermissionsRequestPermissionsInnerSerializer implements Primit
       final value = serializedList[i + 1];
       switch (key) {
         case r'id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.id = valueDes;
           break;
         case r'operation':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.operation = valueDes;
           break;
         default:
@@ -125,4 +149,3 @@ class _$UpdateRolePermissionsRequestPermissionsInnerSerializer implements Primit
     return result.build();
   }
 }
-

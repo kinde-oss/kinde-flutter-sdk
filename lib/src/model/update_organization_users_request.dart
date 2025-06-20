@@ -15,25 +15,37 @@ part 'update_organization_users_request.g.dart';
 /// Properties:
 /// * [users] - Users to add, update or remove from the organization.
 @BuiltValue()
-abstract class UpdateOrganizationUsersRequest implements Built<UpdateOrganizationUsersRequest, UpdateOrganizationUsersRequestBuilder> {
+abstract class UpdateOrganizationUsersRequest
+    implements
+        Built<
+          UpdateOrganizationUsersRequest,
+          UpdateOrganizationUsersRequestBuilder
+        > {
   /// Users to add, update or remove from the organization.
   @BuiltValueField(wireName: r'users')
   BuiltList<UpdateOrganizationUsersRequestUsersInner>? get users;
 
   UpdateOrganizationUsersRequest._();
 
-  factory UpdateOrganizationUsersRequest([void Function(UpdateOrganizationUsersRequestBuilder b) updates]) = _$UpdateOrganizationUsersRequest;
+  factory UpdateOrganizationUsersRequest([
+    void Function(UpdateOrganizationUsersRequestBuilder b) updates,
+  ]) = _$UpdateOrganizationUsersRequest;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(UpdateOrganizationUsersRequestBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<UpdateOrganizationUsersRequest> get serializer => _$UpdateOrganizationUsersRequestSerializer();
+  static Serializer<UpdateOrganizationUsersRequest> get serializer =>
+      _$UpdateOrganizationUsersRequestSerializer();
 }
 
-class _$UpdateOrganizationUsersRequestSerializer implements PrimitiveSerializer<UpdateOrganizationUsersRequest> {
+class _$UpdateOrganizationUsersRequestSerializer
+    implements PrimitiveSerializer<UpdateOrganizationUsersRequest> {
   @override
-  final Iterable<Type> types = const [UpdateOrganizationUsersRequest, _$UpdateOrganizationUsersRequest];
+  final Iterable<Type> types = const [
+    UpdateOrganizationUsersRequest,
+    _$UpdateOrganizationUsersRequest,
+  ];
 
   @override
   final String wireName = r'UpdateOrganizationUsersRequest';
@@ -47,7 +59,9 @@ class _$UpdateOrganizationUsersRequestSerializer implements PrimitiveSerializer<
       yield r'users';
       yield serializers.serialize(
         object.users,
-        specifiedType: const FullType(BuiltList, [FullType(UpdateOrganizationUsersRequestUsersInner)]),
+        specifiedType: const FullType(BuiltList, [
+          FullType(UpdateOrganizationUsersRequestUsersInner),
+        ]),
       );
     }
   }
@@ -58,7 +72,11 @@ class _$UpdateOrganizationUsersRequestSerializer implements PrimitiveSerializer<
     UpdateOrganizationUsersRequest object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -74,10 +92,14 @@ class _$UpdateOrganizationUsersRequestSerializer implements PrimitiveSerializer<
       final value = serializedList[i + 1];
       switch (key) {
         case r'users':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(UpdateOrganizationUsersRequestUsersInner)]),
-          ) as BuiltList<UpdateOrganizationUsersRequestUsersInner>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(UpdateOrganizationUsersRequestUsersInner),
+                    ]),
+                  )
+                  as BuiltList<UpdateOrganizationUsersRequestUsersInner>;
           result.users.replace(valueDes);
           break;
         default:
@@ -108,4 +130,3 @@ class _$UpdateOrganizationUsersRequestSerializer implements PrimitiveSerializer<
     return result.build();
   }
 }
-

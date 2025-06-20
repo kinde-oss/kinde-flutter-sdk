@@ -22,24 +22,24 @@ class _$UpdateUserResponse extends UpdateUserResponse {
   @override
   final String? picture;
 
-  factory _$UpdateUserResponse(
-          [void Function(UpdateUserResponseBuilder)? updates]) =>
-      (new UpdateUserResponseBuilder()..update(updates))._build();
+  factory _$UpdateUserResponse([
+    void Function(UpdateUserResponseBuilder)? updates,
+  ]) => (new UpdateUserResponseBuilder()..update(updates))._build();
 
-  _$UpdateUserResponse._(
-      {this.id,
-      this.givenName,
-      this.familyName,
-      this.email,
-      this.isSuspended,
-      this.isPasswordResetRequested,
-      this.picture})
-      : super._();
+  _$UpdateUserResponse._({
+    this.id,
+    this.givenName,
+    this.familyName,
+    this.email,
+    this.isSuspended,
+    this.isPasswordResetRequested,
+    this.picture,
+  }) : super._();
 
   @override
   UpdateUserResponse rebuild(
-          void Function(UpdateUserResponseBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(UpdateUserResponseBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   UpdateUserResponseBuilder toBuilder() =>
@@ -153,15 +153,17 @@ class UpdateUserResponseBuilder
   UpdateUserResponse build() => _build();
 
   _$UpdateUserResponse _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         new _$UpdateUserResponse._(
-            id: id,
-            givenName: givenName,
-            familyName: familyName,
-            email: email,
-            isSuspended: isSuspended,
-            isPasswordResetRequested: isPasswordResetRequested,
-            picture: picture);
+          id: id,
+          givenName: givenName,
+          familyName: familyName,
+          email: email,
+          isSuspended: isSuspended,
+          isPasswordResetRequested: isPasswordResetRequested,
+          picture: picture,
+        );
     replace(_$result);
     return _$result;
   }

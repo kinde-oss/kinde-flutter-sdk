@@ -13,23 +13,28 @@ part 'user_identity_result.g.dart';
 /// Properties:
 /// * [created] - True if the user identity was successfully created.
 @BuiltValue()
-abstract class UserIdentityResult implements Built<UserIdentityResult, UserIdentityResultBuilder> {
+abstract class UserIdentityResult
+    implements Built<UserIdentityResult, UserIdentityResultBuilder> {
   /// True if the user identity was successfully created.
   @BuiltValueField(wireName: r'created')
   bool? get created;
 
   UserIdentityResult._();
 
-  factory UserIdentityResult([void Function(UserIdentityResultBuilder b) updates]) = _$UserIdentityResult;
+  factory UserIdentityResult([
+    void Function(UserIdentityResultBuilder b) updates,
+  ]) = _$UserIdentityResult;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(UserIdentityResultBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<UserIdentityResult> get serializer => _$UserIdentityResultSerializer();
+  static Serializer<UserIdentityResult> get serializer =>
+      _$UserIdentityResultSerializer();
 }
 
-class _$UserIdentityResultSerializer implements PrimitiveSerializer<UserIdentityResult> {
+class _$UserIdentityResultSerializer
+    implements PrimitiveSerializer<UserIdentityResult> {
   @override
   final Iterable<Type> types = const [UserIdentityResult, _$UserIdentityResult];
 
@@ -56,7 +61,11 @@ class _$UserIdentityResultSerializer implements PrimitiveSerializer<UserIdentity
     UserIdentityResult object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -72,10 +81,12 @@ class _$UserIdentityResultSerializer implements PrimitiveSerializer<UserIdentity
       final value = serializedList[i + 1];
       switch (key) {
         case r'created':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(bool),
-          ) as bool;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(bool),
+                  )
+                  as bool;
           result.created = valueDes;
           break;
         default:
@@ -106,4 +117,3 @@ class _$UserIdentityResultSerializer implements PrimitiveSerializer<UserIdentity
     return result.build();
   }
 }
-

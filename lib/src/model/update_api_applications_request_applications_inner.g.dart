@@ -13,25 +13,29 @@ class _$UpdateAPIApplicationsRequestApplicationsInner
   @override
   final String? operation;
 
-  factory _$UpdateAPIApplicationsRequestApplicationsInner(
-          [void Function(UpdateAPIApplicationsRequestApplicationsInnerBuilder)?
-              updates]) =>
+  factory _$UpdateAPIApplicationsRequestApplicationsInner([
+    void Function(UpdateAPIApplicationsRequestApplicationsInnerBuilder)?
+    updates,
+  ]) =>
       (new UpdateAPIApplicationsRequestApplicationsInnerBuilder()
             ..update(updates))
           ._build();
 
-  _$UpdateAPIApplicationsRequestApplicationsInner._(
-      {required this.id, this.operation})
-      : super._() {
+  _$UpdateAPIApplicationsRequestApplicationsInner._({
+    required this.id,
+    this.operation,
+  }) : super._() {
     BuiltValueNullFieldError.checkNotNull(
-        id, r'UpdateAPIApplicationsRequestApplicationsInner', 'id');
+      id,
+      r'UpdateAPIApplicationsRequestApplicationsInner',
+      'id',
+    );
   }
 
   @override
   UpdateAPIApplicationsRequestApplicationsInner rebuild(
-          void Function(UpdateAPIApplicationsRequestApplicationsInnerBuilder)
-              updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(UpdateAPIApplicationsRequestApplicationsInnerBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   UpdateAPIApplicationsRequestApplicationsInnerBuilder toBuilder() =>
@@ -57,7 +61,8 @@ class _$UpdateAPIApplicationsRequestApplicationsInner
   @override
   String toString() {
     return (newBuiltValueToStringHelper(
-            r'UpdateAPIApplicationsRequestApplicationsInner')
+            r'UpdateAPIApplicationsRequestApplicationsInner',
+          )
           ..add('id', id)
           ..add('operation', operation))
         .toString();
@@ -66,8 +71,10 @@ class _$UpdateAPIApplicationsRequestApplicationsInner
 
 class UpdateAPIApplicationsRequestApplicationsInnerBuilder
     implements
-        Builder<UpdateAPIApplicationsRequestApplicationsInner,
-            UpdateAPIApplicationsRequestApplicationsInnerBuilder> {
+        Builder<
+          UpdateAPIApplicationsRequestApplicationsInner,
+          UpdateAPIApplicationsRequestApplicationsInnerBuilder
+        > {
   _$UpdateAPIApplicationsRequestApplicationsInner? _$v;
 
   String? _id;
@@ -100,8 +107,9 @@ class UpdateAPIApplicationsRequestApplicationsInnerBuilder
 
   @override
   void update(
-      void Function(UpdateAPIApplicationsRequestApplicationsInnerBuilder)?
-          updates) {
+    void Function(UpdateAPIApplicationsRequestApplicationsInnerBuilder)?
+    updates,
+  ) {
     if (updates != null) updates(this);
   }
 
@@ -109,11 +117,16 @@ class UpdateAPIApplicationsRequestApplicationsInnerBuilder
   UpdateAPIApplicationsRequestApplicationsInner build() => _build();
 
   _$UpdateAPIApplicationsRequestApplicationsInner _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         new _$UpdateAPIApplicationsRequestApplicationsInner._(
-            id: BuiltValueNullFieldError.checkNotNull(
-                id, r'UpdateAPIApplicationsRequestApplicationsInner', 'id'),
-            operation: operation);
+          id: BuiltValueNullFieldError.checkNotNull(
+            id,
+            r'UpdateAPIApplicationsRequestApplicationsInner',
+            'id',
+          ),
+          operation: operation,
+        );
     replace(_$result);
     return _$result;
   }

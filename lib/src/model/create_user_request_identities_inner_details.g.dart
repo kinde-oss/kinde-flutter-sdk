@@ -11,9 +11,9 @@ class _$CreateUserRequestIdentitiesInnerDetails
   @override
   final String? email;
 
-  factory _$CreateUserRequestIdentitiesInnerDetails(
-          [void Function(CreateUserRequestIdentitiesInnerDetailsBuilder)?
-              updates]) =>
+  factory _$CreateUserRequestIdentitiesInnerDetails([
+    void Function(CreateUserRequestIdentitiesInnerDetailsBuilder)? updates,
+  ]) =>
       (new CreateUserRequestIdentitiesInnerDetailsBuilder()..update(updates))
           ._build();
 
@@ -21,9 +21,8 @@ class _$CreateUserRequestIdentitiesInnerDetails
 
   @override
   CreateUserRequestIdentitiesInnerDetails rebuild(
-          void Function(CreateUserRequestIdentitiesInnerDetailsBuilder)
-              updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CreateUserRequestIdentitiesInnerDetailsBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CreateUserRequestIdentitiesInnerDetailsBuilder toBuilder() =>
@@ -47,16 +46,17 @@ class _$CreateUserRequestIdentitiesInnerDetails
   @override
   String toString() {
     return (newBuiltValueToStringHelper(
-            r'CreateUserRequestIdentitiesInnerDetails')
-          ..add('email', email))
-        .toString();
+      r'CreateUserRequestIdentitiesInnerDetails',
+    )..add('email', email)).toString();
   }
 }
 
 class CreateUserRequestIdentitiesInnerDetailsBuilder
     implements
-        Builder<CreateUserRequestIdentitiesInnerDetails,
-            CreateUserRequestIdentitiesInnerDetailsBuilder> {
+        Builder<
+          CreateUserRequestIdentitiesInnerDetails,
+          CreateUserRequestIdentitiesInnerDetailsBuilder
+        > {
   _$CreateUserRequestIdentitiesInnerDetails? _$v;
 
   String? _email;
@@ -84,7 +84,8 @@ class CreateUserRequestIdentitiesInnerDetailsBuilder
 
   @override
   void update(
-      void Function(CreateUserRequestIdentitiesInnerDetailsBuilder)? updates) {
+    void Function(CreateUserRequestIdentitiesInnerDetailsBuilder)? updates,
+  ) {
     if (updates != null) updates(this);
   }
 

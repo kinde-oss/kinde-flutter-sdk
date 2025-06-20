@@ -11,7 +11,6 @@ import 'package:kinde_flutter_sdk/src/api_util.dart';
 import 'package:kinde_flutter_sdk/src/model/success_response.dart';
 
 class BusinessApi {
-
   final Dio _dio;
 
   final Serializers _serializers;
@@ -39,7 +38,7 @@ class BusinessApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> getBusiness({ 
+  Future<Response<SuccessResponse>> getBusiness({
     required String code,
     required String name,
     required String email,
@@ -58,16 +57,10 @@ class BusinessApi {
     const path = r'/api/v1/business';
     final options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -77,12 +70,38 @@ class BusinessApi {
     final queryParameters = <String, dynamic>{
       r'code': encodeQueryParameter(_serializers, code, const FullType(String)),
       r'name': encodeQueryParameter(_serializers, name, const FullType(String)),
-      r'email': encodeQueryParameter(_serializers, email, const FullType(String)),
-      r'phone': encodeQueryParameter(_serializers, phone, const FullType(String)),
-      if (industry != null) r'industry': encodeQueryParameter(_serializers, industry, const FullType(String)),
-      if (timezone != null) r'timezone': encodeQueryParameter(_serializers, timezone, const FullType(String)),
-      r'privacy_url': encodeQueryParameter(_serializers, privacyUrl, const FullType(String)),
-      r'terms_url': encodeQueryParameter(_serializers, termsUrl, const FullType(String)),
+      r'email': encodeQueryParameter(
+        _serializers,
+        email,
+        const FullType(String),
+      ),
+      r'phone': encodeQueryParameter(
+        _serializers,
+        phone,
+        const FullType(String),
+      ),
+      if (industry != null)
+        r'industry': encodeQueryParameter(
+          _serializers,
+          industry,
+          const FullType(String),
+        ),
+      if (timezone != null)
+        r'timezone': encodeQueryParameter(
+          _serializers,
+          timezone,
+          const FullType(String),
+        ),
+      r'privacy_url': encodeQueryParameter(
+        _serializers,
+        privacyUrl,
+        const FullType(String),
+      ),
+      r'terms_url': encodeQueryParameter(
+        _serializers,
+        termsUrl,
+        const FullType(String),
+      ),
     };
 
     final response = await _dio.request<Object>(
@@ -98,11 +117,14 @@ class BusinessApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(SuccessResponse),
-      ) as SuccessResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(SuccessResponse),
+                  )
+                  as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -148,7 +170,7 @@ class BusinessApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SuccessResponse>> updateBusiness({ 
+  Future<Response<SuccessResponse>> updateBusiness({
     required String businessName,
     required String primaryEmail,
     String? primaryPhone,
@@ -169,16 +191,10 @@ class BusinessApi {
     const path = r'/api/v1/business';
     final options = Options(
       method: r'PATCH',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -186,16 +202,58 @@ class BusinessApi {
     );
 
     final queryParameters = <String, dynamic>{
-      r'business_name': encodeQueryParameter(_serializers, businessName, const FullType(String)),
-      r'primary_email': encodeQueryParameter(_serializers, primaryEmail, const FullType(String)),
-      r'primary_phone': encodeQueryParameter(_serializers, primaryPhone, const FullType(String)),
-      if (industryKey != null) r'industry_key': encodeQueryParameter(_serializers, industryKey, const FullType(String)),
-      if (timezoneId != null) r'timezone_id': encodeQueryParameter(_serializers, timezoneId, const FullType(String)),
-      r'privacy_url': encodeQueryParameter(_serializers, privacyUrl, const FullType(String)),
-      r'terms_url': encodeQueryParameter(_serializers, termsUrl, const FullType(String)),
-      r'is_show_kinde_branding': encodeQueryParameter(_serializers, isShowKindeBranding, const FullType(String)),
-      r'is_click_wrap': encodeQueryParameter(_serializers, isClickWrap, const FullType(bool)),
-      r'partner_code': encodeQueryParameter(_serializers, partnerCode, const FullType(String)),
+      r'business_name': encodeQueryParameter(
+        _serializers,
+        businessName,
+        const FullType(String),
+      ),
+      r'primary_email': encodeQueryParameter(
+        _serializers,
+        primaryEmail,
+        const FullType(String),
+      ),
+      r'primary_phone': encodeQueryParameter(
+        _serializers,
+        primaryPhone,
+        const FullType(String),
+      ),
+      if (industryKey != null)
+        r'industry_key': encodeQueryParameter(
+          _serializers,
+          industryKey,
+          const FullType(String),
+        ),
+      if (timezoneId != null)
+        r'timezone_id': encodeQueryParameter(
+          _serializers,
+          timezoneId,
+          const FullType(String),
+        ),
+      r'privacy_url': encodeQueryParameter(
+        _serializers,
+        privacyUrl,
+        const FullType(String),
+      ),
+      r'terms_url': encodeQueryParameter(
+        _serializers,
+        termsUrl,
+        const FullType(String),
+      ),
+      r'is_show_kinde_branding': encodeQueryParameter(
+        _serializers,
+        isShowKindeBranding,
+        const FullType(String),
+      ),
+      r'is_click_wrap': encodeQueryParameter(
+        _serializers,
+        isClickWrap,
+        const FullType(bool),
+      ),
+      r'partner_code': encodeQueryParameter(
+        _serializers,
+        partnerCode,
+        const FullType(String),
+      ),
     };
 
     final response = await _dio.request<Object>(
@@ -211,11 +269,14 @@ class BusinessApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(SuccessResponse),
-      ) as SuccessResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(SuccessResponse),
+                  )
+                  as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -237,5 +298,4 @@ class BusinessApi {
       extra: response.extra,
     );
   }
-
 }

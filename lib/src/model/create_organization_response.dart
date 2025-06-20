@@ -12,11 +12,13 @@ part 'create_organization_response.g.dart';
 /// CreateOrganizationResponse
 ///
 /// Properties:
-/// * [message] 
-/// * [code] 
-/// * [organization] 
+/// * [message]
+/// * [code]
+/// * [organization]
 @BuiltValue()
-abstract class CreateOrganizationResponse implements Built<CreateOrganizationResponse, CreateOrganizationResponseBuilder> {
+abstract class CreateOrganizationResponse
+    implements
+        Built<CreateOrganizationResponse, CreateOrganizationResponseBuilder> {
   @BuiltValueField(wireName: r'message')
   String? get message;
 
@@ -28,18 +30,25 @@ abstract class CreateOrganizationResponse implements Built<CreateOrganizationRes
 
   CreateOrganizationResponse._();
 
-  factory CreateOrganizationResponse([void Function(CreateOrganizationResponseBuilder b) updates]) = _$CreateOrganizationResponse;
+  factory CreateOrganizationResponse([
+    void Function(CreateOrganizationResponseBuilder b) updates,
+  ]) = _$CreateOrganizationResponse;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CreateOrganizationResponseBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CreateOrganizationResponse> get serializer => _$CreateOrganizationResponseSerializer();
+  static Serializer<CreateOrganizationResponse> get serializer =>
+      _$CreateOrganizationResponseSerializer();
 }
 
-class _$CreateOrganizationResponseSerializer implements PrimitiveSerializer<CreateOrganizationResponse> {
+class _$CreateOrganizationResponseSerializer
+    implements PrimitiveSerializer<CreateOrganizationResponse> {
   @override
-  final Iterable<Type> types = const [CreateOrganizationResponse, _$CreateOrganizationResponse];
+  final Iterable<Type> types = const [
+    CreateOrganizationResponse,
+    _$CreateOrganizationResponse,
+  ];
 
   @override
   final String wireName = r'CreateOrganizationResponse';
@@ -78,7 +87,11 @@ class _$CreateOrganizationResponseSerializer implements PrimitiveSerializer<Crea
     CreateOrganizationResponse object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -94,24 +107,32 @@ class _$CreateOrganizationResponseSerializer implements PrimitiveSerializer<Crea
       final value = serializedList[i + 1];
       switch (key) {
         case r'message':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.message = valueDes;
           break;
         case r'code':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.code = valueDes;
           break;
         case r'organization':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(CreateOrganizationResponseOrganization),
-          ) as CreateOrganizationResponseOrganization;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      CreateOrganizationResponseOrganization,
+                    ),
+                  )
+                  as CreateOrganizationResponseOrganization;
           result.organization.replace(valueDes);
           break;
         default:
@@ -142,4 +163,3 @@ class _$CreateOrganizationResponseSerializer implements PrimitiveSerializer<Crea
     return result.build();
   }
 }
-

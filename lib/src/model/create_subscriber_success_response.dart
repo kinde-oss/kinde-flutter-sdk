@@ -12,26 +12,38 @@ part 'create_subscriber_success_response.g.dart';
 /// CreateSubscriberSuccessResponse
 ///
 /// Properties:
-/// * [subscriber] 
+/// * [subscriber]
 @BuiltValue()
-abstract class CreateSubscriberSuccessResponse implements Built<CreateSubscriberSuccessResponse, CreateSubscriberSuccessResponseBuilder> {
+abstract class CreateSubscriberSuccessResponse
+    implements
+        Built<
+          CreateSubscriberSuccessResponse,
+          CreateSubscriberSuccessResponseBuilder
+        > {
   @BuiltValueField(wireName: r'subscriber')
   CreateSubscriberSuccessResponseSubscriber? get subscriber;
 
   CreateSubscriberSuccessResponse._();
 
-  factory CreateSubscriberSuccessResponse([void Function(CreateSubscriberSuccessResponseBuilder b) updates]) = _$CreateSubscriberSuccessResponse;
+  factory CreateSubscriberSuccessResponse([
+    void Function(CreateSubscriberSuccessResponseBuilder b) updates,
+  ]) = _$CreateSubscriberSuccessResponse;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CreateSubscriberSuccessResponseBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CreateSubscriberSuccessResponse> get serializer => _$CreateSubscriberSuccessResponseSerializer();
+  static Serializer<CreateSubscriberSuccessResponse> get serializer =>
+      _$CreateSubscriberSuccessResponseSerializer();
 }
 
-class _$CreateSubscriberSuccessResponseSerializer implements PrimitiveSerializer<CreateSubscriberSuccessResponse> {
+class _$CreateSubscriberSuccessResponseSerializer
+    implements PrimitiveSerializer<CreateSubscriberSuccessResponse> {
   @override
-  final Iterable<Type> types = const [CreateSubscriberSuccessResponse, _$CreateSubscriberSuccessResponse];
+  final Iterable<Type> types = const [
+    CreateSubscriberSuccessResponse,
+    _$CreateSubscriberSuccessResponse,
+  ];
 
   @override
   final String wireName = r'CreateSubscriberSuccessResponse';
@@ -45,7 +57,9 @@ class _$CreateSubscriberSuccessResponseSerializer implements PrimitiveSerializer
       yield r'subscriber';
       yield serializers.serialize(
         object.subscriber,
-        specifiedType: const FullType(CreateSubscriberSuccessResponseSubscriber),
+        specifiedType: const FullType(
+          CreateSubscriberSuccessResponseSubscriber,
+        ),
       );
     }
   }
@@ -56,7 +70,11 @@ class _$CreateSubscriberSuccessResponseSerializer implements PrimitiveSerializer
     CreateSubscriberSuccessResponse object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -72,10 +90,14 @@ class _$CreateSubscriberSuccessResponseSerializer implements PrimitiveSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'subscriber':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(CreateSubscriberSuccessResponseSubscriber),
-          ) as CreateSubscriberSuccessResponseSubscriber;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      CreateSubscriberSuccessResponseSubscriber,
+                    ),
+                  )
+                  as CreateSubscriberSuccessResponseSubscriber;
           result.subscriber.replace(valueDes);
           break;
         default:
@@ -106,4 +128,3 @@ class _$CreateSubscriberSuccessResponseSerializer implements PrimitiveSerializer
     return result.build();
   }
 }
-

@@ -17,19 +17,23 @@ class _$GetOrganizationsUserRolesResponse
   @override
   final String? nextToken;
 
-  factory _$GetOrganizationsUserRolesResponse(
-          [void Function(GetOrganizationsUserRolesResponseBuilder)? updates]) =>
+  factory _$GetOrganizationsUserRolesResponse([
+    void Function(GetOrganizationsUserRolesResponseBuilder)? updates,
+  ]) =>
       (new GetOrganizationsUserRolesResponseBuilder()..update(updates))
           ._build();
 
-  _$GetOrganizationsUserRolesResponse._(
-      {this.code, this.message, this.roles, this.nextToken})
-      : super._();
+  _$GetOrganizationsUserRolesResponse._({
+    this.code,
+    this.message,
+    this.roles,
+    this.nextToken,
+  }) : super._();
 
   @override
   GetOrganizationsUserRolesResponse rebuild(
-          void Function(GetOrganizationsUserRolesResponseBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(GetOrganizationsUserRolesResponseBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   GetOrganizationsUserRolesResponseBuilder toBuilder() =>
@@ -69,8 +73,10 @@ class _$GetOrganizationsUserRolesResponse
 
 class GetOrganizationsUserRolesResponseBuilder
     implements
-        Builder<GetOrganizationsUserRolesResponse,
-            GetOrganizationsUserRolesResponseBuilder> {
+        Builder<
+          GetOrganizationsUserRolesResponse,
+          GetOrganizationsUserRolesResponseBuilder
+        > {
   _$GetOrganizationsUserRolesResponse? _$v;
 
   String? _code;
@@ -114,7 +120,8 @@ class GetOrganizationsUserRolesResponseBuilder
 
   @override
   void update(
-      void Function(GetOrganizationsUserRolesResponseBuilder)? updates) {
+    void Function(GetOrganizationsUserRolesResponseBuilder)? updates,
+  ) {
     if (updates != null) updates(this);
   }
 
@@ -124,12 +131,14 @@ class GetOrganizationsUserRolesResponseBuilder
   _$GetOrganizationsUserRolesResponse _build() {
     _$GetOrganizationsUserRolesResponse _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           new _$GetOrganizationsUserRolesResponse._(
-              code: code,
-              message: message,
-              roles: _roles?.build(),
-              nextToken: nextToken);
+            code: code,
+            message: message,
+            roles: _roles?.build(),
+            nextToken: nextToken,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -137,7 +146,10 @@ class GetOrganizationsUserRolesResponseBuilder
         _roles?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'GetOrganizationsUserRolesResponse', _$failedField, e.toString());
+          r'GetOrganizationsUserRolesResponse',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

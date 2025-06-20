@@ -11,16 +11,17 @@ class _$ReplaceLogoutRedirectURLsRequest
   @override
   final BuiltList<String>? urls;
 
-  factory _$ReplaceLogoutRedirectURLsRequest(
-          [void Function(ReplaceLogoutRedirectURLsRequestBuilder)? updates]) =>
+  factory _$ReplaceLogoutRedirectURLsRequest([
+    void Function(ReplaceLogoutRedirectURLsRequestBuilder)? updates,
+  ]) =>
       (new ReplaceLogoutRedirectURLsRequestBuilder()..update(updates))._build();
 
   _$ReplaceLogoutRedirectURLsRequest._({this.urls}) : super._();
 
   @override
   ReplaceLogoutRedirectURLsRequest rebuild(
-          void Function(ReplaceLogoutRedirectURLsRequestBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(ReplaceLogoutRedirectURLsRequestBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   ReplaceLogoutRedirectURLsRequestBuilder toBuilder() =>
@@ -43,15 +44,16 @@ class _$ReplaceLogoutRedirectURLsRequest
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'ReplaceLogoutRedirectURLsRequest')
-          ..add('urls', urls))
-        .toString();
+      ..add('urls', urls)).toString();
   }
 }
 
 class ReplaceLogoutRedirectURLsRequestBuilder
     implements
-        Builder<ReplaceLogoutRedirectURLsRequest,
-            ReplaceLogoutRedirectURLsRequestBuilder> {
+        Builder<
+          ReplaceLogoutRedirectURLsRequest,
+          ReplaceLogoutRedirectURLsRequestBuilder
+        > {
   _$ReplaceLogoutRedirectURLsRequest? _$v;
 
   ListBuilder<String>? _urls;
@@ -97,7 +99,10 @@ class ReplaceLogoutRedirectURLsRequestBuilder
         _urls?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'ReplaceLogoutRedirectURLsRequest', _$failedField, e.toString());
+          r'ReplaceLogoutRedirectURLsRequest',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

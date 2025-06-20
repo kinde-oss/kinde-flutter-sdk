@@ -13,7 +13,6 @@ import 'package:kinde_flutter_sdk/src/model/get_subscriber_response.dart';
 import 'package:kinde_flutter_sdk/src/model/get_subscribers_response.dart';
 
 class SubscribersApi {
-
   final Dio _dio;
 
   final Serializers _serializers;
@@ -36,7 +35,7 @@ class SubscribersApi {
   ///
   /// Returns a [Future] containing a [Response] with a [CreateSubscriberSuccessResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<CreateSubscriberSuccessResponse>> createSubscriber({ 
+  Future<Response<CreateSubscriberSuccessResponse>> createSubscriber({
     required String firstName,
     String? lastName,
     String? email,
@@ -50,16 +49,10 @@ class SubscribersApi {
     const path = r'/api/v1/subscribers';
     final options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -67,9 +60,21 @@ class SubscribersApi {
     );
 
     final queryParameters = <String, dynamic>{
-      r'first_name': encodeQueryParameter(_serializers, firstName, const FullType(String)),
-      r'last_name': encodeQueryParameter(_serializers, lastName, const FullType(String)),
-      r'email': encodeQueryParameter(_serializers, email, const FullType(String)),
+      r'first_name': encodeQueryParameter(
+        _serializers,
+        firstName,
+        const FullType(String),
+      ),
+      r'last_name': encodeQueryParameter(
+        _serializers,
+        lastName,
+        const FullType(String),
+      ),
+      r'email': encodeQueryParameter(
+        _serializers,
+        email,
+        const FullType(String),
+      ),
     };
 
     final response = await _dio.request<Object>(
@@ -85,11 +90,16 @@ class SubscribersApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(CreateSubscriberSuccessResponse),
-      ) as CreateSubscriberSuccessResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(
+                      CreateSubscriberSuccessResponse,
+                    ),
+                  )
+                  as CreateSubscriberSuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -113,7 +123,7 @@ class SubscribersApi {
   }
 
   /// Get Subscriber
-  /// Retrieve a subscriber record. 
+  /// Retrieve a subscriber record.
   ///
   /// Parameters:
   /// * [subscriberId] - The subscriber's id.
@@ -126,7 +136,7 @@ class SubscribersApi {
   ///
   /// Returns a [Future] containing a [Response] with a [GetSubscriberResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<GetSubscriberResponse>> getSubscriber({ 
+  Future<Response<GetSubscriberResponse>> getSubscriber({
     required String subscriberId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -135,19 +145,22 @@ class SubscribersApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final path = r'/api/v1/subscribers/{subscriber_id}'.replaceAll('{' r'subscriber_id' '}', encodeQueryParameter(_serializers, subscriberId, const FullType(String)).toString());
+    final path = r'/api/v1/subscribers/{subscriber_id}'.replaceAll(
+      '{'
+      r'subscriber_id'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        subscriberId,
+        const FullType(String),
+      ).toString(),
+    );
     final options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -166,11 +179,14 @@ class SubscribersApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(GetSubscriberResponse),
-      ) as GetSubscriberResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(GetSubscriberResponse),
+                  )
+                  as GetSubscriberResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -194,7 +210,7 @@ class SubscribersApi {
   }
 
   /// List Subscribers
-  /// The returned list can be sorted by full name or email address in ascending or descending order. The number of records to return at a time can also be controlled using the &#x60;page_size&#x60; query string parameter. 
+  /// The returned list can be sorted by full name or email address in ascending or descending order. The number of records to return at a time can also be controlled using the &#x60;page_size&#x60; query string parameter.
   ///
   /// Parameters:
   /// * [sort] - Field and order to sort the result by.
@@ -209,7 +225,7 @@ class SubscribersApi {
   ///
   /// Returns a [Future] containing a [Response] with a [GetSubscribersResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<GetSubscribersResponse>> getSubscribers({ 
+  Future<Response<GetSubscribersResponse>> getSubscribers({
     String? sort,
     int? pageSize,
     String? nextToken,
@@ -223,16 +239,10 @@ class SubscribersApi {
     const path = r'/api/v1/subscribers';
     final options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -241,8 +251,16 @@ class SubscribersApi {
 
     final queryParameters = <String, dynamic>{
       r'sort': encodeQueryParameter(_serializers, sort, const FullType(String)),
-      r'page_size': encodeQueryParameter(_serializers, pageSize, const FullType(int)),
-      r'next_token': encodeQueryParameter(_serializers, nextToken, const FullType(String)),
+      r'page_size': encodeQueryParameter(
+        _serializers,
+        pageSize,
+        const FullType(int),
+      ),
+      r'next_token': encodeQueryParameter(
+        _serializers,
+        nextToken,
+        const FullType(String),
+      ),
     };
 
     final response = await _dio.request<Object>(
@@ -258,11 +276,14 @@ class SubscribersApi {
 
     try {
       final rawResponse = response.data;
-      responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(GetSubscribersResponse),
-      ) as GetSubscribersResponse;
-
+      responseData =
+          rawResponse == null
+              ? null
+              : _serializers.deserialize(
+                    rawResponse,
+                    specifiedType: const FullType(GetSubscribersResponse),
+                  )
+                  as GetSubscribersResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -284,5 +305,4 @@ class SubscribersApi {
       extra: response.extra,
     );
   }
-
 }

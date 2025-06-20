@@ -17,21 +17,23 @@ class _$UpdateOrganizationUsersRequestUsersInner
   @override
   final BuiltList<String>? permissions;
 
-  factory _$UpdateOrganizationUsersRequestUsersInner(
-          [void Function(UpdateOrganizationUsersRequestUsersInnerBuilder)?
-              updates]) =>
+  factory _$UpdateOrganizationUsersRequestUsersInner([
+    void Function(UpdateOrganizationUsersRequestUsersInnerBuilder)? updates,
+  ]) =>
       (new UpdateOrganizationUsersRequestUsersInnerBuilder()..update(updates))
           ._build();
 
-  _$UpdateOrganizationUsersRequestUsersInner._(
-      {this.id, this.operation, this.roles, this.permissions})
-      : super._();
+  _$UpdateOrganizationUsersRequestUsersInner._({
+    this.id,
+    this.operation,
+    this.roles,
+    this.permissions,
+  }) : super._();
 
   @override
   UpdateOrganizationUsersRequestUsersInner rebuild(
-          void Function(UpdateOrganizationUsersRequestUsersInnerBuilder)
-              updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(UpdateOrganizationUsersRequestUsersInnerBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   UpdateOrganizationUsersRequestUsersInnerBuilder toBuilder() =>
@@ -61,7 +63,8 @@ class _$UpdateOrganizationUsersRequestUsersInner
   @override
   String toString() {
     return (newBuiltValueToStringHelper(
-            r'UpdateOrganizationUsersRequestUsersInner')
+            r'UpdateOrganizationUsersRequestUsersInner',
+          )
           ..add('id', id)
           ..add('operation', operation)
           ..add('roles', roles)
@@ -72,8 +75,10 @@ class _$UpdateOrganizationUsersRequestUsersInner
 
 class UpdateOrganizationUsersRequestUsersInnerBuilder
     implements
-        Builder<UpdateOrganizationUsersRequestUsersInner,
-            UpdateOrganizationUsersRequestUsersInnerBuilder> {
+        Builder<
+          UpdateOrganizationUsersRequestUsersInner,
+          UpdateOrganizationUsersRequestUsersInnerBuilder
+        > {
   _$UpdateOrganizationUsersRequestUsersInner? _$v;
 
   String? _id;
@@ -118,7 +123,8 @@ class UpdateOrganizationUsersRequestUsersInnerBuilder
 
   @override
   void update(
-      void Function(UpdateOrganizationUsersRequestUsersInnerBuilder)? updates) {
+    void Function(UpdateOrganizationUsersRequestUsersInnerBuilder)? updates,
+  ) {
     if (updates != null) updates(this);
   }
 
@@ -128,12 +134,14 @@ class UpdateOrganizationUsersRequestUsersInnerBuilder
   _$UpdateOrganizationUsersRequestUsersInner _build() {
     _$UpdateOrganizationUsersRequestUsersInner _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           new _$UpdateOrganizationUsersRequestUsersInner._(
-              id: id,
-              operation: operation,
-              roles: _roles?.build(),
-              permissions: _permissions?.build());
+            id: id,
+            operation: operation,
+            roles: _roles?.build(),
+            permissions: _permissions?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -143,9 +151,10 @@ class UpdateOrganizationUsersRequestUsersInnerBuilder
         _permissions?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'UpdateOrganizationUsersRequestUsersInner',
-            _$failedField,
-            e.toString());
+          r'UpdateOrganizationUsersRequestUsersInner',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

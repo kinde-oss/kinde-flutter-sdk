@@ -12,17 +12,17 @@ class _$ConnectedAppsAccessToken extends ConnectedAppsAccessToken {
   @override
   final String? accessTokenExpiry;
 
-  factory _$ConnectedAppsAccessToken(
-          [void Function(ConnectedAppsAccessTokenBuilder)? updates]) =>
-      (new ConnectedAppsAccessTokenBuilder()..update(updates))._build();
+  factory _$ConnectedAppsAccessToken([
+    void Function(ConnectedAppsAccessTokenBuilder)? updates,
+  ]) => (new ConnectedAppsAccessTokenBuilder()..update(updates))._build();
 
   _$ConnectedAppsAccessToken._({this.accessToken, this.accessTokenExpiry})
-      : super._();
+    : super._();
 
   @override
   ConnectedAppsAccessToken rebuild(
-          void Function(ConnectedAppsAccessTokenBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(ConnectedAppsAccessTokenBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   ConnectedAppsAccessTokenBuilder toBuilder() =>
@@ -97,9 +97,12 @@ class ConnectedAppsAccessTokenBuilder
   ConnectedAppsAccessToken build() => _build();
 
   _$ConnectedAppsAccessToken _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         new _$ConnectedAppsAccessToken._(
-            accessToken: accessToken, accessTokenExpiry: accessTokenExpiry);
+          accessToken: accessToken,
+          accessTokenExpiry: accessTokenExpiry,
+        );
     replace(_$result);
     return _$result;
   }

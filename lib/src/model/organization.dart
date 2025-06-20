@@ -11,12 +11,13 @@ part 'organization.g.dart';
 /// Organization
 ///
 /// Properties:
-/// * [code] 
-/// * [name] 
-/// * [isDefault] 
-/// * [externalId] 
+/// * [code]
+/// * [name]
+/// * [isDefault]
+/// * [externalId]
 @BuiltValue()
-abstract class Organization implements Built<Organization, OrganizationBuilder> {
+abstract class Organization
+    implements Built<Organization, OrganizationBuilder> {
   @BuiltValueField(wireName: r'code')
   String? get code;
 
@@ -31,7 +32,8 @@ abstract class Organization implements Built<Organization, OrganizationBuilder> 
 
   Organization._();
 
-  factory Organization([void Function(OrganizationBuilder b) updates]) = _$Organization;
+  factory Organization([void Function(OrganizationBuilder b) updates]) =
+      _$Organization;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(OrganizationBuilder b) => b;
@@ -88,7 +90,11 @@ class _$OrganizationSerializer implements PrimitiveSerializer<Organization> {
     Organization object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -104,31 +110,39 @@ class _$OrganizationSerializer implements PrimitiveSerializer<Organization> {
       final value = serializedList[i + 1];
       switch (key) {
         case r'code':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.code = valueDes;
           break;
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.name = valueDes;
           break;
         case r'is_default':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(bool),
-          ) as bool;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(bool),
+                  )
+                  as bool;
           result.isDefault = valueDes;
           break;
         case r'external_id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.externalId = valueDes;
           break;
         default:
@@ -159,4 +173,3 @@ class _$OrganizationSerializer implements PrimitiveSerializer<Organization> {
     return result.build();
   }
 }
-

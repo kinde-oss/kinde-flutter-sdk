@@ -33,8 +33,10 @@ void main() {
           CreateOrganizationRequestFeatureFlagsEnum.str;
       instance.featureFlags = featureFlagsBuilder;
       final result = instance.build();
-      expect(result.featureFlags,
-          isA<BuiltMap<String, CreateOrganizationRequestFeatureFlagsEnum?>>());
+      expect(
+        result.featureFlags,
+        isA<BuiltMap<String, CreateOrganizationRequestFeatureFlagsEnum?>>(),
+      );
       expect(result.featureFlags, isNotEmpty);
       final expectedFlags = result.featureFlags;
       expect(expectedFlags?.length, isNonZero);
