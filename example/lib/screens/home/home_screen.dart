@@ -66,7 +66,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           );
                         }
                       }
-                      return const Center(child: CircularProgressIndicator.adaptive());
+                      return const Center(
+                          child: CircularProgressIndicator.adaptive());
                     },
                   ),
                   const SizedBox(height: 10),

@@ -9,7 +9,8 @@ class AppStateManager {
   late final KindeFlutterSDK _kindeClient;
   late final EncryptedBox _encryptedBox;
 
-  late final StreamController<(UserProfileV2?, UserProfileV2?)> userProfileStream;
+  late final StreamController<(UserProfileV2?, UserProfileV2?)>
+      userProfileStream;
 
   UserProfileV2? _userProfile;
   UserProfileV2? get userProfile => _userProfile;
@@ -25,7 +26,6 @@ class AppStateManager {
     _encryptedBox = EncryptedBox.instance;
     _kindeClient = KindeFlutterSDK.instance;
     userProfileStream = StreamController.broadcast();
-
   }
   static final AppStateManager _instance =
       AppStateManager._privateConstructor();
@@ -94,7 +94,7 @@ class AppStateManager {
   }
 
   Future<void> signOut() async {
-    if(userProfile == null) return;
+    if (userProfile == null) return;
     _loading.value = true;
     try {
       await _kindeClient.logout();
