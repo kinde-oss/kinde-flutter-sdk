@@ -58,6 +58,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           SchedulerBinding.instance.addPostFrameCallback((_) {
                             context.pushReplacement(AppRoutes.WELCOME);
                           });
+                          return const SizedBox
+                              .shrink(); // Return empty widget while navigating
                         } else {
                           return Text(
                             '${user.givenName} ${user.familyName}',
