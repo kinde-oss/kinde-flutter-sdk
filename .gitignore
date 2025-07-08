@@ -59,5 +59,6 @@ web/build/
 
 # IDE files
 .idea/
+
 example/ios/.symlinks/plugins
 example/android/.gradle/
