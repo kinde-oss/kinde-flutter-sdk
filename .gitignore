@@ -13,6 +13,14 @@ build/
 *.log
 pubspec.lock
 
+# Exclude from example directory
+example/build/
+example/.flutter-plugins
+example/.flutter-plugins-dependencies
+example/.packages
+example/.dart_tool/
+example/pubspec.lock
+
 # Android specific
 android/.gradle/
 android/.idea/
@@ -51,3 +59,6 @@ web/build/
 
 # IDE files
 .idea/
+
+example/ios/.symlinks/plugins
+example/android/.gradle/
