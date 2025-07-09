@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.0
+
+- Added missing built_collection dependency
+- Fixed package validation issues
+- Updated dependencies
+
 ## 1.0.3
 
 - Added support for lang, connectionId and loginHunt auth params
