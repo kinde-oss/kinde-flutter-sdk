@@ -226,8 +226,7 @@ class KindeFlutterSDK with TokenUtils {
       await _handleNonWebLogout(
           dio: dio,
           macosLogoutWithoutRedirection: macosLogoutWithoutRedirection,
-          timeout: timeout
-      );
+          timeout: timeout);
     }
 
     await _commonLogoutCleanup();
@@ -256,7 +255,9 @@ class KindeFlutterSDK with TokenUtils {
 
       await appAuth.endSession(endSessionRequest).timeout(timeout,
           onTimeout: () {
-        throw const KindeError(code: KindeErrorCode.requestTimedOut, message: 'Logout request timed out');
+        throw const KindeError(
+            code: KindeErrorCode.requestTimedOut,
+            message: 'Logout request timed out');
       });
     } catch (e, st) {
       kindeDebugPrint(methodName: "Logout", message: e.toString());
@@ -529,8 +530,17 @@ class KindeFlutterSDK with TokenUtils {
   /// make sure to call [completePendingLoginIfNeeded] first
   /// to finalize any in-progress authentication before calling this.
   Future<bool> isAuthenticated() async {
-    final hasValidAuthState = authState != null && !authState!.isExpired();
-    return hasValidAuthState && await _checkToken();
+    try {
+      final hasValidAuthState = authState != null && !authState!.isExpired();
+      if (!hasValidAuthState) return false;
+
+      return await _checkToken();
+    } catch (e) {
+      kindeDebugPrint(
+          methodName: "isAuthenticated",
+          message: "Error checking authentication: ${e.toString()}");
+      return false;
+    }
   }
 
   /// Attempts to complete a pending web login flow if auth parameters
@@ -578,7 +588,41 @@ class KindeFlutterSDK with TokenUtils {
 
       return await jwt.verify(keyStore);
     }
+
+    // If no keys available, try to refresh them
+    if (keys == null || keys.isEmpty) {
+      try {
+        await _refreshKeys();
+        // Retry token verification with fresh keys
+        return await _checkToken();
+      } catch (e) {
+        kindeDebugPrint(
+            methodName: "_checkToken",
+            message: "Failed to refresh keys: ${e.toString()}");
+        return false;
+      }
+    }
+
     return false;
+  }
+
+  /// Refreshes JWT verification keys from the server
+  Future<void> _refreshKeys() async {
+    try {
+      final keysApi = KeysApi(_kindeApi.dio);
+      final keysResponse = await keysApi.getKeys();
+      if (keysResponse.keys.isNotEmpty) {
+        _store.keys = keysResponse;
+        kindeDebugPrint(
+            methodName: "_refreshKeys",
+            message: "Successfully refreshed JWT verification keys");
+      }
+    } catch (e) {
+      kindeDebugPrint(
+          methodName: "_refreshKeys",
+          message: "Failed to refresh keys: ${e.toString()}");
+      rethrow;
+    }
   }
 
   _saveState(TokenResponse? tokenResponse) {

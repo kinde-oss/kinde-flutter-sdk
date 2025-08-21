@@ -56,6 +56,9 @@ class Store {
   }
 
   Future<void> clear() async {
-    await _box.clear();
+    // Clear only auth-related data, preserve JWT verification keys
+    await _box.delete(_authState);
+    // Don't clear _keys - they're needed for future authentication
+    // This prevents the "isAuthenticated returns false after logout-login" issue
   }
 }
