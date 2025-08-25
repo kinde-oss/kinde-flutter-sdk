@@ -13,8 +13,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
+import 'package:hive_ce/hive.dart';
 
-import 'package:hive/hive.dart';
 import 'package:jose/jose.dart';
 import 'package:kinde_flutter_sdk/kinde_flutter_sdk.dart';
 import 'package:kinde_flutter_sdk/src/keys/keys_api.dart';
@@ -275,6 +275,8 @@ class KindeFlutterSDK with TokenUtils {
   Future<void> _commonLogoutCleanup() async {
     _kindeApi.setBearerAuth(_bearerAuth, '');
     await Store.instance.clear();
+    // Fix for Bug #26: Reset singleton instance so it gets recreated on next use
+    _instance = null;
   }
 
   /// Logs out the user without redirection.
@@ -344,8 +346,17 @@ class KindeFlutterSDK with TokenUtils {
     try {
       if (type == AuthFlowType.pkce) {
         final authorizationRequest = _createAuthorizationRequest(params);
+
         final AuthorizationResponse result =
             await appAuth.authorize(authorizationRequest);
+
+        if (result.authorizationCode == null) {
+          throw const KindeError(
+            code: KindeErrorCode.unknown,
+            message: 'Authorization code not received from OAuth provider',
+          );
+        }
+
         final tokenRequest = _createTokenRequest(
             authorizationResponse: result,
             scopes: params.scopes,
@@ -354,6 +365,7 @@ class KindeFlutterSDK with TokenUtils {
       } else {
         final authorizationTokenRequest =
             _createAuthorizationTokenRequest(params);
+
         tokenResponse =
             await appAuth.authorizeAndExchangeCode(authorizationTokenRequest);
       }
@@ -362,7 +374,16 @@ class KindeFlutterSDK with TokenUtils {
         return params.orgName;
       }
 
+      if (tokenResponse.accessToken == null ||
+          tokenResponse.accessToken!.isEmpty) {
+        throw const KindeError(
+          code: KindeErrorCode.unknown,
+          message: 'Access token not received from OAuth provider',
+        );
+      }
+
       _saveState(tokenResponse);
+
       return tokenResponse.accessToken;
     } catch (e, st) {
       throw KindeError.fromError(e, st);
@@ -429,32 +450,45 @@ class KindeFlutterSDK with TokenUtils {
   }
 
   Future<bool> _finishWebLogin(String responseUrl) async {
-    final credentials = await KindeWeb.instance.finishLoginFlow(
-        scopes: _config!.scopes,
-        redirectUrl: _config!.loginRedirectUri,
-        responseUrl: responseUrl,
-        clientId: _config!.authClientId,
-        authorizationEndpoint: _serviceConfiguration.authorizationEndpoint,
-        tokenEndpoint: _serviceConfiguration.tokenEndpoint);
+    try {
+      final responseUri = Uri.parse(responseUrl);
+      String? code, state;
 
-    if (credentials == null) {
-      kindeDebugPrint(
-          methodName: "finishWebLogin",
-          message:
-              "No credentials returned from finishLoginFlow. Login may have been canceled or failed.");
+      code = responseUri.queryParameters["code"];
+      state = responseUri.queryParameters["state"];
+
+      if (code == null || code.isEmpty || state == null || state.isEmpty) {
+        return false;
+      }
+
+      final credentials = await KindeWeb.instance.finishLoginFlow(
+          scopes: _config!.scopes,
+          redirectUrl: _config!.loginRedirectUri,
+          responseUrl: responseUrl,
+          clientId: _config!.authClientId,
+          authorizationEndpoint: _serviceConfiguration.authorizationEndpoint,
+          tokenEndpoint: _serviceConfiguration.tokenEndpoint);
+
+      if (credentials == null) {
+        return false;
+      }
+
+      final tokenResponse = TokenResponse(
+        credentials.accessToken,
+        credentials.refreshToken,
+        credentials.expiration,
+        credentials.idToken,
+        null,
+        credentials.scopes,
+        null,
+      );
+
+      _saveState(tokenResponse);
+
+      return true;
+    } catch (e, st) {
       return false;
     }
-    _saveState(TokenResponse(
-      credentials.accessToken,
-      credentials.refreshToken,
-      credentials.expiration,
-      credentials.idToken,
-      null,
-      credentials.scopes,
-      null,
-    ));
-
-    return true;
   }
 
   /// for web it returns null, and invokes loginRedirectUri
@@ -551,59 +585,57 @@ class KindeFlutterSDK with TokenUtils {
   ///
   /// Call this **before** checking authentication status.
   Future<bool> completePendingLoginIfNeeded() async {
-    final finishLoginUri = _isCurrentUrlContainWebAuthParams();
-    if (finishLoginUri != null) {
-      final storedState = await _kindeSecureStorage.getAuthRequestState();
-      if (storedState != null) {
-        return _finishWebLogin(finishLoginUri);
+    try {
+      final finishLoginUri = _isCurrentUrlContainWebAuthParams();
+      if (finishLoginUri != null) {
+        final storedState = await _kindeSecureStorage.getAuthRequestState();
+        if (storedState != null) {
+          final result = await _finishWebLogin(finishLoginUri);
+          await _kindeSecureStorage.removeAuthRequestState();
+          return result;
+        }
       }
+      return false;
+    } catch (e, st) {
+      return false;
     }
-    return false;
   }
 
   ///returns current url if it contain required params for finishing auth flow
   String? _isCurrentUrlContainWebAuthParams() {
-    if (kIsWeb && authState == null) {
+    if (kIsWeb) {
       final currentUrl = WebUtils.getCurrentUrl ?? "";
       if (currentUrl.isEmpty) return null;
+
       final currentUri = Uri.tryParse(currentUrl);
       if (currentUri == null || !currentUri.hasScheme) return null;
-      return (currentUri.queryParameters["code"]?.isNotEmpty ?? false) &&
-              (currentUri.queryParameters["state"]?.isNotEmpty ?? false)
-          ? currentUrl
-          : null;
+
+      final hasCode = currentUri.queryParameters["code"]?.isNotEmpty ?? false;
+      final hasState = currentUri.queryParameters["state"]?.isNotEmpty ?? false;
+
+      if (hasCode && hasState) {
+        return currentUrl;
+      }
     }
     return null;
   }
 
   Future<bool> _checkToken() async {
-    final keys = _store.keys?.keys;
-    if (keys != null && keys.isNotEmpty) {
-      final key = keys.first;
-      var jwt = JsonWebToken.unverified(_store.authState?.accessToken ?? '');
+    try {
+      final keys = _store.keys?.keys;
+      if (keys != null && keys.isNotEmpty) {
+        final key = keys.first;
+        var jwt = JsonWebToken.unverified(_store.authState?.accessToken ?? '');
+        var jwk = JsonWebKey.fromJson(key.toJson());
+        var keyStore = JsonWebKeyStore()..addKey(jwk);
 
-      var jwk = JsonWebKey.fromJson(key.toJson());
-
-      var keyStore = JsonWebKeyStore()..addKey(jwk);
-
-      return await jwt.verify(keyStore);
-    }
-
-    // If no keys available, try to refresh them
-    if (keys == null || keys.isEmpty) {
-      try {
-        await _refreshKeys();
-        // Retry token verification with fresh keys
-        return await _checkToken();
-      } catch (e) {
-        kindeDebugPrint(
-            methodName: "_checkToken",
-            message: "Failed to refresh keys: ${e.toString()}");
+        return await jwt.verify(keyStore);
+      } else {
         return false;
       }
+    } catch (e, st) {
+      return false;
     }
-
-    return false;
   }
 
   /// Refreshes JWT verification keys from the server

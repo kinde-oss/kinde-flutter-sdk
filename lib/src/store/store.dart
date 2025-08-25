@@ -1,6 +1,5 @@
 import 'dart:convert';
-
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:kinde_flutter_sdk/src/keys/keys.dart';
 import 'package:kinde_flutter_sdk/src/token/auth_state.dart';
 
@@ -56,9 +55,6 @@ class Store {
   }
 
   Future<void> clear() async {
-    // Clear only auth-related data, preserve JWT verification keys
     await _box.delete(_authState);
-    // Don't clear _keys - they're needed for future authentication
-    // This prevents the "isAuthenticated returns false after logout-login" issue
   }
 }
