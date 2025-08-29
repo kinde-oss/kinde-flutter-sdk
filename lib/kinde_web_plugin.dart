@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
-import 'dart:html' as html;
+import 'package:web/web.dart' as web;
+import 'package:flutter/foundation.dart';
 
 class KindeFlutterWebSDK {
   static void registerWith(Registrar registrar) {
@@ -19,8 +20,11 @@ class KindeFlutterWebSDK {
       // Handle method calls from Dart
       switch (call.method) {
         case 'getPlatformVersion':
-          String userAgent = html.window.navigator.userAgent;
-          return 'Web $userAgent';
+          if (kIsWeb) {
+            String userAgent = web.window.navigator.userAgent;
+            return 'Web $userAgent';
+          }
+          return 'Unknown Platform';
         default:
           throw PlatformException(
             code: 'Unimplemented',

@@ -41,14 +41,19 @@ class AppStateManager {
     _loading.value = true;
     try {
       if (kIsWeb) {
-        await _kindeClient.completePendingLoginIfNeeded();
+        final loginCompleted =
+            await _kindeClient.completePendingLoginIfNeeded();
+      } else {
+        await _kindeClient.completePendingMobileLoginIfNeeded();
       }
+
       bool isLogged = await _kindeClient.isAuthenticated();
+
       if (!isLogged) {
-        ///if user not logged, refresh access and refresh token
         final accessToken = await EncryptedBox.instance.returnAccessToken();
         isLogged = accessToken != null;
       }
+
       if (isLogged) {
         final user = await getProfile();
         _setUser(user);

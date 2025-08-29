@@ -1,6 +1,5 @@
 import 'dart:convert';
-
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:kinde_flutter_sdk/src/keys/keys.dart';
 import 'package:kinde_flutter_sdk/src/token/auth_state.dart';
 
@@ -56,6 +55,6 @@ class Store {
   }
 
   Future<void> clear() async {
-    await _box.clear();
+    await _box.delete(_authState);
   }
 }

@@ -18,6 +18,7 @@ void main() async {
   GoRouter.optionURLReflectsImperativeAPIs = true;
   usePathUrlStrategy();
   await dotenv.load(fileName: ".env");
+
   await KindeFlutterSDK.initializeSDK(
       authDomain: dotenv.env['KINDE_AUTH_DOMAIN']!,
       authClientId: dotenv.env['KINDE_AUTH_CLIENT_ID']!,
