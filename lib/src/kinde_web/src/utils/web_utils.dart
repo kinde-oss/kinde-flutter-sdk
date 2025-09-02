@@ -33,8 +33,13 @@ abstract class WebUtils {
 
   static String get temporaryDirectory {
     if (kIsWeb) {
-      return web.window.localStorage.getItem('temporary_directory') ?? "";
+      try {
+        return web.window.localStorage.getItem('temporary_directory') ?? "";
+      } catch (e) {
+        return "";
+      }
     }
+
     return "";
   }
 }

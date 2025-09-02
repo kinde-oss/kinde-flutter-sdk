@@ -4,9 +4,15 @@ echo "🌐 Testing Web Hot Reload with Hive_CE 2.11.3..."
 echo "=================================================="
 
 echo "✅ Step 1: Building web app..."
-cd example
+cd example || {
+    echo "❌ Failed to change to example directory"
+    exit 1
+}
 flutter build web
-cd ..
+cd .. || {
+    echo "❌ Failed to return to parent directory"
+    exit 1
+}
 
 if [ $? -eq 0 ]; then
     echo "✅ Web build successful!"
