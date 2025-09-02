@@ -66,7 +66,8 @@
 
 - Resolved webview-related dependency conflicts
 - Updated Android NDK version for stability
-- Maintained all existing package versions
+- Updated package names: hive → hive_ce, html → web for better compatibility
+- Migrated to Hive_CE 2.11.3 for improved web hot reload support
 
 ### **2. Build Configuration**
 
