@@ -91,7 +91,6 @@
 - `macos/` - macOS plugin (updated)
 - `web/` - Web plugin
 - `windows/` - Windows plugin
-- `linux/` - Linux plugin
 
 ### **Documentation**
 
