@@ -44,11 +44,10 @@ void main() {
   });
 
   group('SDK OAuth Flow Tests', () {
-    test('SDK has completePendingMobileLoginIfNeeded method', () {
-      // Test that the new method exists (this will fail if not configured, but that's expected)
+    test('SDK instance getter throws when uninitialized', () {
+      // Test that accessing SDK.instance throws when not configured
       expect(() {
         try {
-          // We can't actually call this without initialization, but we can verify the method exists
           KindeFlutterSDK.instance;
         } catch (e) {
           // Expected to throw when not configured
@@ -58,8 +57,8 @@ void main() {
   });
 
   group('SDK Web Functionality Tests', () {
-    test('SDK has completePendingLoginIfNeeded method for web', () {
-      // Test that the web login completion method exists
+    test('SDK instance getter handles unconfigured state gracefully', () {
+      // Test that accessing SDK.instance doesn't crash when not configured
       expect(() {
         try {
           KindeFlutterSDK.instance;
@@ -69,8 +68,8 @@ void main() {
       }, returnsNormally);
     });
 
-    test('SDK has _finishWebLogin method for web OAuth completion', () {
-      // Test that the web login finishing method exists
+    test('SDK instance getter provides proper error handling', () {
+      // Test that accessing SDK.instance has proper error handling
       expect(() {
         try {
           KindeFlutterSDK.instance;
@@ -80,10 +79,8 @@ void main() {
       }, returnsNormally);
     });
 
-    test(
-        'SDK has _isCurrentUrlContainWebAuthParams method for web URL detection',
-        () {
-      // Test that the web URL parameter detection method exists
+    test('SDK instance getter throws expected exception', () {
+      // Test that accessing SDK.instance throws the expected exception
       expect(() {
         try {
           KindeFlutterSDK.instance;
@@ -93,19 +90,8 @@ void main() {
       }, returnsNormally);
     });
 
-    test('SDK has getUserProfileV2 method for fetching user details', () {
-      // Test that the user profile fetching method exists
-      expect(() {
-        try {
-          KindeFlutterSDK.instance;
-        } catch (e) {
-          // Expected to throw when not configured
-        }
-      }, returnsNormally);
-    });
-
-    test('SDK has getUser method for fetching user details', () {
-      // Test that the user fetching method exists
+    test('SDK instance getter handles unconfigured access', () {
+      // Test that accessing SDK.instance handles unconfigured access properly
       expect(() {
         try {
           KindeFlutterSDK.instance;

@@ -20,13 +20,6 @@ void main() {
       }, returnsNormally);
     });
 
-    test('Web hot reload compatibility verified', () {
-      // This test verifies that Hive_CE resolves web hot reload issues
-      // The old Hive 2.2.3 caused JSNoSuchMethodError on web
-      // Hive_CE 2.11.3 provides modern web compatibility
-      expect(true, isTrue);
-    });
-
     test('Cross-platform storage compatibility', () {
       // Hive_CE provides better cross-platform support
       // iOS, Android, Web all work seamlessly

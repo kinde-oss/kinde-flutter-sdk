@@ -36,13 +36,6 @@ void main() {
       }, returnsNormally);
     });
 
-    test('Hot reload compatibility verified', () {
-      // This test confirms that the hot reload issue is resolved
-      // Users can now use --web-experimental-hot-reload without crashes
-
-      expect(true, isTrue); // Hot reload fix implemented
-    });
-
     test('Cross-platform web support confirmed', () {
       // Hive_CE provides seamless web support
       // No more platform-specific crashes

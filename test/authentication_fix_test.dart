@@ -7,27 +7,19 @@ void main() {
       expect(KindeFlutterSDK, isNotNull);
     });
 
-    test('SDK handles unconfigured state gracefully', () {
-      // Test that SDK properly handles unconfigured state
-      expect(() {
-        try {
-          KindeFlutterSDK.instance;
-        } catch (e) {
-          // Expected to throw when not configured
-          expect(e.toString(), contains('missing-config'));
-        }
-      }, returnsNormally);
+    test('SDK throws KindeError when not configured', () {
+      // Test that SDK throws the correct exception type when not configured
+      expect(() => KindeFlutterSDK.instance, throwsA(isA<KindeError>()));
     });
 
-    test('SDK provides proper error handling', () {
-      // Test that SDK can handle errors gracefully
-      expect(() {
-        try {
-          KindeFlutterSDK.instance;
-        } catch (e) {
-          // This is expected behavior when not configured
-        }
-      }, returnsNormally);
+    test('SDK throws specific error message when not configured', () {
+      // Test that SDK throws the correct error message when not configured
+      expect(
+        () => KindeFlutterSDK.instance,
+        throwsA(
+          predicate((e) => e.toString().contains('missing-config')),
+        ),
+      );
     });
 
     test('Authentication fix implementation verified', () {
