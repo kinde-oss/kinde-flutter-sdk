@@ -2,7 +2,7 @@
 
 ## 🎯 **Project Overview**
 
-**SDK:** Kinde Flutter SDK **Version:** 1.1.1 (Updated from 1.0.3) **Status:** Ready for Production Release **Date:** August 21, 2024
+**SDK:** Kinde Flutter SDK **Version:** 1.1.1 (from 1.1.0) **Status:** Ready for Production Release **Date:** 2025-08-29
 
 ## ✅ **Issues Fixed**
 
