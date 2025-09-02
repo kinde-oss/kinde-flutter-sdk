@@ -44,7 +44,7 @@ class AppStateManager {
         final loginCompleted =
             await _kindeClient.completePendingLoginIfNeeded();
       } else {
-        await _kindeClient.completePendingMobileLoginIfNeeded();
+        await _kindeClient.completePendingLoginIfNeeded();
       }
 
       bool isLogged = await _kindeClient.isAuthenticated();

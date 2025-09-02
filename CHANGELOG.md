@@ -1,13 +1,12 @@
 # Changelog
 
-## [1.1.1] - 2025-08-30
+## 1.1.1
 
-- Migrate storage to hive_ce for better web compatibility
-- Replace `html` with `web` for WASM compatibility
-- Fix iOS WebView authentication failures
-- Fix `isAuthenticated` returning false after logout → login
-- Add Android OAuth setup guide documentation
-- Update example app with proper OAuth configuration
+- Migrate storage to hive_ce.
+- Replace `html` with `web` for WASM compatibility.
+- Fix iOS WebView auth failure.
+- Fix `isAuthenticated` returning false after logout → login.
+- Docs: Android OAuth setup guide; example NDK pinned.
 
 ## 1.1.0
 
