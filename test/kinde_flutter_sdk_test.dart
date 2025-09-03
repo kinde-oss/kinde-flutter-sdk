@@ -58,6 +58,15 @@ void main() async {
 
       // Verify auth state is cleared
       expect(KindeFlutterSDK.instance.authState, isNull);
+
+      // Reinitialize SDK to avoid affecting subsequent tests
+      await initializeKindeFlutterSdkForTest(
+        authDomain: "authDomain",
+        authClientId: "authClientId",
+        loginRedirectUri: "loginRedirectUri",
+        logoutRedirectUri: "logoutRedirectUri",
+        dio: mockDio,
+      );
     });
 
     test('test create org', () async {
