@@ -6,7 +6,6 @@ import 'mock_channels.dart';
 import 'test_helpers/dio_adapter.dart';
 
 void main() async {
-
   TestWidgetsFlutterBinding.ensureInitialized();
 
   mockChannels.setupMockChannel();
@@ -26,42 +25,43 @@ void main() async {
     });
 
     test('test sdk login', () async {
-
       await KindeFlutterSDK.instance.login();
 
       expect(KindeFlutterSDK.instance.authState, isNotNull);
     });
 
     test('test sdk login pkce', () async {
-
       await KindeFlutterSDK.instance.login(type: AuthFlowType.pkce);
 
       expect(KindeFlutterSDK.instance.authState, isNotNull);
     });
 
     test('test sdk register', () async {
-
       await KindeFlutterSDK.instance.register(type: AuthFlowType.pkce);
 
       expect(KindeFlutterSDK.instance.authState, isNotNull);
     });
 
     test('test sdk register pkce', () async {
-
       await KindeFlutterSDK.instance.register(type: AuthFlowType.pkce);
 
       expect(KindeFlutterSDK.instance.authState, isNotNull);
     });
 
     test('test sdk logout', () async {
+      // First, ensure we have an auth state to logout from
+      await KindeFlutterSDK.instance.login();
+      expect(KindeFlutterSDK.instance.authState, isNotNull);
+
+      // Now perform logout
       await KindeFlutterSDK.instance.logout(dio: mockDio);
+
+      // Verify auth state is cleared
       expect(KindeFlutterSDK.instance.authState, isNull);
     });
 
     test('test create org', () async {
-
       await KindeFlutterSDK.instance.createOrg(orgName: 'test');
-
     });
 
     test('test create org pkce', () async {
