@@ -9,7 +9,9 @@ enum Parameter {
   state("state"),
   startPage("start_page"),
   isCreateOrg("is_create_org"),
-  orgName("org_name");
+  orgName("org_name"),
+  planInterest("plan_interest"),
+  pricingTableKey("pricing_table_key");
 
   const Parameter(this.value);
 
@@ -31,8 +33,19 @@ abstract class BaseAdditionalParameters {
   /// Connection id string corresponding to social sign in
   final String? connectionId;
 
+  /// Plan the user has indicated interest in
+  final String? planInterest;
+
+  /// Key for the pricing table to use (optional)
+  final String? pricingTableKey;
+
   const BaseAdditionalParameters(
-      {this.lang, this.connectionId, this.loginHint, this.orgCode});
+      {this.lang,
+      this.connectionId,
+      this.loginHint,
+      this.orgCode,
+      this.planInterest,
+      this.pricingTableKey});
 
   Map<String, String> toWebParams() {
     final params = <String, String>{};
@@ -48,13 +61,24 @@ abstract class BaseAdditionalParameters {
     if (loginHint != null) {
       params[Parameter.loginHint.name] = loginHint!;
     }
+    if (planInterest != null) {
+      params[Parameter.planInterest.name] = planInterest!;
+    }
+    if (pricingTableKey != null) {
+      params[Parameter.pricingTableKey.name] = pricingTableKey!;
+    }
     return params;
   }
 }
 
 class AdditionalParameters extends BaseAdditionalParameters {
   const AdditionalParameters(
-      {super.lang, super.connectionId, super.loginHint, super.orgCode});
+      {super.lang,
+      super.connectionId,
+      super.loginHint,
+      super.orgCode,
+      super.planInterest,
+      super.pricingTableKey});
 }
 
 class InternalAdditionalParameters extends BaseAdditionalParameters {
@@ -77,7 +101,9 @@ class InternalAdditionalParameters extends BaseAdditionalParameters {
       super.lang,
       super.connectionId,
       super.loginHint,
-      super.orgCode});
+      super.orgCode,
+      super.planInterest,
+      super.pricingTableKey});
 
   factory InternalAdditionalParameters.fromUserAdditionalParams(
       AdditionalParameters userParams) {
@@ -86,6 +112,8 @@ class InternalAdditionalParameters extends BaseAdditionalParameters {
       connectionId: userParams.connectionId,
       loginHint: userParams.loginHint,
       orgCode: userParams.orgCode,
+      planInterest: userParams.planInterest,
+      pricingTableKey: userParams.pricingTableKey,
     );
   }
 

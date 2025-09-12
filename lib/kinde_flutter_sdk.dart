@@ -3,6 +3,7 @@ library kinde_sdk;
 export './kinde_api.dart';
 export './src/auth_config.dart';
 export './src/additional_params.dart' show AdditionalParameters;
+export './src/portal_page.dart';
 export './src/kinde_flutter_sdk.dart' hide initializeKindeFlutterSdkForTest;
 export 'src/error/kinde_error.dart';
 export './src/model/auth_flow_type.dart';

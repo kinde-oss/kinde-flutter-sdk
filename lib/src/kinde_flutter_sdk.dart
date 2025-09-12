@@ -226,8 +226,7 @@ class KindeFlutterSDK with TokenUtils {
       await _handleNonWebLogout(
           dio: dio,
           macosLogoutWithoutRedirection: macosLogoutWithoutRedirection,
-          timeout: timeout
-      );
+          timeout: timeout);
     }
 
     await _commonLogoutCleanup();
@@ -256,7 +255,9 @@ class KindeFlutterSDK with TokenUtils {
 
       await appAuth.endSession(endSessionRequest).timeout(timeout,
           onTimeout: () {
-        throw const KindeError(code: KindeErrorCode.requestTimedOut, message: 'Logout request timed out');
+        throw const KindeError(
+            code: KindeErrorCode.requestTimedOut,
+            message: 'Logout request timed out');
       });
     } catch (e, st) {
       kindeDebugPrint(methodName: "Logout", message: e.toString());
@@ -590,6 +591,100 @@ class KindeFlutterSDK with TokenUtils {
         refreshToken: tokenResponse?.refreshToken,
         scope: tokenResponse?.scopes?.join(' '));
     _kindeApi.setBearerAuth(_bearerAuth, tokenResponse?.accessToken ?? '');
+  }
+
+  /// Generates a portal URL for the user to access the Kinde portal.
+  ///
+  /// [returnUrl] - URL to redirect to after portal operations (must be absolute)
+  /// [subNav] - Specific portal page to navigate to (defaults to profile)
+  ///
+  /// Returns the generated portal URL
+  ///
+  /// Throws [KindeError] if not authenticated or configuration is invalid
+  Future<String> createPortalUrl({
+    required String returnUrl,
+    PortalPage subNav = PortalPage.profile,
+  }) async {
+    if (_config == null) {
+      throw const KindeError(
+        code: KindeErrorCode.missingConfig,
+        message: 'KindeFlutterSDK has not been configured',
+      );
+    }
+
+    // Check if user is authenticated
+    if (!await isAuthenticated()) {
+      throw const KindeError(
+        code: KindeErrorCode.sessionExpiredOrInvalid,
+        message: 'User must be authenticated to generate portal URL',
+      );
+    }
+
+    // Validate that returnUrl is an absolute URL
+    final returnUri = Uri.tryParse(returnUrl);
+    if (returnUri == null || !returnUri.hasScheme || returnUri.host.isEmpty) {
+      throw const KindeError(
+        code: KindeErrorCode.invalidRedirect,
+        message: 'returnUrl must be an absolute URL',
+      );
+    }
+
+    var domainUrl = "";
+    if (_config!.authDomain.startsWith('https')) {
+      domainUrl = _config!.authDomain;
+    } else if (_config!.authDomain.startsWith('http')) {
+      domainUrl = _config!.authDomain.replaceFirst('http', "https");
+    } else {
+      domainUrl = 'https://${_config!.authDomain}';
+    }
+
+    // Remove trailing slash from domain if present
+    domainUrl = domainUrl.replaceAll(RegExp(r'/$'), '');
+
+    final queryParams = <String, String>{
+      'subnav': subNav.value,
+      'return_url': returnUrl,
+    };
+
+    final apiUrl = Uri.parse('$domainUrl/account_api/v1/portal_link')
+        .replace(queryParameters: queryParams);
+
+    try {
+      final response = await _kindeApi.dio.get(
+        apiUrl.toString(),
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer ${authState?.accessToken}',
+          },
+        ),
+      );
+
+      final responseData = response.data;
+      if (responseData == null || responseData['url'] == null) {
+        throw const KindeError(
+          code: KindeErrorCode.unknown,
+          message: 'Invalid URL received from API',
+        );
+      }
+
+      final String portalUrl = responseData['url'] as String;
+
+      // Validate the returned URL
+      final portalUri = Uri.tryParse(portalUrl);
+      if (portalUri == null) {
+        throw KindeError(
+          code: KindeErrorCode.unknown,
+          message: 'Invalid URL format received from API: $portalUrl',
+        );
+      }
+
+      return portalUrl;
+    } catch (e, st) {
+      if (e is KindeError) {
+        rethrow;
+      }
+      throw KindeError.fromError(e, st);
+    }
   }
 
   Future<String> _getVersion() async {
