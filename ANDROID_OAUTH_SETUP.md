@@ -4,7 +4,7 @@ This guide provides complete instructions for configuring Android OAuth authenti
 
 ## Overview
 
-The Kinde Flutter SDK uses the AppAuth library for OAuth authentication on Android. Proper configuration requires changes to both your `build.gradle` file and `AndroidManifest.xml` file.
+The Kinde Flutter SDK uses the `flutter_appauth` library for OAuth authentication on Android. Proper configuration requires changes to both your `build.gradle` file and `AndroidManifest.xml` file.
 
 ## Step-by-Step Configuration
 
@@ -20,7 +20,7 @@ android {
         // ... other configuration
 
         manifestPlaceholders += [
-            'appAuthRedirectScheme': 'your_custom_scheme'
+            'appAuthRedirectScheme': 'your-custom-scheme'
         ]
     }
 }
@@ -34,13 +34,13 @@ android {
         // ... other configuration
 
         manifestPlaceholders += mapOf(
-            "appAuthRedirectScheme" to "your_custom_scheme"
+            "appAuthRedirectScheme" to "your-custom-scheme"
         )
     }
 }
 ```
 
-Replace `your_custom_scheme` with your chosen custom scheme (e.g., `com.yourcompany.yourapp` or `myapp-auth`).
+Replace `your-custom-scheme` with your chosen custom scheme (e.g., `com.yourcompany.yourapp` or `myapp-auth`).
 
 ### Step 2: Configure AndroidManifest.xml
 
@@ -95,7 +95,7 @@ Add this activity configuration inside the `<application>` tag (after your MainA
         <action android:name="android.intent.action.VIEW" />
         <category android:name="android.intent.category.DEFAULT" />
         <category android:name="android.intent.category.BROWSABLE" />
-        <data android:scheme="your_custom_scheme" android:host="kinde_callback"/>
+        <data android:scheme="your-custom-scheme" android:host="kinde_callback"/>
     </intent-filter>
 
     <!-- Logout callback intent filter -->
@@ -103,12 +103,12 @@ Add this activity configuration inside the `<application>` tag (after your MainA
         <action android:name="android.intent.action.VIEW" />
         <category android:name="android.intent.category.DEFAULT" />
         <category android:name="android.intent.category.BROWSABLE" />
-        <data android:scheme="your_custom_scheme" android:host="kinde_logoutcallback"/>
+        <data android:scheme="your-custom-scheme" android:host="kinde_logoutcallback"/>
     </intent-filter>
 </activity>
 ```
 
-**Important:** Replace `your_custom_scheme` with the same scheme you used in your `build.gradle` file.
+**Important:** Replace `your-custom-scheme` with the same scheme you used in your `build.gradle` file.
 
 ### Step 3: Configure Kinde Dashboard
 
@@ -117,8 +117,8 @@ In your Kinde dashboard, configure the following redirect URLs:
 1. Go to **Settings > Applications**
 2. Select your application
 3. In the **Callback URLs** section, add:
-   - **Allowed callback URLs**: `your_custom_scheme://kinde_callback`
-   - **Allowed logout redirect URLs**: `your_custom_scheme://kinde_logoutcallback`
+   - **Allowed callback URLs**: `your-custom-scheme://kinde_callback`
+   - **Allowed logout redirect URLs**: `your-custom-scheme://kinde_logoutcallback`
 
 ### Step 4: Choose Your Custom Scheme
 
@@ -177,14 +177,14 @@ Here's a complete example of what your AndroidManifest.xml should look like:
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="your_custom_scheme" android:host="kinde_callback"/>
+                <data android:scheme="your-custom-scheme" android:host="kinde_callback"/>
             </intent-filter>
 
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="your_custom_scheme" android:host="kinde_logoutcallback"/>
+                <data android:scheme="your-custom-scheme" android:host="kinde_logoutcallback"/>
             </intent-filter>
         </activity>
 
@@ -247,10 +247,10 @@ Once your Android configuration is complete, you can initialize the Kinde SDK in
 await KindeFlutterSDK.initializeSDK(
   authDomain: 'your-domain.kinde.com',
   authClientId: 'your_client_id',
-  loginRedirectUri: 'your_custom_scheme://kinde_callback',
-  logoutRedirectUri: 'your_custom_scheme://kinde_logoutcallback',
+  loginRedirectUri: 'your-custom-scheme://kinde_callback',
+  logoutRedirectUri: 'your-custom-scheme://kinde_logoutcallback',
   scopes: ['openid', 'profile', 'email'],
 );
 ```
 
-Remember to replace `your_custom_scheme` with the same scheme you configured in your Android files.
+Remember to replace `your-custom-scheme` with the same scheme you configured in your Android files.
