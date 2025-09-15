@@ -629,35 +629,11 @@ class KindeFlutterSDK with TokenUtils {
       );
     }
 
-    var domainUrl = "";
-    if (_config!.authDomain.startsWith('https')) {
-      domainUrl = _config!.authDomain;
-    } else if (_config!.authDomain.startsWith('http')) {
-      domainUrl = _config!.authDomain.replaceFirst('http', "https");
-    } else {
-      domainUrl = 'https://${_config!.authDomain}';
-    }
-
-    // Remove trailing slash from domain if present
-    domainUrl = domainUrl.replaceAll(RegExp(r'/$'), '');
-
-    final queryParams = <String, String>{
-      'subnav': subNav.value,
-      'return_url': returnUrl,
-    };
-
-    final apiUrl = Uri.parse('$domainUrl/account_api/v1/portal_link')
-        .replace(queryParameters: queryParams);
-
     try {
-      final response = await _kindeApi.dio.get(
-        apiUrl.toString(),
-        options: Options(
-          headers: {
-            'Authorization': 'Bearer ${authState?.accessToken}',
-          },
-        ),
-      );
+      final response = await _kindeApi.getOAuthApi().getPortalLink(
+            returnUrl: returnUrl,
+            subNav: subNav.value,
+          );
 
       final responseData = response.data;
       if (responseData == null || responseData['url'] == null) {

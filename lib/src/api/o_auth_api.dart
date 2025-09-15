@@ -65,14 +65,12 @@ class OAuthApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(UserProfile),
-                  )
-                  as UserProfile;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+              rawResponse,
+              specifiedType: const FullType(UserProfile),
+            ) as UserProfile;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -106,15 +104,95 @@ class OAuthApi {
     var dioClient = dio ?? Dio();
 
     try {
-    final response = await dioClient.request<Object>(
-      url,
-      options: options,
-    );
+      final response = await dioClient.request<Object>(
+        url,
+        options: options,
+      );
 
-    return response.statusCode == 200;
+      return response.statusCode == 200;
     } on DioException {
       return false;
     }
+  }
+
+  /// Get Portal Link
+  /// Generates a portal URL for the user to access the Kinde portal.
+  ///
+  /// Parameters:
+  /// * [returnUrl] - URL to redirect to after portal operations (must be absolute)
+  /// * [subNav] - Specific portal page to navigate to
+  /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
+  /// * [headers] - Can be used to add additional headers to the request
+  /// * [extras] - Can be used to add flags to the request
+  /// * [validateStatus] - A [ValidateStatus] callback that can be used to determine request success based on the HTTP status of the response
+  /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
+  /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
+  ///
+  /// Returns a [Future] containing a [Response] with portal link data
+  /// Throws [DioException] if API call or serialization fails
+  Future<Response<Map<String, dynamic>>> getPortalLink({
+    required String returnUrl,
+    String? subNav,
+    CancelToken? cancelToken,
+    Map<String, dynamic>? headers,
+    Map<String, dynamic>? extra,
+    ValidateStatus? validateStatus,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+  }) async {
+    const path = r'/account_api/v1/portal_link';
+
+    final queryParameters = <String, dynamic>{
+      'return_url': returnUrl,
+      if (subNav != null) 'subnav': subNav,
+    };
+
+    final options = Options(
+      method: r'GET',
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{
+        'secure': <Map<String, String>>[
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
+        ],
+        ...?extra,
+      },
+      validateStatus: validateStatus,
+    );
+
+    final response = await _dio.request<Object>(
+      path,
+      queryParameters: queryParameters,
+      options: options,
+      cancelToken: cancelToken,
+      onSendProgress: onSendProgress,
+      onReceiveProgress: onReceiveProgress,
+    );
+
+    Map<String, dynamic>? responseData;
+
+    try {
+      final rawResponse = response.data;
+      responseData = rawResponse as Map<String, dynamic>?;
+    } catch (error, stackTrace) {
+      throw DioException(
+        requestOptions: response.requestOptions,
+        response: response,
+        type: DioExceptionType.unknown,
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
+
+    return Response<Map<String, dynamic>>(
+      data: responseData,
+      headers: response.headers,
+      isRedirect: response.isRedirect,
+      requestOptions: response.requestOptions,
+      redirects: response.redirects,
+      statusCode: response.statusCode,
+      statusMessage: response.statusMessage,
+      extra: response.extra,
+    );
   }
 
   /// Returns the details of the currently logged in user
@@ -163,14 +241,12 @@ class OAuthApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(UserProfileV2),
-                  )
-                  as UserProfileV2;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+              rawResponse,
+              specifiedType: const FullType(UserProfileV2),
+            ) as UserProfileV2;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -271,14 +347,12 @@ class OAuthApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(TokenIntrospect),
-                  )
-                  as TokenIntrospect;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+              rawResponse,
+              specifiedType: const FullType(TokenIntrospect),
+            ) as TokenIntrospect;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
