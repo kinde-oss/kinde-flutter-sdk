@@ -636,14 +636,14 @@ class KindeFlutterSDK with TokenUtils {
           );
 
       final responseData = response.data;
-      if (responseData == null || responseData['url'] == null) {
+      if (responseData is! Map || responseData?['url'] is! String) {
         throw const KindeError(
           code: KindeErrorCode.unknown,
           message: 'Invalid URL received from API',
         );
       }
 
-      final String portalUrl = responseData['url'] as String;
+      final String portalUrl = responseData?['url'] as String;
 
       // Validate the returned URL
       final portalUri = Uri.tryParse(portalUrl);
