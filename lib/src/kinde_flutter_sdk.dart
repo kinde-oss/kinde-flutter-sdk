@@ -630,20 +630,20 @@ class KindeFlutterSDK with TokenUtils {
     }
 
     try {
-      final response = await _kindeApi.getOAuthApi().getPortalLink(
+      final response = await _kindeApi.getPortalApi().getPortalLink(
             returnUrl: returnUrl,
             subNav: subNav.value,
           );
 
       final responseData = response.data;
-      if (responseData is! Map || responseData?['url'] is! String) {
+      if (responseData is! Map || responseData['url'] is! String) {
         throw const KindeError(
           code: KindeErrorCode.unknown,
           message: 'Invalid URL received from API',
         );
       }
 
-      final String portalUrl = responseData?['url'] as String;
+      final String portalUrl = responseData['url'] as String;
 
       // Validate the returned URL
       final portalUri = Uri.tryParse(portalUrl);

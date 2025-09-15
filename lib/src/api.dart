@@ -14,6 +14,7 @@ import 'package:kinde_flutter_sdk/src/api/industries_api.dart';
 import 'package:kinde_flutter_sdk/src/api/o_auth_api.dart';
 import 'package:kinde_flutter_sdk/src/api/organizations_api.dart';
 import 'package:kinde_flutter_sdk/src/api/permissions_api.dart';
+import 'package:kinde_flutter_sdk/src/api/portal_api.dart';
 import 'package:kinde_flutter_sdk/src/api/roles_api.dart';
 import 'package:kinde_flutter_sdk/src/api/subscribers_api.dart';
 import 'package:kinde_flutter_sdk/src/api/timezones_api.dart';
@@ -35,16 +36,15 @@ class KindeApi {
     Serializers? serializers,
     String? basePathOverride,
     List<Interceptor>? interceptors,
-  }) : serializers = serializers ?? standardSerializers,
-       dio =
-           dio ??
-           Dio(
-             BaseOptions(
-               baseUrl: basePathOverride ?? basePath,
-               connectTimeout: const Duration(milliseconds: 5000),
-               receiveTimeout: const Duration(milliseconds: 3000),
-             ),
-           ) {
+  })  : serializers = serializers ?? standardSerializers,
+        dio = dio ??
+            Dio(
+              BaseOptions(
+                baseUrl: basePathOverride ?? basePath,
+                connectTimeout: const Duration(milliseconds: 5000),
+                receiveTimeout: const Duration(milliseconds: 3000),
+              ),
+            ) {
     if (interceptors == null) {
       this.dio.interceptors.addAll([
         OAuthInterceptor(),
@@ -60,18 +60,16 @@ class KindeApi {
   void setOAuthToken(String name, String token) {
     if (dio.interceptors.any((i) => i is OAuthInterceptor)) {
       (dio.interceptors.firstWhere((i) => i is OAuthInterceptor)
-                  as OAuthInterceptor)
-              .tokens[name] =
-          token;
+              as OAuthInterceptor)
+          .tokens[name] = token;
     }
   }
 
   void setBearerAuth(String name, String token) {
     if (dio.interceptors.any((i) => i is BearerAuthInterceptor)) {
       (dio.interceptors.firstWhere((i) => i is BearerAuthInterceptor)
-                  as BearerAuthInterceptor)
-              .tokens[name] =
-          token;
+              as BearerAuthInterceptor)
+          .tokens[name] = token;
     }
   }
 
@@ -86,11 +84,9 @@ class KindeApi {
   void setApiKey(String name, String apiKey) {
     if (dio.interceptors.any((i) => i is ApiKeyAuthInterceptor)) {
       (dio.interceptors.firstWhere(
-                    (element) => element is ApiKeyAuthInterceptor,
-                  )
-                  as ApiKeyAuthInterceptor)
-              .apiKeys[name] =
-          apiKey;
+        (element) => element is ApiKeyAuthInterceptor,
+      ) as ApiKeyAuthInterceptor)
+          .apiKeys[name] = apiKey;
     }
   }
 
@@ -176,5 +172,9 @@ class KindeApi {
   /// by doing that all interceptors will not be executed
   UsersApi getUsersApi() {
     return UsersApi(dio, serializers);
+  }
+
+  PortalApi getPortalApi() {
+    return PortalApi(dio);
   }
 }
