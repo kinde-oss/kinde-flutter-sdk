@@ -14,7 +14,6 @@ import 'package:kinde_flutter_sdk/src/api/industries_api.dart';
 import 'package:kinde_flutter_sdk/src/api/o_auth_api.dart';
 import 'package:kinde_flutter_sdk/src/api/organizations_api.dart';
 import 'package:kinde_flutter_sdk/src/api/permissions_api.dart';
-import 'package:kinde_flutter_sdk/src/api/portal_api.dart';
 import 'package:kinde_flutter_sdk/src/api/roles_api.dart';
 import 'package:kinde_flutter_sdk/src/api/subscribers_api.dart';
 import 'package:kinde_flutter_sdk/src/api/timezones_api.dart';
@@ -172,9 +171,5 @@ class KindeApi {
   /// by doing that all interceptors will not be executed
   UsersApi getUsersApi() {
     return UsersApi(dio, serializers);
-  }
-
-  PortalApi getPortalApi() {
-    return PortalApi(dio);
   }
 }

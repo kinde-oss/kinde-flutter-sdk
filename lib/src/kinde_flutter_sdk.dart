@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:kinde_flutter_sdk/src/additional_params.dart';
+import 'package:kinde_flutter_sdk/src/api/portal_api.dart';
 import 'package:kinde_flutter_sdk/src/kinde_secure_storage/kinde_secure_storage_i.dart';
 import 'package:kinde_flutter_sdk/src/utils/kinde_custom_types.dart';
 import 'package:kinde_flutter_sdk/src/utils/kinde_debug_print.dart';
@@ -630,10 +631,10 @@ class KindeFlutterSDK with TokenUtils {
     }
 
     try {
-      final response = await _kindeApi.getPortalApi().getPortalLink(
-            returnUrl: returnUrl,
-            subNav: subNav.value,
-          );
+      final response = await PortalApi(_kindeApi.dio).getPortalLink(
+        returnUrl: returnUrl,
+        subNav: subNav.value,
+      );
 
       final responseData = response.data;
       if (responseData is! Map || responseData['url'] is! String) {
@@ -647,7 +648,10 @@ class KindeFlutterSDK with TokenUtils {
 
       // Validate the returned URL
       final portalUri = Uri.tryParse(portalUrl);
-      if (portalUri == null) {
+      if (portalUri == null ||
+          !portalUri.hasScheme ||
+          portalUri.scheme != 'https' ||
+          portalUri.host.isEmpty) {
         throw KindeError(
           code: KindeErrorCode.unknown,
           message: 'Invalid URL format received from API: $portalUrl',
