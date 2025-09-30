@@ -246,10 +246,8 @@ class KindeFlutterSDK with TokenUtils {
       final endSessionRequest = EndSessionRequest(
           externalUserAgent:
               ExternalUserAgent.ephemeralAsWebAuthenticationSession,
-          idTokenHint:
-              authState!.idToken != null && authState!.idToken!.length > 500
-                  ? authState!.idToken!.substring(0, 500)
-                  : authState!.idToken,
+          idTokenHint: null,
+          // idTokenHint:authState!.idToken,
           postLogoutRedirectUrl: _config!.logoutRedirectUri,
           serviceConfiguration: _serviceConfiguration,
           additionalParameters: _config != null
