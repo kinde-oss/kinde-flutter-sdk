@@ -226,8 +226,7 @@ class KindeFlutterSDK with TokenUtils {
       await _handleNonWebLogout(
           dio: dio,
           macosLogoutWithoutRedirection: macosLogoutWithoutRedirection,
-          timeout: timeout
-      );
+          timeout: timeout);
     }
 
     await _commonLogoutCleanup();
@@ -247,7 +246,9 @@ class KindeFlutterSDK with TokenUtils {
       final endSessionRequest = EndSessionRequest(
           externalUserAgent:
               ExternalUserAgent.ephemeralAsWebAuthenticationSession,
-          idTokenHint: authState!.idToken,
+          idTokenHint: (authState!.idToken?.length ?? 0) > 100
+              ? authState!.idToken!.substring(0, 100)
+              : authState!.idToken,
           postLogoutRedirectUrl: _config!.logoutRedirectUri,
           serviceConfiguration: _serviceConfiguration,
           additionalParameters: _config != null
@@ -256,7 +257,9 @@ class KindeFlutterSDK with TokenUtils {
 
       await appAuth.endSession(endSessionRequest).timeout(timeout,
           onTimeout: () {
-        throw const KindeError(code: KindeErrorCode.requestTimedOut, message: 'Logout request timed out');
+        throw const KindeError(
+            code: KindeErrorCode.requestTimedOut,
+            message: 'Logout request timed out');
       });
     } catch (e, st) {
       kindeDebugPrint(methodName: "Logout", message: e.toString());
