@@ -19,10 +19,10 @@ void main() async {
   usePathUrlStrategy();
   await dotenv.load(fileName: ".env");
   await KindeFlutterSDK.initializeSDK(
-      authDomain: dotenv.env['KINDE_AUTH_DOMAIN']!,
-      authClientId: dotenv.env['KINDE_AUTH_CLIENT_ID']!,
-      loginRedirectUri: dotenv.env['KINDE_LOGIN_REDIRECT_URI']!,
-      logoutRedirectUri: dotenv.env['KINDE_LOGOUT_REDIRECT_URI']!,
+      authDomain: "https://talibandsons.kinde.com",
+      authClientId: "8aca0a6f25724c6d95ba1afd5d9e3945",
+      loginRedirectUri: "com.kinde.myapp://kinde_callback",
+      logoutRedirectUri: "com.kinde.myapp://kinde_logoutcallback",
       scopes: ["email", "profile", "offline", "openid"] // optional
       );
 
