@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_secure_storage_plus/flutter_secure_storage_plus.dart';
 import 'package:kinde_flutter_sdk/src/utils/kinde_debug_print.dart';
 
 import 'kinde_secure_storage_i.dart';
@@ -11,10 +11,10 @@ abstract class SecureStorageKey {
 }
 
 class KindeSecureStorage implements KindeSecureStorageInterface {
-  KindeSecureStorage({FlutterSecureStorage? secureStorage})
-      : _secureStorage = secureStorage ?? const FlutterSecureStorage();
+  KindeSecureStorage({FlutterSecureStoragePlus? secureStorage})
+      : _secureStorage = secureStorage ??  FlutterSecureStoragePlus();
 
-  final FlutterSecureStorage _secureStorage;
+  final FlutterSecureStoragePlus _secureStorage;
 
   @override
   Future<List<int>?> getSecureKey() async {

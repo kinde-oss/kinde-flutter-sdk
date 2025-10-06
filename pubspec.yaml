@@ -14,7 +14,7 @@ dependencies:
     sdk: flutter
 
   flutter_appauth: ^9.0.1
-  flutter_secure_storage: ^8.0.0
+  flutter_secure_storage_plus: ^0.0.4
   path_provider: ^2.0.15
   dio: ^5.0.0
   one_of_serializer: '>=1.5.0 <2.0.0'

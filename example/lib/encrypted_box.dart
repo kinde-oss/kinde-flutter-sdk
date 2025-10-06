@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:hive/hive.dart';
+import 'package:flutter_secure_storage_plus/flutter_secure_storage_plus.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:kinde_flutter_sdk/kinde_flutter_sdk.dart';
 
@@ -21,11 +21,10 @@ class EncryptedBox {
   Box get _box => Hive.box(_boxName);
 
   static Future<void> init() async {
-    const FlutterSecureStorage secureStorage = FlutterSecureStorage();
-    var containsEncryptionKey =
-        await secureStorage.containsKey(key: _encryptionKey);
+    final FlutterSecureStoragePlus secureStorage = FlutterSecureStoragePlus();
+    var containsEncryptionKey = await secureStorage.read(key: _encryptionKey);
     List<int> secureKey;
-    if (!containsEncryptionKey) {
+    if (containsEncryptionKey?.isEmpty ?? true) {
       secureKey = Hive.generateSecureKey();
       await secureStorage.write(
           key: _encryptionKey, value: base64UrlEncode(secureKey));

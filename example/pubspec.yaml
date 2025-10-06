@@ -37,7 +37,7 @@ dependencies:
     path: ../../kinde-flutter-sdk
   url_launcher: ^6.1.11
   hive: ^2.2.3
-  flutter_secure_storage: ^8.0.0
+  flutter_secure_storage_plus: ^0.0.4
   jwt_decoder: ^2.0.1
   flutter_dotenv: ^5.1.0
 
