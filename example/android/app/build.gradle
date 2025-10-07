@@ -30,7 +30,7 @@ android {
         versionName flutter.versionName
 
         manifestPlaceholders += [
-          'appAuthRedirectScheme': 'com.kinde.myapp'
+          'appAuthRedirectScheme': '<your_custom_scheme>'
         ]
     }
 
