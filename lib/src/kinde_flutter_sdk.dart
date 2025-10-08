@@ -238,30 +238,7 @@ class KindeFlutterSDK with TokenUtils {
     required bool macosLogoutWithoutRedirection,
     required Duration timeout,
   }) async {
-    if (Platform.operatingSystem == "macos" && macosLogoutWithoutRedirection) {
-      return _logoutWithoutRedirection(dio: dio);
-    }
-
-    try {
-      const appAuth = FlutterAppAuth();
-      final endSessionRequest = EndSessionRequest(
-          externalUserAgent:
-              ExternalUserAgent.ephemeralAsWebAuthenticationSession,
-          idTokenHint: authState!.idToken,
-          postLogoutRedirectUrl: _config!.logoutRedirectUri,
-          serviceConfiguration: _serviceConfiguration,
-          additionalParameters: _config != null
-              ? {"redirect": _config!.logoutRedirectUri}
-              : null);
-
-      await appAuth.endSession(endSessionRequest).timeout(timeout,
-          onTimeout: () {
-        throw const KindeError(code: KindeErrorCode.requestTimedOut, message: 'Logout request timed out');
-      });
-    } catch (e, st) {
-      kindeDebugPrint(methodName: "Logout", message: e.toString());
-      throw KindeError.fromError(e, st);
-    }
+    return _logoutWithoutRedirection(dio: dio);
   }
 
   Future<void> _handleWebLogout() async {
@@ -276,7 +253,6 @@ class KindeFlutterSDK with TokenUtils {
     await Store.instance.clear();
   }
 
-  /// Logs out the user without redirection.
   Future<void> _logoutWithoutRedirection({Dio? dio}) async {
     try {
       var dioClient = dio ?? Dio();
