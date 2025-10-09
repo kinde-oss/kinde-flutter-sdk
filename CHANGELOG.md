@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.1
+
+- New release
+
 ## 1.1.0
 
 - Added missing built_collection dependency
