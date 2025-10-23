@@ -9,7 +9,7 @@ class AuthorizationKindeError extends KindeError {
   @override
   String get code => super.code;
 
-  const AuthorizationKindeError._(String code, String description)
+  AuthorizationKindeError._(String code, String description)
       : super(code: code, message: description);
 
   @protected

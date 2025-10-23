@@ -56,8 +56,8 @@ class KindeFlutterSDK with TokenUtils {
   KindeFlutterSDK._internal(
       {KindeSecureStorageInterface? secureStorage, Dio? dio}) {
     if (_config == null) {
-      throw const KindeError(
-        code: KindeErrorCode.missingConfig,
+      throw KindeError(
+        code: KindeErrorCode.missingConfig.code,
         message: 'KindeFlutterSDK has not been configured',
       );
     }
@@ -165,7 +165,7 @@ class KindeFlutterSDK with TokenUtils {
       if (e is KindeError) rethrow;
 
       throw KindeError(
-        code: KindeErrorCode.initializingFailed,
+        code: KindeErrorCode.initializingFailed.code,
         message: 'Error during "$step": ${e.toString()}',
         stackTrace: st,
       );
@@ -268,7 +268,7 @@ class KindeFlutterSDK with TokenUtils {
                 "Unknown error"
             : "Logout failed with status: ${response.statusCode}";
         throw KindeError(
-            code: KindeErrorCode.logoutRequestFailed, message: errorMessage);
+            code: KindeErrorCode.logoutRequestFailed.code, message: errorMessage);
       }
     } catch (error, st) {
       throw KindeError.fromError(error, st);
@@ -479,8 +479,8 @@ class KindeFlutterSDK with TokenUtils {
     final versionParam = 'Flutter/$version';
     try {
       if (authState?.refreshToken == null) {
-        throw const KindeError(
-          code: KindeErrorCode.sessionExpiredOrInvalid,
+        throw KindeError(
+          code: KindeErrorCode.sessionExpiredOrInvalid.code,
         );
       }
       final data = await _tokenApi.retrieveToken(

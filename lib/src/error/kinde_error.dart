@@ -12,12 +12,12 @@ part 'authorization_kinde_error.dart';
 
 @immutable
 class KindeError implements Exception {
-  const KindeError({
+  KindeError({
     String? message,
     String? code,
     this.stackTrace,
-  })  : this.code = code ?? KindeErrorCode.unknown,
-        this.message = message ?? "";
+  })  : code = code ?? KindeErrorCode.unknown.code,
+        message = message ?? "";
 
   /// The long form message of the exception.
   final String message;
@@ -64,7 +64,7 @@ class KindeError implements Exception {
     if (error is FormatException) {
       if(error.message.contains("parameter \"state\" expected")) {
           return KindeError(
-              code: KindeErrorCode.authStateNotMatch,
+              code: KindeErrorCode.authStateNotMatch.code,
               message: error.message);
       }
       final jsonMatch = RegExp(r'\{.*\}').firstMatch(error.message);
@@ -77,10 +77,10 @@ class KindeError implements Exception {
           final error = jsonData['error'] as String?;
           final errorDescription = jsonData['error_description'] as String?;
 
-          return KindeError(code: error ?? KindeErrorCode.unknown, message: errorDescription ?? 'Unknown error');
+          return KindeError(code: error ?? KindeErrorCode.unknown.code, message: errorDescription ?? 'Unknown error');
         } catch (e) {
           return KindeError(
-              code: KindeErrorCode.unknown, message: e.toString());
+              code: KindeErrorCode.unknown.code, message: e.toString());
         }
       }
     }
@@ -113,7 +113,7 @@ KindeError _handleError(Exception error) {
       case DioExceptionType.badResponse:
         if (dioError.requestOptions.path == "/oauth2/token") {
           resultError = KindeError(
-              code: KindeErrorCode.refreshTokenExpired,
+              code: KindeErrorCode.refreshTokenExpired.code,
               message: dioError.message);
         }
         break;
@@ -124,7 +124,7 @@ KindeError _handleError(Exception error) {
 
 KindeError _flutterAppAuthExceptionMapper(PlatformException platformException) {
   if (platformException is FlutterAppAuthUserCancelledException) {
-    return const KindeError(code: KindeErrorCode.userCanceled);
+    return KindeError(code: KindeErrorCode.userCanceled.code, message: null);
   }
   return KindeError(
       code: platformException.code, message: platformException.message);

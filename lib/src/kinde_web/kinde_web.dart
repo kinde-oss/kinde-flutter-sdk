@@ -77,7 +77,7 @@ class KindeWeb {
       _instance?._codeVerifierStorage = await CodeVerifierStorage.initialize();
     } catch (e, st) {
       throw KindeError(
-        code: KindeErrorCode.initializingFailed,
+        code: KindeErrorCode.initializingFailed.code,
         message: e.toString(),
         stackTrace: st,
       );
@@ -94,11 +94,11 @@ class KindeWeb {
   /// - [logoutUrl]: The URL to navigate to after clearing session data. Must be a safe and trusted web URL.
   Future<void> logout(String logoutUrl) async {
     if (_loginInProgress) {
-      throw const KindeError(code: KindeErrorCode.loginInProcess);
+      throw KindeError(code: KindeErrorCode.loginInProcess.code);
     }
     if (!isSafeWebUrl(logoutUrl)) {
-      throw const KindeError(
-          code: KindeErrorCode.invalidRedirect,
+      throw KindeError(
+          code: KindeErrorCode.invalidRedirect.code,
           message: 'Unsafe or untrusted logout URL detected');
     }
     await _clear();
@@ -112,7 +112,7 @@ class KindeWeb {
   Future<void> startLoginFlow(AuthorizationRequest configuration,
       {required InternalAdditionalParameters additionalParameters}) async {
     if (_loginInProgress) {
-      throw const KindeError(code: KindeErrorCode.loginInProcess);
+      throw KindeError(code: KindeErrorCode.loginInProcess.code);
     }
     try {
       _loginInProgress = true;
@@ -125,7 +125,7 @@ class KindeWeb {
         additionalParameters.state = authState;
       } catch (e, st) {
         throw KindeError(
-            code: KindeErrorCode.unknown,
+            code: KindeErrorCode.unknown.code,
             message: e.toString(),
             stackTrace: st);
       }
@@ -148,15 +148,15 @@ class KindeWeb {
       required List<String> scopes}) async {
     final codeVerifier = _codeVerifierStorage.restore();
     if (codeVerifier == null) {
-      throw const KindeError(
-          code: KindeErrorCode.noCodeVerifier,
+      throw KindeError(
+          code: KindeErrorCode.noCodeVerifier.code,
           message: "No code verifier in storage.");
     }
 
     final authRequestState = await _kindeSecureStorage.getAuthRequestState();
     if (authRequestState == null) {
-      throw const KindeError(
-          code: KindeErrorCode.noAuthStateStored,
+      throw KindeError(
+          code: KindeErrorCode.noAuthStateStored.code,
           message: "No auth request state in storage.");
     }
 

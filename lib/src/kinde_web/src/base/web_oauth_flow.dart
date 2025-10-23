@@ -65,7 +65,7 @@ abstract class WebOAuthFlow {
 
     kindeDebugPrint(methodName: "isValidRedirect", message: comparingSummary);
     throw KindeError(
-        code: KindeErrorCode.notRedirect, message: comparingSummary);
+        code: KindeErrorCode.notRedirect.code, message: comparingSummary);
   }
 
   /// Ignoring query parameters.
@@ -87,7 +87,7 @@ abstract class WebOAuthFlow {
     if (scheme == 'http') return _httpDefaultPort;
 
     throw KindeError(
-      code: KindeErrorCode.unsupportedScheme,
+      code: KindeErrorCode.unsupportedScheme.code,
       message:
           'Unsupported URI scheme: "$scheme". Only "https" and "http" are allowed. '
           'Please ensure your redirect URL begins with http:// or https://.',
