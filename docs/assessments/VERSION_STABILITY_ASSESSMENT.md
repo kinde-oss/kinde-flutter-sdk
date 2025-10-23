@@ -483,6 +483,3 @@ Before upgrading:
 ---
 
 **Document Version:** 1.0 **Last Updated:** October 16, 2025 **Next Review:** Before implementation begins
-
-
-
