@@ -139,18 +139,21 @@ mixin TokenUtils implements ClaimApi {
     return null;
   }
 
-  FlagType? _flagTypeFromString(String character) {
-    switch (character) {
-      case 's':
-        return FlagType.string;
-      case 'i':
-        return FlagType.integer;
-      case 'b':
-        return FlagType.bool;
-      default:
-        return null;
-    }
-  }
+  /// Convert a single-character string to its corresponding [FlagType].
+  ///
+  /// Uses a switch expression for exhaustive matching of known flag type characters.
+  ///
+  /// Returns:
+  /// - `FlagType.string` for 's'
+  /// - `FlagType.integer` for 'i'
+  /// - `FlagType.bool` for 'b'
+  /// - `null` for any other character
+  FlagType? _flagTypeFromString(String character) => switch (character) {
+    's' => FlagType.string,
+    'i' => FlagType.integer,
+    'b' => FlagType.bool,
+    _ => null,
+  };
 }
 
 abstract class ClaimApi {

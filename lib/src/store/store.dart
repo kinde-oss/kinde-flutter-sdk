@@ -14,8 +14,7 @@ class Store {
   Store._internal();
 
   static Store get instance {
-    _instance ??= Store._internal();
-    return _instance ?? Store._internal();
+    return _instance ??= Store._internal();
   }
 
   Box get _box => Hive.box(_boxName);
@@ -27,6 +26,7 @@ class Store {
 
   AuthState? get authState {
     final currentData = _box.get(_authState) as String?;
+    // Check for null or JSON-encoded null string (jsonEncode(null) produces "null")
     if (currentData == null || currentData.toLowerCase() == "null") {
       return null;
     } else {
@@ -43,6 +43,7 @@ class Store {
 
   Keys? get keys {
     final currentData = _box.get(_keys) as String?;
+    // Check for null or JSON-encoded null string (jsonEncode(null) produces "null")
     if (currentData == null || currentData.toLowerCase() == "null") {
       return null;
     } else {

@@ -1,0 +1,403 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_appauth/flutter_appauth.dart';
+
+import 'package:oauth2/oauth2.dart';
+
+part 'kinde_error_code.dart';
+
+/// Base sealed class for all Kinde SDK errors.
+///
+/// This sealed class ensures exhaustive handling of error types through pattern matching.
+/// All Kinde errors extend from this base class, and the compiler enforces that all
+/// subtypes are handled when using switch expressions.
+///
+/// **Usage Example - Exhaustive Handling:**
+/// ```dart
+/// try {
+///   await sdk.login();
+/// } catch (e) {
+///   switch (e) {
+///     case AuthenticationError():
+///       // Handle authentication issues
+///       print('Auth error: ${e.message}');
+///     case NetworkError():
+///       // Handle network connectivity issues
+///       showRetryDialog();
+///     case ConfigurationError():
+///       // Handle configuration/setup issues
+///       print('Config error: ${e.message}');
+///     case OAuthFlowError():
+///       // Handle OAuth/PKCE flow issues
+///       restartAuthFlow();
+///     case GenericKindeError():
+///       // Handle all other errors
+///       showGenericError(e.message);
+///   }
+/// }
+/// ```
+///
+/// **Usage Example - Fine-Grained Handling:**
+/// ```dart
+/// try {
+///   await sdk.login();
+/// } catch (e) {
+///   if (e is KindeError) {
+///     // Can still check specific error codes for fine-grained control
+///     if (e.code == KindeErrorCode.userCanceled) {
+///       return; // Silent failure
+///     } else if (e.code == KindeErrorCode.networkError) {
+///       showRetryDialog();
+///     }
+///   }
+/// }
+/// ```
+sealed class KindeError implements Exception {
+  /// Creates a KindeError with the specified parameters.
+  ///
+  /// - [code]: The error code enum value
+  /// - [message]: Human-readable error message
+  /// - [stackTrace]: Optional stack trace for debugging
+  const KindeError({
+    required this.code,
+    required this.message,
+    this.stackTrace,
+  });
+
+  /// The error code enum representing the specific error type.
+  ///
+  /// Use this for fine-grained error handling when category-level
+  /// handling (sealed types) is too coarse.
+  final KindeErrorCode code;
+
+  /// Human-readable description of the error.
+  final String message;
+
+  /// Stack trace captured when the error occurred (if available).
+  final StackTrace? stackTrace;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is KindeError &&
+          runtimeType == other.runtimeType &&
+          code == other.code &&
+          message == other.message;
+
+  @override
+  int get hashCode => Object.hash(code, message);
+
+  @override
+  String toString() {
+    String output = '[$code] $message';
+
+    if (stackTrace != null) {
+      output += '\n\n$stackTrace';
+    }
+
+    return output;
+  }
+
+  /// Factory constructor that converts any [Object] error to a [KindeError].
+  ///
+  /// Uses pattern matching with switch expressions for type-safe error handling.
+  /// Delegates specific error types to appropriate handler functions.
+  factory KindeError.fromError(Object error, StackTrace stackTrace) => switch (error) {
+    KindeError e => e,
+    PlatformException e => _flutterAppAuthExceptionMapper(e),
+    AuthorizationException e => _handleAuthorizationException(e),
+    FormatException e => _handleFormatException(e),
+    Exception e => _handleError(e),
+    _ => GenericKindeError(
+      code: KindeErrorCode.unknown,
+      message: error.toString(),
+      stackTrace: stackTrace,
+    ),
+  };
+}
+
+//============================================================================
+// SEALED SUBTYPES - Category-Based Error Hierarchy
+//============================================================================
+
+/// Authentication and authorization errors.
+///
+/// Represents errors related to user authentication, authorization, and session management.
+///
+/// **Common Scenarios:**
+/// - User credentials are invalid or expired
+/// - Session has expired and requires re-authentication
+/// - Refresh token is no longer valid
+///
+/// **Error Codes in this Category:**
+/// - [KindeErrorCode.refreshTokenExpired]
+/// - [KindeErrorCode.sessionExpiredOrInvalid]
+/// - [KindeErrorCode.invalidCredentials]
+final class AuthenticationError extends KindeError {
+  /// Creates an authentication error.
+  const AuthenticationError({
+    required super.code,
+    required super.message,
+    super.stackTrace,
+  });
+}
+
+/// Network and connectivity errors.
+///
+/// Represents errors related to network connectivity, timeouts, and communication failures.
+///
+/// **Common Scenarios:**
+/// - No internet connection
+/// - Request timeout
+/// - Server unreachable
+/// - Network interruption during request
+///
+/// **Error Codes in this Category:**
+/// - [KindeErrorCode.networkError]
+/// - [KindeErrorCode.logoutRequestFailed]
+final class NetworkError extends KindeError {
+  /// Creates a network error.
+  const NetworkError({
+    required super.code,
+    required super.message,
+    super.stackTrace,
+  });
+}
+
+/// Configuration and initialization errors.
+///
+/// Represents errors that occur during SDK setup and configuration.
+/// These typically indicate developer mistakes or missing configuration.
+///
+/// **Common Scenarios:**
+/// - SDK not configured before use
+/// - Invalid configuration parameters
+/// - Missing required configuration fields
+/// - SDK initialization failure
+///
+/// **Error Codes in this Category:**
+/// - [KindeErrorCode.missingConfig]
+/// - [KindeErrorCode.initializingFailed]
+final class ConfigurationError extends KindeError {
+  /// Creates a configuration error.
+  const ConfigurationError({
+    required super.code,
+    required super.message,
+    super.stackTrace,
+  });
+}
+
+/// OAuth flow and PKCE state errors.
+///
+/// Represents errors that occur during the OAuth 2.0 / PKCE authentication flow.
+///
+/// **Common Scenarios:**
+/// - OAuth state mismatch (potential security issue)
+/// - Invalid redirect URL
+/// - Missing PKCE code verifier
+/// - Authorization flow interrupted
+///
+/// **Error Codes in this Category:**
+/// - [KindeErrorCode.authStateNotMatch]
+/// - [KindeErrorCode.invalidRedirect]
+/// - [KindeErrorCode.unsupportedScheme]
+/// - [KindeErrorCode.notRedirect]
+/// - [KindeErrorCode.noCodeVerifier]
+/// - [KindeErrorCode.noAuthStateStored]
+/// - [KindeErrorCode.loginInProcess]
+final class OAuthFlowError extends KindeError {
+  /// Creates an OAuth flow error.
+  const OAuthFlowError({
+    required super.code,
+    required super.message,
+    super.stackTrace,
+  });
+}
+
+/// Generic errors that don't fit into specific categories.
+///
+/// Represents errors that don't belong to the other specific categories,
+/// including unknown errors and user-initiated actions.
+///
+/// **Common Scenarios:**
+/// - User canceled authentication
+/// - Unknown/unexpected errors
+/// - Errors that don't fit other categories
+///
+/// **Error Codes in this Category:**
+/// - [KindeErrorCode.userCanceled]
+/// - [KindeErrorCode.unknown]
+final class GenericKindeError extends KindeError {
+  /// Creates a generic Kinde error.
+  const GenericKindeError({
+    required super.code,
+    required super.message,
+    super.stackTrace,
+  });
+}
+
+//============================================================================
+// HELPER FUNCTIONS - Error Conversion and Mapping
+//============================================================================
+
+/// Maps a [KindeErrorCode] to its appropriate sealed class type.
+///
+/// This function determines which sealed class subtype should be used
+/// based on the error code's category.
+KindeError _createErrorFromCode({
+  required KindeErrorCode code,
+  required String message,
+  StackTrace? stackTrace,
+}) {
+  return switch (code.category) {
+    ErrorCategory.authentication => AuthenticationError(
+      code: code,
+      message: message,
+      stackTrace: stackTrace,
+    ),
+    ErrorCategory.network => NetworkError(
+      code: code,
+      message: message,
+      stackTrace: stackTrace,
+    ),
+    ErrorCategory.configuration => ConfigurationError(
+      code: code,
+      message: message,
+      stackTrace: stackTrace,
+    ),
+    ErrorCategory.initialization => ConfigurationError(
+      code: code,
+      message: message,
+      stackTrace: stackTrace,
+    ),
+    ErrorCategory.oauth || ErrorCategory.state => OAuthFlowError(
+      code: code,
+      message: message,
+      stackTrace: stackTrace,
+    ),
+    ErrorCategory.user || ErrorCategory.unknown => GenericKindeError(
+      code: code,
+      message: message,
+      stackTrace: stackTrace,
+    ),
+  };
+}
+
+/// Handles [Exception] types and converts them to [KindeError].
+///
+/// Uses pattern matching for type-safe exception handling.
+/// Delegates [DioException] handling to [_handleDioException].
+KindeError _handleError(Exception error) => switch (error) {
+  KindeError e => e,
+  DioException e => _handleDioException(e),
+  _ => GenericKindeError(
+    code: KindeErrorCode.unknown,
+    message: error.toString(),
+  ),
+};
+
+/// Handles [DioException] types with exhaustive pattern matching.
+///
+/// Uses switch expressions to handle different [DioExceptionType] cases:
+/// - For network errors, checks if the underlying error is already a [KindeError]
+/// - For bad responses on token endpoint, creates a refresh token expired error
+/// - Falls back to generic error for other cases
+KindeError _handleDioException(DioException dioError) => switch (dioError.type) {
+  DioExceptionType.cancel ||
+  DioExceptionType.connectionTimeout ||
+  DioExceptionType.receiveTimeout ||
+  DioExceptionType.sendTimeout ||
+  DioExceptionType.connectionError ||
+  DioExceptionType.badCertificate ||
+  DioExceptionType.unknown when dioError.error is KindeError =>
+    dioError.error as KindeError,
+  DioExceptionType.badResponse when dioError.requestOptions.path == "/oauth2/token" =>
+    AuthenticationError(
+      code: KindeErrorCode.refreshTokenExpired,
+      message: dioError.message ?? 'Token refresh failed',
+    ),
+  _ => NetworkError(
+    code: KindeErrorCode.networkError,
+    message: dioError.toString(),
+  ),
+};
+
+/// Handles [FormatException] types with pattern-based logic.
+///
+/// Attempts to extract error information from JSON embedded in format exception messages.
+/// Special handling for OAuth state parameter mismatches.
+KindeError _handleFormatException(FormatException error) {
+  // Check for OAuth state parameter mismatch
+  if (error.message.contains("parameter \"state\" expected")) {
+    return OAuthFlowError(
+      code: KindeErrorCode.authStateNotMatch,
+      message: error.message,
+    );
+  }
+
+  // Attempt to extract JSON error from message
+  final jsonMatch = RegExp(r'\{.*\}').firstMatch(error.message);
+  if (jsonMatch != null) {
+    final jsonString = jsonMatch.group(0);
+
+    try {
+      final jsonData = jsonDecode(jsonString!);
+      final errorCodeStr = jsonData['error'] as String?;
+      final errorDescription = jsonData['error_description'] as String?;
+
+      final code = errorCodeStr != null
+          ? KindeErrorCode.fromString(errorCodeStr)
+          : KindeErrorCode.unknown;
+
+      return _createErrorFromCode(
+        code: code,
+        message: errorDescription ?? 'Unknown error',
+      );
+    } catch (e) {
+      return GenericKindeError(
+        code: KindeErrorCode.unknown,
+        message: e.toString(),
+      );
+    }
+  }
+
+  // Fallback for format exceptions without extractable JSON
+  return GenericKindeError(
+    code: KindeErrorCode.unknown,
+    message: error.message,
+  );
+}
+
+/// Handles [AuthorizationException] from OAuth2 library.
+///
+/// Converts OAuth2 authorization exceptions to appropriate [OAuthFlowError].
+KindeError _handleAuthorizationException(AuthorizationException error) {
+  final code = KindeErrorCode.fromString(error.error);
+
+  return OAuthFlowError(
+    code: code,
+    message: error.description ?? "Unknown OAuth2 authorization error",
+  );
+}
+
+/// Maps [PlatformException] from flutter_appauth to appropriate [KindeError].
+KindeError _flutterAppAuthExceptionMapper(PlatformException platformException) {
+  if (platformException is FlutterAppAuthUserCancelledException) {
+    return GenericKindeError(
+      code: KindeErrorCode.userCanceled,
+      message: 'User canceled authentication',
+    );
+  }
+
+  // Try to map platform exception code to KindeErrorCode
+  final code = KindeErrorCode.fromString(platformException.code);
+
+  return _createErrorFromCode(
+    code: code,
+    message: platformException.message ?? 'Platform exception occurred',
+  );
+}
+
