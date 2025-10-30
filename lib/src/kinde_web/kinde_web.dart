@@ -156,7 +156,7 @@ class KindeWeb {
     final authRequestState = await _kindeSecureStorage.getAuthRequestState();
     if (authRequestState == null) {
       throw KindeError(
-          code: KindeErrorCode.noAuthStateStored.code,
+          code: KindeErrorCode.noAuthRequestStateStored.code,
           message: "No auth request state in storage.");
     }
 

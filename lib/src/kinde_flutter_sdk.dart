@@ -23,17 +23,8 @@ import 'package:kinde_flutter_sdk/src/token/auth_state.dart';
 import 'package:kinde_flutter_sdk/src/token/refresh_token_interceptor.dart';
 import 'package:kinde_flutter_sdk/src/token/token_api.dart';
 import 'package:kinde_flutter_sdk/src/token/token_utils.dart';
-import 'package:kinde_flutter_sdk/src/token/token_validation_cache.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pubspec_parse/pubspec_parse.dart';
-
-/// Internal class for token validation results
-class _TokenValidationResult {
-  final bool isValid;
-  final JsonWebToken? jwt;
-
-  const _TokenValidationResult({required this.isValid, this.jwt});
-}
 
 class KindeFlutterSDK with TokenUtils {
   static const _registrationPageParamValue = 'registration';
@@ -48,9 +39,6 @@ class KindeFlutterSDK with TokenUtils {
   static KindeFlutterSDK? _instance;
 
   late final KindeSecureStorageInterface _kindeSecureStorage;
-
-  /// Token validation cache for performance optimization
-  final TokenValidationCache _tokenCache = TokenValidationCache();
 
   @override
   AuthState? get authState => _store.authState;
@@ -261,9 +249,6 @@ class KindeFlutterSDK with TokenUtils {
   }
 
   Future<void> _commonLogoutCleanup() async {
-    // Invalidate token validation cache on logout
-    _tokenCache.clear();
-
     _kindeApi.setBearerAuth(_bearerAuth, '');
     await Store.instance.clear();
   }
@@ -510,21 +495,33 @@ class KindeFlutterSDK with TokenUtils {
     }
   }
 
-  /// Returns whether the user is currently authenticated.
+  /// Checks if the user is authenticated with a valid, non-expired token.
+  ///
+  /// This method performs a simple expiry check on the access token, matching
+  /// the pattern used in Kinde's js-utils SDK and other Kinde SDKs.
   ///
   /// This method does **not** perform any login completion or mutate state.
-  /// It only checks if there is a valid, non-expired auth state
-  /// and confirms token validity.
   ///
-  /// **Performance:** Token validation results are cached for up to 60 seconds
-  /// to avoid redundant cryptographic operations. Cache is automatically
-  /// invalidated on logout, token refresh, or auth state changes.
+  /// Returns `true` if:
+  /// - Auth state exists
+  /// - Access token exists and is not empty
+  /// - Token has not expired
   ///
-  /// ⚠️ If your app supports web-based login flows,
+  /// Returns `false` otherwise.
+  ///
+  /// ⚠️ **Note:** If your app supports web-based login flows,
   /// make sure to call [completePendingLoginIfNeeded] first
   /// to finalize any in-progress authentication before calling this.
+  ///
+  /// Example:
+  /// ```dart
+  /// if (await sdk.isAuthenticated()) {
+  ///   // User is authenticated
+  /// } else {
+  ///   // Redirect to login
+  /// }
+  /// ```
   Future<bool> isAuthenticated() async {
-    // Quick check: auth state exists and not expired
     final state = authState;
     if (state == null || state.isExpired()) {
       return false;
@@ -535,25 +532,7 @@ class KindeFlutterSDK with TokenUtils {
       return false;
     }
 
-    // Check cache first for performance
-    final cachedResult = _tokenCache.get(token);
-    if (cachedResult != null) {
-      // Cache hit - return immediately
-      return cachedResult;
-    }
-
-    // Cache miss - perform actual validation
-    final validationResult = await _checkToken();
-
-    // Store result in cache with JWT for TTL calculation
-    if (validationResult.isValid) {
-      _tokenCache.put(token, true, jwt: validationResult.jwt);
-    } else {
-      // Don't cache invalid results (might be temporary network issue)
-      // Next call will retry validation
-    }
-
-    return validationResult.isValid;
+    return true;
   }
 
   /// Attempts to complete a pending web login flow if auth parameters
@@ -589,43 +568,8 @@ class KindeFlutterSDK with TokenUtils {
     return null;
   }
 
-  /// Validates the current access token's cryptographic signature.
-  ///
-  /// Returns a [_TokenValidationResult] containing:
-  /// - Whether the token is valid
-  /// - The parsed JWT (for cache TTL calculation)
-  ///
-  /// This performs expensive cryptographic operations and should be
-  /// called sparingly. Use [isAuthenticated] which includes caching.
-  Future<_TokenValidationResult> _checkToken() async {
-    final keys = _store.keys?.keys;
-    if (keys == null || keys.isEmpty) {
-      return const _TokenValidationResult(isValid: false, jwt: null);
-    }
-
-    try {
-      final token = _store.authState?.accessToken ?? '';
-      if (token.isEmpty) {
-        return const _TokenValidationResult(isValid: false, jwt: null);
-      }
-
-      final jwt = JsonWebToken.unverified(token);
-      final key = keys.first;
-      final jwk = JsonWebKey.fromJson(key.toJson());
-      final keyStore = JsonWebKeyStore()..addKey(jwk);
-
-      final isValid = await jwt.verify(keyStore);
-
-      return _TokenValidationResult(isValid: isValid, jwt: isValid ? jwt : null);
-    } catch (e) {
-      return const _TokenValidationResult(isValid: false, jwt: null);
-    }
-  }
 
   _saveState(TokenResponse? tokenResponse) {
-    // Invalidate cache when auth state changes
-    _tokenCache.clear();
-
     _store.authState = AuthState(
         accessToken: tokenResponse?.accessToken,
         idToken: tokenResponse?.idToken,

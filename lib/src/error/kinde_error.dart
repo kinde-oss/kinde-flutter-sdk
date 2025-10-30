@@ -106,7 +106,7 @@ KindeError _handleFormatException(FormatException error) {
   // Check for OAuth state parameter mismatch
   if (error.message.contains("parameter \"state\" expected")) {
     return KindeError(
-      code: KindeErrorCode.authStateNotMatch.code,
+      code: KindeErrorCode.authRequestStateNotMatch.code,
       message: error.message,
     );
   }

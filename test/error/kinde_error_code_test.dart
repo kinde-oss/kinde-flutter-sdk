@@ -2,13 +2,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kinde_flutter_sdk/src/error/kinde_error.dart';
 
 void main() {
-  group('KindeErrorCode Enhanced Enum', () {
+  group('KindeErrorCode Enum', () {
     group('Basic Enum Properties', () {
       test('should have exactly 16 error codes', () {
         expect(KindeErrorCode.values.length, 16);
       });
 
-      test('should maintain kebab-case string format for all codes', () {
+      test('should convert camelCase enum names to kebab-case strings', () {
         expect(KindeErrorCode.userCanceled.code, 'user-canceled');
         expect(KindeErrorCode.sessionExpiredOrInvalid.code,
             'session-expired-or-invalid');
@@ -22,27 +22,28 @@ void main() {
             KindeErrorCode.logoutRequestFailed.code, 'logout-request-failed');
         expect(KindeErrorCode.requestTimedOut.code, 'request-timed-out');
         expect(KindeErrorCode.noCodeVerifier.code, 'no-code-verifier');
-        expect(KindeErrorCode.noAuthStateStored.code,
+        expect(KindeErrorCode.noAuthRequestStateStored.code,
             'no-auth-request-state-stored');
-        expect(KindeErrorCode.authStateNotMatch.code,
+        expect(KindeErrorCode.authRequestStateNotMatch.code,
             'auth-request-state-not-match');
-        expect(KindeErrorCode.notRedirect.code, 'not-redirect-url');
+        expect(KindeErrorCode.notRedirectUrl.code, 'not-redirect-url');
         expect(KindeErrorCode.invalidRedirect.code, 'invalid-redirect');
         expect(KindeErrorCode.unsupportedScheme.code, 'unsupported-scheme');
         expect(KindeErrorCode.loginInProcess.code, 'login-in-process');
         expect(KindeErrorCode.unknown.code, 'unknown');
       });
 
-      test('should have non-empty descriptions for all codes', () {
-        for (final code in KindeErrorCode.values) {
-          expect(code.description, isNotEmpty,
-              reason: '${code.code} should have a description');
-        }
+      test('toString() should return the kebab-case code string', () {
+        expect(KindeErrorCode.userCanceled.toString(), 'user-canceled');
+        expect(KindeErrorCode.sessionExpiredOrInvalid.toString(),
+            'session-expired-or-invalid');
+        expect(KindeErrorCode.unknown.toString(), 'unknown');
       });
 
-      test('toString() should return the code string', () {
-        expect(KindeErrorCode.userCanceled.toString(), 'user-canceled');
-        expect(KindeErrorCode.unknown.toString(), 'unknown');
+      test('code getter should return same value as toString()', () {
+        for (final errorCode in KindeErrorCode.values) {
+          expect(errorCode.code, equals(errorCode.toString()));
+        }
       });
     });
 
@@ -62,131 +63,25 @@ void main() {
         expect(code, KindeErrorCode.unknown);
       });
 
-      test('should handle all valid error codes', () {
+      test('should handle all valid error codes round-trip', () {
         for (final errorCode in KindeErrorCode.values) {
-          final found = KindeErrorCode.fromString(errorCode.code);
+          final codeString = errorCode.code;
+          final found = KindeErrorCode.fromString(codeString);
           expect(found, errorCode,
-              reason: 'Should find ${errorCode.code} correctly');
-        }
-      });
-    });
-
-    group('Error Categories', () {
-      test('authentication errors should be correctly categorized', () {
-        expect(KindeErrorCode.refreshTokenExpired.category,
-            ErrorCategory.authentication);
-        expect(KindeErrorCode.sessionExpiredOrInvalid.category,
-            ErrorCategory.authentication);
-      });
-
-      test('configuration errors should be correctly categorized', () {
-        expect(
-            KindeErrorCode.missingConfig.category, ErrorCategory.configuration);
-      });
-
-      test('initialization errors should be correctly categorized', () {
-        expect(KindeErrorCode.webInitializingFailed.category,
-            ErrorCategory.initialization);
-        expect(KindeErrorCode.initializingFailed.category,
-            ErrorCategory.initialization);
-      });
-
-      test('network errors should be correctly categorized', () {
-        expect(KindeErrorCode.logoutRequestFailed.category,
-            ErrorCategory.network);
-        expect(KindeErrorCode.requestTimedOut.category, ErrorCategory.network);
-      });
-
-      test('OAuth errors should be correctly categorized', () {
-        expect(KindeErrorCode.noCodeVerifier.category, ErrorCategory.oauth);
-        expect(
-            KindeErrorCode.noAuthStateStored.category, ErrorCategory.oauth);
-        expect(
-            KindeErrorCode.authStateNotMatch.category, ErrorCategory.oauth);
-        expect(KindeErrorCode.notRedirect.category, ErrorCategory.oauth);
-        expect(KindeErrorCode.invalidRedirect.category, ErrorCategory.oauth);
-        expect(
-            KindeErrorCode.unsupportedScheme.category, ErrorCategory.oauth);
-      });
-
-      test('state errors should be correctly categorized', () {
-        expect(KindeErrorCode.loginInProcess.category, ErrorCategory.state);
-      });
-
-      test('user errors should be correctly categorized', () {
-        expect(KindeErrorCode.userCanceled.category, ErrorCategory.user);
-      });
-
-      test('unknown errors should be correctly categorized', () {
-        expect(KindeErrorCode.unknown.category, ErrorCategory.unknown);
-      });
-    });
-
-    group('byCategory() Method', () {
-      test('should return authentication errors', () {
-        final authErrors =
-            KindeErrorCode.byCategory(ErrorCategory.authentication);
-        expect(authErrors, hasLength(2));
-        expect(authErrors, contains(KindeErrorCode.refreshTokenExpired));
-        expect(authErrors, contains(KindeErrorCode.sessionExpiredOrInvalid));
-      });
-
-      test('should return OAuth errors', () {
-        final oauthErrors = KindeErrorCode.byCategory(ErrorCategory.oauth);
-        expect(oauthErrors, hasLength(6));
-        expect(oauthErrors, contains(KindeErrorCode.noCodeVerifier));
-        expect(oauthErrors, contains(KindeErrorCode.notRedirect));
-      });
-
-      test('should return empty list for category with no errors', () {
-        // All categories currently have at least one error,
-        // but test the mechanism works
-        final allCategories = ErrorCategory.values;
-        for (final category in allCategories) {
-          final errors = KindeErrorCode.byCategory(category);
-          expect(errors, isA<List<KindeErrorCode>>());
+              reason:
+                  'Should find ${errorCode.code} correctly via fromString()');
         }
       });
 
-      test('should return network errors', () {
-        final networkErrors = KindeErrorCode.byCategory(ErrorCategory.network);
-        expect(networkErrors, hasLength(2));
-        expect(networkErrors, contains(KindeErrorCode.logoutRequestFailed));
-        expect(networkErrors, contains(KindeErrorCode.requestTimedOut));
-      });
-    });
-
-    group('isRecoverable Property', () {
-      test('authentication errors should be recoverable', () {
-        expect(KindeErrorCode.refreshTokenExpired.isRecoverable, isTrue);
-        expect(KindeErrorCode.sessionExpiredOrInvalid.isRecoverable, isTrue);
-      });
-
-      test('user-initiated errors should not be recoverable', () {
-        expect(KindeErrorCode.userCanceled.isRecoverable, isFalse);
-      });
-
-      test('configuration errors should not be recoverable', () {
-        expect(KindeErrorCode.missingConfig.isRecoverable, isFalse);
-      });
-
-      test('initialization errors should not be recoverable', () {
-        expect(KindeErrorCode.webInitializingFailed.isRecoverable, isFalse);
-        expect(KindeErrorCode.initializingFailed.isRecoverable, isFalse);
-      });
-
-      test('network errors should be recoverable', () {
-        expect(KindeErrorCode.logoutRequestFailed.isRecoverable, isTrue);
-        expect(KindeErrorCode.requestTimedOut.isRecoverable, isTrue);
-      });
-
-      test('OAuth flow errors should not be recoverable', () {
-        expect(KindeErrorCode.noCodeVerifier.isRecoverable, isFalse);
-        expect(KindeErrorCode.noAuthStateStored.isRecoverable, isFalse);
-        expect(KindeErrorCode.authStateNotMatch.isRecoverable, isFalse);
-        expect(KindeErrorCode.notRedirect.isRecoverable, isFalse);
-        expect(KindeErrorCode.invalidRedirect.isRecoverable, isFalse);
-        expect(KindeErrorCode.unsupportedScheme.isRecoverable, isFalse);
+      test('should work with common error codes', () {
+        expect(KindeErrorCode.fromString('user-canceled'),
+            KindeErrorCode.userCanceled);
+        expect(KindeErrorCode.fromString('refresh-token-expired'),
+            KindeErrorCode.refreshTokenExpired);
+        expect(KindeErrorCode.fromString('session-expired-or-invalid'),
+            KindeErrorCode.sessionExpiredOrInvalid);
+        expect(
+            KindeErrorCode.fromString('unknown'), KindeErrorCode.unknown);
       });
     });
 
@@ -205,49 +100,64 @@ void main() {
 
       test('error codes can be compared as strings', () {
         expect(KindeErrorCode.unknown.toString(), equals('unknown'));
+        expect('${KindeErrorCode.userCanceled}', equals('user-canceled'));
+      });
+
+      test('error codes maintain kebab-case format for all values', () {
+        for (final code in KindeErrorCode.values) {
+          final codeString = code.toString();
+          expect(codeString, isNotEmpty);
+          // All codes should use kebab-case (lowercase with hyphens)
+          expect(codeString, matches(RegExp(r'^[a-z0-9-]+$')));
+        }
       });
     });
 
     group('Cross-SDK Consistency', () {
-      test('should use kebab-case for TypeScript/Node compatibility', () {
-        // All error codes should use kebab-case (hyphen-separated)
+      test('should use kebab-case for cross-SDK compatibility', () {
+        // All error codes should use kebab-case (hyphen-separated, lowercase)
+        // matching TypeScript, Python, and other Kinde SDKs
         for (final code in KindeErrorCode.values) {
           expect(code.code, isNot(contains('_')),
               reason: '${code.code} should not contain underscores');
           expect(code.code, isNot(matches(RegExp(r'[A-Z]'))),
               reason: '${code.code} should not contain uppercase letters');
+          expect(code.code, matches(RegExp(r'^[a-z0-9-]+$')),
+              reason:
+                  '${code.code} should only contain lowercase letters, numbers, and hyphens');
         }
       });
 
-      test('common error codes should match across SDKs', () {
-        // These error codes are expected to exist across multiple SDKs
+      test('common error codes should match Kinde SDK conventions', () {
+        // These error codes are expected to exist across multiple Kinde SDKs
+        expect(KindeErrorCode.values.any((e) => e.code == 'unknown'), isTrue);
+        expect(
+            KindeErrorCode.values.any((e) => e.code == 'user-canceled'),
+            isTrue);
         expect(
             KindeErrorCode.values
-                .any((e) => e.code == 'unknown'), isTrue);
+                .any((e) => e.code == 'refresh-token-expired'),
+            isTrue);
         expect(
             KindeErrorCode.values
-                .any((e) => e.code == 'user-canceled'),
+                .any((e) => e.code == 'session-expired-or-invalid'),
             isTrue);
       });
-    });
-  });
 
-  group('ErrorCategory Enum', () {
-    test('should have all expected categories', () {
-      expect(ErrorCategory.values, hasLength(8));
-      expect(ErrorCategory.values, contains(ErrorCategory.authentication));
-      expect(ErrorCategory.values, contains(ErrorCategory.configuration));
-      expect(ErrorCategory.values, contains(ErrorCategory.initialization));
-      expect(ErrorCategory.values, contains(ErrorCategory.network));
-      expect(ErrorCategory.values, contains(ErrorCategory.oauth));
-      expect(ErrorCategory.values, contains(ErrorCategory.state));
-      expect(ErrorCategory.values, contains(ErrorCategory.user));
-      expect(ErrorCategory.values, contains(ErrorCategory.unknown));
+      test('error codes use simple string pattern matching js-utils', () {
+        // Verify we're using simple string codes without metadata
+        // This matches the pattern used in js-utils and other Kinde SDKs
+        for (final code in KindeErrorCode.values) {
+          // Just check that code getter returns a string - no metadata
+          expect(code.code, isA<String>());
+          expect(code.toString(), isA<String>());
+        }
+      });
     });
   });
 
   group('KindeError Integration', () {
-    test('should work with enhanced enum in KindeError constructor', () {
+    test('should work with simplified enum in KindeError constructor', () {
       final error = KindeError(
         code: KindeErrorCode.userCanceled.code,
         message: 'User canceled the operation',
@@ -259,6 +169,16 @@ void main() {
     test('should maintain default unknown code behavior', () {
       final error = KindeError(message: 'Something went wrong');
       expect(error.code, 'unknown');
+    });
+
+    test('should work with all error codes', () {
+      for (final errorCode in KindeErrorCode.values) {
+        final error = KindeError(
+          code: errorCode.code,
+          message: 'Test error message',
+        );
+        expect(error.code, errorCode.code);
+      }
     });
   });
 }
