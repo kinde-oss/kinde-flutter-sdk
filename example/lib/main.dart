@@ -79,7 +79,8 @@ class _MyAppState extends State<MyApp> {
         routerConfig: _router,
         title: 'Flutter Kinde StarterKit',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+          useMaterial3: true,
         ),
       ),
     );
