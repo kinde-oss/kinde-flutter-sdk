@@ -126,6 +126,23 @@ KindeError _flutterAppAuthExceptionMapper(PlatformException platformException) {
   if (platformException is FlutterAppAuthUserCancelledException) {
     return const KindeError(code: KindeErrorCode.userCanceled);
   }
+
+  // Handle "Reply already submitted" error caused by plugin interference
+  // This occurs when rogue plugins consume activity results without proper requestCode filtering
+  final message = platformException.message ?? "";
+  final details = platformException.details?.toString() ?? "";
+
+  if (message.contains("Reply already submitted") ||
+      details.contains("Reply already submitted") ||
+      message.contains("IllegalStateException") && message.contains("Reply")) {
+    return KindeError(
+      code: KindeErrorCode.pluginInterference,
+      message: "Plugin interference detected. Another plugin is consuming activity results without proper filtering. "
+               "This is typically caused by plugins that don't filter activity results by requestCode. "
+               "Original error: ${platformException.message ?? 'Unknown'}",
+    );
+  }
+
   return KindeError(
       code: platformException.code, message: platformException.message);
 }

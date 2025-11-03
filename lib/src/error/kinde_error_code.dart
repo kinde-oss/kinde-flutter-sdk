@@ -32,4 +32,7 @@ abstract class KindeErrorCode {
   /// Web-only: indicates a scheme that is neither "http" nor "https".
   static const unsupportedScheme = "unsupported-scheme";
   static const requestTimedOut = "request-timed-out";
+  /// Occurs when plugin interference causes activity result handling conflicts.
+  /// This typically happens when another plugin consumes activity results without proper requestCode filtering.
+  static const pluginInterference = "plugin-interference";
 }
