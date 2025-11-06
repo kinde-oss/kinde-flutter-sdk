@@ -30,6 +30,7 @@
         <activity
             android:name="net.openid.appauth.RedirectUriReceiverActivity"
             android:exported="true"
+            android:theme="@style/AppTheme"
             tools:node="replace">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
