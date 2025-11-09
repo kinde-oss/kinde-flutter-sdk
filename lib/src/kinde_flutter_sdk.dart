@@ -579,6 +579,61 @@ class KindeFlutterSDK with TokenUtils {
       return '';
     }
   }
+
+  /// Returns a link to the self-serve portal for the authenticated user. The user can use this link to manage their account, update their profile, and view their entitlements.
+  ///
+  /// Throws [KindeError] if the request fails.
+  ///
+  /// Optional Parameters:
+  ///
+  /// [subnav] - The area of the portal you want the user to land on
+  /// [returnUrl] - The URL to redirect the user to after they have completed their actions in the portal.
+  /// [cancelToken] - A [CancelToken] that can be used to cancel the operation
+  /// [headers] - Can be used to add additional headers to the request
+  /// [extras] - Can be used to add flags to the request
+  /// [validateStatus] - A [ValidateStatus] callback that can be used to determine request success based on the HTTP status of the response
+  /// [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
+  /// [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
+  Future<String> getPortalUrl({
+    PortalUrlSubnav? subnav,
+    String? returnUrl,
+    CancelToken? cancelToken,
+    Map<String, dynamic>? headers,
+    Map<String, dynamic>? extra,
+    ValidateStatus? validateStatus,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+  }) async {
+    try {
+      final selfServePortalApi = _kindeApi.getSelfServePortalApi();
+
+      final response = await selfServePortalApi.getPortalLink(
+        subnav: subnav?.value,
+        returnUrl: returnUrl,
+        cancelToken: cancelToken,
+        headers: headers,
+        extra: extra,
+        validateStatus: validateStatus,
+        onSendProgress: onSendProgress,
+        onReceiveProgress: onReceiveProgress,
+      );
+
+      final portalLink = response.data;
+
+      final portalLinkUrl = portalLink?.url;
+
+      if (portalLinkUrl == null) {
+        throw const KindeError(
+          code: KindeErrorCode.portalLinkUrlIsNull,
+          message: "Portal link URL is null",
+        );
+      }
+
+      return portalLinkUrl;
+    } catch (e, st) {
+      throw KindeError.fromError(e, st);
+    }
+  }
 }
 
 Future<KindeFlutterSDK> initializeKindeFlutterSdkForTest(

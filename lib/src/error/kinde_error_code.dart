@@ -32,4 +32,6 @@ abstract class KindeErrorCode {
   /// Web-only: indicates a scheme that is neither "http" nor "https".
   static const unsupportedScheme = "unsupported-scheme";
   static const requestTimedOut = "request-timed-out";
+  /// The portal link URL is null.
+  static const portalLinkUrlIsNull = "portal-link-url-is-null";
 }
