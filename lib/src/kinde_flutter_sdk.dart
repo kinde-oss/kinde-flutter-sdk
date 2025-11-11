@@ -483,10 +483,13 @@ class KindeFlutterSDK with TokenUtils {
     await _redirectToKinde(type: type, internalAdditionalParameters: params);
   }
 
-  Future<String?> getToken() async {
-    if (await isAuthenticated()) {
+  Future<String?> getToken({bool forceRefresh = false}) async {
+    // Return existing token if authenticated and not forcing refresh
+    if (!forceRefresh && await isAuthenticated()) {
       return _store.authState?.accessToken;
     }
+
+    // Proceed with token refresh
     final version = await _getVersion();
     final versionParam = 'Flutter/$version';
     try {
@@ -681,15 +684,16 @@ class KindeFlutterSDK with TokenUtils {
 
   /// Performs a background token refresh and schedules the next one.
   ///
-  /// This method is called by the refresh timer and matches the recursive
-  /// pattern from Kinde's js-utils SDK where refreshToken automatically
-  /// schedules the next refresh after a successful refresh.
+  /// This method is called by the refresh timer 10 seconds before token expiry.
+  /// Forces a token refresh even if the current token is still technically valid,
+  /// ensuring seamless token renewal before expiration.
   ///
-  /// Reference: js-utils/lib/utils/token/refreshToken.ts lines 152-154
+  /// Uses [forceRefresh] parameter to bypass the isAuthenticated() check,
+  /// allowing refresh to occur before the token actually expires.
   Future<void> _performBackgroundRefresh() async {
     try {
-      // Use existing getToken() which handles refresh via interceptor
-      await getToken();
+      // Force refresh even if token is still valid (that's the point!)
+      await getToken(forceRefresh: true);
 
       // After successful refresh, schedule the next one (recursive pattern)
       _scheduleNextRefresh();

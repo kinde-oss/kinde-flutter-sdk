@@ -55,12 +55,13 @@ class KindeError implements Exception {
   ///
   /// Uses pattern matching with switch expressions for type-safe error handling.
   /// Delegates specific error types to appropriate handler functions.
+  /// Preserves stack traces for debugging.
   factory KindeError.fromError(Object error, StackTrace stackTrace) => switch (error) {
     KindeError e => e,
-    PlatformException e => _flutterAppAuthExceptionMapper(e),
-    AuthorizationException e => AuthorizationKindeError.fromOauth2Exception(e),
-    FormatException e => _handleFormatException(e),
-    Exception e => _handleError(e),
+    PlatformException e => _flutterAppAuthExceptionMapper(e, stackTrace),
+    AuthorizationException e => AuthorizationKindeError.fromOauth2Exception(e, stackTrace),
+    FormatException e => _handleFormatException(e, stackTrace),
+    Exception e => _handleError(e, stackTrace),
     _ => KindeError(message: error.toString(), stackTrace: stackTrace),
   };
 }
@@ -69,10 +70,11 @@ class KindeError implements Exception {
 ///
 /// Uses pattern matching for type-safe exception handling.
 /// Delegates [DioException] handling to [_handleDioException].
-KindeError _handleError(Exception error) => switch (error) {
+/// Preserves stack trace for debugging.
+KindeError _handleError(Exception error, StackTrace stackTrace) => switch (error) {
   KindeError e => e,
-  DioException e => _handleDioException(e),
-  _ => KindeError(message: error.toString()),
+  DioException e => _handleDioException(e, stackTrace),
+  _ => KindeError(message: error.toString(), stackTrace: stackTrace),
 };
 
 /// Handles [DioException] types with exhaustive pattern matching.
@@ -81,7 +83,8 @@ KindeError _handleError(Exception error) => switch (error) {
 /// - For network errors, checks if the underlying error is already a [KindeError]
 /// - For bad responses on token endpoint, creates a refresh token expired error
 /// - Falls back to generic error for other cases
-KindeError _handleDioException(DioException dioError) => switch (dioError.type) {
+/// Preserves stack trace for debugging.
+KindeError _handleDioException(DioException dioError, StackTrace stackTrace) => switch (dioError.type) {
   DioExceptionType.cancel ||
   DioExceptionType.connectionTimeout ||
   DioExceptionType.receiveTimeout ||
@@ -94,20 +97,23 @@ KindeError _handleDioException(DioException dioError) => switch (dioError.type) 
     KindeError(
       code: KindeErrorCode.refreshTokenExpired.code,
       message: dioError.message,
+      stackTrace: stackTrace,
     ),
-  _ => KindeError(message: dioError.toString()),
+  _ => KindeError(message: dioError.toString(), stackTrace: stackTrace),
 };
 
 /// Handles [FormatException] types with pattern-based logic.
 ///
 /// Attempts to extract error information from JSON embedded in format exception messages.
 /// Special handling for OAuth state parameter mismatches.
-KindeError _handleFormatException(FormatException error) {
+/// Preserves stack trace for debugging.
+KindeError _handleFormatException(FormatException error, StackTrace stackTrace) {
   // Check for OAuth state parameter mismatch
   if (error.message.contains("parameter \"state\" expected")) {
     return KindeError(
       code: KindeErrorCode.authRequestStateNotMatch.code,
       message: error.message,
+      stackTrace: stackTrace,
     );
   }
 
@@ -124,11 +130,13 @@ KindeError _handleFormatException(FormatException error) {
       return KindeError(
         code: errorCode ?? KindeErrorCode.unknown.code,
         message: errorDescription ?? 'Unknown error',
+        stackTrace: stackTrace,
       );
     } catch (e) {
       return KindeError(
         code: KindeErrorCode.unknown.code,
         message: e.toString(),
+        stackTrace: stackTrace,
       );
     }
   }
@@ -137,13 +145,22 @@ KindeError _handleFormatException(FormatException error) {
   return KindeError(
     code: KindeErrorCode.unknown.code,
     message: error.message,
+    stackTrace: stackTrace,
   );
 }
 
-KindeError _flutterAppAuthExceptionMapper(PlatformException platformException) {
+KindeError _flutterAppAuthExceptionMapper(
+    PlatformException platformException, StackTrace stackTrace) {
   if (platformException is FlutterAppAuthUserCancelledException) {
-    return KindeError(code: KindeErrorCode.userCanceled.code, message: null);
+    return KindeError(
+      code: KindeErrorCode.userCanceled.code,
+      message: null,
+      stackTrace: stackTrace,
+    );
   }
   return KindeError(
-      code: platformException.code, message: platformException.message);
+    code: platformException.code,
+    message: platformException.message,
+    stackTrace: stackTrace,
+  );
 }

@@ -9,14 +9,15 @@ class AuthorizationKindeError extends KindeError {
   @override
   String get code => super.code;
 
-  AuthorizationKindeError._(String code, String description)
-      : super(code: code, message: description);
+  AuthorizationKindeError._(String code, String description, StackTrace? stackTrace)
+      : super(code: code, message: description, stackTrace: stackTrace);
 
   @protected
   factory AuthorizationKindeError.fromOauth2Exception(
-          AuthorizationException error) =>
+          AuthorizationException error, StackTrace stackTrace) =>
       AuthorizationKindeError._(
         error.error,
         error.description ?? "Unknown OAuth2 authorization error",
+        stackTrace,
       );
 }

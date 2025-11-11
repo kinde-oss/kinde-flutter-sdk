@@ -23,7 +23,7 @@
 
 - **Background Token Refresh:** Tokens now automatically refresh 10 seconds before expiry, eliminating unexpected "session expired" errors
 - **Token Validation Caching:** Authentication checks are now 10-20x faster through intelligent caching
-- **Enhanced Enums:** Error codes now use type-safe enums instead of string constants
+- **Enhanced Enums:** Error codes refactored from string constants to type-safe enums (**breaking change** — update error handling code accordingly)
 - **Pattern Matching:** Codebase modernized with Dart 3.0 switch expressions
 
 ### 🐛 Bug Fixes
