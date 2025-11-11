@@ -1,9 +1,3 @@
-# Changelog
-
-## 2.0.0
-
-**Release Date:** November 10, 2025
-
 ### ⚠️ Breaking Changes
 
 #### Platform Requirements

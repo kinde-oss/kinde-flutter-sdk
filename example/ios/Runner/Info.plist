@@ -29,7 +29,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.kinde.example</string>
+				<string><your_custom_scheme></string>
 			</array>
 		</dict>
 	</array>
