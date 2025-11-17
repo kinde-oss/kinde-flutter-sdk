@@ -66,6 +66,7 @@ export 'package:kinde_flutter_sdk/src/model/organization.dart';
 export 'package:kinde_flutter_sdk/src/model/organization_user.dart';
 export 'package:kinde_flutter_sdk/src/model/organization_user_role.dart';
 export 'package:kinde_flutter_sdk/src/model/permissions.dart';
+export 'package:kinde_flutter_sdk/src/model/portal_link.dart';
 export 'package:kinde_flutter_sdk/src/model/portal_url_subnav.dart';
 export 'package:kinde_flutter_sdk/src/model/redirect_callback_urls.dart';
 export 'package:kinde_flutter_sdk/src/model/replace_redirect_callback_urls_request.dart';
