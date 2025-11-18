@@ -6,20 +6,47 @@ import 'test_helpers/dio_mock.dart';
 
 /// tests for SelfServePortalApi
 void main() {
-  // final instance = KindeFlutterSdk().getSelfServePortalApi();
-  Dio dio = DioAdapterMock();
-  SelfServePortalApi instance = KindeApi(dio: dio).getSelfServePortalApi();
+  Dio dioSuccess = DioAdapterMock();
+  final dioError = DioAdapterMockError();
+
+  SelfServePortalApi getInstance({
+    Dio? dioInstance,
+  }) {
+    return KindeApi(dio: dioInstance ?? dioSuccess).getSelfServePortalApi();
+  }
 
   group(SelfServePortalApi, () {
-    // Get self-serve portal link
-    //
-    // Returns a link to the self-serve portal for the authenticated user. The user can use this link to manage their account, update their profile, and view their entitlements.
-    //
-    //Future<PortalLink> getPortalLink({ String subnav, String returnUrl }) async
     test('test getPortalLink', () async {
-      // TODO
-      final responseData = await instance.getPortalLink();
+      final responseData = await getInstance().getPortalLink();
       expect(responseData, isNotNull);
+    });
+
+    test('test getPortalLink with subnav', () async {
+      final responseData = await getInstance().getPortalLink(subnav: 'subnav');
+      expect(responseData, isNotNull);
+    });
+
+    test('test getPortalLink with returnUrl', () async {
+      final responseData =
+          await getInstance().getPortalLink(returnUrl: 'returnUrl');
+      expect(responseData, isNotNull);
+    });
+
+    test('test getPortalLink with subnav and returnUrl', () async {
+      final responseData = await getInstance()
+          .getPortalLink(subnav: 'subnav', returnUrl: 'returnUrl');
+      expect(responseData, isNotNull);
+    });
+
+    test('test getPortalLink in success case returns PortalLink', () async {
+      final responseData = await getInstance().getPortalLink();
+      expect(responseData.data, isA<PortalLink>());
+    });
+
+    test('test getPortalLink in error case throws DioException', () async {
+      expect(
+          () async => await getInstance(dioInstance: dioError).getPortalLink(),
+          throwsA(isA<DioException>()));
     });
   });
 }

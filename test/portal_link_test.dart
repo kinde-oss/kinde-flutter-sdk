@@ -4,11 +4,8 @@ import 'package:test/test.dart';
 // tests for PortalLink
 void main() {
   final instance = PortalLinkBuilder();
-  // TODO add properties to the builder and call build()
 
   group(PortalLink, () {
-    // Unique URL to redirect the user to.
-    // String url
     test('to test the property `url`', () async {
       // TODO
       final url = instance.url;
