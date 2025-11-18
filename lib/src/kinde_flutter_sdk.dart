@@ -461,9 +461,16 @@ class KindeFlutterSDK with TokenUtils {
     });
   }
 
-  Future<void> createOrg({required String orgName, AuthFlowType? type}) async {
-    final params =
-        _prepareInternalAdditionalParameters(const AdditionalParameters());
+  Future<void> createOrg({
+    required String orgName,
+    AuthFlowType? type,
+    String? planInterest,
+    String? pricingTableKey,
+  }) async {
+    final params = _prepareInternalAdditionalParameters(AdditionalParameters(
+      planInterest: planInterest,
+      pricingTableKey: pricingTableKey,
+    ));
     params.registrationPage = _registrationPageParamValue;
     params.createOrg = true;
     params.orgName = orgName;
