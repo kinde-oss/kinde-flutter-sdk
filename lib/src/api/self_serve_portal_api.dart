@@ -33,7 +33,7 @@ class SelfServePortalApi {
   ///
   /// Returns a [Future] containing a [Response] with a [PortalLink] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<PortalLink>> getPortalLink({
+  Future<Response<PortalLink>> generatePortalUrl({
     String? subnav,
     String? returnUrl,
     CancelToken? cancelToken,

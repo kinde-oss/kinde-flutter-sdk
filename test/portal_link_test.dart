@@ -7,7 +7,6 @@ void main() {
 
   group(PortalLink, () {
     test('to test the property `url`', () async {
-      // TODO
       final url = instance.url;
       expect(url, isNull);
       instance.url = 'url';

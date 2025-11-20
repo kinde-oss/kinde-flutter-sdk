@@ -594,7 +594,7 @@ class KindeFlutterSDK with TokenUtils {
   /// [validateStatus] - A [ValidateStatus] callback that can be used to determine request success based on the HTTP status of the response
   /// [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
   /// [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
-  Future<String> getPortalUrl({
+  Future<String> generatePortalUrl({
     PortalUrlSubnav? subnav,
     String? returnUrl,
     CancelToken? cancelToken,
@@ -607,7 +607,7 @@ class KindeFlutterSDK with TokenUtils {
     try {
       final selfServePortalApi = _kindeApi.getSelfServePortalApi();
 
-      final response = await selfServePortalApi.getPortalLink(
+      final response = await selfServePortalApi.generatePortalUrl(
         subnav: subnav?.value,
         returnUrl: returnUrl,
         cancelToken: cancelToken,

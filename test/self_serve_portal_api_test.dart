@@ -16,36 +16,36 @@ void main() {
   }
 
   group(SelfServePortalApi, () {
-    test('test getPortalLink', () async {
-      final responseData = await getInstance().getPortalLink();
+    test('test generatePortalUrl', () async {
+      final responseData = await getInstance().generatePortalUrl();
       expect(responseData, isNotNull);
     });
 
-    test('test getPortalLink with subnav', () async {
-      final responseData = await getInstance().getPortalLink(subnav: 'subnav');
+    test('test generatePortalUrl with subnav', () async {
+      final responseData = await getInstance().generatePortalUrl(subnav: 'subnav');
       expect(responseData, isNotNull);
     });
 
-    test('test getPortalLink with returnUrl', () async {
+    test('test generatePortalUrl with returnUrl', () async {
       final responseData =
-          await getInstance().getPortalLink(returnUrl: 'returnUrl');
+          await getInstance().generatePortalUrl(returnUrl: 'returnUrl');
       expect(responseData, isNotNull);
     });
 
-    test('test getPortalLink with subnav and returnUrl', () async {
+    test('test generatePortalUrl with subnav and returnUrl', () async {
       final responseData = await getInstance()
-          .getPortalLink(subnav: 'subnav', returnUrl: 'returnUrl');
+          .generatePortalUrl(subnav: 'subnav', returnUrl: 'returnUrl');
       expect(responseData, isNotNull);
     });
 
-    test('test getPortalLink in success case returns PortalLink', () async {
-      final responseData = await getInstance().getPortalLink();
+    test('test generatePortalUrl in success case returns PortalLink', () async {
+      final responseData = await getInstance().generatePortalUrl();
       expect(responseData.data, isA<PortalLink>());
     });
 
-    test('test getPortalLink in error case throws DioException', () async {
+    test('test generatePortalUrl in error case throws DioException', () async {
       expect(
-          () async => await getInstance(dioInstance: dioError).getPortalLink(),
+          () async => await getInstance(dioInstance: dioError).generatePortalUrl(),
           throwsA(isA<DioException>()));
     });
   });
