@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:kinde_flutter_sdk/src/additional_params.dart';
 import 'package:kinde_flutter_sdk/src/kinde_secure_storage/kinde_secure_storage_i.dart';
@@ -15,7 +16,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
 
 import 'package:hive/hive.dart';
-import 'package:jose/jose.dart';
 import 'package:kinde_flutter_sdk/kinde_flutter_sdk.dart';
 import 'package:kinde_flutter_sdk/src/keys/keys_api.dart';
 import 'package:kinde_flutter_sdk/src/store/store.dart';
@@ -34,6 +34,15 @@ class KindeFlutterSDK with TokenUtils {
   static const _defaultScopes = ['openid', 'profile', 'email', 'offline'];
   static const _bearerAuth = 'kindeBearerAuth';
   static const _clientIdParamName = 'client_id';
+
+  // Background token refresh timer (matches Kinde js-utils pattern)
+  Timer? _refreshTimer;
+
+  // Timer constants matching js-utils SDK
+  // Reference: js-utils/lib/utils/refreshTimer.ts (10s buffer, 24h max)
+  static const Duration _refreshBufferDuration = Duration(seconds: 10);
+  static const Duration _maxRefreshInterval = Duration(hours: 24);
+  static const Duration _minRefreshInterval = Duration(seconds: 1);
 
   // Singleton
   static KindeFlutterSDK? _instance;
@@ -56,8 +65,8 @@ class KindeFlutterSDK with TokenUtils {
   KindeFlutterSDK._internal(
       {KindeSecureStorageInterface? secureStorage, Dio? dio}) {
     if (_config == null) {
-      throw const KindeError(
-        code: KindeErrorCode.missingConfig,
+      throw KindeError(
+        code: KindeErrorCode.missingConfig.code,
         message: 'KindeFlutterSDK has not been configured',
       );
     }
@@ -165,7 +174,7 @@ class KindeFlutterSDK with TokenUtils {
       if (e is KindeError) rethrow;
 
       throw KindeError(
-        code: KindeErrorCode.initializingFailed,
+        code: KindeErrorCode.initializingFailed.code,
         message: 'Error during "$step": ${e.toString()}',
         stackTrace: st,
       );
@@ -249,6 +258,9 @@ class KindeFlutterSDK with TokenUtils {
   }
 
   Future<void> _commonLogoutCleanup() async {
+    // Clear refresh timer on logout (matches js-utils pattern)
+    _clearRefreshTimer();
+
     _kindeApi.setBearerAuth(_bearerAuth, '');
     await Store.instance.clear();
   }
@@ -268,7 +280,7 @@ class KindeFlutterSDK with TokenUtils {
                 "Unknown error"
             : "Logout failed with status: ${response.statusCode}";
         throw KindeError(
-            code: KindeErrorCode.logoutRequestFailed, message: errorMessage);
+            code: KindeErrorCode.logoutRequestFailed.code, message: errorMessage);
       }
     } catch (error, st) {
       throw KindeError.fromError(error, st);
@@ -471,16 +483,19 @@ class KindeFlutterSDK with TokenUtils {
     await _redirectToKinde(type: type, internalAdditionalParameters: params);
   }
 
-  Future<String?> getToken() async {
-    if (await isAuthenticated()) {
+  Future<String?> getToken({bool forceRefresh = false}) async {
+    // Return existing token if authenticated and not forcing refresh
+    if (!forceRefresh && await isAuthenticated()) {
       return _store.authState?.accessToken;
     }
+
+    // Proceed with token refresh
     final version = await _getVersion();
     final versionParam = 'Flutter/$version';
     try {
       if (authState?.refreshToken == null) {
-        throw const KindeError(
-          code: KindeErrorCode.sessionExpiredOrInvalid,
+        throw KindeError(
+          code: KindeErrorCode.sessionExpiredOrInvalid.code,
         );
       }
       final data = await _tokenApi.retrieveToken(
@@ -495,18 +510,44 @@ class KindeFlutterSDK with TokenUtils {
     }
   }
 
-  /// Returns whether the user is currently authenticated.
+  /// Checks if the user is authenticated with a valid, non-expired token.
+  ///
+  /// This method performs a simple expiry check on the access token, matching
+  /// the pattern used in Kinde's js-utils SDK and other Kinde SDKs.
   ///
   /// This method does **not** perform any login completion or mutate state.
-  /// It only checks if there is a valid, non-expired auth state
-  /// and confirms token validity.
   ///
-  /// ⚠️ If your app supports web-based login flows,
+  /// Returns `true` if:
+  /// - Auth state exists
+  /// - Access token exists and is not empty
+  /// - Token has not expired
+  ///
+  /// Returns `false` otherwise.
+  ///
+  /// ⚠️ **Note:** If your app supports web-based login flows,
   /// make sure to call [completePendingLoginIfNeeded] first
   /// to finalize any in-progress authentication before calling this.
+  ///
+  /// Example:
+  /// ```dart
+  /// if (await sdk.isAuthenticated()) {
+  ///   // User is authenticated
+  /// } else {
+  ///   // Redirect to login
+  /// }
+  /// ```
   Future<bool> isAuthenticated() async {
-    final hasValidAuthState = authState != null && !authState!.isExpired();
-    return hasValidAuthState && await _checkToken();
+    final state = authState;
+    if (state == null || state.isExpired()) {
+      return false;
+    }
+
+    final token = state.accessToken;
+    if (token == null || token.isEmpty) {
+      return false;
+    }
+
+    return true;
   }
 
   /// Attempts to complete a pending web login flow if auth parameters
@@ -542,20 +583,6 @@ class KindeFlutterSDK with TokenUtils {
     return null;
   }
 
-  Future<bool> _checkToken() async {
-    final keys = _store.keys?.keys;
-    if (keys != null && keys.isNotEmpty) {
-      final key = keys.first;
-      var jwt = JsonWebToken.unverified(_store.authState?.accessToken ?? '');
-
-      var jwk = JsonWebKey.fromJson(key.toJson());
-
-      var keyStore = JsonWebKeyStore()..addKey(jwk);
-
-      return await jwt.verify(keyStore);
-    }
-    return false;
-  }
 
   _saveState(TokenResponse? tokenResponse) {
     _store.authState = AuthState(
@@ -566,6 +593,119 @@ class KindeFlutterSDK with TokenUtils {
         refreshToken: tokenResponse?.refreshToken,
         scope: tokenResponse?.scopes?.join(' '));
     _kindeApi.setBearerAuth(_bearerAuth, tokenResponse?.accessToken ?? '');
+
+    // Schedule next refresh after saving new token (matches js-utils pattern)
+    _scheduleNextRefresh();
+  }
+
+  /// Sets a refresh timer with automatic cleanup and safety constraints.
+  ///
+  /// Matches the pattern from Kinde's js-utils SDK (refreshTimer.ts) where
+  /// timers are always cleared before setting, and durations are constrained
+  /// to prevent extremely long or short timers.
+  ///
+  /// The timer duration is automatically adjusted to be 10 seconds less than
+  /// the requested duration (refresh buffer) and capped at 24 hours for safety.
+  ///
+  /// Reference: js-utils/lib/utils/refreshTimer.ts lines 40-52
+  void _setRefreshTimer(Duration duration, VoidCallback callback) {
+    _clearRefreshTimer(); // Always clear first (js-utils pattern)
+
+    if (duration.inSeconds <= 0) {
+      throw KindeError(
+        code: KindeErrorCode.unknown.code,
+        message: 'Timer duration must be positive',
+      );
+    }
+
+    // Apply 10-second buffer and 24-hour cap (matching js-utils logic)
+    // Math.min(timer * 1000 - 10000, 86400000)
+    final adjustedDuration = Duration(
+      milliseconds: min(
+        duration.inMilliseconds - _refreshBufferDuration.inMilliseconds,
+        _maxRefreshInterval.inMilliseconds,
+      ),
+    );
+
+    // Ensure minimum 1 second
+    final safeDuration = adjustedDuration.inSeconds < 1
+        ? _minRefreshInterval
+        : adjustedDuration;
+
+    _refreshTimer = Timer(safeDuration, callback);
+  }
+
+  /// Clears the current refresh timer if one exists.
+  ///
+  /// Safe to call even if no timer is currently active.
+  /// Matches js-utils clearRefreshTimer() pattern.
+  ///
+  /// Reference: js-utils/lib/utils/refreshTimer.ts lines 72-79
+  void _clearRefreshTimer() {
+    _refreshTimer?.cancel();
+    _refreshTimer = null;
+  }
+
+  /// Schedules the next background token refresh based on token expiry.
+  ///
+  /// Matches the pattern from Kinde's js-utils SDK where after every
+  /// successful token refresh, the next refresh is automatically scheduled
+  /// using the JWT 'exp' claim.
+  ///
+  /// Reference: js-utils/lib/utils/token/refreshToken.ts lines 144-156
+  void _scheduleNextRefresh() {
+    try {
+      // Get expiry from access token's 'exp' claim using public API
+      final expClaim = getClaim(claim: 'exp');
+      final exp = expClaim.value as int?;
+
+      if (exp == null) {
+        // No exp claim, cannot schedule refresh
+        return;
+      }
+
+      // Calculate seconds until expiry (matching js-utils pattern)
+      final nowSec = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+      final secsToExpiry = max(exp - nowSec, 1); // Minimum 1 second
+
+      // Schedule refresh (will fire 10 seconds before actual expiry due to buffer)
+      _setRefreshTimer(Duration(seconds: secsToExpiry), () async {
+        await _performBackgroundRefresh();
+      });
+    } catch (e) {
+      // If token parsing fails (e.g., in tests with mock tokens), silently skip
+      // scheduling. This is safe as the timer simply won't be set.
+      kindeDebugPrint(
+        methodName: '_scheduleNextRefresh',
+        message: 'Could not schedule refresh: $e',
+      );
+    }
+  }
+
+  /// Performs a background token refresh and schedules the next one.
+  ///
+  /// This method is called by the refresh timer 10 seconds before token expiry.
+  /// Forces a token refresh even if the current token is still technically valid,
+  /// ensuring seamless token renewal before expiration.
+  ///
+  /// Uses [forceRefresh] parameter to bypass the isAuthenticated() check,
+  /// allowing refresh to occur before the token actually expires.
+  Future<void> _performBackgroundRefresh() async {
+    try {
+      // Force refresh even if token is still valid (that's the point!)
+      await getToken(forceRefresh: true);
+
+      // After successful refresh, schedule the next one (recursive pattern)
+      _scheduleNextRefresh();
+    } catch (e) {
+      // If refresh fails, clear timer
+      // User will need to re-authenticate manually
+      _clearRefreshTimer();
+      kindeDebugPrint(
+        methodName: '_performBackgroundRefresh',
+        message: 'Background refresh failed: $e',
+      );
+    }
   }
 
   Future<String> _getVersion() async {

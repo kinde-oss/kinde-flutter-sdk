@@ -1,35 +1,99 @@
 part of 'kinde_error.dart';
 
-abstract class KindeErrorCode {
-  const KindeErrorCode._();
+/// Error codes for Kinde SDK exceptions.
+///
+/// Uses kebab-case string codes for cross-SDK compatibility
+/// with Kinde's JavaScript, Python, and other SDKs.
+///
+/// This simplified enum matches the pattern used across Kinde SDKs,
+/// where errors are represented as simple string codes without
+/// additional metadata or categorization.
+///
+/// Example usage:
+/// ```dart
+/// throw KindeError(
+///   code: KindeErrorCode.userCanceled.code,
+///   message: 'User canceled the login process',
+/// );
+///
+/// // String conversion
+/// final errorCode = KindeErrorCode.fromString('user-canceled');
+/// print(errorCode.code); // 'user-canceled'
+/// ```
+enum KindeErrorCode {
+  // Authentication & Authorization Errors
+  refreshTokenExpired,
+  sessionExpiredOrInvalid,
+  userCanceled,
 
-  /// Indicates that the refresh token has expired and a new authentication is required.
-  static const refreshTokenExpired = "refresh-token-expired";
-  /// Used when the specific error is unknown or cannot be determined.
-  static const unknown = "unknown";
-  /// Configuration required for SDK initialization is missing.
-  static const missingConfig = "missing-config";
-  /// The user's session has expired or is invalid, requiring re-authentication.
-  static const sessionExpiredOrInvalid = "session-expired-or-invalid";
-  /// Initialization of web-specific authentication components failed.
-  static const webInitializingFailed = "web-initializing-failed";
-  /// General initialization of the SDK failed.
-  static const initializingFailed = "initializing-failed";
-  /// The request to logout the user failed.
-  static const logoutRequestFailed = "logout-request-failed";
-  /// No code verifier was found when one was expected for PKCE flow.
-  static const noCodeVerifier = "no-code-verifier";
-  /// User canceled login/registration process.
-  static const userCanceled = "user-canceled";
-  /// Parameter 'state' used for login request in secure storage.
-  static const noAuthStateStored = "no-auth-request-state-stored";
-  /// Parameter 'state' used for login request isn't equal stored one.
-  static const authStateNotMatch = "auth-request-state-not-match";
-  /// Parameter 'state' used for login request doesn't match the stored state value.
-  static const notRedirect = "not-redirect-url";
-  static const loginInProcess = "login-in-process";
-  static const invalidRedirect = "invalid-redirect";
-  /// Web-only: indicates a scheme that is neither "http" nor "https".
-  static const unsupportedScheme = "unsupported-scheme";
-  static const requestTimedOut = "request-timed-out";
+  // Configuration Errors
+  missingConfig,
+
+  // Initialization Errors
+  webInitializingFailed,
+  initializingFailed,
+
+  // Request & Network Errors
+  logoutRequestFailed,
+  requestTimedOut,
+
+  // PKCE & OAuth Flow Errors
+  noCodeVerifier,
+  noAuthRequestStateStored,
+  authRequestStateNotMatch,
+
+  // Redirect & URL Errors
+  notRedirectUrl,
+  invalidRedirect,
+  unsupportedScheme,
+
+  // Process State Errors
+  loginInProcess,
+
+  // Unknown/Catch-all
+  unknown;
+
+  /// Returns the kebab-case error code string.
+  ///
+  /// Converts camelCase enum name to kebab-case for cross-SDK
+  /// compatibility (e.g., `userCanceled` → `"user-canceled"`).
+  ///
+  /// This maintains consistency with error codes used in Kinde's
+  /// TypeScript, Python, and other SDKs.
+  String get code {
+    // Convert camelCase to kebab-case
+    return name
+        .replaceAllMapped(
+          RegExp(r'[A-Z]'),
+          (match) => '-${match[0]!.toLowerCase()}',
+        )
+        .replaceFirst(RegExp(r'^-'), ''); // Remove leading dash if present
+  }
+
+  /// Find error code by its string value.
+  ///
+  /// Returns the corresponding [KindeErrorCode] enum value for the given
+  /// string code. If no match is found, returns [KindeErrorCode.unknown].
+  ///
+  /// This enables backward compatibility with code that uses string-based
+  /// error codes.
+  ///
+  /// Example:
+  /// ```dart
+  /// final code = KindeErrorCode.fromString('user-canceled');
+  /// assert(code == KindeErrorCode.userCanceled);
+  /// ```
+  static KindeErrorCode fromString(String code) {
+    return values.firstWhere(
+      (e) => e.code == code,
+      orElse: () => KindeErrorCode.unknown,
+    );
+  }
+
+  /// Returns the error code string for cross-SDK compatibility.
+  ///
+  /// This enables seamless use of the enum in string contexts and
+  /// maintains backward compatibility with code expecting string values.
+  @override
+  String toString() => code;
 }
