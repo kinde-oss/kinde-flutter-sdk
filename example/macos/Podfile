@@ -1,4 +1,4 @@
-platform :osx, '10.14'
+platform :osx, '10.15'
 
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
@@ -39,5 +39,19 @@ end
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     flutter_additional_macos_build_settings(target)
+
+    target.build_configurations.each do |config|
+      # Enforce minimum macOS deployment target (10.13+)
+      # Required as some pods (e.g., AppAuth 1.7.6) default to 10.12
+      # which is below the minimum supported version
+      if config.build_settings['MACOSX_DEPLOYMENT_TARGET'].to_f < 10.13
+        config.build_settings['MACOSX_DEPLOYMENT_TARGET'] = '10.13'
+      end
+
+      # Disable code signing for development (example app only)
+      # This allows local development without provisioning profiles
+      # For distribution builds, remove this line and configure signing in Xcode
+      config.build_settings['CODE_SIGN_IDENTITY'] = '-'
+    end
   end
 end
