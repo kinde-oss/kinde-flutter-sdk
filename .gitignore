@@ -53,6 +53,7 @@ web/build/
 *.iml
 *.lock
 *.log
+*.hive
 
 # VSCode settings
 .vscode/

@@ -1,46 +1,52 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:hive/hive.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:kinde_flutter_sdk/kinde_flutter_sdk.dart';
 
 class EncryptedBox {
-  static const String _encryptionKey = 'myEncryptionKey';
-  static const String _boxName = 'myBox';
+  static const String _tokenKey = 'app_token';
 
-  static EncryptedBox get _instance => EncryptedBox._privateConstructor();
+  static EncryptedBox? _instance;
+
+  late final FlutterSecureStorage _secureStorage;
 
   EncryptedBox._privateConstructor();
 
   static EncryptedBox get instance {
-    return _instance;
+    if (_instance == null) {
+      throw Exception("EncryptedBox not initialized. Call init() first.");
+    }
+    return _instance!;
   }
 
-  Box get _box => Hive.box(_boxName);
-
   static Future<void> init() async {
-    const FlutterSecureStorage secureStorage = FlutterSecureStorage();
-    var containsEncryptionKey =
-        await secureStorage.containsKey(key: _encryptionKey);
-    List<int> secureKey;
-    if (!containsEncryptionKey) {
-      secureKey = Hive.generateSecureKey();
-      await secureStorage.write(
-          key: _encryptionKey, value: base64UrlEncode(secureKey));
-    } else {
-      final base64 = await secureStorage.read(key: _encryptionKey);
-      secureKey = base64Url.decode(base64!);
-    }
-    await Hive.openBox(_boxName, encryptionCipher: HiveAesCipher(secureKey));
+    _instance = EncryptedBox._privateConstructor();
+    _instance!._secureStorage = const FlutterSecureStorage(
+      aOptions: AndroidOptions(
+        encryptedSharedPreferences: true,
+      ),
+      iOptions: IOSOptions(
+        accessibility: KeychainAccessibility.first_unlock,
+      ),
+      webOptions: WebOptions(
+        dbName: 'app_secure_storage',
+        publicKey: 'app_public_key',
+      ),
+    );
   }
 
   Future<String?> returnAccessToken() async {
-    var token = _box.get('token');
+    String? token;
+    try {
+      token = await _secureStorage.read(key: _tokenKey);
+    } catch (e) {
+      debugPrint("Error reading token: ${e.toString()}");
+    }
+
     if (token == null) {
       return await getNewToken();
     }
+
     try {
       bool hasExpired = JwtDecoder.isExpired(token);
       if (hasExpired) {
@@ -58,24 +64,28 @@ class EncryptedBox {
     try {
       final String? token = await KindeFlutterSDK.instance.getToken();
       if (token != null) {
-        // Redirect user to the login page
-        await _box.put('token', token);
+        await saveToken(token);
       }
       return token;
     } catch (e) {
+      debugPrint("Error getting new token: ${e.toString()}");
       return null;
     }
   }
 
   Future<void> saveToken(String token) async {
     try {
-      await _box.put('token', token);
+      await _secureStorage.write(key: _tokenKey, value: token);
     } catch (e) {
       debugPrint("saveToken() failed: ${e.toString()}");
     }
   }
 
   Future<void> clear() async {
-    await _box.clear();
+    try {
+      await _secureStorage.delete(key: _tokenKey);
+    } catch (e) {
+      debugPrint("clear() failed: ${e.toString()}");
+    }
   }
 }
