@@ -14,3 +14,4 @@ export './src/model/claim/claim_permissions.dart';
 export './src/model/claim/flag.dart';
 export './src/model/claim/user_details.dart';
 export './src/model/token_type.dart';
+export './src/utils/kinde_debug_print.dart' show configureKindeLogging;
