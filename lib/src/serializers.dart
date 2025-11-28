@@ -69,6 +69,7 @@ import 'package:kinde_flutter_sdk/src/model/organization_user_role.dart';
 import 'package:kinde_flutter_sdk/src/model/organization_user_role_permissions.dart';
 import 'package:kinde_flutter_sdk/src/model/organization_user_role_permissions_permissions.dart';
 import 'package:kinde_flutter_sdk/src/model/permissions.dart';
+import 'package:kinde_flutter_sdk/src/model/portal_link.dart';
 import 'package:kinde_flutter_sdk/src/model/redirect_callback_urls.dart';
 import 'package:kinde_flutter_sdk/src/model/replace_logout_redirect_urls_request.dart';
 import 'package:kinde_flutter_sdk/src/model/replace_redirect_callback_urls_request.dart';
@@ -161,6 +162,7 @@ part 'serializers.g.dart';
   OrganizationUserRolePermissions,
   OrganizationUserRolePermissionsPermissions,
   Permissions,
+  PortalLink,
   RedirectCallbackUrls,
   ReplaceLogoutRedirectURLsRequest,
   ReplaceRedirectCallbackURLsRequest,

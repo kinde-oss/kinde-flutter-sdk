@@ -47,6 +47,9 @@ enum KindeErrorCode {
   invalidRedirect,
   unsupportedScheme,
 
+  // Self-Serve Portal Errors
+  portalLinkUrlIsNull,
+
   // Process State Errors
   loginInProcess,
 

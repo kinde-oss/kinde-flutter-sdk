@@ -72,6 +72,7 @@ Serializers _$serializers =
           ..add(OrganizationUserRolePermissions.serializer)
           ..add(OrganizationUserRolePermissionsPermissions.serializer)
           ..add(Permissions.serializer)
+          ..add(PortalLink.serializer)
           ..add(RedirectCallbackUrls.serializer)
           ..add(ReplaceLogoutRedirectURLsRequest.serializer)
           ..add(ReplaceRedirectCallbackURLsRequest.serializer)

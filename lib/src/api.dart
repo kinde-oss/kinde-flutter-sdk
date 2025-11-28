@@ -15,6 +15,7 @@ import 'package:kinde_flutter_sdk/src/api/o_auth_api.dart';
 import 'package:kinde_flutter_sdk/src/api/organizations_api.dart';
 import 'package:kinde_flutter_sdk/src/api/permissions_api.dart';
 import 'package:kinde_flutter_sdk/src/api/roles_api.dart';
+import 'package:kinde_flutter_sdk/src/api/self_serve_portal_api.dart';
 import 'package:kinde_flutter_sdk/src/api/subscribers_api.dart';
 import 'package:kinde_flutter_sdk/src/api/timezones_api.dart';
 import 'package:kinde_flutter_sdk/src/api/users_api.dart';
@@ -158,6 +159,12 @@ class KindeApi {
   /// by doing that all interceptors will not be executed
   RolesApi getRolesApi() {
     return RolesApi(dio, serializers);
+  }
+
+  /// Get SelfServePortalApi instance, base route and serializer can be overridden by a given but be careful,
+  /// by doing that all interceptors will not be executed
+  SelfServePortalApi getSelfServePortalApi() {
+    return SelfServePortalApi(dio, serializers);
   }
 
   /// Get SubscribersApi instance, base route and serializer can be overridden by a given but be careful,

@@ -4,8 +4,8 @@ import 'package:kinde_flutter_sdk/src/error/kinde_error.dart';
 void main() {
   group('KindeErrorCode Enum', () {
     group('Basic Enum Properties', () {
-      test('should have exactly 16 error codes', () {
-        expect(KindeErrorCode.values.length, 16);
+      test('should have exactly 17 error codes', () {
+        expect(KindeErrorCode.values.length, 17);
       });
 
       test('should convert camelCase enum names to kebab-case strings', () {
@@ -29,6 +29,7 @@ void main() {
         expect(KindeErrorCode.notRedirectUrl.code, 'not-redirect-url');
         expect(KindeErrorCode.invalidRedirect.code, 'invalid-redirect');
         expect(KindeErrorCode.unsupportedScheme.code, 'unsupported-scheme');
+        expect(KindeErrorCode.portalLinkUrlIsNull.code, 'portal-link-url-is-null');
         expect(KindeErrorCode.loginInProcess.code, 'login-in-process');
         expect(KindeErrorCode.unknown.code, 'unknown');
       });
