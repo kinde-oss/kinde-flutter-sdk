@@ -53,7 +53,8 @@ class JwtTestHelper {
 
   /// Creates a valid ID token JWT with user identity claims.
   ///
-  /// Set any claim to empty string '' to explicitly exclude it from the token.
+  /// Optional claims (givenName, familyName, picture) use defaults when null.
+  /// Use [excludeOrgCodes] to omit org_codes from the token.
   static String createIdToken({
     String? sub,
     String? email,
