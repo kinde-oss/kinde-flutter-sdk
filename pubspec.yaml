@@ -14,7 +14,6 @@ dependencies:
     sdk: flutter
 
   flutter_appauth: ^8.0.3
-  hive: ^2.2.3
   flutter_secure_storage: ^9.0.0
   path_provider: ^2.1.4
   dio: ^5.7.0
