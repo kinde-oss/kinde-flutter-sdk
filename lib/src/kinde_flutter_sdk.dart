@@ -827,6 +827,13 @@ class KindeFlutterSDK with TokenUtils {
       return '';
     }
   }
+
+  /// Configure Kinde SDK logging.
+  ///
+  /// [enabled] - Set to false to disable all SDK logging.
+  static void configureLogging({required bool enabled}) {
+    configureKindeLogging(enabled: enabled);
+  }
 }
 
 Future<KindeFlutterSDK> initializeKindeFlutterSdkForTest(

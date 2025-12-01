@@ -74,6 +74,30 @@ void main() {
         returnsNormally,
       );
     });
+
+    test('logging when disabled does not print anything', () {
+      configureKindeLogging(enabled: false);
+      expect(
+        () => kindeDebugPrint(
+          methodName: 'test',
+          message: 'should not log',
+          context: {'key': 'value'},
+        ),
+        prints(''),
+      );
+    });
+
+    test('logging when enabled prints to console', () {
+      configureKindeLogging(enabled: true);
+      expect(
+        () => kindeDebugPrint(
+          methodName: 'test',
+          message: 'should log',
+          context: {'key': 'value'},
+        ),
+        prints('KINDE: test - should log | key=value\n'),
+      );
+    });
   });
 }
 
