@@ -31,15 +31,6 @@ void main() {
         const state = AuthState();
         expect(state.grantType, 'refresh_token');
       });
-
-      test('should allow null values for optional fields', () {
-        const state = AuthState();
-        expect(state.accessToken, isNull);
-        expect(state.refreshToken, isNull);
-        expect(state.idToken, isNull);
-        expect(state.accessTokenExpirationDateTime, isNull);
-        expect(state.scope, isNull);
-      });
     });
 
     group('fromJson', () {

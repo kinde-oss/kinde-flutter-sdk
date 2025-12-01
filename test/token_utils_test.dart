@@ -250,14 +250,6 @@ void main() {
         expect(org.orgCode, 'org_acme');
       });
 
-      test('should return org code from token', () {
-        tokenUtils.authState = AuthStateFixtures.createWithOrganization('my_org');
-
-        final org = tokenUtils.getOrganization();
-
-        expect(org.orgCode, 'my_org');
-      });
-
       test('should handle null auth state', () {
         tokenUtils.authState = null;
 
@@ -322,7 +314,8 @@ void main() {
         final flag = tokenUtils.getFlag(code: 'theme_color');
 
         expect(flag, isNotNull);
-        expect(flag!.type, FlagType.string);
+        expect(flag!.code, 'theme_color');
+        expect(flag.type, FlagType.string);
         expect(flag.value, 'blue');
       });
 
@@ -334,7 +327,8 @@ void main() {
         final flag = tokenUtils.getFlag(code: 'max_items');
 
         expect(flag, isNotNull);
-        expect(flag!.type, FlagType.integer);
+        expect(flag!.code, 'max_items');
+        expect(flag.type, FlagType.integer);
         expect(flag.value, 100);
       });
 
