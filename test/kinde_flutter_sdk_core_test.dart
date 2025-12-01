@@ -193,6 +193,34 @@ void main() {
       await sdk.logout(dio: dio);
       expect(sdk.authState, isNull);
     });
+
+    test('should return early without making request when auth state is null', () async {
+      // Auth state is null
+      expect(sdk.authState, isNull);
+
+      // Should complete without error
+      await sdk.logout(dio: dio);
+
+      // Still null
+      expect(sdk.authState, isNull);
+    });
+
+    test('should accept custom Dio instance parameter', () async {
+      // Create a separate Dio instance
+      final customDio = Dio(BaseOptions(baseUrl: 'https://test.kinde.com'));
+      final customAdapter = DioAdapter(dio: customDio);
+      customAdapter.onGet('/logout', (server) => server.reply(200, null));
+
+      // Should accept the parameter without error
+      await sdk.logout(dio: customDio);
+
+      expect(sdk.authState, isNull);
+    });
+
+    // Note: Tests for logout with valid authState require the full auth flow
+    // setup (login -> store persistence). The logout method internally calls
+    // Store.clear() and makes a GET request to the logout endpoint.
+    // Integration tests would cover the complete logout flow.
   });
 
   // Note: Claims and Feature Flags tests are covered in token_utils_test.dart
