@@ -15,7 +15,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
 
-import 'package:hive/hive.dart';
 import 'package:kinde_flutter_sdk/kinde_flutter_sdk.dart';
 import 'package:kinde_flutter_sdk/src/keys/keys_api.dart';
 import 'package:kinde_flutter_sdk/src/store/store.dart';
@@ -183,20 +182,11 @@ class KindeFlutterSDK with TokenUtils {
 
   static Future<void> _initializeStore(KindeSecureStorage kindeSecureStorage,
       {required InitializationStepUpdater stepUpdater}) async {
-    stepUpdater('temp path resolution');
-    final String path = await getTemporaryDirectoryPath();
+    stepUpdater('secure storage initialization');
+    await Store.init();
 
-    stepUpdater('secure key retrieval');
-    List<int>? secureKey = await kindeSecureStorage.getSecureKey();
-
-    if (secureKey == null) {
-      stepUpdater('secure key generation and storage');
-      secureKey = Hive.generateSecureKey();
-      await kindeSecureStorage.saveSecureKey(secureKey);
-    }
-
-    stepUpdater('Hive store initialization');
-    await Store.init(HiveAesCipher(secureKey), path);
+    stepUpdater('loading cached data');
+    await Store.instance.loadFromStorage();
   }
 
   static Future<void> _initializeWebLayerIfNeeded(
