@@ -23,3 +23,26 @@ class DioAdapterMock extends Mock implements Dio {
   @override
   Interceptors get interceptors => Interceptors();
 }
+
+class DioAdapterMockError extends Mock implements Dio {
+  @override
+  Future<Response<T>> request<T>(
+    String url, {
+    Object? data,
+    Map<String, dynamic>? queryParameters,
+    CancelToken? cancelToken,
+    Options? options,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+  }) {
+    throw DioException.badResponse(
+        requestOptions: RequestOptions(path: 'path'),
+        response: Response(
+            data: {"message": "error", "code": "400"},
+            requestOptions: RequestOptions(path: 'path')),
+        statusCode: 400);
+  }
+
+  @override
+  Interceptors get interceptors => Interceptors();
+}
