@@ -34,11 +34,10 @@ class KindeFlutterSDK with TokenUtils {
   static const _bearerAuth = 'kindeBearerAuth';
   static const _clientIdParamName = 'client_id';
 
-  // Background token refresh timer (matches Kinde js-utils pattern)
+  // Background token refresh timer
   Timer? _refreshTimer;
 
-  // Timer constants matching js-utils SDK
-  // Reference: js-utils/lib/utils/refreshTimer.ts (10s buffer, 24h max)
+  // Timer constants for background refresh
   static const Duration _refreshBufferDuration = Duration(seconds: 10);
   static const Duration _maxRefreshInterval = Duration(hours: 24);
   static const Duration _minRefreshInterval = Duration(seconds: 1);
@@ -248,7 +247,6 @@ class KindeFlutterSDK with TokenUtils {
   }
 
   Future<void> _commonLogoutCleanup() async {
-    // Clear refresh timer on logout (matches js-utils pattern)
     _clearRefreshTimer();
 
     _kindeApi.setBearerAuth(_bearerAuth, '');
@@ -295,7 +293,8 @@ class KindeFlutterSDK with TokenUtils {
     final internalAdditionalParams =
         InternalAdditionalParameters.fromUserAdditionalParams(additionalParams);
     internalAdditionalParams.audience = _config!.audience;
-    internalAdditionalParams.promptValues = ['login'];
+    internalAdditionalParams.promptValues =
+        additionalParams.invitationCode != null ? ['create'] : ['login'];
     internalAdditionalParams.scopes = _config!.scopes;
     return internalAdditionalParams;
   }
@@ -509,8 +508,7 @@ class KindeFlutterSDK with TokenUtils {
 
   /// Checks if the user is authenticated with a valid, non-expired token.
   ///
-  /// This method performs a simple expiry check on the access token, matching
-  /// the pattern used in Kinde's js-utils SDK and other Kinde SDKs.
+  /// This method performs a simple expiry check on the access token.
   ///
   /// This method does **not** perform any login completion or mutate state.
   ///
@@ -580,6 +578,37 @@ class KindeFlutterSDK with TokenUtils {
     return null;
   }
 
+  /// Extracts an invitation code from the current URL query parameters.
+  ///
+  /// This is a helper method for web platforms to detect when the application
+  /// is launched with an `invitation_code` query parameter, enabling automatic
+  /// handling of team member invitation flows.
+  ///
+  /// Returns the invitation code string if present in the URL, or `null` if:
+  /// - Not running on web platform
+  /// - No URL is available
+  /// - No `invitation_code` parameter exists
+  ///
+  /// For mobile platforms, invitation codes should be extracted from deep links
+  /// by the application and passed via [AdditionalParameters.invitationCode].
+  ///
+  /// Example usage (web):
+  /// ```dart
+  /// final invitationCode = KindeFlutterSDK.getInvitationCodeFromUrl();
+  /// if (invitationCode != null) {
+  ///   await sdk.login(
+  ///     additionalParams: AdditionalParameters(invitationCode: invitationCode),
+  ///   );
+  /// }
+  /// ```
+  static String? getInvitationCodeFromUrl() {
+    if (!kIsWeb) return null;
+    final currentUrl = WebUtils.getCurrentUrl;
+    if (currentUrl == null || currentUrl.isEmpty) return null;
+    final uri = Uri.tryParse(currentUrl);
+    if (uri == null) return null;
+    return uri.queryParameters['invitation_code'];
+  }
 
   _saveState(TokenResponse? tokenResponse) {
     _store.authState = AuthState(
@@ -591,22 +620,18 @@ class KindeFlutterSDK with TokenUtils {
         scope: tokenResponse?.scopes?.join(' '));
     _kindeApi.setBearerAuth(_bearerAuth, tokenResponse?.accessToken ?? '');
 
-    // Schedule next refresh after saving new token (matches js-utils pattern)
     _scheduleNextRefresh();
   }
 
   /// Sets a refresh timer with automatic cleanup and safety constraints.
   ///
-  /// Matches the pattern from Kinde's js-utils SDK (refreshTimer.ts) where
-  /// timers are always cleared before setting, and durations are constrained
-  /// to prevent extremely long or short timers.
+  /// Timers are always cleared before setting a new one, and durations are
+  /// constrained to prevent extremely long or short timers.
   ///
   /// The timer duration is automatically adjusted to be 10 seconds less than
   /// the requested duration (refresh buffer) and capped at 24 hours for safety.
-  ///
-  /// Reference: js-utils/lib/utils/refreshTimer.ts lines 40-52
   void _setRefreshTimer(Duration duration, VoidCallback callback) {
-    _clearRefreshTimer(); // Always clear first (js-utils pattern)
+    _clearRefreshTimer();
 
     if (duration.inSeconds <= 0) {
       throw KindeError(
@@ -615,8 +640,7 @@ class KindeFlutterSDK with TokenUtils {
       );
     }
 
-    // Apply 10-second buffer and 24-hour cap (matching js-utils logic)
-    // Math.min(timer * 1000 - 10000, 86400000)
+    // Apply 10-second buffer and 24-hour cap
     final adjustedDuration = Duration(
       milliseconds: min(
         duration.inMilliseconds - _refreshBufferDuration.inMilliseconds,
@@ -635,9 +659,6 @@ class KindeFlutterSDK with TokenUtils {
   /// Clears the current refresh timer if one exists.
   ///
   /// Safe to call even if no timer is currently active.
-  /// Matches js-utils clearRefreshTimer() pattern.
-  ///
-  /// Reference: js-utils/lib/utils/refreshTimer.ts lines 72-79
   void _clearRefreshTimer() {
     _refreshTimer?.cancel();
     _refreshTimer = null;
@@ -645,11 +666,8 @@ class KindeFlutterSDK with TokenUtils {
 
   /// Schedules the next background token refresh based on token expiry.
   ///
-  /// Matches the pattern from Kinde's js-utils SDK where after every
-  /// successful token refresh, the next refresh is automatically scheduled
-  /// using the JWT 'exp' claim.
-  ///
-  /// Reference: js-utils/lib/utils/token/refreshToken.ts lines 144-156
+  /// After every successful token refresh, the next refresh is automatically
+  /// scheduled using the JWT 'exp' claim.
   void _scheduleNextRefresh() {
     try {
       // Get expiry from access token's 'exp' claim using public API
@@ -661,7 +679,7 @@ class KindeFlutterSDK with TokenUtils {
         return;
       }
 
-      // Calculate seconds until expiry (matching js-utils pattern)
+      // Calculate seconds until expiry
       final nowSec = DateTime.now().millisecondsSinceEpoch ~/ 1000;
       final secsToExpiry = max(exp - nowSec, 1); // Minimum 1 second
 
