@@ -145,11 +145,9 @@ void main() {
             isTrue);
       });
 
-      test('error codes use simple string pattern matching js-utils', () {
+      test('error codes use simple string pattern', () {
         // Verify we're using simple string codes without metadata
-        // This matches the pattern used in js-utils and other Kinde SDKs
         for (final code in KindeErrorCode.values) {
-          // Just check that code getter returns a string - no metadata
           expect(code.code, isA<String>());
           expect(code.toString(), isA<String>());
         }
