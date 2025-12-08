@@ -158,24 +158,31 @@ None
 
 ---
 
-## [1.1.0] - 2024-10-03
+## 1.1.1
 
-### Added
+- New release
 
-- Core authentication features
-- OAuth 2.0 and OpenID Connect support
-- Token management functionality
-- User profile access
-- Multi-platform support (iOS, Android, Web, macOS, Linux, Windows)
+## 1.1.0
 
-### Changed
+- Added missing built_collection dependency
+- Fixed package validation issues
+- Updated dependencies
 
-- Various authentication flow improvements
-- Enhanced token refresh mechanisms
+## 1.0.3
 
-### Fixed
+- Added support for lang, connectionId and loginHunt auth params
 
-- Authentication flow stability improvements
+## 1.0.2
+
+- Removed unsupported platforms (web and desktop)
+
+## 1.0.1
+
+- Fix error with https
+
+## 1.0.0
+
+- First release
 
 ---
 
