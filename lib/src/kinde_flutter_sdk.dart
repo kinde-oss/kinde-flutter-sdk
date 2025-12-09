@@ -833,6 +833,8 @@ class KindeFlutterSDK with TokenUtils {
   /// [enabled] - Set to false to disable all SDK logging.
   static void configureLogging({required bool enabled}) {
     configureKindeLogging(enabled: enabled);
+}
+
   /// Returns a link to the self-serve portal for the authenticated user. The user can use this link to manage their account, update their profile, and view their entitlements.
   ///
   /// Throws [KindeError] if the request fails.
