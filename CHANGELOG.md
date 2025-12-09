@@ -1,10 +1,31 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
-
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
 ## [2.0.0] - 2025-12-08
+
+### Breaking Changes
+
+#### Platform Requirements
+
+- Android minimum SDK version increased from 16 (Android 4.1) to 24 (Android 7.0)
+  - Required by Flutter 3.35.6
+  - Update `android/app/build.gradle` to set `minSdkVersion 24`
+- iOS minimum version increased from 9.0 to 13.0
+  - Required by Flutter 3.35.6
+  - Update `ios/Podfile` to set `platform :ios, '13.0'`
+- macOS minimum version increased from 10.14 to 10.15
+  - Required by Flutter 3.35.6
+  - Update `macos/Podfile` to set `platform :osx, '10.15'`
+
+#### SDK Requirements
+
+- Dart SDK requirement changed from `>=2.17.0 <3.0.0` to `>=3.9.2 <4.0.0`
+- Flutter SDK requirement changed from `>=3.0.0` to `>=3.35.6`
+
+#### Storage Implementation
+
+- Removed Hive dependency in favor of Flutter Secure Storage
+- SDK automatically migrates existing tokens on first launch
+- Applications with custom Hive storage implementations must migrate manually
 
 ### Added
 
@@ -64,97 +85,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Removed
 
 - Hive and Hive Flutter dependencies (replaced with Flutter Secure Storage)
-- Optional `id_token_hint` parameter from logout requests to prevent URI length errors
-- Unnecessary documentation files and comment artifacts
 
 ### Fixed
 
-- Fixed HTTP 414 URI Too Long error during logout on mobile platforms (issue #40)
-  - Removed optional `id_token_hint` parameter per OIDC specification
-  - Implemented direct HTTP logout for mobile platforms
+- Fixed HTTP 414 URI Too Long error during logout on mobile platforms
+  - Removed optional `id_token_hint` parameter from logout flow per OIDC specification
+  - Implemented direct HTTP logout for mobile platforms instead of using flutter_appauth
+  - Prevents URL length issues with large tokens
 - Fixed macOS build target compatibility issues
 - Fixed Android Gradle migration compatibility
 - Fixed example application scheme configurations across all platforms
-- Corrected iOS minimum version requirements
 - Fixed typo in `generatePortalUrl` parameter documentation
-
-### Breaking Changes
-
-**Platform Requirements**
-
-- Android minimum SDK version increased from 16 (Android 4.1) to 24 (Android 7.0)
-  - Update `android/app/build.gradle` to set `minSdkVersion 24`
-- iOS minimum version increased from 9.0 to 13.0
-  - Update `ios/Podfile` to set `platform :ios, '13.0'`
-- macOS minimum version increased from 10.14 to 10.15
-  - Update `macos/Podfile` to set `platform :osx, '10.15'`
-
-**SDK Requirements**
-
-- Dart SDK requirement changed from `>=2.17.0 <3.0.0` to `>=3.9.2 <4.0.0`
-- Flutter SDK requirement changed from `>=3.0.0` to `>=3.35.6`
-- Ensure Flutter 3.35.6 or later is installed before upgrading
-
-**Storage Changes**
-
-- Removed Hive dependency in favor of Flutter Secure Storage
-- SDK tokens are automatically migrated on first launch
-- Applications with custom Hive storage implementations must migrate manually
-
-### Migration Guide
-
-**Step 1: Update Platform Configurations**
-
-Android - Update `android/app/build.gradle`:
-
-```gradle
-android {
-    compileSdkVersion 34
-    defaultConfig {
-        minSdkVersion 24
-        targetSdkVersion 34
-    }
-}
-```
-
-iOS - Update `ios/Podfile`:
-
-```ruby
-platform :ios, '13.0'
-```
-
-macOS - Update `macos/Podfile`:
-
-```ruby
-platform :osx, '10.15'
-```
-
-**Step 2: Update Flutter and Dependencies**
-
-```bash
-flutter upgrade
-flutter pub upgrade
-flutter pub get
-```
-
-**Step 3: Test Application**
-
-Verify all authentication flows function correctly:
-
-- Login and registration
-- Token refresh and persistence
-- Logout functionality
-- Session management across application restarts
 
 ### Security
 
 - Enhanced secure storage implementation with platform-specific encryption
 - Improved token handling and refresh mechanisms
 - Updated to latest stable versions of security-critical dependencies
-
-### Deprecated
-
-None
 
 ---
 
