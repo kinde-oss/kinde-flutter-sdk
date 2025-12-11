@@ -1,6 +1,6 @@
 # Changelog
 
-## [2.0.0] - 2025-12-08
+## [2.0.0] - 2025-12-11
 
 ### Breaking Changes
 
@@ -81,6 +81,7 @@
 - Enhanced authentication flow with improved null safety and pattern matching
 - Improved storage abstraction with `KindeSecureStorageInterface`
 - Modernized code patterns to utilize Dart 3.x language features
+- Updated `logout()` method signature to accept optional `timeout` parameter and `macosLogoutWithoutRedirection` flag
 
 ### Removed
 
@@ -88,6 +89,8 @@
 
 ### Fixed
 
+- Added `macosLogoutWithoutRedirection` flag for direct HTTP logout on macOS
+- Improved error handling with `KindeError` wrapping and stack traces
 - Fixed macOS build target compatibility issues
 - Fixed Android Gradle migration compatibility
 - Fixed example application scheme configurations across all platforms
