@@ -88,10 +88,6 @@
 
 ### Fixed
 
-- Fixed HTTP 414 URI Too Long error during logout on mobile platforms
-  - Removed optional `id_token_hint` parameter from logout flow per OIDC specification
-  - Implemented direct HTTP logout for mobile platforms instead of using flutter_appauth
-  - Prevents URL length issues with large tokens
 - Fixed macOS build target compatibility issues
 - Fixed Android Gradle migration compatibility
 - Fixed example application scheme configurations across all platforms
