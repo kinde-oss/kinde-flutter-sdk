@@ -65,9 +65,10 @@ class MockChannels {
       if (methodCall.method == 'authorize') {
         return authorizeResponse;
       }
+      if (methodCall.method == 'endSession') {
+        return {};
+      }
       return null;
-
-
     });
   }
 }
