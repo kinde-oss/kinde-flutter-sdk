@@ -1,7 +1,2 @@
 * @kinde-oss/giants-kinde
-build.gradle @kinde-oss/sdk-engineers
-**/build.gradle @kinde-oss/sdk-engineers
-build.gradle @kinde-oss/sdk-engineers
-**/build.gradle @kinde-oss/sdk-engineers
-build.gradle @kinde-oss/sdk-engineers
-**/build.gradle @kinde-oss/sdk-engineers
+/pubspec.yaml @kinde-oss/sdk-engineers
