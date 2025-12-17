@@ -772,7 +772,7 @@ void main() {
   group('removeRolePermission', () {
     const roleId = 'role_123';
     const permissionId = 'perm_456';
-    final testPath = '/api/v1/roles/$roleId/permissions/$permissionId';
+    final testPath = '/api/v1/roles/$roleId/permission/$permissionId';
 
     group('success scenarios', () {
       test('removes permission from role', () async {
@@ -811,7 +811,7 @@ void main() {
         };
 
         dioAdapter.onDelete(
-          '/api/v1/roles/$nonexistentRoleId/permissions/$permissionId',
+          '/api/v1/roles/$nonexistentRoleId/permission/$permissionId',
           (server) => server.reply(404, errorResponse),
         );
 
@@ -838,7 +838,7 @@ void main() {
         };
 
         dioAdapter.onDelete(
-          '/api/v1/roles/$roleId/permissions/$nonexistentPermId',
+          '/api/v1/roles/$roleId/permission/$nonexistentPermId',
           (server) => server.reply(404, errorResponse),
         );
 
