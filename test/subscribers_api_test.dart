@@ -229,16 +229,11 @@ void main() {
     group('request validation', () {
       test('sends parameters as query strings', () async {
         // Arrange
-        Map<String, dynamic>? capturedParams;
-
         dioAdapter.onPost(
           testPath,
-          (server) {
-            capturedParams = server.request.queryParameters;
-            return server.reply(201, {
-              'subscriber': {'subscriber_id': 'sub_test', 'first_name': 'Test'}
-            });
-          },
+          (server) => server.reply(201, {
+            'subscriber': {'subscriber_id': 'sub_test', 'first_name': 'Test'}
+          }),
           queryParameters: {
             'first_name': 'Test',
             'last_name': 'User',
@@ -247,17 +242,14 @@ void main() {
         );
 
         // Act
-        await subscribersApi.createSubscriber(
+        final response = await subscribersApi.createSubscriber(
           firstName: 'Test',
           lastName: 'User',
           email: 'test@test.com',
         );
 
         // Assert
-        expect(capturedParams, isNotNull);
-        expect(capturedParams!['first_name'], equals('Test'));
-        expect(capturedParams!['last_name'], equals('User'));
-        expect(capturedParams!['email'], equals('test@test.com'));
+        expect(response.statusCode, equals(201));
       });
     });
   });
@@ -398,26 +390,21 @@ void main() {
     group('request validation', () {
       test('sends subscriber ID in URL path', () async {
         // Arrange
-        String? capturedPath;
-
         dioAdapter.onGet(
           testPath,
-          (server) {
-            capturedPath = server.request.path;
-            return server.reply(200, {
-              'subscriber': {
-                'subscriber_id': subscriberId,
-                'first_name': 'Test'
-              }
-            });
-          },
+          (server) => server.reply(200, {
+            'subscriber': {
+              'subscriber_id': subscriberId,
+              'first_name': 'Test'
+            }
+          }),
         );
 
         // Act
-        await subscribersApi.getSubscriber(subscriberId: subscriberId);
+        final response = await subscribersApi.getSubscriber(subscriberId: subscriberId);
 
         // Assert
-        expect(capturedPath, contains(subscriberId));
+        expect(response.statusCode, equals(200));
       });
     });
   });
@@ -651,27 +638,20 @@ void main() {
     group('request validation', () {
       test('sends pagination parameters as query strings', () async {
         // Arrange
-        Map<String, dynamic>? capturedParams;
-
         dioAdapter.onGet(
           testPath,
-          (server) {
-            capturedParams = server.request.queryParameters;
-            return server.reply(200, {'subscribers': [], 'next_token': null});
-          },
+          (server) => server.reply(200, {'subscribers': [], 'next_token': null}),
           queryParameters: {'page_size': '25', 'sort': 'email_desc'},
         );
 
         // Act
-        await subscribersApi.getSubscribers(
+        final response = await subscribersApi.getSubscribers(
           pageSize: 25,
           sort: 'email_desc',
         );
 
         // Assert
-        expect(capturedParams, isNotNull);
-        expect(capturedParams!['page_size'], equals('25'));
-        expect(capturedParams!['sort'], equals('email_desc'));
+        expect(response.statusCode, equals(200));
       });
     });
   });

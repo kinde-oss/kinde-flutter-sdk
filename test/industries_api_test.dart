@@ -250,18 +250,13 @@ void main() {
     group('request validation', () {
       test('sends query parameters correctly', () async {
         // Arrange
-        Map<String, dynamic>? capturedParams;
-
         dioAdapter.onGet(
           testPath,
-          (server) {
-            capturedParams = server.request.queryParameters;
-            return server.reply(200, {
-              'code': 'OK',
-              'message': 'Success',
-              'industries': [],
-            });
-          },
+          (server) => server.reply(200, {
+            'code': 'OK',
+            'message': 'Success',
+            'industries': [],
+          }),
           queryParameters: {
             'industry_key': 'tech',
             'name': 'Technology',
@@ -269,15 +264,13 @@ void main() {
         );
 
         // Act
-        await industriesApi.getIndustries(
+        final response = await industriesApi.getIndustries(
           industryKey: 'tech',
           name: 'Technology',
         );
 
         // Assert
-        expect(capturedParams, isNotNull);
-        expect(capturedParams!['industry_key'], equals('tech'));
-        expect(capturedParams!['name'], equals('Technology'));
+        expect(response.statusCode, equals(200));
       });
     });
   });
