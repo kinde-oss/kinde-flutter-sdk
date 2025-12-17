@@ -208,8 +208,15 @@ class KindeFlutterSDK with TokenUtils {
     }
   }
 
-  /// for web it invokes logoutRedirectUri
-  /// [timeout] - for non web logout
+  /// Logs out the user from the Kinde session.
+  ///
+  /// For web platforms, this redirects to [logoutRedirectUri].
+  /// For mobile/desktop, uses FlutterAppAuth.endSession() with proper redirect handling.
+  ///
+  /// Parameters:
+  /// - [dio] - Optional Dio client for direct HTTP logout fallback (macOS only)
+  /// - [macosLogoutWithoutRedirection] - On macOS, use direct HTTP logout without browser redirect (default: true)
+  /// - [timeout] - Timeout duration for logout request (default: 30 seconds)
   Future<void> logout({
     Dio? dio,
     bool macosLogoutWithoutRedirection = true,
@@ -225,8 +232,7 @@ class KindeFlutterSDK with TokenUtils {
       await _handleNonWebLogout(
           dio: dio,
           macosLogoutWithoutRedirection: macosLogoutWithoutRedirection,
-          timeout: timeout
-      );
+          timeout: timeout);
     }
 
     await _commonLogoutCleanup();
@@ -237,7 +243,39 @@ class KindeFlutterSDK with TokenUtils {
     required bool macosLogoutWithoutRedirection,
     required Duration timeout,
   }) async {
-    return _logoutWithoutRedirection(dio: dio);
+    if (Platform.operatingSystem == "macos" && macosLogoutWithoutRedirection) {
+      return _logoutWithoutRedirection(dio: dio);
+    }
+
+    try {
+      const appAuth = FlutterAppAuth();
+      // EndSessionRequest parameters:
+      // - externalUserAgent: Uses ASWebAuthenticationSession (iOS) / Custom Tabs (Android)
+      //   for secure browser-based logout flow
+      // - idTokenHint: Required for org-specific logout in multi-org scenarios (OIDC recommended)
+      // - postLogoutRedirectUrl: Where to redirect user after logout (OIDC post_logout_redirect_uri)
+      // - serviceConfiguration: Contains the logout endpoint URL
+      //
+      // NOTE: Removed redundant additionalParameters["redirect"] - postLogoutRedirectUrl
+      // already handles the redirect via standard OIDC post_logout_redirect_uri parameter.
+      // This reduces URL length and follows OIDC spec more closely.
+      final endSessionRequest = EndSessionRequest(
+          externalUserAgent:
+              ExternalUserAgent.ephemeralAsWebAuthenticationSession,
+          idTokenHint: authState!.idToken,
+          postLogoutRedirectUrl: _config!.logoutRedirectUri,
+          serviceConfiguration: _serviceConfiguration);
+
+      await appAuth.endSession(endSessionRequest).timeout(timeout,
+          onTimeout: () {
+        throw KindeError(
+            code: KindeErrorCode.requestTimedOut.code,
+            message: 'Logout request timed out');
+      });
+    } catch (e, st) {
+      kindeDebugPrint(methodName: "Logout", message: e.toString());
+      throw KindeError.fromError(e, st);
+    }
   }
 
   Future<void> _handleWebLogout() async {
@@ -255,6 +293,17 @@ class KindeFlutterSDK with TokenUtils {
     await Store.instance.clear();
   }
 
+  /// Logs out the user without redirection using a direct HTTP GET request.
+  ///
+  /// This method performs a simple logout by calling the logout endpoint
+  /// without any additional parameters. It does NOT redirect the user after logout.
+  ///
+  /// Use this only when:
+  /// - Running on macOS with macosLogoutWithoutRedirection=true
+  /// - You need to avoid the 414 error and don't need redirect functionality
+  ///
+  /// Note: This approach does not include the id_token_hint, which may be
+  /// required for org-specific logout in multi-organization scenarios.
   Future<void> _logoutWithoutRedirection({Dio? dio}) async {
     try {
       var dioClient = dio ?? Dio();
