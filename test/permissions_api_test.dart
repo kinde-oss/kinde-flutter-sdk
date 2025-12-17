@@ -265,8 +265,8 @@ void main() {
         expect(response.data, isNotNull);
         expect(response.data!.permissions, isNotNull);
         expect(response.data!.permissions!.length, equals(2));
-        expect(response.data!.permissions![0].key, equals('read:users'));
-        expect(response.data!.permissions![1].key, equals('write:users'));
+        expect(response.data!.permissions![0].id, equals('read:users'));
+        expect(response.data!.permissions![1].id, equals('write:users'));
         expect(response.data!.nextToken, isNull);
       });
 
@@ -459,7 +459,7 @@ void main() {
   });
 
   group('updatePermissions', () {
-    const permissionId = 'perm_123';
+    const permissionId = 123;
     final testPath = '/api/v1/permissions/$permissionId';
 
     group('success scenarios', () {
@@ -539,7 +539,7 @@ void main() {
         // Act & Assert
         expect(
           () => permissionsApi.updatePermissions(
-            permissionId: 'nonexistent_perm',
+            permissionId: 999,
             createPermissionRequest: request,
           ),
           throwsA(isA<DioException>().having(
