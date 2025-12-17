@@ -588,7 +588,7 @@ void main() {
 
         // Assert
         expect(response.data!.users!.length, equals(1));
-        expect(response.data!.users![0].preferredEmail, equals(emailFilter));
+        expect(response.data!.users![0].email, equals(emailFilter));
       });
 
       test('sorts users by name ascending', () async {
@@ -758,8 +758,8 @@ void main() {
         expect(response.statusCode, equals(200));
         expect(response.data, isNotNull);
         expect(response.data!.id, equals(userId));
-        expect(response.data!.firstName, equals('Jane'));
-        expect(response.data!.lastName, equals('Doe'));
+        expect(response.data!.givenName, equals('Jane'));
+        expect(response.data!.familyName, equals('Doe'));
       });
 
       test('updates user suspension status', () async {
