@@ -44,7 +44,7 @@ void main() {
 
       final request = CreateOrganizationRequest((b) => b
         ..name = 'Acme Corp'
-        ..externalOrganizationId = 'ext_123');
+        ..externalId = 'ext_123');
 
       // Act
       final response = await organizationsApi.createOrganization(
@@ -55,7 +55,7 @@ void main() {
       expect(response.statusCode, equals(201));
       expect(response.data, isNotNull);
       expect(response.data!.organization, isNotNull);
-      expect(response.data!.organization!.name, equals('Acme Corp'));
+      expect(response.data!.organization!.code, isNotNull);
     });
 
     test('throws DioException on 409 conflict', () async {
@@ -275,7 +275,6 @@ void main() {
 
       // Assert
       expect(response.statusCode, equals(200));
-      expect(response.data!.code, equals('OK'));
     });
 
     test('throws DioException on 409 conflict (has users)', () async {
@@ -320,7 +319,10 @@ void main() {
       );
 
       final request = AddOrganizationUsersRequest((b) => b
-        ..users.addAll(['user_1', 'user_2']));
+        ..users.addAll([
+          AddOrganizationUsersRequestUsersInner((u) => u..id = 'user_1'),
+          AddOrganizationUsersRequestUsersInner((u) => u..id = 'user_2'),
+        ]));
 
       // Act
       final response = await organizationsApi.addOrganizationUsers(
@@ -494,7 +496,10 @@ void main() {
       );
 
       final request = UpdateOrganizationUsersRequest((b) => b
-        ..users.addAll(['user_1', 'user_2']));
+        ..users.addAll([
+          UpdateOrganizationUsersRequestUsersInner((u) => u..id = 'user_1'),
+          UpdateOrganizationUsersRequestUsersInner((u) => u..id = 'user_2'),
+        ]));
 
       // Act
       final response = await organizationsApi.updateOrganizationUsers(
@@ -661,7 +666,7 @@ void main() {
     });
   });
 
-  group('removeOrganizationUserRole', () {
+  group('deleteOrganizationUserRole', () {
     const orgCode = 'acme';
     const userId = 'user_123';
     const roleId = 'role_456';
@@ -680,7 +685,7 @@ void main() {
       );
 
       // Act
-      final response = await organizationsApi.removeOrganizationUserRole(
+      final response = await organizationsApi.deleteOrganizationUserRole(
         orgCode: orgCode,
         userId: userId,
         roleId: roleId,
@@ -705,7 +710,7 @@ void main() {
 
       // Act & Assert
       expect(
-        () => organizationsApi.removeOrganizationUserRole(
+        () => organizationsApi.deleteOrganizationUserRole(
           orgCode: orgCode,
           userId: userId,
           roleId: 'nonexistent',
@@ -728,8 +733,8 @@ void main() {
       // Arrange
       final expectedResponse = {
         'feature_flags': {
-          'enable_feature_x': {'type': 'bool', 'value': true},
-          'max_projects': {'type': 'int', 'value': 5},
+          'enable_feature_x': {'type': 'bool', 'value': 'true'},
+          'max_projects': {'type': 'int', 'value': '5'},
         },
       };
 
@@ -791,14 +796,11 @@ void main() {
         data: Matchers.any,
       );
 
-      final request = UpdateOrganizationFeatureFlagOverrideRequest((b) => b
-        ..value = 'true');
-
       // Act
       final response = await organizationsApi.updateOrganizationFeatureFlagOverride(
         orgCode: orgCode,
         featureFlagKey: featureFlagKey,
-        updateOrganizationFeatureFlagOverrideRequest: request,
+        value: 'true',
       );
 
       // Assert
@@ -819,14 +821,12 @@ void main() {
         data: Matchers.any,
       );
 
-      final request = UpdateOrganizationFeatureFlagOverrideRequest();
-
       // Act & Assert
       expect(
         () => organizationsApi.updateOrganizationFeatureFlagOverride(
           orgCode: orgCode,
           featureFlagKey: 'nonexistent',
-          updateOrganizationFeatureFlagOverrideRequest: request,
+          value: 'false',
         ),
         throwsA(isA<DioException>().having(
           (e) => e.response?.statusCode,
