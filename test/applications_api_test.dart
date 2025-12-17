@@ -43,7 +43,7 @@ void main() {
 
         final request = CreateApplicationRequest((b) => b
           ..name = 'My App'
-          ..type = 'spa');
+          ..type = CreateApplicationRequestTypeEnum.spa);
 
         // Act
         final response = await applicationsApi.createApplication(
@@ -75,7 +75,7 @@ void main() {
 
         final request = CreateApplicationRequest((b) => b
           ..name = 'Minimal App'
-          ..type = 'reg');
+          ..type = CreateApplicationRequestTypeEnum.reg);
 
         // Act
         final response = await applicationsApi.createApplication(

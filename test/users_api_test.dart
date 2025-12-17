@@ -63,7 +63,7 @@ void main() {
           ..profile.givenName = 'John'
           ..profile.familyName = 'Doe'
           ..identities.add(CreateUserRequestIdentitiesInner((i) => i
-            ..type = 'email'
+            ..type = CreateUserRequestIdentitiesInnerTypeEnum.email
             ..details.email = 'john.doe@example.com')));
 
         // Act
@@ -136,9 +136,9 @@ void main() {
           ..profile.familyName = 'Identity'
           ..identities.addAll([
             CreateUserRequestIdentitiesInner((i) => i
-              ..type = 'email'
+              ..type = CreateUserRequestIdentitiesInnerTypeEnum.email
               ..details.email = 'user@example.com'),
-            CreateUserRequestIdentitiesInner((i) => i..type = 'phone'),
+            CreateUserRequestIdentitiesInner((i) => i..type = CreateUserRequestIdentitiesInnerTypeEnum.email),
           ]));
 
         // Act
@@ -292,7 +292,7 @@ void main() {
           ..profile.givenName = 'John'
           ..profile.familyName = 'Doe'
           ..identities.add(CreateUserRequestIdentitiesInner((i) => i
-            ..type = 'email'
+            ..type = CreateUserRequestIdentitiesInnerTypeEnum.email
             ..details.email = 'john.doe@example.com')));
 
         // Act
