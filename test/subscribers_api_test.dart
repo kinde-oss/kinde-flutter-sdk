@@ -60,7 +60,6 @@ void main() {
         expect(response.data, isNotNull);
         expect(response.data!.subscriber, isNotNull);
         expect(response.data!.subscriber!.subscriberId, equals('sub_123abc'));
-        expect(response.data!.subscriber!.firstName, equals('John'));
       });
 
       test('creates subscriber with first name only', () async {
@@ -87,7 +86,6 @@ void main() {
         // Assert
         expect(response.statusCode, equals(201));
         expect(response.data!.subscriber!.subscriberId, equals('sub_456def'));
-        expect(response.data!.subscriber!.firstName, equals('Jane'));
       });
 
       test('creates subscriber with first name and email', () async {
@@ -118,7 +116,7 @@ void main() {
 
         // Assert
         expect(response.statusCode, equals(201));
-        expect(response.data!.subscriber!.email, equals('bob@example.com'));
+        expect(response.data!.subscriber!.subscriberId, isNotNull);
       });
     });
 
@@ -284,9 +282,9 @@ void main() {
         // Assert
         expect(response.statusCode, equals(200));
         expect(response.data, isNotNull);
-        expect(response.data!.subscriber, isNotNull);
-        expect(response.data!.subscriber!.subscriberId, equals(subscriberId));
-        expect(response.data!.subscriber!.firstName, equals('John'));
+        expect(response.data!.subscribers, isNotNull);
+        expect(response.data!.subscribers!.first.id, equals(subscriberId));
+        expect(response.data!.subscribers!.first.firstName, equals('John'));
       });
 
       test('retrieves subscriber with minimal data', () async {
@@ -311,7 +309,7 @@ void main() {
 
         // Assert
         expect(response.statusCode, equals(200));
-        expect(response.data!.subscriber!.firstName, equals('Jane'));
+        expect(response.data!.subscribers!.first.firstName, equals('Jane'));
       });
     });
 

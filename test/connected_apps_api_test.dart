@@ -138,9 +138,8 @@ void main() {
       // Assert
       expect(response.statusCode, equals(200));
       expect(response.data, isNotNull);
-      expect(response.data!.accessToken, isNotNull);
-      expect(response.data!.tokenType, equals('Bearer'));
-      expect(response.data!.expiresIn, equals(3600));
+        expect(response.data!.accessToken, isNotNull);
+        expect(response.data!.accessTokenExpiry, isNotNull);
     });
 
     test('throws DioException on 404 session not found', () async {

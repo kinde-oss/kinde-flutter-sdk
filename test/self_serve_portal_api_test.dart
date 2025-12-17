@@ -28,7 +28,7 @@ void main() {
     test('generates portal URL with subnav and return URL', () async {
       // Arrange
       final expectedResponse = {
-        'link': 'https://portal.kinde.com/access?token=abc123&subnav=settings&return_url=https://myapp.com',
+        'url': 'https://portal.kinde.com/access?token=abc123&subnav=settings&return_url=https://myapp.com',
       };
 
       dioAdapter.onGet(
@@ -49,14 +49,14 @@ void main() {
       // Assert
       expect(response.statusCode, equals(200));
       expect(response.data, isNotNull);
-      expect(response.data!.link, contains('portal.kinde.com'));
-      expect(response.data!.link, contains('subnav=settings'));
+      expect(response.data!.url, contains('portal.kinde.com'));
+      expect(response.data!.url, contains('subnav=settings'));
     });
 
     test('generates portal URL without optional parameters', () async {
       // Arrange
       final expectedResponse = {
-        'link': 'https://portal.kinde.com/access?token=xyz789',
+        'url': 'https://portal.kinde.com/access?token=xyz789',
       };
 
       dioAdapter.onGet(
@@ -69,13 +69,13 @@ void main() {
 
       // Assert
       expect(response.statusCode, equals(200));
-      expect(response.data!.link, contains('portal.kinde.com'));
+      expect(response.data!.url, contains('portal.kinde.com'));
     });
 
     test('generates portal URL with subnav only', () async {
       // Arrange
       final expectedResponse = {
-        'link': 'https://portal.kinde.com/access?token=token123&subnav=billing',
+        'url': 'https://portal.kinde.com/access?token=token123&subnav=billing',
       };
 
       dioAdapter.onGet(
@@ -91,13 +91,13 @@ void main() {
 
       // Assert
       expect(response.statusCode, equals(200));
-      expect(response.data!.link, contains('subnav=billing'));
+      expect(response.data!.url, contains('subnav=billing'));
     });
 
     test('generates portal URL with return URL only', () async {
       // Arrange
       final expectedResponse = {
-        'link': 'https://portal.kinde.com/access?token=token456&return_url=https://app.example.com/dashboard',
+        'url': 'https://portal.kinde.com/access?token=token456&return_url=https://app.example.com/dashboard',
       };
 
       dioAdapter.onGet(
@@ -113,7 +113,7 @@ void main() {
 
       // Assert
       expect(response.statusCode, equals(200));
-      expect(response.data!.link, contains('return_url'));
+      expect(response.data!.url, contains('return_url'));
     });
 
     test('throws DioException on 401 unauthorized', () async {
