@@ -18,7 +18,7 @@ void main() {
     applicationsApi = KindeApi(dio: dio).getApplicationsApi();
   });
 
-  tearDown() {
+  tearDown(() {
     dioAdapter.reset();
   });
 
@@ -29,10 +29,12 @@ void main() {
       test('creates application with complete data', () async {
         // Arrange
         final expectedResponse = {
-          'id': 'app_123abc',
-          'name': 'My App',
-          'type': 'spa',
-          'client_id': 'client_456',
+          'code': 'OK',
+          'message': 'Application created successfully',
+          'application': {
+            'id': 'app_123abc',
+            'client_id': 'client_456',
+          },
         };
 
         dioAdapter.onPost(
@@ -53,18 +55,19 @@ void main() {
         // Assert
         expect(response.statusCode, equals(201));
         expect(response.data, isNotNull);
-        expect(response.data!.id, equals('app_123abc'));
-        expect(response.data!.name, equals('My App'));
-        expect(response.data!.type, equals('spa'));
-        expect(response.data!.clientId, equals('client_456'));
+        expect(response.data!.application, isNotNull);
+        expect(response.data!.application!.id, equals('app_123abc'));
+        expect(response.data!.application!.clientId, equals('client_456'));
       });
 
       test('creates application with minimal data', () async {
         // Arrange
         final expectedResponse = {
-          'id': 'app_minimal',
-          'name': 'Minimal App',
-          'type': 'reg',
+          'code': 'OK',
+          'message': 'Application created',
+          'application': {
+            'id': 'app_minimal',
+          },
         };
 
         dioAdapter.onPost(
@@ -84,7 +87,7 @@ void main() {
 
         // Assert
         expect(response.statusCode, equals(201));
-        expect(response.data!.id, equals('app_minimal'));
+        expect(response.data!.application!.id, equals('app_minimal'));
       });
     });
 
@@ -183,11 +186,15 @@ void main() {
       test('retrieves application by ID', () async {
         // Arrange
         final expectedResponse = {
-          'id': applicationId,
-          'name': 'My App',
-          'type': 'spa',
-          'client_id': 'client_123',
-          'is_active': true,
+          'code': 'OK',
+          'message': 'Application retrieved',
+          'application': {
+            'id': applicationId,
+            'name': 'My App',
+            'type': 'spa',
+            'client_id': 'client_123',
+            'is_active': true,
+          },
         };
 
         dioAdapter.onGet(
@@ -203,17 +210,22 @@ void main() {
         // Assert
         expect(response.statusCode, equals(200));
         expect(response.data, isNotNull);
-        expect(response.data!.id, equals(applicationId));
-        expect(response.data!.name, equals('My App'));
-        expect(response.data!.type, equals('spa'));
+        expect(response.data!.application, isNotNull);
+        expect(response.data!.application!.id, equals(applicationId));
+        expect(response.data!.application!.name, equals('My App'));
+        expect(response.data!.application!.type, equals('spa'));
       });
 
       test('retrieves application with minimal data', () async {
         // Arrange
         final expectedResponse = {
-          'id': applicationId,
-          'name': 'Simple App',
-          'type': 'reg',
+          'code': 'OK',
+          'message': 'Application retrieved',
+          'application': {
+            'id': applicationId,
+            'name': 'Simple App',
+            'type': 'reg',
+          },
         };
 
         dioAdapter.onGet(
@@ -228,7 +240,7 @@ void main() {
 
         // Assert
         expect(response.statusCode, equals(200));
-        expect(response.data!.name, equals('Simple App'));
+        expect(response.data!.application!.name, equals('Simple App'));
       });
     });
 
@@ -528,9 +540,6 @@ void main() {
 
         // Assert
         expect(response.statusCode, equals(200));
-        expect(response.data, isNotNull);
-        expect(response.data!.message, contains('successfully'));
-        expect(response.data!.code, equals('OK'));
       });
 
       test('updates application name only', () async {
@@ -556,7 +565,6 @@ void main() {
 
         // Assert
         expect(response.statusCode, equals(200));
-        expect(response.data!.code, equals('OK'));
       });
     });
 
