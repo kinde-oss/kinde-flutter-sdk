@@ -1,52 +1,188 @@
 import 'package:dio/dio.dart';
-import 'package:test/test.dart';
-import 'package:kinde_flutter_sdk/kinde_flutter_sdk.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:http_mock_adapter/http_mock_adapter.dart';
+import 'package:kinde_flutter_sdk/kinde_api.dart';
 
-import 'test_helpers/dio_mock.dart';
-
-/// tests for SelfServePortalApi
+/// Enterprise-grade tests for SelfServePortalApi
 void main() {
-  Dio dioSuccess = DioAdapterMock();
-  final dioError = DioAdapterMockError();
+  late Dio dio;
+  late DioAdapter dioAdapter;
+  late SelfServePortalApi selfServePortalApi;
 
-  SelfServePortalApi getInstance({
-    Dio? dioInstance,
-  }) {
-    return KindeApi(dio: dioInstance ?? dioSuccess).getSelfServePortalApi();
-  }
+  setUp() {
+    dio = Dio(BaseOptions(
+      baseUrl: 'https://test.kinde.com',
+      contentType: 'application/json',
+    ));
+    dioAdapter = DioAdapter(dio: dio);
+    selfServePortalApi = KindeApi(dio: dio).getSelfServePortalApi();
+  });
 
-  group(SelfServePortalApi, () {
-    test('test generatePortalUrl', () async {
-      final responseData = await getInstance().generatePortalUrl();
-      expect(responseData, isNotNull);
+  tearDown() {
+    dioAdapter.reset();
+  });
+
+  group('generatePortalUrl', () {
+    const testPath = '/account_api/v1/portal_link';
+
+    test('generates portal URL with subnav and return URL', () async {
+      // Arrange
+      final expectedResponse = {
+        'link': 'https://portal.kinde.com/access?token=abc123&subnav=settings&return_url=https://myapp.com',
+      };
+
+      dioAdapter.onGet(
+        testPath,
+        (server) => server.reply(200, expectedResponse),
+        queryParameters: {
+          'subnav': 'settings',
+          'return_url': 'https://myapp.com',
+        },
+      );
+
+      // Act
+      final response = await selfServePortalApi.generatePortalUrl(
+        subnav: 'settings',
+        returnUrl: 'https://myapp.com',
+      );
+
+      // Assert
+      expect(response.statusCode, equals(200));
+      expect(response.data, isNotNull);
+      expect(response.data!.link, contains('portal.kinde.com'));
+      expect(response.data!.link, contains('subnav=settings'));
     });
 
-    test('test generatePortalUrl with subnav', () async {
-      final responseData = await getInstance().generatePortalUrl(subnav: 'subnav');
-      expect(responseData, isNotNull);
+    test('generates portal URL without optional parameters', () async {
+      // Arrange
+      final expectedResponse = {
+        'link': 'https://portal.kinde.com/access?token=xyz789',
+      };
+
+      dioAdapter.onGet(
+        testPath,
+        (server) => server.reply(200, expectedResponse),
+      );
+
+      // Act
+      final response = await selfServePortalApi.generatePortalUrl();
+
+      // Assert
+      expect(response.statusCode, equals(200));
+      expect(response.data!.link, contains('portal.kinde.com'));
     });
 
-    test('test generatePortalUrl with returnUrl', () async {
-      final responseData =
-          await getInstance().generatePortalUrl(returnUrl: 'returnUrl');
-      expect(responseData, isNotNull);
+    test('generates portal URL with subnav only', () async {
+      // Arrange
+      final expectedResponse = {
+        'link': 'https://portal.kinde.com/access?token=token123&subnav=billing',
+      };
+
+      dioAdapter.onGet(
+        testPath,
+        (server) => server.reply(200, expectedResponse),
+        queryParameters: {'subnav': 'billing'},
+      );
+
+      // Act
+      final response = await selfServePortalApi.generatePortalUrl(
+        subnav: 'billing',
+      );
+
+      // Assert
+      expect(response.statusCode, equals(200));
+      expect(response.data!.link, contains('subnav=billing'));
     });
 
-    test('test generatePortalUrl with subnav and returnUrl', () async {
-      final responseData = await getInstance()
-          .generatePortalUrl(subnav: 'subnav', returnUrl: 'returnUrl');
-      expect(responseData, isNotNull);
+    test('generates portal URL with return URL only', () async {
+      // Arrange
+      final expectedResponse = {
+        'link': 'https://portal.kinde.com/access?token=token456&return_url=https://app.example.com/dashboard',
+      };
+
+      dioAdapter.onGet(
+        testPath,
+        (server) => server.reply(200, expectedResponse),
+        queryParameters: {'return_url': 'https://app.example.com/dashboard'},
+      );
+
+      // Act
+      final response = await selfServePortalApi.generatePortalUrl(
+        returnUrl: 'https://app.example.com/dashboard',
+      );
+
+      // Assert
+      expect(response.statusCode, equals(200));
+      expect(response.data!.link, contains('return_url'));
     });
 
-    test('test generatePortalUrl in success case returns PortalLink', () async {
-      final responseData = await getInstance().generatePortalUrl();
-      expect(responseData.data, isA<PortalLink>());
-    });
+    test('throws DioException on 401 unauthorized', () async {
+      // Arrange
+      final errorResponse = {
+        'error': 'unauthorized',
+        'error_description': 'Invalid or expired token',
+      };
 
-    test('test generatePortalUrl in error case throws DioException', () async {
+      dioAdapter.onGet(
+        testPath,
+        (server) => server.reply(401, errorResponse),
+      );
+
+      // Act & Assert
       expect(
-          () async => await getInstance(dioInstance: dioError).generatePortalUrl(),
-          throwsA(isA<DioException>()));
+        () => selfServePortalApi.generatePortalUrl(),
+        throwsA(isA<DioException>().having(
+          (e) => e.response?.statusCode,
+          'status code',
+          equals(401),
+        )),
+      );
+    });
+
+    test('throws DioException on 403 forbidden', () async {
+      // Arrange
+      final errorResponse = {
+        'error': 'forbidden',
+        'error_description': 'Insufficient permissions',
+      };
+
+      dioAdapter.onGet(
+        testPath,
+        (server) => server.reply(403, errorResponse),
+      );
+
+      // Act & Assert
+      expect(
+        () => selfServePortalApi.generatePortalUrl(),
+        throwsA(isA<DioException>().having(
+          (e) => e.response?.statusCode,
+          'status code',
+          equals(403),
+        )),
+      );
+    });
+
+    test('throws DioException on 500 server error', () async {
+      // Arrange
+      final errorResponse = {
+        'error': 'server_error',
+        'error_description': 'Failed to generate portal link',
+      };
+
+      dioAdapter.onGet(
+        testPath,
+        (server) => server.reply(500, errorResponse),
+      );
+
+      // Act & Assert
+      expect(
+        () => selfServePortalApi.generatePortalUrl(),
+        throwsA(isA<DioException>().having(
+          (e) => e.response?.statusCode,
+          'status code',
+          equals(500),
+        )),
+      );
     });
   });
 }
