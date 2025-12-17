@@ -1,7 +1,7 @@
 # Phase 1: API Test Prototype - COMPLETE ✅
 
-**Date:** December 17, 2025  
-**File:** `test/users_api_test.dart`  
+**Date:** December 17, 2025
+**File:** `test/users_api_test.dart`
 **Status:** Ready for Review & Testing
 
 ---
@@ -224,7 +224,7 @@ group('createUser', () {
 
 ### ✅ Inline Fixtures (No Helper File)
 
-**Why:** 
+**Why:**
 - Test data is right next to assertions (highly readable)
 - Easy to modify per-test
 - No abstraction overhead
@@ -389,12 +389,12 @@ class ApiErrors {
     'error': 'validation_error',
     'error_description': message,
   };
-  
+
   static Map<String, dynamic> unauthorized() => {
     'error': 'unauthorized',
     'error_description': 'Invalid or expired token',
   };
-  
+
   static Map<String, dynamic> notFound(String resource) => {
     'error': 'not_found',
     'error_description': '$resource not found',

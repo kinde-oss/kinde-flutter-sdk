@@ -21,10 +21,10 @@ void main() {
       baseUrl: 'https://test.kinde.com',
       contentType: 'application/json',
     ));
-    
+
     // Setup mock adapter for HTTP interception
     dioAdapter = DioAdapter(dio: dio);
-    
+
     // Initialize API instance
     usersApi = KindeApi(dio: dio).getUsersApi();
   });
@@ -38,7 +38,7 @@ void main() {
     const testPath = '/api/v1/user';
 
     group('success scenarios', () {
-      test('should create user with complete profile and email identity', () async {
+      test('complete profile with email identity', () async {
         // Arrange
         final expectedResponse = {
           'id': 'user_123abc',
@@ -80,7 +80,7 @@ void main() {
         expect(response.data!.identities!.length, equals(1));
       });
 
-      test('should create user with minimal data (name only)', () async {
+      test('minimal data (name only)', () async {
         // Arrange
         final expectedResponse = {
           'id': 'user_minimal_456',
@@ -108,7 +108,7 @@ void main() {
         expect(response.data!.created, isTrue);
       });
 
-      test('should create user with multiple identities', () async {
+      test('multiple identities', () async {
         // Arrange
         final expectedResponse = {
           'id': 'user_multi_789',
@@ -153,7 +153,7 @@ void main() {
     });
 
     group('error scenarios', () {
-      test('should throw DioException on 400 validation error', () async {
+      test('throws DioException on 400 validation error', () async {
         // Arrange
         final errorResponse = {
           'error': 'validation_error',
@@ -181,7 +181,7 @@ void main() {
         );
       });
 
-      test('should throw DioException on 401 unauthorized', () async {
+      test('throws DioException on 401 unauthorized', () async {
         // Arrange
         final errorResponse = {
           'error': 'unauthorized',
@@ -207,7 +207,7 @@ void main() {
         );
       });
 
-      test('should throw DioException on 403 forbidden', () async {
+      test('throws DioException on 403 forbidden', () async {
         // Arrange
         final errorResponse = {
           'error': 'forbidden',
@@ -233,7 +233,7 @@ void main() {
         );
       });
 
-      test('should throw DioException on 500 server error', () async {
+      test('throws DioException on 500 server error', () async {
         // Arrange
         final errorResponse = {
           'error': 'server_error',
@@ -261,7 +261,7 @@ void main() {
     });
 
     group('request validation', () {
-      test('should send correct content-type header', () async {
+      test('sends correct content-type header', () async {
         // Arrange
         String? capturedContentType;
 
@@ -285,7 +285,7 @@ void main() {
         expect(capturedContentType, equals('application/json'));
       });
 
-      test('should serialize request body correctly', () async {
+      test('serializes request body correctly', () async {
         // Arrange
         Map<String, dynamic>? capturedBody;
 
@@ -324,7 +324,7 @@ void main() {
     const testPath = '/api/v1/user';
 
     group('success scenarios', () {
-      test('should retrieve user by id', () async {
+      test('retrieves user by id', () async {
         // Arrange
         const userId = 'user_123abc';
         final expectedResponse = {
@@ -363,7 +363,7 @@ void main() {
         expect(response.data!.failedSignIns, equals(0));
       });
 
-      test('should retrieve suspended user', () async {
+      test('retrieves suspended user', () async {
         // Arrange
         const userId = 'user_suspended_456';
         final expectedResponse = {
@@ -392,7 +392,7 @@ void main() {
     });
 
     group('error scenarios', () {
-      test('should throw DioException on 404 user not found', () async {
+      test('throws DioException on 404 user not found', () async {
         // Arrange
         const userId = 'nonexistent_user';
         final errorResponse = {
@@ -417,7 +417,7 @@ void main() {
         );
       });
 
-      test('should throw DioException on 401 unauthorized', () async {
+      test('throws DioException on 401 unauthorized', () async {
         // Arrange
         const userId = 'user_123';
         final errorResponse = {
@@ -444,7 +444,7 @@ void main() {
     });
 
     group('request validation', () {
-      test('should send user id as query parameter', () async {
+      test('sends user id as query parameter', () async {
         // Arrange
         const userId = 'user_query_test';
         Map<String, dynamic>? capturedParams;
@@ -476,7 +476,7 @@ void main() {
     const testPath = '/api/v1/users';
 
     group('success scenarios', () {
-      test('should list all users with default parameters', () async {
+      test('lists all users with default parameters', () async {
         // Arrange
         final expectedResponse = {
           'code': 'OK',
@@ -519,7 +519,7 @@ void main() {
         expect(response.data!.nextToken, isNull);
       });
 
-      test('should list users with pagination', () async {
+      test('lists users with pagination', () async {
         // Arrange
         final expectedResponse = {
           'code': 'OK',
@@ -549,7 +549,7 @@ void main() {
         expect(response.data!.nextToken, equals('token_page_2'));
       });
 
-      test('should list users with next_token for pagination', () async {
+      test('lists users with next_token for pagination', () async {
         // Arrange
         const nextToken = 'token_page_2';
         final expectedResponse = {
@@ -581,7 +581,7 @@ void main() {
         expect(response.data!.nextToken, isNull);
       });
 
-      test('should filter users by email', () async {
+      test('filters users by email', () async {
         // Arrange
         const emailFilter = 'alice@example.com';
         final expectedResponse = {
@@ -612,7 +612,7 @@ void main() {
         expect(response.data!.users![0].preferredEmail, equals(emailFilter));
       });
 
-      test('should sort users by name ascending', () async {
+      test('sorts users by name ascending', () async {
         // Arrange
         const sortParam = 'name_asc';
         final expectedResponse = {
@@ -641,7 +641,7 @@ void main() {
         expect(response.data!.users![2].firstName, equals('Charlie'));
       });
 
-      test('should return empty list when no users match criteria', () async {
+      test('returns empty list when no users match criteria', () async {
         // Arrange
         final expectedResponse = {
           'code': 'OK',
@@ -665,7 +665,7 @@ void main() {
     });
 
     group('error scenarios', () {
-      test('should throw DioException on 400 invalid parameters', () async {
+      test('throws DioException on 400 invalid parameters', () async {
         // Arrange
         final errorResponse = {
           'error': 'validation_error',
@@ -689,7 +689,7 @@ void main() {
         );
       });
 
-      test('should throw DioException on 401 unauthorized', () async {
+      test('throws DioException on 401 unauthorized', () async {
         // Arrange
         final errorResponse = {
           'error': 'unauthorized',
@@ -714,7 +714,7 @@ void main() {
     });
 
     group('request validation', () {
-      test('should send all query parameters correctly', () async {
+      test('sends all query parameters correctly', () async {
         // Arrange
         Map<String, dynamic>? capturedParams;
 
@@ -755,7 +755,7 @@ void main() {
     const testPath = '/api/v1/user';
 
     group('success scenarios', () {
-      test('should update user name', () async {
+      test('updates user name', () async {
         // Arrange
         const userId = 'user_123';
         final expectedResponse = {
@@ -791,7 +791,7 @@ void main() {
         expect(response.data!.lastName, equals('Doe'));
       });
 
-      test('should update user suspension status', () async {
+      test('updates user suspension status', () async {
         // Arrange
         const userId = 'user_456';
         final expectedResponse = {
@@ -822,7 +822,7 @@ void main() {
     });
 
     group('error scenarios', () {
-      test('should throw DioException on 404 user not found', () async {
+      test('throws DioException on 404 user not found', () async {
         // Arrange
         const userId = 'nonexistent_user';
         final errorResponse = {
@@ -853,7 +853,7 @@ void main() {
         );
       });
 
-      test('should throw DioException on 400 validation error', () async {
+      test('throws DioException on 400 validation error', () async {
         // Arrange
         const userId = 'user_123';
         final errorResponse = {
@@ -886,7 +886,7 @@ void main() {
     });
 
     group('request validation', () {
-      test('should send user id as query parameter', () async {
+      test('sends user id as query parameter', () async {
         // Arrange
         const userId = 'user_update_test';
         Map<String, dynamic>? capturedParams;
@@ -924,7 +924,7 @@ void main() {
     const testPath = '/api/v1/user';
 
     group('success scenarios', () {
-      test('should delete user successfully', () async {
+      test('deletes user successfully', () async {
         // Arrange
         const userId = 'user_to_delete';
         final expectedResponse = {
@@ -948,7 +948,7 @@ void main() {
         expect(response.data!.code, equals('OK'));
       });
 
-      test('should delete user with profile deletion flag', () async {
+      test('deletes user with profile deletion flag', () async {
         // Arrange
         const userId = 'user_full_delete';
         final expectedResponse = {
@@ -975,7 +975,7 @@ void main() {
     });
 
     group('error scenarios', () {
-      test('should throw DioException on 404 user not found', () async {
+      test('throws DioException on 404 user not found', () async {
         // Arrange
         const userId = 'nonexistent_user';
         final errorResponse = {
@@ -1000,7 +1000,7 @@ void main() {
         );
       });
 
-      test('should throw DioException on 401 unauthorized', () async {
+      test('throws DioException on 401 unauthorized', () async {
         // Arrange
         const userId = 'user_123';
         final errorResponse = {
@@ -1025,7 +1025,7 @@ void main() {
         );
       });
 
-      test('should throw DioException on 403 forbidden', () async {
+      test('throws DioException on 403 forbidden', () async {
         // Arrange
         const userId = 'protected_user';
         final errorResponse = {
@@ -1052,7 +1052,7 @@ void main() {
     });
 
     group('request validation', () {
-      test('should send user id as query parameter', () async {
+      test('sends user id as query parameter', () async {
         // Arrange
         const userId = 'user_delete_test';
         Map<String, dynamic>? capturedParams;
@@ -1077,7 +1077,7 @@ void main() {
         expect(capturedParams!['id'], equals(userId));
       });
 
-      test('should send is_delete_profile parameter when provided', () async {
+      test('sends is_delete_profile parameter when provided', () async {
         // Arrange
         const userId = 'user_profile_delete';
         Map<String, dynamic>? capturedParams;

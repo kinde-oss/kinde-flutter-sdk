@@ -1,14 +1,13 @@
 # Phase 2.5: Aggressive Model Test Deletion
 
-**Date:** December 9, 2025
-**Objective:** Delete remaining 34 valueless model tests for maximum quality improvement
-**Rationale:** Senior review confirmed these are identical in quality to Phase 2 deletions
+**Date:** December 9, 2025 **Objective:** Delete remaining 34 valueless model tests for maximum quality improvement **Rationale:** Senior review confirmed these are identical in quality to Phase 2 deletions
 
 ---
 
 ## Current State Analysis
 
 **After Pull:** 54 test files
+
 - ✅ 14 API tests (need upgrade - HIGH VALUE)
 - ❌ 34 model tests (ZERO VALUE - identical to Phase 2 deletions)
 - ✅ 1 main SDK test (moderate value)
@@ -21,6 +20,7 @@
 ## Files to Delete (34 Total)
 
 ### User Model Tests (11 files)
+
 ```
 test/user_test.dart
 test/user_profile_test.dart
@@ -36,6 +36,7 @@ test/create_user_response_test.dart
 ```
 
 ### Organization Model Tests (9 files)
+
 ```
 test/organization_test.dart
 test/organization_user_test.dart
@@ -50,6 +51,7 @@ test/update_organization_users_request_users_inner_test.dart
 ```
 
 ### Permission/Role Model Tests (8 files)
+
 ```
 test/permissions_test.dart
 test/role_test.dart
@@ -62,12 +64,14 @@ test/update_role_permissions_request_permissions_inner_test.dart
 ```
 
 ### Feature Flag Model Tests (2 files)
+
 ```
 test/create_feature_flag_request_test.dart
 test/update_environement_feature_flag_override_request_test.dart
 ```
 
 ### Subscriber Model Tests (3 files)
+
 ```
 test/subscriber_test.dart
 test/subscribers_subscriber_test.dart
@@ -75,6 +79,7 @@ test/replace_redirect_callback_urls_request_test.dart
 ```
 
 ### Application Model Test (1 file)
+
 ```
 test/application_test.dart
 ```
@@ -88,6 +93,7 @@ test/application_test.dart
 ### Sample Comparison
 
 **Phase 2 Deleted File (`test/organization_test.dart`):**
+
 ```dart
 test('to test the property `code`', () async {
   // TODO
@@ -97,6 +103,7 @@ test('to test the property `code`', () async {
 ```
 
 **Phase 2.5 Target File (`test/user_test.dart`):**
+
 ```dart
 test('to test the property `id`', () async {
   // TODO
@@ -111,14 +118,14 @@ test('to test the property `id`', () async {
 
 ## Expected Outcome
 
-| Metric | Before | After | Change |
-|--------|--------|-------|--------|
-| **Test Files** | 54 | 20 | **-34 files (-63%)** |
-| **Valueless Tests** | 34 | 0 | **-100%** |
-| **API Tests** | 14 | 14 | Ready for upgrade |
-| **Main SDK Test** | 1 | 1 | Ready for expansion |
-| **Test Helpers** | 2 | 2 | Good |
-| **Total Quality** | ~25% | ~90% | **+260%** |
+| Metric              | Before | After | Change               |
+| ------------------- | ------ | ----- | -------------------- |
+| **Test Files**      | 54     | 20    | **-34 files (-63%)** |
+| **Valueless Tests** | 34     | 0     | **-100%**            |
+| **API Tests**       | 14     | 14    | Ready for upgrade    |
+| **Main SDK Test**   | 1      | 1     | Ready for expansion  |
+| **Test Helpers**    | 2      | 2     | Good                 |
+| **Total Quality**   | ~25%   | ~90%  | **+260%**            |
 
 **Result:** 20 high-value test files focused on catching actual bugs.
 
@@ -127,6 +134,7 @@ test('to test the property `id`', () async {
 ## Files Remaining After Deletion (20 Total)
 
 ### High-Value Tests (Ready for Upgrade)
+
 ```
 ✅ test/business_api_test.dart
 ✅ test/callbacks_api_test.dart
@@ -146,6 +154,7 @@ test('to test the property `id`', () async {
 ```
 
 ### Supporting Files
+
 ```
 ✅ test/error/kinde_error_code_test.dart
 ✅ test/mock_channels.dart
@@ -158,12 +167,14 @@ test('to test the property `id`', () async {
 ## Next Steps After Deletion
 
 ### Phase 4: API Test Modernization (HIGH PRIORITY)
+
 - Upgrade 14 API tests with `http_mock_adapter`
 - Add comprehensive error scenarios
 - Add request/response validation
 - Remove `// TODO` comments
 
 ### Phase 5: SDK Test Expansion (MEDIUM PRIORITY)
+
 - Expand `test/kinde_flutter_sdk_test.dart` from 8 to 30 tests
 - Add initialization variants, error recovery, concurrent operations
 
@@ -180,15 +191,14 @@ test('to test the property `id`', () async {
 
 ## Risk Assessment
 
-**Low Risk:** These files provide zero value, same as Phase 2 deletions.
-**Model serialization tested by API integration tests**
-**No breaking changes expected**
+**Low Risk:** These files provide zero value, same as Phase 2 deletions. **Model serialization tested by API integration tests** **No breaking changes expected**
 
 ---
 
 ## Enterprise-Grade Decision
 
 This aligns with:
+
 - ✅ **Senior review recommendations**
 - ✅ **PR #53 quality standard** (they didn't test simple models)
 - ✅ **Industry best practices** (Stripe/Auth0/Firebase don't test property assignment)
@@ -199,6 +209,7 @@ This aligns with:
 ## Ready for Execution
 
 **Command to execute deletion:**
+
 ```bash
 # User models
 rm test/user_test.dart test/user_profile_test.dart test/user_profile_v2_test.dart test/user_identity_test.dart test/user_identity_result_test.dart test/create_user_request_test.dart test/create_user_request_profile_test.dart test/create_user_request_identities_inner_test.dart test/create_user_request_identities_inner_details_test.dart test/update_user_request_test.dart test/create_user_response_test.dart
