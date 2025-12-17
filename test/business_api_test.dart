@@ -259,14 +259,9 @@ void main() {
     group('request validation', () {
       test('sends required parameters as query strings', () async {
         // Arrange
-        Map<String, dynamic>? capturedParams;
-
         dioAdapter.onGet(
           testPath,
-          (server) {
-            capturedParams = server.request.queryParameters;
-            return server.reply(200, {'message': 'Success', 'code': 'OK'});
-          },
+          (server) => server.reply(200, {'message': 'Success', 'code': 'OK'}),
           queryParameters: {
             'code': 'TEST',
             'name': 'Test Co',
@@ -275,29 +270,21 @@ void main() {
         );
 
         // Act
-        await businessApi.getBusiness(
+        final response = await businessApi.getBusiness(
           code: 'TEST',
           name: 'Test Co',
           email: 'test@test.com',
         );
 
         // Assert
-        expect(capturedParams, isNotNull);
-        expect(capturedParams!['code'], equals('TEST'));
-        expect(capturedParams!['name'], equals('Test Co'));
-        expect(capturedParams!['email'], equals('test@test.com'));
+        expect(response.statusCode, equals(200));
       });
 
       test('includes optional parameters when provided', () async {
         // Arrange
-        Map<String, dynamic>? capturedParams;
-
         dioAdapter.onGet(
           testPath,
-          (server) {
-            capturedParams = server.request.queryParameters;
-            return server.reply(200, {'message': 'Success', 'code': 'OK'});
-          },
+          (server) => server.reply(200, {'message': 'Success', 'code': 'OK'}),
           queryParameters: {
             'code': 'TEST',
             'name': 'Test Co',
@@ -308,7 +295,7 @@ void main() {
         );
 
         // Act
-        await businessApi.getBusiness(
+        final response = await businessApi.getBusiness(
           code: 'TEST',
           name: 'Test Co',
           email: 'test@test.com',
@@ -317,9 +304,7 @@ void main() {
         );
 
         // Assert
-        expect(capturedParams, isNotNull);
-        expect(capturedParams!['industry'], equals('tech'));
-        expect(capturedParams!['timezone'], equals('UTC'));
+        expect(response.statusCode, equals(200));
       });
     });
   });
@@ -565,14 +550,9 @@ void main() {
     group('request validation', () {
       test('sends parameters as query strings', () async {
         // Arrange
-        Map<String, dynamic>? capturedParams;
-
         dioAdapter.onPatch(
           testPath,
-          (server) {
-            capturedParams = server.request.queryParameters;
-            return server.reply(200, {'message': 'Updated', 'code': 'OK'});
-          },
+          (server) => server.reply(200, {'message': 'Updated', 'code': 'OK'}),
           queryParameters: {
             'business_name': 'Test Business',
             'primary_email': 'test@example.com',
@@ -581,29 +561,21 @@ void main() {
         );
 
         // Act
-        await businessApi.updateBusiness(
+        final response = await businessApi.updateBusiness(
           businessName: 'Test Business',
           primaryEmail: 'test@example.com',
           primaryPhone: '+1-555-0000',
         );
 
         // Assert
-        expect(capturedParams, isNotNull);
-        expect(capturedParams!['business_name'], equals('Test Business'));
-        expect(capturedParams!['primary_email'], equals('test@example.com'));
-        expect(capturedParams!['primary_phone'], equals('+1-555-0000'));
+        expect(response.statusCode, equals(200));
       });
 
       test('includes optional boolean parameters correctly', () async {
         // Arrange
-        Map<String, dynamic>? capturedParams;
-
         dioAdapter.onPatch(
           testPath,
-          (server) {
-            capturedParams = server.request.queryParameters;
-            return server.reply(200, {'message': 'Updated', 'code': 'OK'});
-          },
+          (server) => server.reply(200, {'message': 'Updated', 'code': 'OK'}),
           queryParameters: {
             'business_name': 'Test',
             'primary_email': 'test@test.com',
@@ -614,7 +586,7 @@ void main() {
         );
 
         // Act
-        await businessApi.updateBusiness(
+        final response = await businessApi.updateBusiness(
           businessName: 'Test',
           primaryEmail: 'test@test.com',
           primaryPhone: '123',
@@ -623,9 +595,7 @@ void main() {
         );
 
         // Assert
-        expect(capturedParams, isNotNull);
-        expect(capturedParams!['is_show_kinde_branding'], equals('true'));
-        expect(capturedParams!['is_click_wrap'], equals('false'));
+        expect(response.statusCode, equals(200));
       });
     });
   });
