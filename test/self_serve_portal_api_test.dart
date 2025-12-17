@@ -9,7 +9,7 @@ void main() {
   late DioAdapter dioAdapter;
   late SelfServePortalApi selfServePortalApi;
 
-  setUp() {
+  setUp(() {
     dio = Dio(BaseOptions(
       baseUrl: 'https://test.kinde.com',
       contentType: 'application/json',
@@ -18,7 +18,7 @@ void main() {
     selfServePortalApi = KindeApi(dio: dio).getSelfServePortalApi();
   });
 
-  tearDown() {
+  tearDown(() {
     dioAdapter.reset();
   });
 

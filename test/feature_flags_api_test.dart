@@ -9,7 +9,7 @@ void main() {
   late DioAdapter dioAdapter;
   late FeatureFlagsApi featureFlagsApi;
 
-  setUp() {
+  setUp(() {
     dio = Dio(BaseOptions(
       baseUrl: 'https://test.kinde.com',
       contentType: 'application/json',
@@ -18,7 +18,7 @@ void main() {
     featureFlagsApi = KindeApi(dio: dio).getFeatureFlagsApi();
   });
 
-  tearDown() {
+  tearDown(() {
     dioAdapter.reset();
   });
 
@@ -42,7 +42,8 @@ void main() {
         ..name = 'enable_feature_x'
         ..description = 'Enable new feature X'
         ..key = 'enable_feature_x'
-        ..type = 'bool');
+        ..type = CreateFeatureFlagRequestTypeEnum.bool_
+        ..defaultValue = 'false');
 
       // Act
       final response = await featureFlagsApi.createFeatureFlag(
@@ -69,7 +70,11 @@ void main() {
         data: Matchers.any,
       );
 
-      final request = CreateFeatureFlagRequest();
+      final request = CreateFeatureFlagRequest((b) => b
+        ..name = 'existing_flag'
+        ..key = 'existing_flag'
+        ..type = CreateFeatureFlagRequestTypeEnum.bool_
+        ..defaultValue = 'false');
 
       // Act & Assert
       expect(
@@ -97,7 +102,11 @@ void main() {
         data: Matchers.any,
       );
 
-      final request = CreateFeatureFlagRequest();
+      final request = CreateFeatureFlagRequest((b) => b
+        ..name = ''
+        ..key = ''
+        ..type = CreateFeatureFlagRequestTypeEnum.bool_
+        ..defaultValue = '');
 
       // Act & Assert
       expect(

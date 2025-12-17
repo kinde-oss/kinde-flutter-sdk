@@ -9,7 +9,7 @@ void main() {
   late DioAdapter dioAdapter;
   late OAuthApi oAuthApi;
 
-  setUp() {
+  setUp(() {
     dio = Dio(BaseOptions(
       baseUrl: 'https://test.kinde.com',
       contentType: 'application/json',
@@ -18,7 +18,7 @@ void main() {
     oAuthApi = KindeApi(dio: dio).getOAuthApi();
   });
 
-  tearDown() {
+  tearDown(() {
     dioAdapter.reset();
   });
 
@@ -29,9 +29,9 @@ void main() {
       // Arrange
       final expectedResponse = {
         'id': 'user_123',
-        'given_name': 'John',
-        'family_name': 'Doe',
-        'email': 'john.doe@example.com',
+        'first_name': 'John',
+        'last_name': 'Doe',
+        'preferred_email': 'john.doe@example.com',
       };
 
       dioAdapter.onGet(
@@ -46,9 +46,9 @@ void main() {
       expect(response.statusCode, equals(200));
       expect(response.data, isNotNull);
       expect(response.data!.id, equals('user_123'));
-      expect(response.data!.givenName, equals('John'));
-      expect(response.data!.familyName, equals('Doe'));
-      expect(response.data!.email, equals('john.doe@example.com'));
+      expect(response.data!.firstName, equals('John'));
+      expect(response.data!.lastName, equals('Doe'));
+      expect(response.data!.preferredEmail, equals('john.doe@example.com'));
     });
 
     test('throws DioException on 401 unauthorized', () async {
@@ -203,10 +203,9 @@ void main() {
       // Arrange
       final expectedResponse = {
         'active': true,
-        'token_type': 'Bearer',
-        'exp': 1672531200,
-        'iat': 1672527600,
-        'sub': 'user_123',
+        'client_id': 'client_123',
+        'exp': '1672531200',
+        'iat': '1672527600',
       };
 
       dioAdapter.onPost(
@@ -225,7 +224,7 @@ void main() {
       expect(response.statusCode, equals(200));
       expect(response.data, isNotNull);
       expect(response.data!.active, isTrue);
-      expect(response.data!.tokenType, equals('Bearer'));
+      expect(response.data!.clientId, equals('client_123'));
     });
 
     test('introspects inactive token', () async {

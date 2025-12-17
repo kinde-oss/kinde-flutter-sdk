@@ -358,7 +358,7 @@ void main() {
     });
   });
 
-  group('getRolePermissions', () {
+  group('getRolePermission', () {
     const roleId = 'role_123';
     final testPath = '/api/v1/roles/$roleId/permissions';
 
@@ -376,7 +376,7 @@ void main() {
         );
 
         // Act
-        final response = await rolesApi.getRolePermissions(roleId: roleId);
+        final response = await rolesApi.getRolePermission(roleId: roleId);
 
         // Assert
         expect(response.statusCode, equals(200));
@@ -394,7 +394,7 @@ void main() {
         );
 
         // Act
-        final response = await rolesApi.getRolePermissions(roleId: roleId);
+        final response = await rolesApi.getRolePermission(roleId: roleId);
 
         // Assert
         expect(response.data, isEmpty);
@@ -417,7 +417,7 @@ void main() {
 
         // Act & Assert
         expect(
-          () => rolesApi.getRolePermissions(roleId: nonexistentId),
+          () => rolesApi.getRolePermission(roleId: nonexistentId),
           throwsA(isA<DioException>().having(
             (e) => e.response?.statusCode,
             'status code',
@@ -440,7 +440,7 @@ void main() {
 
         // Act & Assert
         expect(
-          () => rolesApi.getRolePermissions(roleId: roleId),
+          () => rolesApi.getRolePermission(roleId: roleId),
           throwsA(isA<DioException>().having(
             (e) => e.response?.statusCode,
             'status code',
@@ -612,10 +612,10 @@ void main() {
       test('updates permissions for role', () async {
         // Arrange
         final expectedResponse = {
-          'permissions': [
-            {'id': 'perm_1', 'name': 'read:users'},
-            {'id': 'perm_2', 'name': 'write:users'},
-          ],
+          'code': 'OK',
+          'message': 'Permissions updated',
+          'permissions_added': ['perm_1', 'perm_2'],
+          'permissions_removed': <String>[],
         };
 
         dioAdapter.onPatch(
@@ -625,7 +625,10 @@ void main() {
         );
 
         final request = UpdateRolePermissionsRequest((b) => b
-          ..permissions.addAll(['perm_1', 'perm_2']));
+          ..permissions.addAll([
+            UpdateRolePermissionsRequestPermissionsInner((p) => p..id = 'perm_1'),
+            UpdateRolePermissionsRequestPermissionsInner((p) => p..id = 'perm_2'),
+          ]));
 
         // Act
         final response = await rolesApi.updateRolePermissions(
@@ -636,14 +639,17 @@ void main() {
         // Assert
         expect(response.statusCode, equals(200));
         expect(response.data, isNotNull);
-        expect(response.data!.permissions, isNotNull);
-        expect(response.data!.permissions!.length, equals(2));
+        expect(response.data!.permissionsAdded, isNotNull);
+        expect(response.data!.permissionsAdded!.length, equals(2));
       });
 
-      test('clears all permissions with empty list', () async {
+      test('removes permissions from role', () async {
         // Arrange
         final expectedResponse = {
-          'permissions': <dynamic>[],
+          'code': 'OK',
+          'message': 'Permissions updated',
+          'permissions_added': <String>[],
+          'permissions_removed': ['perm_1'],
         };
 
         dioAdapter.onPatch(
@@ -652,7 +658,12 @@ void main() {
           data: Matchers.any,
         );
 
-        final request = UpdateRolePermissionsRequest();
+        final request = UpdateRolePermissionsRequest((b) => b
+          ..permissions.add(
+            UpdateRolePermissionsRequestPermissionsInner((p) => p
+              ..id = 'perm_1'
+              ..operation = 'delete'),
+          ));
 
         // Act
         final response = await rolesApi.updateRolePermissions(
@@ -662,7 +673,8 @@ void main() {
 
         // Assert
         expect(response.statusCode, equals(200));
-        expect(response.data!.permissions, isEmpty);
+        expect(response.data!.permissionsRemoved, isNotNull);
+        expect(response.data!.permissionsRemoved!.length, equals(1));
       });
     });
 
@@ -757,13 +769,13 @@ void main() {
     });
   });
 
-  group('deleteRolePermission', () {
+  group('removeRolePermission', () {
     const roleId = 'role_123';
     const permissionId = 'perm_456';
     final testPath = '/api/v1/roles/$roleId/permissions/$permissionId';
 
     group('success scenarios', () {
-      test('deletes permission from role', () async {
+      test('removes permission from role', () async {
         // Arrange
         final expectedResponse = {
           'message': 'Permission removed successfully',
@@ -776,7 +788,7 @@ void main() {
         );
 
         // Act
-        final response = await rolesApi.deleteRolePermission(
+        final response = await rolesApi.removeRolePermission(
           roleId: roleId,
           permissionId: permissionId,
         );
@@ -805,7 +817,7 @@ void main() {
 
         // Act & Assert
         expect(
-          () => rolesApi.deleteRolePermission(
+          () => rolesApi.removeRolePermission(
             roleId: nonexistentRoleId,
             permissionId: permissionId,
           ),
@@ -832,7 +844,7 @@ void main() {
 
         // Act & Assert
         expect(
-          () => rolesApi.deleteRolePermission(
+          () => rolesApi.removeRolePermission(
             roleId: roleId,
             permissionId: nonexistentPermId,
           ),
@@ -858,7 +870,7 @@ void main() {
 
         // Act & Assert
         expect(
-          () => rolesApi.deleteRolePermission(
+          () => rolesApi.removeRolePermission(
             roleId: roleId,
             permissionId: permissionId,
           ),
@@ -884,7 +896,7 @@ void main() {
 
         // Act & Assert
         expect(
-          () => rolesApi.deleteRolePermission(
+          () => rolesApi.removeRolePermission(
             roleId: roleId,
             permissionId: permissionId,
           ),

@@ -10,7 +10,7 @@ void main() {
   late DioAdapter dioAdapter;
   late OrganizationsApi organizationsApi;
 
-  setUp() {
+  setUp(() {
     dio = Dio(BaseOptions(
       baseUrl: 'https://test.kinde.com',
       contentType: 'application/json',
@@ -19,7 +19,7 @@ void main() {
     organizationsApi = KindeApi(dio: dio).getOrganizationsApi();
   });
 
-  tearDown() {
+  tearDown(() {
     dioAdapter.reset();
   });
 

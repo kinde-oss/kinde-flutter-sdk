@@ -9,7 +9,7 @@ void main() {
   late DioAdapter dioAdapter;
   late ConnectedAppsApi connectedAppsApi;
 
-  setUp() {
+  setUp(() {
     dio = Dio(BaseOptions(
       baseUrl: 'https://test.kinde.com',
       contentType: 'application/json',
@@ -18,7 +18,7 @@ void main() {
     connectedAppsApi = KindeApi(dio: dio).getConnectedAppsApi();
   });
 
-  tearDown() {
+  tearDown(() {
     dioAdapter.reset();
   });
 
