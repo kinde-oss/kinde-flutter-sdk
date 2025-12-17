@@ -326,7 +326,7 @@ void main() {
 
         // Assert
         expect(response.data!.permissions!.length, equals(1));
-        expect(response.data!.permissions![0].key, equals('admin:all'));
+        expect(response.data!.permissions![0].id, equals('admin:all'));
         expect(response.data!.nextToken, isNull);
       });
 

@@ -18,7 +18,7 @@ void main() {
     environmentsApi = KindeApi(dio: dio).getEnvironmentsApi();
   });
 
-  tearDown() {
+  tearDown(() {
     dioAdapter.reset();
   });
 
@@ -30,8 +30,8 @@ void main() {
         // Arrange
         final expectedResponse = {
           'feature_flags': {
-            'enable_new_ui': {'type': 'bool', 'value': true},
-            'max_users': {'type': 'int', 'value': 100},
+            'enable_new_ui': {'type': 'bool', 'value': 'true'},
+            'max_users': {'type': 'int', 'value': '100'},
             'api_endpoint': {'type': 'str', 'value': 'https://api.example.com'},
           },
         };
