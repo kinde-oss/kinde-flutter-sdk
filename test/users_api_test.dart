@@ -1,71 +1,1108 @@
-import 'package:test/test.dart';
-import 'package:kinde_flutter_sdk/kinde_api.dart';
-import '../test/test_helpers/dio_mock.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:http_mock_adapter/http_mock_adapter.dart';
+import 'package:kinde_flutter_sdk/kinde_api.dart';
 
-/// tests for UsersApi
+/// Enterprise-grade tests for UsersApi
+///
+/// Tests cover:
+/// - Success scenarios with proper response validation
+/// - Error scenarios (400, 401, 404, 500)
+/// - Request structure validation
+/// - Edge cases (pagination, optional parameters)
 void main() {
-  //final instance = KindeApi().getUsersApi();
-  Dio dio = DioAdapterMock();
-  final instance = KindeApi(dio: dio).getUsersApi();
-  group(UsersApi, () {
-    // Create User
-    //
-    // Creates a user record and optionally zero or more identities for the user. An example identity could be the email address of the user.
-    //
-    //Future<CreateUserResponse> createUser({ CreateUserRequest createUserRequest }) async
-    test('test createUser', () async {
-      // TODO
-      final responseData = await instance.createUser(
-        createUserRequest: CreateUserRequest(),
-      );
-      expect(responseData, isNotNull);
+  late Dio dio;
+  late DioAdapter dioAdapter;
+  late UsersApi usersApi;
+
+  setUp(() {
+    // Initialize Dio with base configuration
+    dio = Dio(BaseOptions(
+      baseUrl: 'https://test.kinde.com',
+      contentType: 'application/json',
+    ));
+    
+    // Setup mock adapter for HTTP interception
+    dioAdapter = DioAdapter(dio: dio);
+    
+    // Initialize API instance
+    usersApi = KindeApi(dio: dio).getUsersApi();
+  });
+
+  tearDown(() {
+    // Reset mock adapter between tests
+    dioAdapter.reset();
+  });
+
+  group('createUser', () {
+    const testPath = '/api/v1/user';
+
+    group('success scenarios', () {
+      test('should create user with complete profile and email identity', () async {
+        // Arrange
+        final expectedResponse = {
+          'id': 'user_123abc',
+          'created': true,
+          'identities': [
+            {
+              'type': 'email',
+              'identity': {
+                'email': 'john.doe@example.com',
+              },
+            },
+          ],
+        };
+
+        dioAdapter.onPost(
+          testPath,
+          (server) => server.reply(201, expectedResponse),
+          data: Matchers.any,
+        );
+
+        final request = CreateUserRequest((b) => b
+          ..profile.givenName = 'John'
+          ..profile.familyName = 'Doe'
+          ..identities.add(CreateUserRequestIdentitiesInner((i) => i
+            ..type = 'email'
+            ..details.email = 'john.doe@example.com')));
+
+        // Act
+        final response = await usersApi.createUser(
+          createUserRequest: request,
+        );
+
+        // Assert
+        expect(response.statusCode, equals(201));
+        expect(response.data, isNotNull);
+        expect(response.data!.id, equals('user_123abc'));
+        expect(response.data!.created, isTrue);
+        expect(response.data!.identities, isNotNull);
+        expect(response.data!.identities!.length, equals(1));
+      });
+
+      test('should create user with minimal data (name only)', () async {
+        // Arrange
+        final expectedResponse = {
+          'id': 'user_minimal_456',
+          'created': true,
+        };
+
+        dioAdapter.onPost(
+          testPath,
+          (server) => server.reply(201, expectedResponse),
+          data: Matchers.any,
+        );
+
+        final request = CreateUserRequest((b) => b
+          ..profile.givenName = 'Jane'
+          ..profile.familyName = 'Smith');
+
+        // Act
+        final response = await usersApi.createUser(
+          createUserRequest: request,
+        );
+
+        // Assert
+        expect(response.statusCode, equals(201));
+        expect(response.data!.id, equals('user_minimal_456'));
+        expect(response.data!.created, isTrue);
+      });
+
+      test('should create user with multiple identities', () async {
+        // Arrange
+        final expectedResponse = {
+          'id': 'user_multi_789',
+          'created': true,
+          'identities': [
+            {
+              'type': 'email',
+              'identity': {'email': 'user@example.com'},
+            },
+            {
+              'type': 'phone',
+              'identity': {'phone': '+1234567890'},
+            },
+          ],
+        };
+
+        dioAdapter.onPost(
+          testPath,
+          (server) => server.reply(201, expectedResponse),
+          data: Matchers.any,
+        );
+
+        final request = CreateUserRequest((b) => b
+          ..profile.givenName = 'Multi'
+          ..profile.familyName = 'Identity'
+          ..identities.addAll([
+            CreateUserRequestIdentitiesInner((i) => i
+              ..type = 'email'
+              ..details.email = 'user@example.com'),
+            CreateUserRequestIdentitiesInner((i) => i..type = 'phone'),
+          ]));
+
+        // Act
+        final response = await usersApi.createUser(
+          createUserRequest: request,
+        );
+
+        // Assert
+        expect(response.statusCode, equals(201));
+        expect(response.data!.identities!.length, equals(2));
+      });
     });
 
-    // Delete User
-    //
-    // Delete a user record.
-    //
-    //Future<SuccessResponse> deleteUser(String id, { String isDeleteProfile }) async
-    test('test deleteUser', () async {
-      // TODO
-      final responseData = await instance.deleteUser(id: 'test_user_id');
-      expect(responseData, isNotNull);
+    group('error scenarios', () {
+      test('should throw DioException on 400 validation error', () async {
+        // Arrange
+        final errorResponse = {
+          'error': 'validation_error',
+          'error_description': 'Email address is required',
+        };
+
+        dioAdapter.onPost(
+          testPath,
+          (server) => server.reply(400, errorResponse),
+          data: Matchers.any,
+        );
+
+        final request = CreateUserRequest((b) => b
+          ..profile.givenName = 'Invalid'
+          ..profile.familyName = 'User');
+
+        // Act & Assert
+        expect(
+          () => usersApi.createUser(createUserRequest: request),
+          throwsA(isA<DioException>().having(
+            (e) => e.response?.statusCode,
+            'status code',
+            equals(400),
+          )),
+        );
+      });
+
+      test('should throw DioException on 401 unauthorized', () async {
+        // Arrange
+        final errorResponse = {
+          'error': 'unauthorized',
+          'error_description': 'Invalid or expired token',
+        };
+
+        dioAdapter.onPost(
+          testPath,
+          (server) => server.reply(401, errorResponse),
+          data: Matchers.any,
+        );
+
+        final request = CreateUserRequest();
+
+        // Act & Assert
+        expect(
+          () => usersApi.createUser(createUserRequest: request),
+          throwsA(isA<DioException>().having(
+            (e) => e.response?.statusCode,
+            'status code',
+            equals(401),
+          )),
+        );
+      });
+
+      test('should throw DioException on 403 forbidden', () async {
+        // Arrange
+        final errorResponse = {
+          'error': 'forbidden',
+          'error_description': 'Insufficient permissions to create users',
+        };
+
+        dioAdapter.onPost(
+          testPath,
+          (server) => server.reply(403, errorResponse),
+          data: Matchers.any,
+        );
+
+        final request = CreateUserRequest();
+
+        // Act & Assert
+        expect(
+          () => usersApi.createUser(createUserRequest: request),
+          throwsA(isA<DioException>().having(
+            (e) => e.response?.statusCode,
+            'status code',
+            equals(403),
+          )),
+        );
+      });
+
+      test('should throw DioException on 500 server error', () async {
+        // Arrange
+        final errorResponse = {
+          'error': 'server_error',
+          'error_description': 'Internal server error',
+        };
+
+        dioAdapter.onPost(
+          testPath,
+          (server) => server.reply(500, errorResponse),
+          data: Matchers.any,
+        );
+
+        final request = CreateUserRequest();
+
+        // Act & Assert
+        expect(
+          () => usersApi.createUser(createUserRequest: request),
+          throwsA(isA<DioException>().having(
+            (e) => e.response?.statusCode,
+            'status code',
+            equals(500),
+          )),
+        );
+      });
     });
 
-    // Get User
-    //
-    // Retrieve a user record.
-    //
-    //Future<User> getUserData(String id) async
-    test('test getUserData', () async {
-      // TODO
-      final responseData = await instance.getUserData(id: 'test_user_id');
-      expect(responseData, isNotNull);
+    group('request validation', () {
+      test('should send correct content-type header', () async {
+        // Arrange
+        String? capturedContentType;
+
+        dioAdapter.onPost(
+          testPath,
+          (server) {
+            capturedContentType = server.request.headers['content-type']?.first;
+            return server.reply(201, {'id': 'user_123', 'created': true});
+          },
+          data: Matchers.any,
+        );
+
+        final request = CreateUserRequest((b) => b
+          ..profile.givenName = 'Test'
+          ..profile.familyName = 'User');
+
+        // Act
+        await usersApi.createUser(createUserRequest: request);
+
+        // Assert
+        expect(capturedContentType, equals('application/json'));
+      });
+
+      test('should serialize request body correctly', () async {
+        // Arrange
+        Map<String, dynamic>? capturedBody;
+
+        dioAdapter.onPost(
+          testPath,
+          (server) {
+            capturedBody = server.request.data as Map<String, dynamic>?;
+            return server.reply(201, {'id': 'user_123', 'created': true});
+          },
+          data: Matchers.any,
+        );
+
+        final request = CreateUserRequest((b) => b
+          ..profile.givenName = 'John'
+          ..profile.familyName = 'Doe'
+          ..identities.add(CreateUserRequestIdentitiesInner((i) => i
+            ..type = 'email'
+            ..details.email = 'john.doe@example.com')));
+
+        // Act
+        await usersApi.createUser(createUserRequest: request);
+
+        // Assert
+        expect(capturedBody, isNotNull);
+        expect(capturedBody!['profile'], isNotNull);
+        expect(capturedBody!['profile']['given_name'], equals('John'));
+        expect(capturedBody!['profile']['family_name'], equals('Doe'));
+        expect(capturedBody!['identities'], isNotNull);
+        expect(capturedBody!['identities'], isList);
+        expect(capturedBody!['identities'][0]['type'], equals('email'));
+      });
+    });
+  });
+
+  group('getUserData', () {
+    const testPath = '/api/v1/user';
+
+    group('success scenarios', () {
+      test('should retrieve user by id', () async {
+        // Arrange
+        const userId = 'user_123abc';
+        final expectedResponse = {
+          'id': userId,
+          'provided_id': null,
+          'preferred_email': 'john.doe@example.com',
+          'username': null,
+          'last_name': 'Doe',
+          'first_name': 'John',
+          'is_suspended': false,
+          'picture': 'https://example.com/avatar.jpg',
+          'total_sign_ins': 42,
+          'failed_sign_ins': 0,
+          'last_signed_in': '2023-12-01T10:30:00Z',
+          'created_on': '2023-01-15T08:00:00Z',
+        };
+
+        dioAdapter.onGet(
+          testPath,
+          (server) => server.reply(200, expectedResponse),
+          queryParameters: {'id': userId},
+        );
+
+        // Act
+        final response = await usersApi.getUserData(id: userId);
+
+        // Assert
+        expect(response.statusCode, equals(200));
+        expect(response.data, isNotNull);
+        expect(response.data!.id, equals(userId));
+        expect(response.data!.firstName, equals('John'));
+        expect(response.data!.lastName, equals('Doe'));
+        expect(response.data!.preferredEmail, equals('john.doe@example.com'));
+        expect(response.data!.isSuspended, isFalse);
+        expect(response.data!.totalSignIns, equals(42));
+        expect(response.data!.failedSignIns, equals(0));
+      });
+
+      test('should retrieve suspended user', () async {
+        // Arrange
+        const userId = 'user_suspended_456';
+        final expectedResponse = {
+          'id': userId,
+          'preferred_email': 'suspended@example.com',
+          'last_name': 'Suspended',
+          'first_name': 'User',
+          'is_suspended': true,
+          'total_sign_ins': 5,
+          'failed_sign_ins': 3,
+        };
+
+        dioAdapter.onGet(
+          testPath,
+          (server) => server.reply(200, expectedResponse),
+          queryParameters: {'id': userId},
+        );
+
+        // Act
+        final response = await usersApi.getUserData(id: userId);
+
+        // Assert
+        expect(response.data!.isSuspended, isTrue);
+        expect(response.data!.failedSignIns, equals(3));
+      });
     });
 
-    // List Users
-    //
-    // The returned list can be sorted by full name or email address in ascending or descending order. The number of records to return at a time can also be controlled using the `page_size` query string parameter.
-    //
-    //Future<UsersResponse> getUsers({ String sort, int pageSize, String userId, String nextToken, String email }) async
-    test('test getUsers', () async {
-      // TODO
-      final responseData = await instance.getUsers();
-      expect(responseData, isNotNull);
+    group('error scenarios', () {
+      test('should throw DioException on 404 user not found', () async {
+        // Arrange
+        const userId = 'nonexistent_user';
+        final errorResponse = {
+          'error': 'not_found',
+          'error_description': 'User not found',
+        };
+
+        dioAdapter.onGet(
+          testPath,
+          (server) => server.reply(404, errorResponse),
+          queryParameters: {'id': userId},
+        );
+
+        // Act & Assert
+        expect(
+          () => usersApi.getUserData(id: userId),
+          throwsA(isA<DioException>().having(
+            (e) => e.response?.statusCode,
+            'status code',
+            equals(404),
+          )),
+        );
+      });
+
+      test('should throw DioException on 401 unauthorized', () async {
+        // Arrange
+        const userId = 'user_123';
+        final errorResponse = {
+          'error': 'unauthorized',
+          'error_description': 'Invalid or expired token',
+        };
+
+        dioAdapter.onGet(
+          testPath,
+          (server) => server.reply(401, errorResponse),
+          queryParameters: {'id': userId},
+        );
+
+        // Act & Assert
+        expect(
+          () => usersApi.getUserData(id: userId),
+          throwsA(isA<DioException>().having(
+            (e) => e.response?.statusCode,
+            'status code',
+            equals(401),
+          )),
+        );
+      });
     });
 
-    // Update User
-    //
-    // Update a user record.
-    //
-    //Future<User> updateUser(UpdateUserRequest updateUserRequest, { String id }) async
-    test('test updateUser', () async {
-      // TODO
-      final responseData = await instance.updateUser(
-        updateUserRequest: UpdateUserRequest(),
-      );
-      expect(responseData, isNotNull);
+    group('request validation', () {
+      test('should send user id as query parameter', () async {
+        // Arrange
+        const userId = 'user_query_test';
+        Map<String, dynamic>? capturedParams;
+
+        dioAdapter.onGet(
+          testPath,
+          (server) {
+            capturedParams = server.request.queryParameters;
+            return server.reply(200, {
+              'id': userId,
+              'first_name': 'Test',
+              'last_name': 'User',
+            });
+          },
+          queryParameters: {'id': userId},
+        );
+
+        // Act
+        await usersApi.getUserData(id: userId);
+
+        // Assert
+        expect(capturedParams, isNotNull);
+        expect(capturedParams!['id'], equals(userId));
+      });
+    });
+  });
+
+  group('getUsers', () {
+    const testPath = '/api/v1/users';
+
+    group('success scenarios', () {
+      test('should list all users with default parameters', () async {
+        // Arrange
+        final expectedResponse = {
+          'code': 'OK',
+          'message': 'Success',
+          'users': [
+            {
+              'id': 'user_1',
+              'first_name': 'Alice',
+              'last_name': 'Smith',
+              'preferred_email': 'alice@example.com',
+              'is_suspended': false,
+            },
+            {
+              'id': 'user_2',
+              'first_name': 'Bob',
+              'last_name': 'Johnson',
+              'preferred_email': 'bob@example.com',
+              'is_suspended': false,
+            },
+          ],
+          'next_token': null,
+        };
+
+        dioAdapter.onGet(
+          testPath,
+          (server) => server.reply(200, expectedResponse),
+        );
+
+        // Act
+        final response = await usersApi.getUsers();
+
+        // Assert
+        expect(response.statusCode, equals(200));
+        expect(response.data, isNotNull);
+        expect(response.data!.users, isNotNull);
+        expect(response.data!.users!.length, equals(2));
+        expect(response.data!.users![0].id, equals('user_1'));
+        expect(response.data!.users![0].firstName, equals('Alice'));
+        expect(response.data!.users![1].id, equals('user_2'));
+        expect(response.data!.nextToken, isNull);
+      });
+
+      test('should list users with pagination', () async {
+        // Arrange
+        final expectedResponse = {
+          'code': 'OK',
+          'message': 'Success',
+          'users': [
+            {
+              'id': 'user_1',
+              'first_name': 'User',
+              'last_name': 'One',
+              'preferred_email': 'user1@example.com',
+            },
+          ],
+          'next_token': 'token_page_2',
+        };
+
+        dioAdapter.onGet(
+          testPath,
+          (server) => server.reply(200, expectedResponse),
+          queryParameters: {'page_size': '10'},
+        );
+
+        // Act
+        final response = await usersApi.getUsers(pageSize: 10);
+
+        // Assert
+        expect(response.data!.users!.length, equals(1));
+        expect(response.data!.nextToken, equals('token_page_2'));
+      });
+
+      test('should list users with next_token for pagination', () async {
+        // Arrange
+        const nextToken = 'token_page_2';
+        final expectedResponse = {
+          'code': 'OK',
+          'message': 'Success',
+          'users': [
+            {
+              'id': 'user_11',
+              'first_name': 'User',
+              'last_name': 'Eleven',
+              'preferred_email': 'user11@example.com',
+            },
+          ],
+          'next_token': null,
+        };
+
+        dioAdapter.onGet(
+          testPath,
+          (server) => server.reply(200, expectedResponse),
+          queryParameters: {'next_token': nextToken},
+        );
+
+        // Act
+        final response = await usersApi.getUsers(nextToken: nextToken);
+
+        // Assert
+        expect(response.data!.users!.length, equals(1));
+        expect(response.data!.users![0].id, equals('user_11'));
+        expect(response.data!.nextToken, isNull);
+      });
+
+      test('should filter users by email', () async {
+        // Arrange
+        const emailFilter = 'alice@example.com';
+        final expectedResponse = {
+          'code': 'OK',
+          'message': 'Success',
+          'users': [
+            {
+              'id': 'user_alice',
+              'first_name': 'Alice',
+              'last_name': 'Smith',
+              'preferred_email': emailFilter,
+            },
+          ],
+          'next_token': null,
+        };
+
+        dioAdapter.onGet(
+          testPath,
+          (server) => server.reply(200, expectedResponse),
+          queryParameters: {'email': emailFilter},
+        );
+
+        // Act
+        final response = await usersApi.getUsers(email: emailFilter);
+
+        // Assert
+        expect(response.data!.users!.length, equals(1));
+        expect(response.data!.users![0].preferredEmail, equals(emailFilter));
+      });
+
+      test('should sort users by name ascending', () async {
+        // Arrange
+        const sortParam = 'name_asc';
+        final expectedResponse = {
+          'code': 'OK',
+          'message': 'Success',
+          'users': [
+            {'id': 'user_1', 'first_name': 'Alice', 'last_name': 'Smith'},
+            {'id': 'user_2', 'first_name': 'Bob', 'last_name': 'Johnson'},
+            {'id': 'user_3', 'first_name': 'Charlie', 'last_name': 'Brown'},
+          ],
+          'next_token': null,
+        };
+
+        dioAdapter.onGet(
+          testPath,
+          (server) => server.reply(200, expectedResponse),
+          queryParameters: {'sort': sortParam},
+        );
+
+        // Act
+        final response = await usersApi.getUsers(sort: sortParam);
+
+        // Assert
+        expect(response.data!.users!.length, equals(3));
+        expect(response.data!.users![0].firstName, equals('Alice'));
+        expect(response.data!.users![2].firstName, equals('Charlie'));
+      });
+
+      test('should return empty list when no users match criteria', () async {
+        // Arrange
+        final expectedResponse = {
+          'code': 'OK',
+          'message': 'Success',
+          'users': [],
+          'next_token': null,
+        };
+
+        dioAdapter.onGet(
+          testPath,
+          (server) => server.reply(200, expectedResponse),
+          queryParameters: {'email': 'nonexistent@example.com'},
+        );
+
+        // Act
+        final response = await usersApi.getUsers(email: 'nonexistent@example.com');
+
+        // Assert
+        expect(response.data!.users, isEmpty);
+      });
+    });
+
+    group('error scenarios', () {
+      test('should throw DioException on 400 invalid parameters', () async {
+        // Arrange
+        final errorResponse = {
+          'error': 'validation_error',
+          'error_description': 'Invalid sort parameter',
+        };
+
+        dioAdapter.onGet(
+          testPath,
+          (server) => server.reply(400, errorResponse),
+          queryParameters: {'sort': 'invalid_sort'},
+        );
+
+        // Act & Assert
+        expect(
+          () => usersApi.getUsers(sort: 'invalid_sort'),
+          throwsA(isA<DioException>().having(
+            (e) => e.response?.statusCode,
+            'status code',
+            equals(400),
+          )),
+        );
+      });
+
+      test('should throw DioException on 401 unauthorized', () async {
+        // Arrange
+        final errorResponse = {
+          'error': 'unauthorized',
+          'error_description': 'Invalid or expired token',
+        };
+
+        dioAdapter.onGet(
+          testPath,
+          (server) => server.reply(401, errorResponse),
+        );
+
+        // Act & Assert
+        expect(
+          () => usersApi.getUsers(),
+          throwsA(isA<DioException>().having(
+            (e) => e.response?.statusCode,
+            'status code',
+            equals(401),
+          )),
+        );
+      });
+    });
+
+    group('request validation', () {
+      test('should send all query parameters correctly', () async {
+        // Arrange
+        Map<String, dynamic>? capturedParams;
+
+        dioAdapter.onGet(
+          testPath,
+          (server) {
+            capturedParams = server.request.queryParameters;
+            return server.reply(200, {
+              'code': 'OK',
+              'users': [],
+              'next_token': null,
+            });
+          },
+          queryParameters: {
+            'sort': 'email_asc',
+            'page_size': '25',
+            'email': 'test@example.com',
+          },
+        );
+
+        // Act
+        await usersApi.getUsers(
+          sort: 'email_asc',
+          pageSize: 25,
+          email: 'test@example.com',
+        );
+
+        // Assert
+        expect(capturedParams, isNotNull);
+        expect(capturedParams!['sort'], equals('email_asc'));
+        expect(capturedParams!['page_size'], equals('25'));
+        expect(capturedParams!['email'], equals('test@example.com'));
+      });
+    });
+  });
+
+  group('updateUser', () {
+    const testPath = '/api/v1/user';
+
+    group('success scenarios', () {
+      test('should update user name', () async {
+        // Arrange
+        const userId = 'user_123';
+        final expectedResponse = {
+          'id': userId,
+          'first_name': 'Jane',
+          'last_name': 'Doe',
+          'preferred_email': 'jane.doe@example.com',
+          'is_suspended': false,
+        };
+
+        dioAdapter.onPatch(
+          testPath,
+          (server) => server.reply(200, expectedResponse),
+          data: Matchers.any,
+          queryParameters: {'id': userId},
+        );
+
+        final request = UpdateUserRequest((b) => b
+          ..givenName = 'Jane'
+          ..familyName = 'Doe');
+
+        // Act
+        final response = await usersApi.updateUser(
+          id: userId,
+          updateUserRequest: request,
+        );
+
+        // Assert
+        expect(response.statusCode, equals(200));
+        expect(response.data, isNotNull);
+        expect(response.data!.id, equals(userId));
+        expect(response.data!.firstName, equals('Jane'));
+        expect(response.data!.lastName, equals('Doe'));
+      });
+
+      test('should update user suspension status', () async {
+        // Arrange
+        const userId = 'user_456';
+        final expectedResponse = {
+          'id': userId,
+          'first_name': 'John',
+          'last_name': 'Suspended',
+          'is_suspended': true,
+        };
+
+        dioAdapter.onPatch(
+          testPath,
+          (server) => server.reply(200, expectedResponse),
+          data: Matchers.any,
+          queryParameters: {'id': userId},
+        );
+
+        final request = UpdateUserRequest((b) => b..isSuspended = true);
+
+        // Act
+        final response = await usersApi.updateUser(
+          id: userId,
+          updateUserRequest: request,
+        );
+
+        // Assert
+        expect(response.data!.isSuspended, isTrue);
+      });
+    });
+
+    group('error scenarios', () {
+      test('should throw DioException on 404 user not found', () async {
+        // Arrange
+        const userId = 'nonexistent_user';
+        final errorResponse = {
+          'error': 'not_found',
+          'error_description': 'User not found',
+        };
+
+        dioAdapter.onPatch(
+          testPath,
+          (server) => server.reply(404, errorResponse),
+          data: Matchers.any,
+          queryParameters: {'id': userId},
+        );
+
+        final request = UpdateUserRequest((b) => b..givenName = 'Test');
+
+        // Act & Assert
+        expect(
+          () => usersApi.updateUser(
+            id: userId,
+            updateUserRequest: request,
+          ),
+          throwsA(isA<DioException>().having(
+            (e) => e.response?.statusCode,
+            'status code',
+            equals(404),
+          )),
+        );
+      });
+
+      test('should throw DioException on 400 validation error', () async {
+        // Arrange
+        const userId = 'user_123';
+        final errorResponse = {
+          'error': 'validation_error',
+          'error_description': 'Invalid email format',
+        };
+
+        dioAdapter.onPatch(
+          testPath,
+          (server) => server.reply(400, errorResponse),
+          data: Matchers.any,
+          queryParameters: {'id': userId},
+        );
+
+        final request = UpdateUserRequest();
+
+        // Act & Assert
+        expect(
+          () => usersApi.updateUser(
+            id: userId,
+            updateUserRequest: request,
+          ),
+          throwsA(isA<DioException>().having(
+            (e) => e.response?.statusCode,
+            'status code',
+            equals(400),
+          )),
+        );
+      });
+    });
+
+    group('request validation', () {
+      test('should send user id as query parameter', () async {
+        // Arrange
+        const userId = 'user_update_test';
+        Map<String, dynamic>? capturedParams;
+
+        dioAdapter.onPatch(
+          testPath,
+          (server) {
+            capturedParams = server.request.queryParameters;
+            return server.reply(200, {
+              'id': userId,
+              'first_name': 'Updated',
+              'last_name': 'User',
+            });
+          },
+          data: Matchers.any,
+          queryParameters: {'id': userId},
+        );
+
+        final request = UpdateUserRequest((b) => b..givenName = 'Updated');
+
+        // Act
+        await usersApi.updateUser(
+          id: userId,
+          updateUserRequest: request,
+        );
+
+        // Assert
+        expect(capturedParams, isNotNull);
+        expect(capturedParams!['id'], equals(userId));
+      });
+    });
+  });
+
+  group('deleteUser', () {
+    const testPath = '/api/v1/user';
+
+    group('success scenarios', () {
+      test('should delete user successfully', () async {
+        // Arrange
+        const userId = 'user_to_delete';
+        final expectedResponse = {
+          'message': 'User successfully deleted',
+          'code': 'OK',
+        };
+
+        dioAdapter.onDelete(
+          testPath,
+          (server) => server.reply(200, expectedResponse),
+          queryParameters: {'id': userId},
+        );
+
+        // Act
+        final response = await usersApi.deleteUser(id: userId);
+
+        // Assert
+        expect(response.statusCode, equals(200));
+        expect(response.data, isNotNull);
+        expect(response.data!.message, contains('successfully deleted'));
+        expect(response.data!.code, equals('OK'));
+      });
+
+      test('should delete user with profile deletion flag', () async {
+        // Arrange
+        const userId = 'user_full_delete';
+        final expectedResponse = {
+          'message': 'User and profile successfully deleted',
+          'code': 'OK',
+        };
+
+        dioAdapter.onDelete(
+          testPath,
+          (server) => server.reply(200, expectedResponse),
+          queryParameters: {'id': userId, 'is_delete_profile': 'true'},
+        );
+
+        // Act
+        final response = await usersApi.deleteUser(
+          id: userId,
+          isDeleteProfile: true,
+        );
+
+        // Assert
+        expect(response.statusCode, equals(200));
+        expect(response.data!.message, contains('profile'));
+      });
+    });
+
+    group('error scenarios', () {
+      test('should throw DioException on 404 user not found', () async {
+        // Arrange
+        const userId = 'nonexistent_user';
+        final errorResponse = {
+          'error': 'not_found',
+          'error_description': 'User not found',
+        };
+
+        dioAdapter.onDelete(
+          testPath,
+          (server) => server.reply(404, errorResponse),
+          queryParameters: {'id': userId},
+        );
+
+        // Act & Assert
+        expect(
+          () => usersApi.deleteUser(id: userId),
+          throwsA(isA<DioException>().having(
+            (e) => e.response?.statusCode,
+            'status code',
+            equals(404),
+          )),
+        );
+      });
+
+      test('should throw DioException on 401 unauthorized', () async {
+        // Arrange
+        const userId = 'user_123';
+        final errorResponse = {
+          'error': 'unauthorized',
+          'error_description': 'Invalid or expired token',
+        };
+
+        dioAdapter.onDelete(
+          testPath,
+          (server) => server.reply(401, errorResponse),
+          queryParameters: {'id': userId},
+        );
+
+        // Act & Assert
+        expect(
+          () => usersApi.deleteUser(id: userId),
+          throwsA(isA<DioException>().having(
+            (e) => e.response?.statusCode,
+            'status code',
+            equals(401),
+          )),
+        );
+      });
+
+      test('should throw DioException on 403 forbidden', () async {
+        // Arrange
+        const userId = 'protected_user';
+        final errorResponse = {
+          'error': 'forbidden',
+          'error_description': 'Insufficient permissions to delete this user',
+        };
+
+        dioAdapter.onDelete(
+          testPath,
+          (server) => server.reply(403, errorResponse),
+          queryParameters: {'id': userId},
+        );
+
+        // Act & Assert
+        expect(
+          () => usersApi.deleteUser(id: userId),
+          throwsA(isA<DioException>().having(
+            (e) => e.response?.statusCode,
+            'status code',
+            equals(403),
+          )),
+        );
+      });
+    });
+
+    group('request validation', () {
+      test('should send user id as query parameter', () async {
+        // Arrange
+        const userId = 'user_delete_test';
+        Map<String, dynamic>? capturedParams;
+
+        dioAdapter.onDelete(
+          testPath,
+          (server) {
+            capturedParams = server.request.queryParameters;
+            return server.reply(200, {
+              'message': 'User deleted',
+              'code': 'OK',
+            });
+          },
+          queryParameters: {'id': userId},
+        );
+
+        // Act
+        await usersApi.deleteUser(id: userId);
+
+        // Assert
+        expect(capturedParams, isNotNull);
+        expect(capturedParams!['id'], equals(userId));
+      });
+
+      test('should send is_delete_profile parameter when provided', () async {
+        // Arrange
+        const userId = 'user_profile_delete';
+        Map<String, dynamic>? capturedParams;
+
+        dioAdapter.onDelete(
+          testPath,
+          (server) {
+            capturedParams = server.request.queryParameters;
+            return server.reply(200, {
+              'message': 'User and profile deleted',
+              'code': 'OK',
+            });
+          },
+          queryParameters: {'id': userId, 'is_delete_profile': 'true'},
+        );
+
+        // Act
+        await usersApi.deleteUser(
+          id: userId,
+          isDeleteProfile: true,
+        );
+
+        // Assert
+        expect(capturedParams!['is_delete_profile'], equals('true'));
+      });
     });
   });
 }
