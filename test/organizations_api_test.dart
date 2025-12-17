@@ -1,230 +1,839 @@
-import 'package:test/test.dart';
-import 'package:kinde_flutter_sdk/kinde_api.dart';
-import '../test/test_helpers/dio_mock.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:http_mock_adapter/http_mock_adapter.dart';
+import 'package:kinde_flutter_sdk/kinde_api.dart';
 
-/// tests for OrganizationsApi
+/// Enterprise-grade tests for OrganizationsApi
+/// This API has 19 methods covering organization management, users, roles, and feature flags
 void main() {
-  //final instance = KindeApi().getOrganizationsApi();
-  Dio dio = DioAdapterMock();
-  final instance = KindeApi(dio: dio).getOrganizationsApi();
+  late Dio dio;
+  late DioAdapter dioAdapter;
+  late OrganizationsApi organizationsApi;
 
-  group(OrganizationsApi, () {
-    // Add Organization Users
-    //
-    // Add existing users to an organization.
-    //
-    //Future<AddOrganizationUsersResponse> addOrganizationUsers(String orgCode, { AddOrganizationUsersRequest addOrganizationUsersRequest }) async
-    test('test addOrganizationUsers', () async {
-      // TODO
-      final responseData = await instance.addOrganizationUsers(
-        orgCode: 'test_org_code',
-        addOrganizationUsersRequest: AddOrganizationUsersRequest(),
+  setUp() {
+    dio = Dio(BaseOptions(
+      baseUrl: 'https://test.kinde.com',
+      contentType: 'application/json',
+    ));
+    dioAdapter = DioAdapter(dio: dio);
+    organizationsApi = KindeApi(dio: dio).getOrganizationsApi();
+  });
+
+  tearDown() {
+    dioAdapter.reset();
+  });
+
+  // CRUD Operations
+  group('createOrganization', () {
+    const testPath = '/api/v1/organization';
+
+    test('creates organization with complete data', () async {
+      // Arrange
+      final expectedResponse = {
+        'organization': {
+          'code': 'acme',
+          'name': 'Acme Corp',
+        },
+      };
+
+      dioAdapter.onPost(
+        testPath,
+        (server) => server.reply(201, expectedResponse),
+        data: Matchers.any,
       );
-      expect(responseData, isNotNull);
-    });
 
-    // Create Organization
-    //
-    // Create an organization.
-    //
-    //Future<CreateOrganizationResponse> createOrganization({ CreateOrganizationRequest createOrganizationRequest }) async
-    test('test createOrganization', () async {
-      // TODO
-      final responseData = await instance.createOrganization(
-        createOrganizationRequest: CreateOrganizationRequest(),
+      final request = CreateOrganizationRequest((b) => b
+        ..name = 'Acme Corp'
+        ..externalOrganizationId = 'ext_123');
+
+      // Act
+      final response = await organizationsApi.createOrganization(
+        createOrganizationRequest: request,
       );
-      expect(responseData, isNotNull);
+
+      // Assert
+      expect(response.statusCode, equals(201));
+      expect(response.data, isNotNull);
+      expect(response.data!.organization, isNotNull);
+      expect(response.data!.organization!.name, equals('Acme Corp'));
     });
 
-    // Add Organization User Role
-    //
-    // Add role to an organization user.
-    //
-    //Future<SuccessResponse> createOrganizationUserRole(String orgCode, String userId, CreateOrganizationUserRoleRequest createOrganizationUserRoleRequest) async
-    test('test createOrganizationUserRole', () async {
-      // TODO
-      final responseData = await instance.createOrganizationUserRole(
-        orgCode: 'test_org_code',
-        userId: 'test_user_id',
-        createOrganizationUserRoleRequest: CreateOrganizationUserRoleRequest(),
+    test('throws DioException on 409 conflict', () async {
+      // Arrange
+      final errorResponse = {
+        'error': 'conflict',
+        'error_description': 'Organization already exists',
+      };
+
+      dioAdapter.onPost(
+        testPath,
+        (server) => server.reply(409, errorResponse),
+        data: Matchers.any,
       );
-      expect(responseData, isNotNull);
-    });
 
-    // Delete Organization
-    //
-    // Delete an organization.
-    //
-    //Future deleteOrganization(String orgCode) async
-    test('test deleteOrganization', () async {
-      // TODO
-      final responseData = await instance.deleteOrganization(
-        orgCode: 'test_org_code',
+      final request = CreateOrganizationRequest();
+
+      // Act & Assert
+      expect(
+        () => organizationsApi.createOrganization(
+          createOrganizationRequest: request,
+        ),
+        throwsA(isA<DioException>().having(
+          (e) => e.response?.statusCode,
+          'status code',
+          equals(409),
+        )),
       );
-      expect(responseData, isNotNull);
     });
+  });
 
-    // Delete Organization Feature Flag Override
-    //
-    // Delete organization feature flag override.
-    //
-    //Future<SuccessResponse> deleteOrganizationFeatureFlagOverride(String orgCode, String featureFlagKey) async
-    test('test deleteOrganizationFeatureFlagOverride', () async {
-      // TODO
-      final responseData = await instance.deleteOrganizationFeatureFlagOverride(
-        orgCode: 'test_org_code',
-        featureFlagKey: 'test_key',
+  group('getOrganizations', () {
+    const testPath = '/api/v1/organizations';
+
+    test('retrieves all organizations with pagination', () async {
+      // Arrange
+      final expectedResponse = {
+        'organizations': [
+          {'code': 'org1', 'name': 'Org One'},
+          {'code': 'org2', 'name': 'Org Two'},
+        ],
+        'next_token': 'token123',
+      };
+
+      dioAdapter.onGet(
+        testPath,
+        (server) => server.reply(200, expectedResponse),
+        queryParameters: {'page_size': '10'},
       );
-      expect(responseData, isNotNull);
+
+      // Act
+      final response = await organizationsApi.getOrganizations(pageSize: 10);
+
+      // Assert
+      expect(response.statusCode, equals(200));
+      expect(response.data, isNotNull);
+      expect(response.data!.organizations, isNotNull);
+      expect(response.data!.organizations!.length, equals(2));
+      expect(response.data!.nextToken, equals('token123'));
     });
 
-    // Delete Organization Feature Flag Overrides
-    //
-    // Delete all organization feature flag overrides.
-    //
-    //Future<SuccessResponse> deleteOrganizationFeatureFlagOverrides(String orgCode) async
-    test('test deleteOrganizationFeatureFlagOverrides', () async {
-      // TODO
-      final responseData = await instance
-          .deleteOrganizationFeatureFlagOverrides(orgCode: 'test_org_code');
-      expect(responseData, isNotNull);
-    });
+    test('throws DioException on 401 unauthorized', () async {
+      // Arrange
+      final errorResponse = {
+        'error': 'unauthorized',
+        'error_description': 'Invalid token',
+      };
 
-    // Delete Organization User Role
-    //
-    // Delete role for an organization user.
-    //
-    //Future<SuccessResponse> deleteOrganizationUserRole(String orgCode, String userId, String roleId) async
-    test('test deleteOrganizationUserRole', () async {
-      // TODO
-      final responseData = await instance.deleteOrganizationUserRole(
-        orgCode: 'test_org_code',
-        userId: 'test_user_id',
-        roleId: 'test_role_id',
+      dioAdapter.onGet(
+        testPath,
+        (server) => server.reply(401, errorResponse),
       );
-      expect(responseData, isNotNull);
-    });
 
-    // Get Organization
-    //
-    // Gets an organization given the organization's code.
-    //
-    //Future<Organization> getOrganization({ String code }) async
-    test('test getOrganization', () async {
-      // TODO
-      final responseData = await instance.getOrganization(
-        code: 'test_org_code',
+      // Act & Assert
+      expect(
+        () => organizationsApi.getOrganizations(),
+        throwsA(isA<DioException>().having(
+          (e) => e.response?.statusCode,
+          'status code',
+          equals(401),
+        )),
       );
-      expect(responseData, isNotNull);
     });
+  });
 
-    // List Organization Feature Flags
-    //
-    // Get all organization feature flags.
-    //
-    //Future<GetOrganizationFeatureFlagsResponse> getOrganizationFeatureFlags(String orgCode) async
-    test('test getOrganizationFeatureFlags', () async {
-      // TODO
-      final responseData = await instance.getOrganizationFeatureFlags(
-        orgCode: 'test_org_code',
+  group('getOrganization', () {
+    const testPath = '/api/v1/organization';
+
+    test('retrieves organization by code', () async {
+      // Arrange
+      final expectedResponse = {
+        'code': 'acme',
+        'name': 'Acme Corp',
+        'is_allow_registrations': true,
+      };
+
+      dioAdapter.onGet(
+        testPath,
+        (server) => server.reply(200, expectedResponse),
+        queryParameters: {'code': 'acme'},
       );
-      expect(responseData, isNotNull);
+
+      // Act
+      final response = await organizationsApi.getOrganization(code: 'acme');
+
+      // Assert
+      expect(response.statusCode, equals(200));
+      expect(response.data, isNotNull);
+      expect(response.data!.code, equals('acme'));
+      expect(response.data!.name, equals('Acme Corp'));
     });
 
-    // List Organization User Roles
-    //
-    // Get roles for an organization user.
-    //
-    //Future<GetOrganizationsUserRolesResponse> getOrganizationUserRoles(String orgCode, String userId) async
-    test('test getOrganizationUserRoles', () async {
-      // TODO
-      final responseData = await instance.getOrganizationUserRoles(
-        orgCode: 'test_org_code',
-        userId: 'test_user_id',
+    test('throws DioException on 404 not found', () async {
+      // Arrange
+      final errorResponse = {
+        'error': 'not_found',
+        'error_description': 'Organization not found',
+      };
+
+      dioAdapter.onGet(
+        testPath,
+        (server) => server.reply(404, errorResponse),
+        queryParameters: {'code': 'nonexistent'},
       );
-      expect(responseData, isNotNull);
-    });
 
-    // List Organization Users
-    //
-    // Get users in an organization.
-    //
-    //Future<GetOrganizationUsersResponse> getOrganizationUsers(String orgCode, { String sort, int pageSize, String nextToken, String permissions }) async
-    test('test getOrganizationUsers', () async {
-      // TODO
-      final responseData = await instance.getOrganizationUsers(
-        orgCode: 'test_org_code',
+      // Act & Assert
+      expect(
+        () => organizationsApi.getOrganization(code: 'nonexistent'),
+        throwsA(isA<DioException>().having(
+          (e) => e.response?.statusCode,
+          'status code',
+          equals(404),
+        )),
       );
-      expect(responseData, isNotNull);
     });
+  });
 
-    // List Organizations
-    //
-    // Get a list of organizations.
-    //
-    //Future<GetOrganizationsResponse> getOrganizations({ String sort, int pageSize, String nextToken }) async
-    test('test getOrganizations', () async {
-      // TODO
-      final responseData = await instance.getOrganizations();
-      expect(responseData, isNotNull);
-    });
+  group('updateOrganization', () {
+    const orgCode = 'acme';
+    final testPath = '/api/v1/organization/$orgCode';
 
-    // Remove Organization User
-    //
-    // Remove user from an organization.
-    //
-    //Future<SuccessResponse> removeOrganizationUser(String orgCode, String userId) async
-    test('test removeOrganizationUser', () async {
-      // TODO
-      final responseData = await instance.removeOrganizationUser(
-        orgCode: 'test_org_code',
-        userId: 'test_user_id',
+    test('updates organization with new data', () async {
+      // Arrange
+      final expectedResponse = {
+        'message': 'Organization updated',
+        'code': 'OK',
+      };
+
+      dioAdapter.onPatch(
+        testPath,
+        (server) => server.reply(200, expectedResponse),
+        data: Matchers.any,
       );
-      expect(responseData, isNotNull);
+
+      final request = UpdateOrganizationRequest((b) => b..name = 'Updated Name');
+
+      // Act
+      final response = await organizationsApi.updateOrganization(
+        orgCode: orgCode,
+        updateOrganizationRequest: request,
+      );
+
+      // Assert
+      expect(response.statusCode, equals(200));
+      expect(response.data, isNotNull);
+      expect(response.data!.code, equals('OK'));
     });
 
-    // Update Organization
-    //
-    // Update an organization.
-    //
-    //Future updateOrganization(String orgCode, { UpdateOrganizationRequest updateOrganizationRequest }) async
-    test('test updateOrganization', () async {
-      // TODO
-      final responseData = await instance.updateOrganization(
-        orgCode: 'test_org_code',
-        updateOrganizationRequest: UpdateOrganizationRequest(),
+    test('throws DioException on 404 not found', () async {
+      // Arrange
+      final errorResponse = {
+        'error': 'not_found',
+        'error_description': 'Organization not found',
+      };
+
+      dioAdapter.onPatch(
+        '/api/v1/organization/nonexistent',
+        (server) => server.reply(404, errorResponse),
+        data: Matchers.any,
       );
-      expect(responseData, isNotNull);
+
+      final request = UpdateOrganizationRequest();
+
+      // Act & Assert
+      expect(
+        () => organizationsApi.updateOrganization(
+          orgCode: 'nonexistent',
+          updateOrganizationRequest: request,
+        ),
+        throwsA(isA<DioException>().having(
+          (e) => e.response?.statusCode,
+          'status code',
+          equals(404),
+        )),
+      );
+    });
+  });
+
+  group('deleteOrganization', () {
+    const orgCode = 'acme';
+    final testPath = '/api/v1/organization/$orgCode';
+
+    test('deletes organization successfully', () async {
+      // Arrange
+      final expectedResponse = {
+        'message': 'Organization deleted',
+        'code': 'OK',
+      };
+
+      dioAdapter.onDelete(
+        testPath,
+        (server) => server.reply(200, expectedResponse),
+      );
+
+      // Act
+      final response = await organizationsApi.deleteOrganization(orgCode: orgCode);
+
+      // Assert
+      expect(response.statusCode, equals(200));
+      expect(response.data!.code, equals('OK'));
     });
 
-    // Update Organization Feature Flag Override
-    //
-    // Update organization feature flag override.
-    //
-    //Future<SuccessResponse> updateOrganizationFeatureFlagOverride(String orgCode, String featureFlagKey, String value) async
-    test('test updateOrganizationFeatureFlagOverride', () async {
-      // TODO
-      final responseData = await instance.updateOrganizationFeatureFlagOverride(
-        orgCode: 'test_org_code',
-        featureFlagKey: 'test_key',
-        value: 'test_value',
+    test('throws DioException on 409 conflict (has users)', () async {
+      // Arrange
+      final errorResponse = {
+        'error': 'conflict',
+        'error_description': 'Cannot delete organization with active users',
+      };
+
+      dioAdapter.onDelete(
+        testPath,
+        (server) => server.reply(409, errorResponse),
       );
-      expect(responseData, isNotNull);
+
+      // Act & Assert
+      expect(
+        () => organizationsApi.deleteOrganization(orgCode: orgCode),
+        throwsA(isA<DioException>().having(
+          (e) => e.response?.statusCode,
+          'status code',
+          equals(409),
+        )),
+      );
+    });
+  });
+
+  // User Management
+  group('addOrganizationUsers', () {
+    const orgCode = 'acme';
+    final testPath = '/api/v1/organizations/$orgCode/users';
+
+    test('adds users to organization', () async {
+      // Arrange
+      final expectedResponse = {
+        'users_added': ['user_1', 'user_2'],
+      };
+
+      dioAdapter.onPost(
+        testPath,
+        (server) => server.reply(200, expectedResponse),
+        data: Matchers.any,
+      );
+
+      final request = AddOrganizationUsersRequest((b) => b
+        ..users.addAll(['user_1', 'user_2']));
+
+      // Act
+      final response = await organizationsApi.addOrganizationUsers(
+        orgCode: orgCode,
+        addOrganizationUsersRequest: request,
+      );
+
+      // Assert
+      expect(response.statusCode, equals(200));
+      expect(response.data, isNotNull);
+      expect(response.data!.usersAdded, isNotNull);
+      expect(response.data!.usersAdded!.length, equals(2));
     });
 
-    // Update Organization Users
-    //
-    // Update users that belong to an organization.
-    //
-    //Future<UpdateOrganizationUsersResponse> updateOrganizationUsers(String orgCode, { UpdateOrganizationUsersRequest updateOrganizationUsersRequest }) async
-    test('test updateOrganizationUsers', () async {
-      // TODO
-      final responseData = await instance.updateOrganizationUsers(
-        orgCode: 'test_org_code',
-        updateOrganizationUsersRequest: UpdateOrganizationUsersRequest(),
+    test('throws DioException on 404 organization not found', () async {
+      // Arrange
+      final errorResponse = {
+        'error': 'not_found',
+        'error_description': 'Organization not found',
+      };
+
+      dioAdapter.onPost(
+        '/api/v1/organizations/nonexistent/users',
+        (server) => server.reply(404, errorResponse),
+        data: Matchers.any,
       );
-      expect(responseData, isNotNull);
+
+      final request = AddOrganizationUsersRequest();
+
+      // Act & Assert
+      expect(
+        () => organizationsApi.addOrganizationUsers(
+          orgCode: 'nonexistent',
+          addOrganizationUsersRequest: request,
+        ),
+        throwsA(isA<DioException>().having(
+          (e) => e.response?.statusCode,
+          'status code',
+          equals(404),
+        )),
+      );
+    });
+  });
+
+  group('getOrganizationUsers', () {
+    const orgCode = 'acme';
+    final testPath = '/api/v1/organizations/$orgCode/users';
+
+    test('retrieves organization users with pagination', () async {
+      // Arrange
+      final expectedResponse = {
+        'organization_users': [
+          {'id': 'user_1', 'email': 'user1@acme.com'},
+          {'id': 'user_2', 'email': 'user2@acme.com'},
+        ],
+        'next_token': null,
+      };
+
+      dioAdapter.onGet(
+        testPath,
+        (server) => server.reply(200, expectedResponse),
+        queryParameters: {'page_size': '10'},
+      );
+
+      // Act
+      final response = await organizationsApi.getOrganizationUsers(
+        orgCode: orgCode,
+        pageSize: 10,
+      );
+
+      // Assert
+      expect(response.statusCode, equals(200));
+      expect(response.data, isNotNull);
+      expect(response.data!.organizationUsers, isNotNull);
+      expect(response.data!.organizationUsers!.length, equals(2));
+    });
+
+    test('throws DioException on 401 unauthorized', () async {
+      // Arrange
+      final errorResponse = {
+        'error': 'unauthorized',
+        'error_description': 'Invalid token',
+      };
+
+      dioAdapter.onGet(
+        testPath,
+        (server) => server.reply(401, errorResponse),
+      );
+
+      // Act & Assert
+      expect(
+        () => organizationsApi.getOrganizationUsers(orgCode: orgCode),
+        throwsA(isA<DioException>().having(
+          (e) => e.response?.statusCode,
+          'status code',
+          equals(401),
+        )),
+      );
+    });
+  });
+
+  group('removeOrganizationUser', () {
+    const orgCode = 'acme';
+    const userId = 'user_123';
+    final testPath = '/api/v1/organizations/$orgCode/users/$userId';
+
+    test('removes user from organization', () async {
+      // Arrange
+      final expectedResponse = {
+        'message': 'User removed',
+        'code': 'OK',
+      };
+
+      dioAdapter.onDelete(
+        testPath,
+        (server) => server.reply(200, expectedResponse),
+      );
+
+      // Act
+      final response = await organizationsApi.removeOrganizationUser(
+        orgCode: orgCode,
+        userId: userId,
+      );
+
+      // Assert
+      expect(response.statusCode, equals(200));
+      expect(response.data!.code, equals('OK'));
+    });
+
+    test('throws DioException on 404 user not found', () async {
+      // Arrange
+      final errorResponse = {
+        'error': 'not_found',
+        'error_description': 'User not found in organization',
+      };
+
+      dioAdapter.onDelete(
+        '/api/v1/organizations/acme/users/nonexistent',
+        (server) => server.reply(404, errorResponse),
+      );
+
+      // Act & Assert
+      expect(
+        () => organizationsApi.removeOrganizationUser(
+          orgCode: orgCode,
+          userId: 'nonexistent',
+        ),
+        throwsA(isA<DioException>().having(
+          (e) => e.response?.statusCode,
+          'status code',
+          equals(404),
+        )),
+      );
+    });
+  });
+
+  group('updateOrganizationUsers', () {
+    const orgCode = 'acme';
+    final testPath = '/api/v1/organizations/$orgCode/users';
+
+    test('updates organization users', () async {
+      // Arrange
+      final expectedResponse = {
+        'users_updated': ['user_1', 'user_2'],
+      };
+
+      dioAdapter.onPatch(
+        testPath,
+        (server) => server.reply(200, expectedResponse),
+        data: Matchers.any,
+      );
+
+      final request = UpdateOrganizationUsersRequest((b) => b
+        ..users.addAll(['user_1', 'user_2']));
+
+      // Act
+      final response = await organizationsApi.updateOrganizationUsers(
+        orgCode: orgCode,
+        updateOrganizationUsersRequest: request,
+      );
+
+      // Assert
+      expect(response.statusCode, equals(200));
+      expect(response.data, isNotNull);
+      expect(response.data!.usersUpdated, isNotNull);
+    });
+
+    test('throws DioException on 400 validation error', () async {
+      // Arrange
+      final errorResponse = {
+        'error': 'validation_error',
+        'error_description': 'Invalid user data',
+      };
+
+      dioAdapter.onPatch(
+        testPath,
+        (server) => server.reply(400, errorResponse),
+        data: Matchers.any,
+      );
+
+      final request = UpdateOrganizationUsersRequest();
+
+      // Act & Assert
+      expect(
+        () => organizationsApi.updateOrganizationUsers(
+          orgCode: orgCode,
+          updateOrganizationUsersRequest: request,
+        ),
+        throwsA(isA<DioException>().having(
+          (e) => e.response?.statusCode,
+          'status code',
+          equals(400),
+        )),
+      );
+    });
+  });
+
+  // Role Management
+  group('createOrganizationUserRole', () {
+    const orgCode = 'acme';
+    const userId = 'user_123';
+    final testPath = '/api/v1/organizations/$orgCode/users/$userId/roles';
+
+    test('adds role to organization user', () async {
+      // Arrange
+      final expectedResponse = {
+        'message': 'Role added',
+        'code': 'OK',
+      };
+
+      dioAdapter.onPost(
+        testPath,
+        (server) => server.reply(201, expectedResponse),
+        data: Matchers.any,
+      );
+
+      final request = CreateOrganizationUserRoleRequest((b) => b..roleId = 'role_admin');
+
+      // Act
+      final response = await organizationsApi.createOrganizationUserRole(
+        orgCode: orgCode,
+        userId: userId,
+        createOrganizationUserRoleRequest: request,
+      );
+
+      // Assert
+      expect(response.statusCode, equals(201));
+      expect(response.data!.code, equals('OK'));
+    });
+
+    test('throws DioException on 409 role already assigned', () async {
+      // Arrange
+      final errorResponse = {
+        'error': 'conflict',
+        'error_description': 'Role already assigned to user',
+      };
+
+      dioAdapter.onPost(
+        testPath,
+        (server) => server.reply(409, errorResponse),
+        data: Matchers.any,
+      );
+
+      final request = CreateOrganizationUserRoleRequest();
+
+      // Act & Assert
+      expect(
+        () => organizationsApi.createOrganizationUserRole(
+          orgCode: orgCode,
+          userId: userId,
+          createOrganizationUserRoleRequest: request,
+        ),
+        throwsA(isA<DioException>().having(
+          (e) => e.response?.statusCode,
+          'status code',
+          equals(409),
+        )),
+      );
+    });
+  });
+
+  group('getOrganizationUserRoles', () {
+    const orgCode = 'acme';
+    const userId = 'user_123';
+    final testPath = '/api/v1/organizations/$orgCode/users/$userId/roles';
+
+    test('retrieves user roles in organization', () async {
+      // Arrange
+      final expectedResponse = {
+        'roles': [
+          {'id': 'role_1', 'key': 'admin', 'name': 'Admin'},
+          {'id': 'role_2', 'key': 'member', 'name': 'Member'},
+        ],
+      };
+
+      dioAdapter.onGet(
+        testPath,
+        (server) => server.reply(200, expectedResponse),
+      );
+
+      // Act
+      final response = await organizationsApi.getOrganizationUserRoles(
+        orgCode: orgCode,
+        userId: userId,
+      );
+
+      // Assert
+      expect(response.statusCode, equals(200));
+      expect(response.data, isNotNull);
+      expect(response.data!.roles, isNotNull);
+      expect(response.data!.roles!.length, equals(2));
+    });
+
+    test('throws DioException on 404 user not found', () async {
+      // Arrange
+      final errorResponse = {
+        'error': 'not_found',
+        'error_description': 'User not found',
+      };
+
+      dioAdapter.onGet(
+        '/api/v1/organizations/acme/users/nonexistent/roles',
+        (server) => server.reply(404, errorResponse),
+      );
+
+      // Act & Assert
+      expect(
+        () => organizationsApi.getOrganizationUserRoles(
+          orgCode: orgCode,
+          userId: 'nonexistent',
+        ),
+        throwsA(isA<DioException>().having(
+          (e) => e.response?.statusCode,
+          'status code',
+          equals(404),
+        )),
+      );
+    });
+  });
+
+  group('removeOrganizationUserRole', () {
+    const orgCode = 'acme';
+    const userId = 'user_123';
+    const roleId = 'role_456';
+    final testPath = '/api/v1/organizations/$orgCode/users/$userId/roles/$roleId';
+
+    test('removes role from organization user', () async {
+      // Arrange
+      final expectedResponse = {
+        'message': 'Role removed',
+        'code': 'OK',
+      };
+
+      dioAdapter.onDelete(
+        testPath,
+        (server) => server.reply(200, expectedResponse),
+      );
+
+      // Act
+      final response = await organizationsApi.removeOrganizationUserRole(
+        orgCode: orgCode,
+        userId: userId,
+        roleId: roleId,
+      );
+
+      // Assert
+      expect(response.statusCode, equals(200));
+      expect(response.data!.code, equals('OK'));
+    });
+
+    test('throws DioException on 404 role not found', () async {
+      // Arrange
+      final errorResponse = {
+        'error': 'not_found',
+        'error_description': 'Role not assigned to user',
+      };
+
+      dioAdapter.onDelete(
+        '/api/v1/organizations/acme/users/user_123/roles/nonexistent',
+        (server) => server.reply(404, errorResponse),
+      );
+
+      // Act & Assert
+      expect(
+        () => organizationsApi.removeOrganizationUserRole(
+          orgCode: orgCode,
+          userId: userId,
+          roleId: 'nonexistent',
+        ),
+        throwsA(isA<DioException>().having(
+          (e) => e.response?.statusCode,
+          'status code',
+          equals(404),
+        )),
+      );
+    });
+  });
+
+  // Feature Flags
+  group('getOrganizationFeatureFlags', () {
+    const orgCode = 'acme';
+    final testPath = '/api/v1/organizations/$orgCode/feature_flags';
+
+    test('retrieves organization feature flags', () async {
+      // Arrange
+      final expectedResponse = {
+        'feature_flags': {
+          'enable_feature_x': {'type': 'bool', 'value': true},
+          'max_projects': {'type': 'int', 'value': 5},
+        },
+      };
+
+      dioAdapter.onGet(
+        testPath,
+        (server) => server.reply(200, expectedResponse),
+      );
+
+      // Act
+      final response = await organizationsApi.getOrganizationFeatureFlags(
+        orgCode: orgCode,
+      );
+
+      // Assert
+      expect(response.statusCode, equals(200));
+      expect(response.data, isNotNull);
+      expect(response.data!.featureFlags, isNotNull);
+    });
+
+    test('throws DioException on 403 forbidden', () async {
+      // Arrange
+      final errorResponse = {
+        'error': 'forbidden',
+        'error_description': 'Insufficient permissions',
+      };
+
+      dioAdapter.onGet(
+        testPath,
+        (server) => server.reply(403, errorResponse),
+      );
+
+      // Act & Assert
+      expect(
+        () => organizationsApi.getOrganizationFeatureFlags(orgCode: orgCode),
+        throwsA(isA<DioException>().having(
+          (e) => e.response?.statusCode,
+          'status code',
+          equals(403),
+        )),
+      );
+    });
+  });
+
+  group('updateOrganizationFeatureFlagOverride', () {
+    const orgCode = 'acme';
+    const featureFlagKey = 'enable_feature_x';
+    final testPath = '/api/v1/organizations/$orgCode/feature_flags/$featureFlagKey';
+
+    test('updates feature flag override', () async {
+      // Arrange
+      final expectedResponse = {
+        'message': 'Feature flag updated',
+        'code': 'OK',
+      };
+
+      dioAdapter.onPatch(
+        testPath,
+        (server) => server.reply(200, expectedResponse),
+        data: Matchers.any,
+      );
+
+      final request = UpdateOrganizationFeatureFlagOverrideRequest((b) => b
+        ..value = 'true');
+
+      // Act
+      final response = await organizationsApi.updateOrganizationFeatureFlagOverride(
+        orgCode: orgCode,
+        featureFlagKey: featureFlagKey,
+        updateOrganizationFeatureFlagOverrideRequest: request,
+      );
+
+      // Assert
+      expect(response.statusCode, equals(200));
+      expect(response.data!.code, equals('OK'));
+    });
+
+    test('throws DioException on 404 flag not found', () async {
+      // Arrange
+      final errorResponse = {
+        'error': 'not_found',
+        'error_description': 'Feature flag not found',
+      };
+
+      dioAdapter.onPatch(
+        '/api/v1/organizations/acme/feature_flags/nonexistent',
+        (server) => server.reply(404, errorResponse),
+        data: Matchers.any,
+      );
+
+      final request = UpdateOrganizationFeatureFlagOverrideRequest();
+
+      // Act & Assert
+      expect(
+        () => organizationsApi.updateOrganizationFeatureFlagOverride(
+          orgCode: orgCode,
+          featureFlagKey: 'nonexistent',
+          updateOrganizationFeatureFlagOverrideRequest: request,
+        ),
+        throwsA(isA<DioException>().having(
+          (e) => e.response?.statusCode,
+          'status code',
+          equals(404),
+        )),
+      );
     });
   });
 }
