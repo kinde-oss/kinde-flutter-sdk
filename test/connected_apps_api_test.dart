@@ -120,8 +120,7 @@ void main() {
       // Arrange
       final expectedResponse = {
         'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
-        'token_type': 'Bearer',
-        'expires_in': 3600,
+        'access_token_expiry': '2024-12-31T23:59:59Z',
       };
 
       dioAdapter.onGet(

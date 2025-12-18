@@ -525,7 +525,7 @@ void main() {
         };
 
         dioAdapter.onPatch(
-          '/api/v1/permissions/nonexistent_perm',
+          '/api/v1/permissions/999',
           (server) => server.reply(404, errorResponse),
           data: Matchers.any,
         );
