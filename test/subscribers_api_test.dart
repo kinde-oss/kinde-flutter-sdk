@@ -260,13 +260,16 @@ void main() {
       test('retrieves subscriber by ID', () async {
         // Arrange
         final expectedResponse = {
-          'subscriber': {
-            'subscriber_id': subscriberId,
-            'first_name': 'John',
-            'last_name': 'Doe',
-            'email': 'john.doe@example.com',
-            'is_subscribed': true,
-          },
+          'code': 'OK',
+          'message': 'Success',
+          'subscribers': [
+            {
+              'id': subscriberId,
+              'first_name': 'John',
+              'last_name': 'Doe',
+              'email': 'john.doe@example.com',
+            },
+          ],
         };
 
         dioAdapter.onGet(
@@ -290,11 +293,14 @@ void main() {
       test('retrieves subscriber with minimal data', () async {
         // Arrange
         final expectedResponse = {
-          'subscriber': {
-            'subscriber_id': subscriberId,
-            'first_name': 'Jane',
-            'is_subscribed': false,
-          },
+          'code': 'OK',
+          'message': 'Success',
+          'subscribers': [
+            {
+              'id': subscriberId,
+              'first_name': 'Jane',
+            },
+          ],
         };
 
         dioAdapter.onGet(
