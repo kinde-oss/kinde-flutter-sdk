@@ -571,7 +571,7 @@ void main() {
               'id': 'user_alice',
               'first_name': 'Alice',
               'last_name': 'Smith',
-              'preferred_email': emailFilter,
+              'email': emailFilter,
             },
           ],
           'next_token': null,
@@ -731,9 +731,9 @@ void main() {
         const userId = 'user_123';
         final expectedResponse = {
           'id': userId,
-          'first_name': 'Jane',
-          'last_name': 'Doe',
-          'preferred_email': 'jane.doe@example.com',
+          'given_name': 'Jane',
+          'family_name': 'Doe',
+          'email': 'jane.doe@example.com',
           'is_suspended': false,
         };
 
