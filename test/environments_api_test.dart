@@ -246,7 +246,7 @@ void main() {
           data: Matchers.any,
         );
 
-        final request = UpdateEnvironementFeatureFlagOverrideRequest();
+        final request = UpdateEnvironementFeatureFlagOverrideRequest((b) => b..value = 'test');
 
         // Act & Assert
         expect(
@@ -275,7 +275,7 @@ void main() {
           data: Matchers.any,
         );
 
-        final request = UpdateEnvironementFeatureFlagOverrideRequest();
+        final request = UpdateEnvironementFeatureFlagOverrideRequest((b) => b..value = 'test');
 
         // Act & Assert
         expect(
@@ -304,7 +304,7 @@ void main() {
           data: Matchers.any,
         );
 
-        final request = UpdateEnvironementFeatureFlagOverrideRequest();
+        final request = UpdateEnvironementFeatureFlagOverrideRequest((b) => b..value = 'test');
 
         // Act & Assert
         expect(
@@ -333,7 +333,7 @@ void main() {
           data: Matchers.any,
         );
 
-        final request = UpdateEnvironementFeatureFlagOverrideRequest();
+        final request = UpdateEnvironementFeatureFlagOverrideRequest((b) => b..value = 'test');
 
         // Act & Assert
         expect(

@@ -471,6 +471,7 @@ void main() {
 
         final request = UpdateRolesRequest((b) => b
           ..name = 'Super Admin'
+          ..key = 'super_admin'
           ..description = 'Super administrator role');
 
         // Act
@@ -499,7 +500,9 @@ void main() {
           data: Matchers.any,
         );
 
-        final request = UpdateRolesRequest((b) => b..name = 'Updated Name');
+        final request = UpdateRolesRequest((b) => b
+          ..name = 'Updated Name'
+          ..key = 'admin');
 
         // Act
         final response = await rolesApi.updateRoles(
@@ -528,7 +531,9 @@ void main() {
           data: Matchers.any,
         );
 
-        final request = UpdateRolesRequest();
+        final request = UpdateRolesRequest((b) => b
+          ..name = 'Test Role'
+          ..key = 'test');
 
         // Act & Assert
         expect(
@@ -557,7 +562,9 @@ void main() {
           data: Matchers.any,
         );
 
-        final request = UpdateRolesRequest();
+        final request = UpdateRolesRequest((b) => b
+          ..name = 'Test Role'
+          ..key = 'test');
 
         // Act & Assert
         expect(
@@ -586,7 +593,9 @@ void main() {
           data: Matchers.any,
         );
 
-        final request = UpdateRolesRequest();
+        final request = UpdateRolesRequest((b) => b
+          ..name = 'Test Role'
+          ..key = 'test');
 
         // Act & Assert
         expect(
