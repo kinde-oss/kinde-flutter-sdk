@@ -237,14 +237,12 @@ void main() {
           'message': 'Success',
           'permissions': [
             {
-              'id': 'perm_1',
-              'key': 'read:users',
+              'id': 'read:users',
               'name': 'Read Users',
               'description': 'Can read user data',
             },
             {
-              'id': 'perm_2',
-              'key': 'write:users',
+              'id': 'write:users',
               'name': 'Write Users',
               'description': 'Can modify user data',
             },
@@ -277,8 +275,7 @@ void main() {
           'message': 'Success',
           'permissions': [
             {
-              'id': 'perm_1',
-              'key': 'read:users',
+              'id': 'read:users',
               'name': 'Read Users',
             },
           ],
@@ -307,8 +304,7 @@ void main() {
           'message': 'Success',
           'permissions': [
             {
-              'id': 'perm_11',
-              'key': 'admin:all',
+              'id': 'admin:all',
               'name': 'Admin All',
             },
           ],
@@ -337,9 +333,9 @@ void main() {
           'code': 'OK',
           'message': 'Success',
           'permissions': [
-            {'id': 'perm_1', 'key': 'admin:all', 'name': 'Admin All'},
-            {'id': 'perm_2', 'key': 'read:users', 'name': 'Read Users'},
-            {'id': 'perm_3', 'key': 'write:users', 'name': 'Write Users'},
+            {'id': 'admin:all', 'name': 'Admin All'},
+            {'id': 'read:users', 'name': 'Read Users'},
+            {'id': 'write:users', 'name': 'Write Users'},
           ],
           'next_token': null,
         };
