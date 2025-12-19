@@ -116,11 +116,11 @@ void main() {
           'identities': [
             {
               'type': 'email',
-              'identity': {'email': 'user@example.com'},
+              'identity': {'email': 'primary@example.com'},
             },
             {
-              'type': 'phone',
-              'identity': {'phone': '+1234567890'},
+              'type': 'email',
+              'identity': {'email': 'secondary@example.com'},
             },
           ],
         };
@@ -137,8 +137,10 @@ void main() {
           ..identities.addAll([
             CreateUserRequestIdentitiesInner((i) => i
               ..type = CreateUserRequestIdentitiesInnerTypeEnum.email
-              ..details.email = 'user@example.com'),
-            CreateUserRequestIdentitiesInner((i) => i..type = CreateUserRequestIdentitiesInnerTypeEnum.email),
+              ..details.email = 'primary@example.com'),
+            CreateUserRequestIdentitiesInner((i) => i
+              ..type = CreateUserRequestIdentitiesInnerTypeEnum.email
+              ..details.email = 'secondary@example.com'),
           ]));
 
         // Act

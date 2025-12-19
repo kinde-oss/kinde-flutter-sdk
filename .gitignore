@@ -63,3 +63,4 @@ web/build/
 
 example/ios/.symlinks/plugins
 example/android/.gradle/
+coverage/
