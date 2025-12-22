@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http_mock_adapter/http_mock_adapter.dart';
 import 'package:kinde_flutter_sdk/kinde_api.dart';
 
-/// Enterprise-grade tests for FeatureFlagsApi
 void main() {
   late Dio dio;
   late DioAdapter dioAdapter;
