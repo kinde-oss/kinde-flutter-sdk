@@ -2,7 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http_mock_adapter/http_mock_adapter.dart';
 import 'package:kinde_flutter_sdk/kinde_api.dart';
-
+import 'package:kinde_flutter_sdk/src/serializers.dart';
+import 'package:kinde_flutter_sdk/src/api/industries_api.dart';
 void main() {
   late Dio dio;
   late DioAdapter dioAdapter;
@@ -14,7 +15,7 @@ void main() {
       contentType: 'application/json',
     ));
     dioAdapter = DioAdapter(dio: dio);
-    industriesApi = KindeApi(dio: dio).getIndustriesApi();
+    industriesApi = IndustriesApi(dio, standardSerializers);
   });
 
   tearDown(() {

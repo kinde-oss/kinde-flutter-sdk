@@ -1,7 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http_mock_adapter/http_mock_adapter.dart';
-import 'package:kinde_flutter_sdk/kinde_api.dart';
+import 'package:kinde_flutter_sdk/src/api/users_api.dart';
+import 'package:kinde_flutter_sdk/src/serializers.dart';
+import 'package:kinde_flutter_sdk/src/model/users_response_users_inner.dart';
+import 'package:kinde_flutter_sdk/src/model/create_user_request.dart';
+import 'package:kinde_flutter_sdk/src/model/create_user_request_identities_inner.dart';
+import 'package:kinde_flutter_sdk/src/model/update_user_request.dart';
 
 void main() {
   late Dio dio;
@@ -19,7 +24,7 @@ void main() {
     dioAdapter = DioAdapter(dio: dio);
 
     // Initialize API instance
-    usersApi = KindeApi(dio: dio).getUsersApi();
+    usersApi = UsersApi(dio, standardSerializers);
   });
 
   tearDown(() {
