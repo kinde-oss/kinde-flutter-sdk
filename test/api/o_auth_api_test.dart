@@ -54,7 +54,7 @@ void main() {
     test('throws DioException on 401 unauthorized', () async {
       // Arrange
       final errorResponse = {
-        'error': 'unauthorized',
+        'error': 'invalid_token',
         'error_description': 'Invalid or expired token',
       };
 
@@ -152,7 +152,7 @@ void main() {
     test('throws DioException on 401 unauthorized', () async {
       // Arrange
       final errorResponse = {
-        'error': 'unauthorized',
+        'error': 'invalid_token',
         'error_description': 'Invalid or expired token',
       };
 
@@ -277,7 +277,7 @@ void main() {
     test('throws DioException on 401 unauthorized', () async {
       // Arrange
       final errorResponse = {
-        'error': 'unauthorized',
+        'error': 'invalid_client',
         'error_description': 'Invalid credentials',
       };
 
@@ -363,7 +363,7 @@ void main() {
     test('throws DioException on 401 unauthorized', () async {
       // Arrange
       final errorResponse = {
-        'error': 'unauthorized',
+        'error': 'invalid_client',
         'error_description': 'Invalid client credentials',
       };
 
