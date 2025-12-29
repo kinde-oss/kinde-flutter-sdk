@@ -1,8 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kinde_flutter_sdk/kinde_flutter_sdk.dart';
 import 'package:kinde_flutter_sdk/src/kinde_flutter_sdk.dart';
-
-import 'mock_channels.dart';
+import 'test_helpers/mock_channels.dart';
 import 'test_helpers/dio_adapter.dart';
 
 void main() async {
