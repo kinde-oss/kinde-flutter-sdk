@@ -41,13 +41,40 @@ class MockChannels {
       return false;
     });
 
+    // Mock storage for testing - stores data in memory
+    final Map<String, String> mockSecureStorage = {};
+
     TestWidgetsFlutterBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(flutterSecureStorage,
             (MethodCall methodCall) async {
-      if (methodCall.method == 'read') {
-        return null;
+      switch (methodCall.method) {
+        case 'read':
+          final key = methodCall.arguments['key'] as String?;
+          return key != null ? mockSecureStorage[key] : null;
+        case 'write':
+          final key = methodCall.arguments['key'] as String?;
+          final value = methodCall.arguments['value'] as String?;
+          if (key != null && value != null) {
+            mockSecureStorage[key] = value;
+          }
+          return null;
+        case 'delete':
+          final key = methodCall.arguments['key'] as String?;
+          if (key != null) {
+            mockSecureStorage.remove(key);
+          }
+          return null;
+        case 'deleteAll':
+          mockSecureStorage.clear();
+          return null;
+        case 'containsKey':
+          final key = methodCall.arguments['key'] as String?;
+          return key != null ? mockSecureStorage.containsKey(key) : false;
+        case 'readAll':
+          return mockSecureStorage;
+        default:
+          return null;
       }
-      return false;
     });
 
     TestWidgetsFlutterBinding.instance.defaultBinaryMessenger
