@@ -162,8 +162,10 @@ class KindeFlutterSDK with TokenUtils {
 
       updateStep('finalization');
 
-      return _instance = KindeFlutterSDK._internal(
+      final sdk = _instance = KindeFlutterSDK._internal(
           secureStorage: kindeSecureStorage, dio: dio);
+      await sdk._startInvitationLoginIfNeeded();
+      return sdk;
     } catch (e, st) {
       _config = null;
       kindeDebugPrint(
@@ -633,6 +635,10 @@ class KindeFlutterSDK with TokenUtils {
   /// is launched with an `invitation_code` query parameter, enabling automatic
   /// handling of team member invitation flows.
   ///
+  /// On web platforms, the SDK automatically checks for `invitation_code` during
+  /// initialization and starts the auth flow when present. You can still use
+  /// this helper if you need custom handling.
+  ///
   /// Returns the invitation code string if present in the URL, or `null` if:
   /// - Not running on web platform
   /// - No URL is available
@@ -657,6 +663,25 @@ class KindeFlutterSDK with TokenUtils {
     final uri = Uri.tryParse(currentUrl);
     if (uri == null) return null;
     return uri.queryParameters['invitation_code'];
+  }
+
+  Future<void> _startInvitationLoginIfNeeded() async {
+    if (!kIsWeb) return;
+    if (authState != null) return;
+    if (_isCurrentUrlContainWebAuthParams() != null) return;
+
+    final invitationCode = getInvitationCodeFromUrl();
+    if (invitationCode == null || invitationCode.isEmpty) return;
+
+    try {
+      await login(
+        additionalParams: AdditionalParameters(invitationCode: invitationCode),
+      );
+    } catch (e) {
+      kindeDebugPrint(
+          methodName: "KindeFlutterSDK._startInvitationLoginIfNeeded",
+          message: "Failed to start invitation login: ${e.toString()}");
+    }
   }
 
   _saveState(TokenResponse? tokenResponse) {
