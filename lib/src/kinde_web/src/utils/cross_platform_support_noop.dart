@@ -8,5 +8,7 @@ abstract class WebUtils {
 
   static String? get getOriginUrl => null;
 
+  static String? getParameterFromUrl(String parameterName) => null;
+
   static String get temporaryDirectory => "";
 }

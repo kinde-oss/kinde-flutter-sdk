@@ -13,5 +13,13 @@ abstract class WebUtils {
 
   static String? get getOriginUrl => window.location.origin;
 
+  static String? getParameterFromUrl(String parameterName) {
+    final currentUrl = getCurrentUrl;
+    if (currentUrl == null || currentUrl.isEmpty) return null;
+    final uri = Uri.tryParse(currentUrl);
+    if (uri == null) return null;
+    return uri.queryParameters[parameterName];
+  }
+
   static String get temporaryDirectory => window.localStorage['temporary_directory'] ?? "";
 }
