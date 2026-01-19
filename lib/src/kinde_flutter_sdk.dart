@@ -162,10 +162,10 @@ class KindeFlutterSDK with TokenUtils {
 
       updateStep('finalization');
 
-      final sdk = _instance = KindeFlutterSDK._internal(
-          secureStorage: kindeSecureStorage, dio: dio);
-      await sdk._startInvitationLoginIfNeeded();
-      return sdk;
+      _instance =
+          KindeFlutterSDK._internal(secureStorage: kindeSecureStorage, dio: dio);
+      await _instance!._startInvitationLoginIfNeeded();
+      return _instance!;
     } catch (e, st) {
       _config = null;
       kindeDebugPrint(
@@ -657,18 +657,11 @@ class KindeFlutterSDK with TokenUtils {
   /// }
   /// ```
   static String? getInvitationCodeFromUrl() {
-    if (!kIsWeb) return null;
-    final currentUrl = WebUtils.getCurrentUrl;
-    if (currentUrl == null || currentUrl.isEmpty) return null;
-    final uri = Uri.tryParse(currentUrl);
-    if (uri == null) return null;
-    return uri.queryParameters['invitation_code'];
+    return WebUtils.getParameterFromUrl('invitation_code');
   }
 
   Future<void> _startInvitationLoginIfNeeded() async {
     if (!kIsWeb) return;
-    if (authState != null) return;
-    if (_isCurrentUrlContainWebAuthParams() != null) return;
 
     final invitationCode = getInvitationCodeFromUrl();
     if (invitationCode == null || invitationCode.isEmpty) return;
