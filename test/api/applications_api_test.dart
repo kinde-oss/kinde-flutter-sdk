@@ -271,15 +271,6 @@ void main() {
 
         final request = UpdateApplicationRequest((b) => b..name = 'Updated App');
 
-        // Act
-        final response = await applicationsApi.updateApplication(
-          applicationId: applicationId,
-          updateApplicationRequest: request,
-        );
-
-        // Assert
-        expect(response.statusCode, equals(200));
-
         // Act & Assert
         expect(
           applicationsApi.updateApplication(
