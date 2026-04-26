@@ -3,6 +3,12 @@ description: The Kinde SDK For Flutter.
 version: 2.0.0
 homepage: https://github.com/kinde-oss/kinde-flutter-sdk
 
+platforms:
+  android:
+  ios:
+  macos:
+  web:
+
 environment:
   sdk: '>=3.9.2 <4.0.0'
   flutter: '>=3.35.6'
