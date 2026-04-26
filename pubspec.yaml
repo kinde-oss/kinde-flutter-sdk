@@ -37,23 +37,5 @@ dev_dependencies:
   test: ^1.25.8
 
 flutter:
-  plugin:
-    platforms:
-      android:
-        package: com.kinde.kinde_flutter_sdk
-        pluginClass: KindeFlutterSdkPlugin
-      ios:
-        pluginClass: KindeFlutterSdkPlugin
-      linux:
-        pluginClass: KindeFlutterSdkPlugin
-      macos:
-        pluginClass: KindeFlutterSdkPlugin
-        pluginPath: macos
-      windows:
-        pluginClass: KindeFlutterSdkPluginCApi
-      web:
-        pluginClass: KindeFlutterWebSDK
-        fileName: kinde_web_plugin.dart
-
   assets:
     - pubspec.yaml
