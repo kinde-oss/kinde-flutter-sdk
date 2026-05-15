@@ -72,14 +72,7 @@ class KindeFlutterSDK with TokenUtils {
 
     _kindeSecureStorage = secureStorage ?? KindeSecureStorage();
 
-    var domainUrl = "";
-    if (_config!.authDomain.startsWith('https')) {
-      domainUrl = _config!.authDomain;
-    } else if (_config!.authDomain.startsWith('http')) {
-      domainUrl = _config!.authDomain.replaceFirst('http', "https");
-    } else {
-      domainUrl = 'https://${_config!.authDomain}';
-    }
+    final domainUrl = _normalizeDomain(_config!.authDomain);
 
     _serviceConfiguration = AuthorizationServiceConfiguration(
         authorizationEndpoint: '$domainUrl$_authPath',
@@ -113,10 +106,20 @@ class KindeFlutterSDK with TokenUtils {
 
   Store get _store => Store.instance;
 
+  static String _normalizeDomain(String authDomain) {
+    if (authDomain.startsWith('https')) {
+      return authDomain;
+    } else if (authDomain.startsWith('http')) {
+      return authDomain.replaceFirst('http', 'https');
+    } else {
+      return 'https://$authDomain';
+    }
+  }
+
   static String _getDomainFromUrl(String url) {
     try {
-      final uri = Uri.parse(url);
-      return uri.host.isNotEmpty ? uri.host : '[invalid-domain]';
+      final uri = Uri.parse(_normalizeDomain(url));
+      return uri.host;
     } catch (_) {
       return '[invalid-domain]';
     }
