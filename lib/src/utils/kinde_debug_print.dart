@@ -3,13 +3,16 @@ import 'package:flutter/foundation.dart';
 /// Global flag to enable/disable Kinde SDK logging.
 ///
 /// Set to false to disable all SDK logging in production if needed.
-bool kindeLoggingEnabled = true;
+bool _kindeLoggingEnabled = true;
+
+@visibleForTesting
+bool get kindeLoggingEnabled => _kindeLoggingEnabled;
 
 /// Configure Kinde SDK logging.
 ///
 /// [enabled] - Set to false to disable all SDK logging.
 void configureKindeLogging({required bool enabled}) {
-  kindeLoggingEnabled = enabled;
+  _kindeLoggingEnabled = enabled;
 }
 
 /// Production-safe logging for Kinde SDK operations.
@@ -24,14 +27,16 @@ void kindeDebugPrint({
   required String message,
   Map<String, dynamic>? context,
 }) {
-  if (!kindeLoggingEnabled) return;
+  if (!_kindeLoggingEnabled) return;
 
   try {
     final buffer = StringBuffer('KINDE: $methodName - $message');
 
     if (context != null && context.isNotEmpty) {
       buffer.write(' | ');
-      final entries = context.entries.map((e) => '${e.key}=${e.value}').join(', ');
+      final entries = context.entries
+          .map((e) => '${e.key}=${e.value}')
+          .join(', ');
       buffer.write(entries);
     }
 
