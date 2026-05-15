@@ -1,33 +1,26 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kinde_flutter_sdk/src/utils/kinde_debug_print.dart';
 
 void main() {
+  test('logging is set to `kDebugMode` by default', () {
+    expect(kindeLoggingEnabled, kDebugMode);
+  });
   group('configureKindeLogging', () {
-    test('logging is enabled by default', () {
-      expect(kindeLoggingEnabled, isTrue);
+    tearDown(() {
+      // Reset to default before each test
+      resetKindeLoggingToDefault();
     });
 
-    group('toggling logging on and off', () {
-      setUp(() {
-        // Reset to 'true' before each test
-        configureKindeLogging(enabled: true);
-      });
+    test('can disable logging via configuration', () {
+      configureKindeLogging(enabled: false);
+      expect(kindeLoggingEnabled, isFalse);
+    });
 
-      tearDownAll(() {
-        // Reset to 'true' after all tests
-        configureKindeLogging(enabled: true);
-      });
-
-      test('can disable logging via configuration', () {
-        configureKindeLogging(enabled: false);
-        expect(kindeLoggingEnabled, isFalse);
-      });
-
-      test('can re-enable logging via configuration', () {
-        configureKindeLogging(enabled: false);
-        configureKindeLogging(enabled: true);
-        expect(kindeLoggingEnabled, isTrue);
-      });
+    test('can re-enable logging via configuration', () {
+      configureKindeLogging(enabled: false);
+      configureKindeLogging(enabled: true);
+      expect(kindeLoggingEnabled, isTrue);
     });
   });
 

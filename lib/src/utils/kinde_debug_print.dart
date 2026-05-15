@@ -1,12 +1,24 @@
 import 'package:flutter/foundation.dart';
 
-/// Global flag to enable/disable Kinde SDK logging.
+/// The default logging state.
 ///
-/// Set to false to disable all SDK logging in production if needed.
-bool _kindeLoggingEnabled = true;
+/// `true` in debug mode and `false` otherwise (profile and release mode)
+const bool _kDefaultLoggingEnabled = kDebugMode;
 
+/// Flag to enable/disable Kinde SDK logging.
+///
+/// Set to [_kDefaultLoggingEnabled] by default.
+bool _kindeLoggingEnabled = _kDefaultLoggingEnabled;
+
+/// Returns the current logging enabled state.
 @visibleForTesting
 bool get kindeLoggingEnabled => _kindeLoggingEnabled;
+
+/// Resets the logging enabled state to the default.
+@visibleForTesting
+void resetKindeLoggingToDefault() {
+  _kindeLoggingEnabled = _kDefaultLoggingEnabled;
+}
 
 /// Configure Kinde SDK logging.
 ///
