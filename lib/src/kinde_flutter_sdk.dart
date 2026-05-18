@@ -72,14 +72,7 @@ class KindeFlutterSDK with TokenUtils {
 
     _kindeSecureStorage = secureStorage ?? KindeSecureStorage();
 
-    var domainUrl = "";
-    if (_config!.authDomain.startsWith('https')) {
-      domainUrl = _config!.authDomain;
-    } else if (_config!.authDomain.startsWith('http')) {
-      domainUrl = _config!.authDomain.replaceFirst('http', "https");
-    } else {
-      domainUrl = 'https://${_config!.authDomain}';
-    }
+    final domainUrl = _normalizeDomain(_config!.authDomain);
 
     _serviceConfiguration = AuthorizationServiceConfiguration(
         authorizationEndpoint: '$domainUrl$_authPath',
@@ -112,6 +105,25 @@ class KindeFlutterSDK with TokenUtils {
   }
 
   Store get _store => Store.instance;
+
+  static String _normalizeDomain(String authDomain) {
+    if (authDomain.startsWith('https')) {
+      return authDomain;
+    } else if (authDomain.startsWith('http')) {
+      return authDomain.replaceFirst('http', 'https');
+    } else {
+      return 'https://$authDomain';
+    }
+  }
+
+  static String _getDomainFromUrl(String url) {
+    try {
+      final uri = Uri.parse(_normalizeDomain(url));
+      return uri.host;
+    } catch (_) {
+      return '[invalid-domain]';
+    }
+  }
 
   static Future<KindeFlutterSDK> initializeSDK({
     required String authDomain,
@@ -163,13 +175,26 @@ class KindeFlutterSDK with TokenUtils {
 
       updateStep('finalization');
 
-      return _instance = KindeFlutterSDK._internal(
+      final instance = _instance = KindeFlutterSDK._internal(
           secureStorage: kindeSecureStorage, dio: dio);
+
+      kindeDebugPrint(
+        methodName: 'initializeSDK',
+        message: 'SDK initialized',
+        context: {
+          'domain': _getDomainFromUrl(authDomain),
+          'platform': kIsWeb ? 'web' : Platform.operatingSystem,
+        },
+      );
+
+      return instance;
     } catch (e, st) {
       _config = null;
       kindeDebugPrint(
-          methodName: "KindeFlutterSDK.initializeSDK",
-          message: 'SDK initialization failed at step: $step');
+        methodName: 'initializeSDK',
+        message: 'Initialization failed at step: $step',
+        context: {'step': step, 'error': e.toString()},
+      );
       if (e is KindeError) rethrow;
 
       throw KindeError(
@@ -223,9 +248,16 @@ class KindeFlutterSDK with TokenUtils {
     Duration timeout = const Duration(seconds: 30),
   }) async {
     if (authState == null) {
-      kindeDebugPrint(methodName: "logout", message: "AuthState is null.");
+      kindeDebugPrint(methodName: 'logout', message: 'No active session');
       return;
     }
+
+    kindeDebugPrint(
+      methodName: 'logout',
+      message: 'Logout initiated',
+      context: {'platform': kIsWeb ? 'web' : Platform.operatingSystem},
+    );
+
     if (kIsWeb) {
       await _handleWebLogout();
     } else {
@@ -236,6 +268,7 @@ class KindeFlutterSDK with TokenUtils {
     }
 
     await _commonLogoutCleanup();
+    kindeDebugPrint(methodName: 'logout', message: 'Logout completed');
   }
 
   Future<void> _handleNonWebLogout({
@@ -318,10 +351,20 @@ class KindeFlutterSDK with TokenUtils {
                 response.data['error'] ??
                 "Unknown error"
             : "Logout failed with status: ${response.statusCode}";
+        kindeDebugPrint(
+          methodName: '_logoutWithoutRedirection',
+          message: 'Logout request failed',
+          context: {'statusCode': response.statusCode},
+        );
         throw KindeError(
             code: KindeErrorCode.logoutRequestFailed.code, message: errorMessage);
       }
     } catch (error, st) {
+      kindeDebugPrint(
+        methodName: '_logoutWithoutRedirection',
+        message: 'Logout error',
+        context: {'error': error.toString()},
+      );
       throw KindeError.fromError(error, st);
     }
   }
@@ -331,6 +374,14 @@ class KindeFlutterSDK with TokenUtils {
     AuthFlowType? type,
     AdditionalParameters additionalParams = const AdditionalParameters(),
   }) async {
+    kindeDebugPrint(
+      methodName: 'login',
+      message: 'Login initiated',
+      context: {
+        'flowType': type?.name ?? 'default',
+        'platform': kIsWeb ? 'web' : Platform.operatingSystem,
+      },
+    );
     final internalAdditionalParams =
         _prepareInternalAdditionalParameters(additionalParams);
     return _redirectToKinde(
@@ -391,6 +442,14 @@ class KindeFlutterSDK with TokenUtils {
       _saveState(tokenResponse);
       return tokenResponse.accessToken;
     } catch (e, st) {
+      kindeDebugPrint(
+        methodName: '_handleOtherLogin',
+        message: 'Authentication failed',
+        context: {
+          'flowType': type?.name ?? 'default',
+          'error': e.toString(),
+        },
+      );
       throw KindeError.fromError(e, st);
     }
   }
@@ -465,11 +524,20 @@ class KindeFlutterSDK with TokenUtils {
 
     if (credentials == null) {
       kindeDebugPrint(
-          methodName: "finishWebLogin",
-          message:
-              "No credentials returned from finishLoginFlow. Login may have been canceled or failed.");
+        methodName: 'finishWebLogin',
+        message: 'No credentials received - login may have been canceled',
+      );
       return false;
     }
+
+    kindeDebugPrint(
+      methodName: 'finishWebLogin',
+      message: 'Web login completed',
+      context: {
+        'expiresAt': credentials.expiration?.toIso8601String(),
+      },
+    );
+
     _saveState(TokenResponse(
       credentials.accessToken,
       credentials.refreshToken,
@@ -488,6 +556,14 @@ class KindeFlutterSDK with TokenUtils {
     AuthFlowType? type,
     AdditionalParameters additionalParams = const AdditionalParameters(),
   }) async {
+    kindeDebugPrint(
+      methodName: 'register',
+      message: 'Registration initiated',
+      context: {
+        'flowType': type?.name ?? 'default',
+        'platform': kIsWeb ? 'web' : Platform.operatingSystem,
+      },
+    );
     final internalAdditionalParams =
         _prepareInternalAdditionalParameters(additionalParams);
     internalAdditionalParams.registrationPage = _registrationPageParamValue;
@@ -536,10 +612,23 @@ class KindeFlutterSDK with TokenUtils {
     }
 
     // Proceed with token refresh
+    kindeDebugPrint(
+      methodName: 'getToken',
+      message: 'Token refresh initiated',
+      context: {
+        'trigger': forceRefresh ? 'manual' : 'auto',
+        'hasRefreshToken': authState?.refreshToken != null,
+      },
+    );
+
     final version = await _getVersion();
     final versionParam = 'Flutter/$version';
     try {
       if (authState?.refreshToken == null) {
+        kindeDebugPrint(
+          methodName: 'getToken',
+          message: 'No refresh token available',
+        );
         throw KindeError(
           code: KindeErrorCode.sessionExpiredOrInvalid.code,
         );
@@ -550,8 +639,24 @@ class KindeFlutterSDK with TokenUtils {
             ..putIfAbsent(_clientIdParamName, () => _config!.authClientId));
       _store.authState = AuthState.fromJson(data as Map<String, dynamic>);
       _kindeApi.setBearerAuth(_bearerAuth, _store.authState?.accessToken ?? '');
+
+      kindeDebugPrint(
+        methodName: 'getToken',
+        message: 'Token refresh successful',
+        context: {
+          'expiresAt': _store.authState?.accessTokenExpirationDateTime?.toIso8601String(),
+        },
+      );
+
       return _store.authState?.accessToken;
     } catch (e, st) {
+      kindeDebugPrint(
+        methodName: 'getToken',
+        message: 'Token refresh failed',
+        context: {
+          'error': e.toString(),
+        },
+      );
       throw KindeError.fromError(e, st);
     }
   }
@@ -639,6 +744,15 @@ class KindeFlutterSDK with TokenUtils {
         refreshToken: tokenResponse?.refreshToken,
         scope: tokenResponse?.scopes?.join(' '));
     _kindeApi.setBearerAuth(_bearerAuth, tokenResponse?.accessToken ?? '');
+
+    kindeDebugPrint(
+      methodName: '_saveState',
+      message: 'Auth state saved',
+      context: {
+        'expiresAt': tokenResponse?.accessTokenExpirationDateTime?.toIso8601String(),
+        'hasRefreshToken': tokenResponse?.refreshToken != null,
+      },
+    );
 
     // Schedule next refresh after saving new token (matches js-utils pattern)
     _scheduleNextRefresh();
@@ -765,6 +879,13 @@ class KindeFlutterSDK with TokenUtils {
       return '';
     }
   }
+
+  /// Configure Kinde SDK logging.
+  ///
+  /// [enabled] - Set to false to disable all SDK logging.
+  static void configureLogging({required bool enabled}) {
+    configureKindeLogging(enabled: enabled);
+}
 
   /// Returns a link to the self-serve portal for the authenticated user. The user can use this link to manage their account, update their profile, and view their entitlements.
   ///
