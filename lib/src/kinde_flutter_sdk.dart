@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:kinde_flutter_sdk/src/additional_params.dart';
+import 'package:kinde_flutter_sdk/src/auth/kinde_end_session_request.dart';
 import 'package:kinde_flutter_sdk/src/kinde_secure_storage/kinde_secure_storage_i.dart';
 import 'package:kinde_flutter_sdk/src/utils/kinde_custom_types.dart';
 import 'package:kinde_flutter_sdk/src/utils/kinde_debug_print.dart';
@@ -282,22 +283,19 @@ class KindeFlutterSDK with TokenUtils {
 
     try {
       const appAuth = FlutterAppAuth();
-      // EndSessionRequest parameters:
-      // - externalUserAgent: Uses ASWebAuthenticationSession (iOS) / Custom Tabs (Android)
-      //   for secure browser-based logout flow
-      // - idTokenHint: Required for org-specific logout in multi-org scenarios (OIDC recommended)
-      // - postLogoutRedirectUrl: Where to redirect user after logout (OIDC post_logout_redirect_uri)
-      // - serviceConfiguration: Contains the logout endpoint URL
+      // To prevent "414 Request-URI Too Large" errors caused by appending a massive
+      // idToken to the logout URL, we do not pass `idTokenHint` with the `postLogoutRedirectUrl`.
       //
-      // NOTE: Removed redundant additionalParameters["redirect"] - postLogoutRedirectUrl
-      // already handles the redirect via standard OIDC post_logout_redirect_uri parameter.
-      // This reduces URL length and follows OIDC spec more closely.
-      final endSessionRequest = EndSessionRequest(
-          externalUserAgent:
-              ExternalUserAgent.ephemeralAsWebAuthenticationSession,
-          idTokenHint: authState!.idToken,
-          postLogoutRedirectUrl: _config!.logoutRedirectUri,
-          serviceConfiguration: _serviceConfiguration);
+      // We instead pass the `client_id` as part of `additionalParameters`.
+      //
+      // See the [KindeEndSessionRequest] class documentation for more information.
+      final endSessionRequest = KindeEndSessionRequest(
+        externalUserAgent:
+            ExternalUserAgent.ephemeralAsWebAuthenticationSession,
+        postLogoutRedirectUrl: _config?.logoutRedirectUri,
+        serviceConfiguration: _serviceConfiguration,
+        additionalParameters: {'client_id': _config!.authClientId},
+      );
 
       await appAuth.endSession(endSessionRequest).timeout(timeout,
           onTimeout: () {
