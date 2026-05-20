@@ -3,6 +3,12 @@ description: The Kinde SDK For Flutter.
 version: 2.0.0
 homepage: https://github.com/kinde-oss/kinde-flutter-sdk
 
+platforms:
+  android:
+  ios:
+  macos:
+  web:
+
 environment:
   sdk: '>=3.9.2 <4.0.0'
   flutter: '>=3.35.6'
@@ -37,23 +43,5 @@ dev_dependencies:
   test: ^1.25.8
 
 flutter:
-  plugin:
-    platforms:
-      android:
-        package: com.kinde.kinde_flutter_sdk
-        pluginClass: KindeFlutterSdkPlugin
-      ios:
-        pluginClass: KindeFlutterSdkPlugin
-      linux:
-        pluginClass: KindeFlutterSdkPlugin
-      macos:
-        pluginClass: KindeFlutterSdkPlugin
-        pluginPath: macos
-      windows:
-        pluginClass: KindeFlutterSdkPluginCApi
-      web:
-        pluginClass: KindeFlutterWebSDK
-        fileName: kinde_web_plugin.dart
-
   assets:
     - pubspec.yaml

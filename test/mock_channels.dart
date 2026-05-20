@@ -16,6 +16,10 @@ var authorizeResponse = {
   'authorizationAdditionalParameters': {},
 };
 
+var endSessionResponse = {
+  'state': null,
+};
+
 final mockChannels = MockChannels();
 
 class MockChannels {
@@ -65,9 +69,10 @@ class MockChannels {
       if (methodCall.method == 'authorize') {
         return authorizeResponse;
       }
+      if (methodCall.method == 'endSession') {
+        return endSessionResponse;
+      }
       return null;
-
-
     });
   }
 }
