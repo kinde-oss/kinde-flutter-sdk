@@ -35,11 +35,10 @@ class KindeFlutterSDK with TokenUtils {
   static const _bearerAuth = 'kindeBearerAuth';
   static const _clientIdParamName = 'client_id';
 
-  // Background token refresh timer (matches Kinde js-utils pattern)
+  // Background token refresh timer
   Timer? _refreshTimer;
 
-  // Timer constants matching js-utils SDK
-  // Reference: js-utils/lib/utils/refreshTimer.ts (10s buffer, 24h max)
+  // Timer constants for background refresh
   static const Duration _refreshBufferDuration = Duration(seconds: 10);
   static const Duration _maxRefreshInterval = Duration(hours: 24);
   static const Duration _minRefreshInterval = Duration(seconds: 1);
@@ -63,7 +62,7 @@ class KindeFlutterSDK with TokenUtils {
   }
 
   KindeFlutterSDK._internal(
-      {KindeSecureStorageInterface? secureStorage, Dio? dio}) {
+    {KindeSecureStorageInterface? secureStorage, Dio? dio}) {
     if (_config == null) {
       throw KindeError(
         code: KindeErrorCode.missingConfig.code,
@@ -176,8 +175,8 @@ class KindeFlutterSDK with TokenUtils {
 
       updateStep('finalization');
 
-      final instance = _instance = KindeFlutterSDK._internal(
-          secureStorage: kindeSecureStorage, dio: dio);
+      _instance =
+          KindeFlutterSDK._internal(secureStorage: kindeSecureStorage, dio: dio);
 
       kindeDebugPrint(
         methodName: 'initializeSDK',
@@ -188,7 +187,8 @@ class KindeFlutterSDK with TokenUtils {
         },
       );
 
-      return instance;
+      await _instance!._startInvitationLoginIfNeeded();
+      return _instance!;
     } catch (e, st) {
       _config = null;
       kindeDebugPrint(
@@ -317,7 +317,6 @@ class KindeFlutterSDK with TokenUtils {
   }
 
   Future<void> _commonLogoutCleanup() async {
-    // Clear refresh timer on logout (matches js-utils pattern)
     _clearRefreshTimer();
 
     _kindeApi.setBearerAuth(_bearerAuth, '');
@@ -393,7 +392,8 @@ class KindeFlutterSDK with TokenUtils {
     final internalAdditionalParams =
         InternalAdditionalParameters.fromUserAdditionalParams(additionalParams);
     internalAdditionalParams.audience = _config!.audience;
-    internalAdditionalParams.promptValues = ['login'];
+    internalAdditionalParams.promptValues =
+        additionalParams.invitationCode != null ? ['create'] : ['login'];
     internalAdditionalParams.scopes = _config!.scopes;
     return internalAdditionalParams;
   }
@@ -413,7 +413,7 @@ class KindeFlutterSDK with TokenUtils {
 
   //MacOs, Android, IOS
   Future<String?> _handleOtherLogin(
-      AuthFlowType? type, InternalAdditionalParameters params) async {
+    AuthFlowType? type, InternalAdditionalParameters params) async {
     const appAuth = FlutterAppAuth();
     TokenResponse tokenResponse;
     try {
@@ -443,10 +443,7 @@ class KindeFlutterSDK with TokenUtils {
       kindeDebugPrint(
         methodName: '_handleOtherLogin',
         message: 'Authentication failed',
-        context: {
-          'flowType': type?.name ?? 'default',
-          'error': e.toString(),
-        },
+        context: {'flowType': type?.name ?? 'default', 'error': e.toString()},
       );
       throw KindeError.fromError(e, st);
     }
@@ -522,18 +519,16 @@ class KindeFlutterSDK with TokenUtils {
 
     if (credentials == null) {
       kindeDebugPrint(
-        methodName: 'finishWebLogin',
-        message: 'No credentials received - login may have been canceled',
-      );
+          methodName: "finishWebLogin",
+          message:
+            "No credentials received - login may have been canceled");
       return false;
     }
 
     kindeDebugPrint(
       methodName: 'finishWebLogin',
       message: 'Web login completed',
-      context: {
-        'expiresAt': credentials.expiration?.toIso8601String(),
-      },
+      context: {'expiresAt': credentials.expiration?.toIso8601String()},
     );
 
     _saveState(TokenResponse(
@@ -627,9 +622,7 @@ class KindeFlutterSDK with TokenUtils {
           methodName: 'getToken',
           message: 'No refresh token available',
         );
-        throw KindeError(
-          code: KindeErrorCode.sessionExpiredOrInvalid.code,
-        );
+        throw KindeError(code: KindeErrorCode.sessionExpiredOrInvalid.code);
       }
       final data = await _tokenApi.retrieveToken(
           versionParam,
@@ -642,7 +635,8 @@ class KindeFlutterSDK with TokenUtils {
         methodName: 'getToken',
         message: 'Token refresh successful',
         context: {
-          'expiresAt': _store.authState?.accessTokenExpirationDateTime?.toIso8601String(),
+          'expiresAt': _store.authState?.accessTokenExpirationDateTime
+              ?.toIso8601String(),
         },
       );
 
@@ -651,9 +645,7 @@ class KindeFlutterSDK with TokenUtils {
       kindeDebugPrint(
         methodName: 'getToken',
         message: 'Token refresh failed',
-        context: {
-          'error': e.toString(),
-        },
+        context: {'error': e.toString()},
       );
       throw KindeError.fromError(e, st);
     }
@@ -661,8 +653,7 @@ class KindeFlutterSDK with TokenUtils {
 
   /// Checks if the user is authenticated with a valid, non-expired token.
   ///
-  /// This method performs a simple expiry check on the access token, matching
-  /// the pattern used in Kinde's js-utils SDK and other Kinde SDKs.
+  /// This method performs a simple expiry check on the access token.
   ///
   /// This method does **not** perform any login completion or mutate state.
   ///
@@ -732,6 +723,53 @@ class KindeFlutterSDK with TokenUtils {
     return null;
   }
 
+  /// Extracts an invitation code from the current URL query parameters.
+  ///
+  /// This is a helper method for web platforms to detect when the application
+  /// is launched with an `invitation_code` query parameter, enabling automatic
+  /// handling of team member invitation flows.
+  ///
+  /// On web platforms, the SDK automatically checks for `invitation_code` during
+  /// initialization and starts the auth flow when present. You can still use
+  /// this helper if you need custom handling.
+  ///
+  /// Returns the invitation code string if present in the URL, or `null` if:
+  /// - Not running on web platform
+  /// - No URL is available
+  /// - No `invitation_code` parameter exists
+  ///
+  /// For mobile platforms, invitation codes should be extracted from deep links
+  /// by the application and passed via [AdditionalParameters.invitationCode].
+  ///
+  /// Example usage (web):
+  /// ```dart
+  /// final invitationCode = KindeFlutterSDK.getInvitationCodeFromUrl();
+  /// if (invitationCode != null) {
+  ///   await sdk.login(
+  ///     additionalParams: AdditionalParameters(invitationCode: invitationCode),
+  ///   );
+  /// }
+  /// ```
+  static String? getInvitationCodeFromUrl() {
+    return WebUtils.getParameterFromUrl('invitation_code');
+  }
+
+  Future<void> _startInvitationLoginIfNeeded() async {
+    if (!kIsWeb) return;
+
+    final invitationCode = getInvitationCodeFromUrl();
+    if (invitationCode == null || invitationCode.isEmpty) return;
+
+    try {
+      await login(
+        additionalParams: AdditionalParameters(invitationCode: invitationCode),
+      );
+    } catch (e) {
+      kindeDebugPrint(
+          methodName: "KindeFlutterSDK._startInvitationLoginIfNeeded",
+          message: "Failed to start invitation login: ${e.toString()}");
+    }
+  }
 
   _saveState(TokenResponse? tokenResponse) {
     _store.authState = AuthState(
@@ -747,27 +785,34 @@ class KindeFlutterSDK with TokenUtils {
       methodName: '_saveState',
       message: 'Auth state saved',
       context: {
-        'expiresAt': tokenResponse?.accessTokenExpirationDateTime?.toIso8601String(),
+        'expiresAt': tokenResponse?.accessTokenExpirationDateTime
+            ?.toIso8601String(),
         'hasRefreshToken': tokenResponse?.refreshToken != null,
       },
     );
 
-    // Schedule next refresh after saving new token (matches js-utils pattern)
+    kindeDebugPrint(
+      methodName: '_saveState',
+      message: 'Auth state saved',
+      context: {
+        'expiresAt': tokenResponse?.accessTokenExpirationDateTime
+            ?.toIso8601String(),
+        'hasRefreshToken': tokenResponse?.refreshToken != null,
+      },
+    );
+
     _scheduleNextRefresh();
   }
 
   /// Sets a refresh timer with automatic cleanup and safety constraints.
   ///
-  /// Matches the pattern from Kinde's js-utils SDK (refreshTimer.ts) where
-  /// timers are always cleared before setting, and durations are constrained
-  /// to prevent extremely long or short timers.
+  /// Timers are always cleared before setting a new one, and durations are
+  /// constrained to prevent extremely long or short timers.
   ///
   /// The timer duration is automatically adjusted to be 10 seconds less than
   /// the requested duration (refresh buffer) and capped at 24 hours for safety.
-  ///
-  /// Reference: js-utils/lib/utils/refreshTimer.ts lines 40-52
   void _setRefreshTimer(Duration duration, VoidCallback callback) {
-    _clearRefreshTimer(); // Always clear first (js-utils pattern)
+    _clearRefreshTimer();
 
     if (duration.inSeconds <= 0) {
       throw KindeError(
@@ -776,8 +821,7 @@ class KindeFlutterSDK with TokenUtils {
       );
     }
 
-    // Apply 10-second buffer and 24-hour cap (matching js-utils logic)
-    // Math.min(timer * 1000 - 10000, 86400000)
+    // Apply 10-second buffer and 24-hour cap
     final adjustedDuration = Duration(
       milliseconds: min(
         duration.inMilliseconds - _refreshBufferDuration.inMilliseconds,
@@ -796,9 +840,6 @@ class KindeFlutterSDK with TokenUtils {
   /// Clears the current refresh timer if one exists.
   ///
   /// Safe to call even if no timer is currently active.
-  /// Matches js-utils clearRefreshTimer() pattern.
-  ///
-  /// Reference: js-utils/lib/utils/refreshTimer.ts lines 72-79
   void _clearRefreshTimer() {
     _refreshTimer?.cancel();
     _refreshTimer = null;
@@ -806,11 +847,8 @@ class KindeFlutterSDK with TokenUtils {
 
   /// Schedules the next background token refresh based on token expiry.
   ///
-  /// Matches the pattern from Kinde's js-utils SDK where after every
-  /// successful token refresh, the next refresh is automatically scheduled
-  /// using the JWT 'exp' claim.
-  ///
-  /// Reference: js-utils/lib/utils/token/refreshToken.ts lines 144-156
+  /// After every successful token refresh, the next refresh is automatically
+  /// scheduled using the JWT 'exp' claim.
   void _scheduleNextRefresh() {
     try {
       // Get expiry from access token's 'exp' claim using public API
@@ -822,7 +860,7 @@ class KindeFlutterSDK with TokenUtils {
         return;
       }
 
-      // Calculate seconds until expiry (matching js-utils pattern)
+      // Calculate seconds until expiry
       final nowSec = DateTime.now().millisecondsSinceEpoch ~/ 1000;
       final secsToExpiry = max(exp - nowSec, 1); // Minimum 1 second
 
@@ -883,7 +921,7 @@ class KindeFlutterSDK with TokenUtils {
   /// [enabled] - Set to false to disable all SDK logging.
   static void configureLogging({required bool enabled}) {
     configureKindeLogging(enabled: enabled);
-}
+  }
 
   /// Returns a link to the self-serve portal for the authenticated user. The user can use this link to manage their account, update their profile, and view their entitlements.
   ///
