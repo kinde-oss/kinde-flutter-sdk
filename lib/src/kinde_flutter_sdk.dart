@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:kinde_flutter_sdk/src/additional_params.dart';
 import 'package:kinde_flutter_sdk/src/auth/kinde_end_session_request.dart';
 import 'package:kinde_flutter_sdk/src/kinde_secure_storage/kinde_secure_storage_i.dart';
+import 'package:kinde_flutter_sdk/src/utils/deep_link_util.dart';
 import 'package:kinde_flutter_sdk/src/utils/kinde_custom_types.dart';
 import 'package:kinde_flutter_sdk/src/utils/kinde_debug_print.dart';
 import 'package:kinde_flutter_sdk/src/kinde_secure_storage/kinde_secure_storage.dart';
@@ -187,7 +188,7 @@ class KindeFlutterSDK with TokenUtils {
         },
       );
 
-      await _instance!._startInvitationLoginIfNeeded();
+      unawaited(_instance!._startInvitationLoginIfNeeded());
       return _instance!;
     } catch (e, st) {
       _config = null;
@@ -723,51 +724,32 @@ class KindeFlutterSDK with TokenUtils {
     return null;
   }
 
-  /// Extracts an invitation code from the current URL query parameters.
-  ///
-  /// This is a helper method for web platforms to detect when the application
-  /// is launched with an `invitation_code` query parameter, enabling automatic
-  /// handling of team member invitation flows.
-  ///
-  /// On web platforms, the SDK automatically checks for `invitation_code` during
-  /// initialization and starts the auth flow when present. You can still use
-  /// this helper if you need custom handling.
-  ///
-  /// Returns the invitation code string if present in the URL, or `null` if:
-  /// - Not running on web platform
-  /// - No URL is available
-  /// - No `invitation_code` parameter exists
-  ///
-  /// For mobile platforms, invitation codes should be extracted from deep links
-  /// by the application and passed via [AdditionalParameters.invitationCode].
-  ///
-  /// Example usage (web):
-  /// ```dart
-  /// final invitationCode = KindeFlutterSDK.getInvitationCodeFromUrl();
-  /// if (invitationCode != null) {
-  ///   await sdk.login(
-  ///     additionalParams: AdditionalParameters(invitationCode: invitationCode),
-  ///   );
-  /// }
-  /// ```
-  static String? getInvitationCodeFromUrl() {
-    return WebUtils.getParameterFromUrl('invitation_code');
+  Future<void> _startInvitationLoginIfNeeded() async {
+    DeepLinkUtil().listenForDeepLinks(
+      onNewLink: ((newLinkUri) {
+        final invitationCode = newLinkUri.queryParameters['invitation_code'];
+
+        if (invitationCode == null || invitationCode.isEmpty) return;
+
+        _handleInvitationCode(invitationCode);
+      }),
+    );
   }
 
-  Future<void> _startInvitationLoginIfNeeded() async {
-    if (!kIsWeb) return;
-
-    final invitationCode = getInvitationCodeFromUrl();
-    if (invitationCode == null || invitationCode.isEmpty) return;
-
+  Future<void> _handleInvitationCode(String invitationCode) async {
     try {
+      kindeDebugPrint(
+        methodName: "_handleInvitationCode",
+        message:
+            "Starting invitation login for invitation code: $invitationCode",
+      );
       await login(
         additionalParams: AdditionalParameters(invitationCode: invitationCode),
       );
     } catch (e) {
       kindeDebugPrint(
-          methodName: "KindeFlutterSDK._startInvitationLoginIfNeeded",
-          message: "Failed to start invitation login: ${e.toString()}");
+          methodName: "_handleInvitationCode",
+          message: "Failed to handle invitation code: ${e.toString()}");
     }
   }
 

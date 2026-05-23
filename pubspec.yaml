@@ -32,6 +32,7 @@ dependencies:
   built_value: ^8.9.2
   built_collection: ^5.1.1
   http_mock_adapter: ^0.6.1
+  app_links: ^7.0.0
 
 dev_dependencies:
   flutter_test:
