@@ -1,5 +1,18 @@
 # Changelog
 
+## [Unreleased]
+
+### Breaking Changes
+
+#### SDK Requirements
+
+- Dart SDK requirement changed from `>=3.9.2 <4.0.0` to `>=3.10.0 <4.0.0`
+- Flutter SDK requirement changed from `>=3.35.6` to `>=3.38.1`
+
+### Changed
+
+- Updated `flutter_appauth` from `^8.0.3` to `^12.0.1`
+
 ## [2.0.0] - 2025-12-11
 
 ### Breaking Changes
