@@ -604,6 +604,13 @@ class KindeFlutterSDK with TokenUtils {
   }
 
   Future<String?> getToken({bool forceRefresh = false}) async {
+    /// This is important to ensure we have the latest tokens before performing
+    /// checks or refresh operations with the tokens.
+    /// This is especially important for apps with concurrent background tasks
+    /// using isolates that don't have access to the latest cached state
+    await _store.loadFromStorage();
+    _kindeApi.setBearerAuth(_bearerAuth, _store.authState?.accessToken ?? '');
+
     // Return existing token if authenticated and not forcing refresh
     if (!forceRefresh && await isAuthenticated()) {
       return _store.authState?.accessToken;
