@@ -773,16 +773,6 @@ class KindeFlutterSDK with TokenUtils {
       },
     );
 
-    kindeDebugPrint(
-      methodName: '_saveState',
-      message: 'Auth state saved',
-      context: {
-        'expiresAt': tokenResponse?.accessTokenExpirationDateTime
-            ?.toIso8601String(),
-        'hasRefreshToken': tokenResponse?.refreshToken != null,
-      },
-    );
-
     _scheduleNextRefresh();
   }
 
