@@ -1,5 +1,27 @@
 # Changelog
 
+## [2.1.0] - 2026-05-26
+
+### Added
+
+- `configureLogging({required bool enabled})` static method on `KindeFlutterSdk` to toggle SDK logging at runtime
+- `KindeEndSessionRequest` class for customizing logout/end-session requests
+- Automatic refresh-token interceptor improvements for more reliable token renewal
+
+### Changed
+
+- Logging now defaults to enabled only in debug mode (previously always on)
+- Converted the package from a Flutter plugin to a pure Dart package by removing unused native plugin boilerplate (the removed Android/iOS/macOS/web native classes were stock template stubs and were never part of the public API)
+
+### Fixed
+
+- Logout no longer fails with a `414 Request-URI Too Large` error when the id token is large: the end-session request now sends `client_id` instead of `id_token_hint`
+
+### Removed (non-functional)
+
+- Dropped declared support for **Linux** and **Windows** from `pubspec.yaml`. These platforms only ever shipped non-functional plugin stubs (the SDK is implemented entirely in Dart), so no working functionality is removed.
+  - Note: if your app declares Windows or Linux build targets and depends on this SDK, `flutter pub get` may now report that the package does not support those platforms even though Kinde was never functional there.
+
 ## [2.0.0] - 2025-12-11
 
 ### Breaking Changes
