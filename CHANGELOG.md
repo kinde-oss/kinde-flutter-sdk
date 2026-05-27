@@ -15,7 +15,7 @@
 
 ### Fixed
 
-- Logout no longer fails with a `414 Request-URI Too Large` error: the end-session request now sends `client_id` instead of `id_token_hint`
+- Logout no longer fails with a `414 Request-URI Too Large` error when the id token is large: the end-session request now sends `client_id` instead of `id_token_hint`
 
 ### Removed (non-functional)
 
