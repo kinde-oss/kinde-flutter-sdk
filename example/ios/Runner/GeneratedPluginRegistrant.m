@@ -12,16 +12,10 @@
 @import flutter_appauth;
 #endif
 
-#if __has_include(<flutter_secure_storage/FlutterSecureStoragePlugin.h>)
-#import <flutter_secure_storage/FlutterSecureStoragePlugin.h>
+#if __has_include(<flutter_secure_storage_darwin/FlutterSecureStorageDarwinPlugin.h>)
+#import <flutter_secure_storage_darwin/FlutterSecureStorageDarwinPlugin.h>
 #else
-@import flutter_secure_storage;
-#endif
-
-#if __has_include(<kinde_flutter_sdk/KindeFlutterSdkPlugin.h>)
-#import <kinde_flutter_sdk/KindeFlutterSdkPlugin.h>
-#else
-@import kinde_flutter_sdk;
+@import flutter_secure_storage_darwin;
 #endif
 
 #if __has_include(<path_provider_foundation/PathProviderPlugin.h>)
@@ -46,8 +40,7 @@
 
 + (void)registerWithRegistry:(NSObject<FlutterPluginRegistry>*)registry {
   [FlutterAppauthPlugin registerWithRegistrar:[registry registrarForPlugin:@"FlutterAppauthPlugin"]];
-  [FlutterSecureStoragePlugin registerWithRegistrar:[registry registrarForPlugin:@"FlutterSecureStoragePlugin"]];
-  [KindeFlutterSdkPlugin registerWithRegistrar:[registry registrarForPlugin:@"KindeFlutterSdkPlugin"]];
+  [FlutterSecureStorageDarwinPlugin registerWithRegistrar:[registry registrarForPlugin:@"FlutterSecureStorageDarwinPlugin"]];
   [PathProviderPlugin registerWithRegistrar:[registry registrarForPlugin:@"PathProviderPlugin"]];
   [SharedPreferencesPlugin registerWithRegistrar:[registry registrarForPlugin:@"SharedPreferencesPlugin"]];
   [URLLauncherPlugin registerWithRegistrar:[registry registrarForPlugin:@"URLLauncherPlugin"]];
