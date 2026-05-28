@@ -741,7 +741,7 @@ class KindeFlutterSDK with TokenUtils {
       kindeDebugPrint(
         methodName: "_handleInvitationCode",
         message:
-            "Starting invitation login for invitation code: $invitationCode",
+            "Starting invitation login for invitation code",
       );
       await login(
         additionalParams: AdditionalParameters(invitationCode: invitationCode),
