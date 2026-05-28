@@ -59,6 +59,7 @@ class KindeFlutterSDK with TokenUtils {
   late AuthorizationServiceConfiguration _serviceConfiguration;
 
   bool _handlingInvitationCode = false;
+  StreamSubscription<Uri>? _deepLinkSubscription;
 
   static KindeFlutterSDK get instance {
     return _instance ??= KindeFlutterSDK._internal();
@@ -727,7 +728,8 @@ class KindeFlutterSDK with TokenUtils {
   }
 
   void _startInvitationLoginIfNeeded() {
-    DeepLinkUtil().listenForDeepLinks(
+    _deepLinkSubscription?.cancel();
+    _deepLinkSubscription = DeepLinkUtil().listenForDeepLinks(
       onNewLink: ((newLinkUri) {
         final invitationCode = newLinkUri.queryParameters['invitation_code'];
 

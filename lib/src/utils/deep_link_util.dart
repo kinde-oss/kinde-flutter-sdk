@@ -1,9 +1,12 @@
+import 'dart:async';
 import 'package:app_links/app_links.dart';
 
 class DeepLinkUtil {
-  void listenForDeepLinks({required Function(Uri uri) onNewLink}) {
-    AppLinks().uriLinkStream.listen((uri) {
+  StreamSubscription<Uri> listenForDeepLinks(
+      {required Function(Uri uri) onNewLink}) {
+    return AppLinks().uriLinkStream.listen((uri) {
       onNewLink(uri);
     });
   }
 }
+
