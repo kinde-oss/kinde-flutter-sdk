@@ -58,6 +58,8 @@ class KindeFlutterSDK with TokenUtils {
   late TokenApi _tokenApi;
   late AuthorizationServiceConfiguration _serviceConfiguration;
 
+  bool _handlingInvitationCode = false;
+
   static KindeFlutterSDK get instance {
     return _instance ??= KindeFlutterSDK._internal();
   }
@@ -738,6 +740,10 @@ class KindeFlutterSDK with TokenUtils {
 
   Future<void> _handleInvitationCode(String invitationCode) async {
     try {
+      if (_handlingInvitationCode) return;
+
+      _handlingInvitationCode = true;
+
       kindeDebugPrint(
         methodName: "_handleInvitationCode",
         message:
@@ -750,6 +756,8 @@ class KindeFlutterSDK with TokenUtils {
       kindeDebugPrint(
           methodName: "_handleInvitationCode",
           message: "Failed to handle invitation code: ${e.toString()}");
+    } finally {
+      _handlingInvitationCode = false;
     }
   }
 
