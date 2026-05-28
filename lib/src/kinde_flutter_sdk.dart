@@ -188,7 +188,7 @@ class KindeFlutterSDK with TokenUtils {
         },
       );
 
-      unawaited(_instance!._startInvitationLoginIfNeeded());
+      _instance!._startInvitationLoginIfNeeded();
       return _instance!;
     } catch (e, st) {
       _config = null;
@@ -724,7 +724,7 @@ class KindeFlutterSDK with TokenUtils {
     return null;
   }
 
-  Future<void> _startInvitationLoginIfNeeded() async {
+  void _startInvitationLoginIfNeeded() {
     DeepLinkUtil().listenForDeepLinks(
       onNewLink: ((newLinkUri) {
         final invitationCode = newLinkUri.queryParameters['invitation_code'];
