@@ -385,6 +385,8 @@ class KindeFlutterSDK with TokenUtils {
     );
     final internalAdditionalParams =
         _prepareInternalAdditionalParameters(additionalParams);
+    internalAdditionalParams.promptValues =
+        additionalParams.invitationCode != null ? ['create'] : ['login'];
     return _redirectToKinde(
       type: type,
       internalAdditionalParameters: internalAdditionalParams,
@@ -396,8 +398,6 @@ class KindeFlutterSDK with TokenUtils {
     final internalAdditionalParams =
         InternalAdditionalParameters.fromUserAdditionalParams(additionalParams);
     internalAdditionalParams.audience = _config!.audience;
-    internalAdditionalParams.promptValues =
-        additionalParams.invitationCode != null ? ['create'] : ['login'];
     internalAdditionalParams.scopes = _config!.scopes;
     return internalAdditionalParams;
   }
