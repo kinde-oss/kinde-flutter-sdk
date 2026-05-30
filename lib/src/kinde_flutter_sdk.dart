@@ -728,21 +728,40 @@ class KindeFlutterSDK with TokenUtils {
   }
 
   void _startInvitationLoginIfNeeded() {
-    _deepLinkSubscription?.cancel();
-    _deepLinkSubscription = DeepLinkUtil().listenForDeepLinks(
-      onNewLink: ((newLinkUri) {
-        final invitationCode = newLinkUri.queryParameters['invitation_code'];
+    try {
+      kindeDebugPrint(
+        methodName: "_startInvitationLoginIfNeeded",
+        message: "Starting invitation code deep link listener",
+      );
 
-        if (invitationCode == null || invitationCode.isEmpty) return;
+      _deepLinkSubscription?.cancel();
 
-        _handleInvitationCode(invitationCode);
-      }),
-    );
+      _deepLinkSubscription = DeepLinkUtil().listenForDeepLinks(
+        onNewLink: ((newLinkUri) {
+          final invitationCode = newLinkUri.queryParameters['invitation_code'];
+
+          if (invitationCode == null || invitationCode.isEmpty) return;
+
+          _handleInvitationCode(invitationCode);
+        }),
+      );
+    } catch (e) {
+      kindeDebugPrint(
+        methodName: "_startInvitationLoginIfNeeded",
+        message: "Failed to setup invitation code deep link listener: ${e.toString()}",
+      );
+    }
   }
 
   Future<void> _handleInvitationCode(String invitationCode) async {
     try {
-      if (_handlingInvitationCode) return;
+      if (_handlingInvitationCode)  {
+        kindeDebugPrint(
+          methodName: "_handleInvitationCode",
+          message: "Invitation code already being handled. Returning without processing",
+        );
+        return;
+      }
 
       _handlingInvitationCode = true;
 
@@ -756,7 +775,7 @@ class KindeFlutterSDK with TokenUtils {
       );
     } catch (e) {
       kindeDebugPrint(
-          methodName: "_handleInvitationCode",
+        methodName: "_handleInvitationCode",
           message: "Failed to handle invitation code: ${e.toString()}");
     } finally {
       _handlingInvitationCode = false;
