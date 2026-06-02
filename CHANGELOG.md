@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.1.1] - 2026-06-02
+
+### Fixed
+
+- `getToken()` now reloads the auth state from secure storage before returning or refreshing, and re-syncs the bearer auth header with the freshly loaded access token. This fixes unexpected refresh-token failures in apps that update tokens from a background isolate, where the main isolate previously held stale in-memory state (PR #65)
+
 ## [2.1.0] - 2026-05-26
 
 ### Added
