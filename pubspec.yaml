@@ -43,5 +43,10 @@ dev_dependencies:
   test: ^1.25.8
 
 flutter:
+  plugin:
+    platforms:
+      android:
+        package: com.kinde.kinde_flutter_sdk
+        pluginClass: KindeFlutterSdkPlugin
   assets:
     - pubspec.yaml
