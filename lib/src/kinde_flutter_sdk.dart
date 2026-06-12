@@ -3,7 +3,6 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:kinde_flutter_sdk/src/additional_params.dart';
-import 'package:kinde_flutter_sdk/src/auth/kinde_end_session_request.dart';
 import 'package:kinde_flutter_sdk/src/kinde_secure_storage/kinde_secure_storage_i.dart';
 import 'package:kinde_flutter_sdk/src/utils/kinde_custom_types.dart';
 import 'package:kinde_flutter_sdk/src/utils/kinde_debug_print.dart';
@@ -288,8 +287,7 @@ class KindeFlutterSDK with TokenUtils {
       //
       // We instead pass the `client_id` as part of `additionalParameters`.
       //
-      // See the [KindeEndSessionRequest] class documentation for more information.
-      final endSessionRequest = KindeEndSessionRequest(
+      final endSessionRequest = EndSessionRequest(
         externalUserAgent:
             ExternalUserAgent.ephemeralAsWebAuthenticationSession,
         postLogoutRedirectUrl: _config!.logoutRedirectUri,
@@ -604,8 +602,15 @@ class KindeFlutterSDK with TokenUtils {
   }
 
   Future<String?> getToken({bool forceRefresh = false}) async {
+    /// This is important to ensure we have the latest tokens before performing
+    /// checks or refresh operations with the tokens.
+    /// This is especially important for apps with concurrent background tasks
+    /// using isolates that don't have access to the latest cached state
+    await _store.reloadAuthState();
+
     // Return existing token if authenticated and not forcing refresh
     if (!forceRefresh && await isAuthenticated()) {
+      _kindeApi.setBearerAuth(_bearerAuth, _store.authState?.accessToken ?? '');
       return _store.authState?.accessToken;
     }
 

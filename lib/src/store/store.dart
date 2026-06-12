@@ -63,6 +63,10 @@ class Store {
     await _readKeys();
   }
 
+  Future<void> reloadAuthState() async {
+    await _readAuthState();
+  }
+
   Future<void> _readAuthState() async {
     try {
       final currentData = await _storage.read(key: _authStateKey);
