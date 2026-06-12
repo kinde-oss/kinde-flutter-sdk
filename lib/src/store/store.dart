@@ -22,9 +22,6 @@ class Store {
   static Future<void> init() async {
     _instance = Store._internal();
     _instance!._storage = const FlutterSecureStorage(
-      aOptions: AndroidOptions(
-        encryptedSharedPreferences: true,
-      ),
       iOptions: IOSOptions(
         accessibility: KeychainAccessibility.first_unlock,
       ),
