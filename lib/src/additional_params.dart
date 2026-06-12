@@ -11,7 +11,9 @@ enum Parameter {
   isCreateOrg("is_create_org"),
   orgName("org_name"),
   planInterest("plan_interest"),
-  pricingTableKey("pricing_table_key");
+  pricingTableKey("pricing_table_key"),
+  invitationCode("invitation_code"),
+  isInvitation("is_invitation");
 
   const Parameter(this.value);
 
@@ -39,13 +41,18 @@ abstract class BaseAdditionalParameters {
   /// Pricing table to show in billing flow
   final String? pricingTableKey;
 
+  /// Invitation code for team member invitations.
+  /// When provided, initiates an invitation acceptance flow.
+  final String? invitationCode;
+
   const BaseAdditionalParameters(
       {this.lang,
       this.connectionId,
       this.loginHint,
       this.orgCode,
       this.planInterest,
-      this.pricingTableKey});
+      this.pricingTableKey,
+      this.invitationCode});
 
   Map<String, String> toWebParams() {
     final params = <String, String>{};
@@ -67,6 +74,11 @@ abstract class BaseAdditionalParameters {
     if (pricingTableKey != null) {
       params[Parameter.pricingTableKey.name] = pricingTableKey!;
     }
+    if (invitationCode != null) {
+      params[Parameter.invitationCode.name] = invitationCode!;
+      // Auto-derive is_invitation when invitation_code is present
+      params[Parameter.isInvitation.name] = "true";
+    }
     return params;
   }
 }
@@ -78,7 +90,8 @@ class AdditionalParameters extends BaseAdditionalParameters {
       super.loginHint,
       super.orgCode,
       super.planInterest,
-      super.pricingTableKey});
+      super.pricingTableKey,
+      super.invitationCode});
 }
 
 class InternalAdditionalParameters extends BaseAdditionalParameters {
@@ -104,6 +117,7 @@ class InternalAdditionalParameters extends BaseAdditionalParameters {
       super.orgCode,
       super.planInterest,
       super.pricingTableKey,
+      super.invitationCode,
       });
 
   factory InternalAdditionalParameters.fromUserAdditionalParams(
@@ -115,6 +129,7 @@ class InternalAdditionalParameters extends BaseAdditionalParameters {
       orgCode: userParams.orgCode,
       planInterest: userParams.planInterest,
       pricingTableKey: userParams.pricingTableKey,
+      invitationCode: userParams.invitationCode,
     );
   }
 
