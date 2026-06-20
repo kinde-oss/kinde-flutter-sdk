@@ -1,17 +1,16 @@
-// ignore_for_file: avoid_web_libraries_in_flutter
-
-import 'dart:html';
+import 'package:web/web.dart' as web;
 
 abstract class WebUtils {
   const WebUtils._();
 
-  static void openPage(String url) => window.location.assign(url);
+  static void openPage(String url) => web.window.location.assign(url);
 
-  static void replacePage(String url) => window.location.replace(url);
+  static void replacePage(String url) => web.window.location.replace(url);
 
-  static String? get getCurrentUrl => window.location.href;
+  static String? get getCurrentUrl => web.window.location.href;
 
-  static String? get getOriginUrl => window.location.origin;
+  static String? get getOriginUrl => web.window.location.origin;
 
-  static String get temporaryDirectory => window.localStorage['temporary_directory'] ?? "";
+  static String get temporaryDirectory =>
+      web.window.localStorage.getItem('temporary_directory') ?? "";
 }
