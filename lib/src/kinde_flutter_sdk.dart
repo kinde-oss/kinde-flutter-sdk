@@ -60,6 +60,27 @@ class KindeFlutterSDK with TokenUtils {
   bool _handlingInvitationCode = false;
   StreamSubscription<Uri>? _deepLinkSubscription;
 
+  /// The last invitation code that was processed by the deep-link listener.
+  ///
+  /// The OS may re-deliver the same invitation deep link (app resume, link
+  /// re-open, redelivery after a successful sign-in). Without this, each
+  /// redelivery re-triggers `login()` with an already-consumed code, producing
+  /// the hosted "This link has expired" page. Cleared on logout so a fresh
+  /// invitation can be processed again.
+  String? _lastHandledInvitationCode;
+
+  /// Guards against concurrent native authorization flows.
+  ///
+  /// Only one browser-based authorize request may be in flight at a time. A
+  /// second concurrent request (e.g. a double-tap, an interrupted-and-retried
+  /// login, or the invitation deep-link listener firing while a user-initiated
+  /// login is already open) would start a new authorization with a fresh
+  /// `state`, superseding the first. When a redirect then completes against the
+  /// stale request the provider rejects it ("state did not match" client-side /
+  /// "This link has expired" on the hosted page). Mirrors the existing
+  /// `_loginInProgress` guard in the web flow.
+  bool _loginInProgress = false;
+
   static KindeFlutterSDK get instance {
     return _instance ??= KindeFlutterSDK._internal();
   }
@@ -251,6 +272,11 @@ class KindeFlutterSDK with TokenUtils {
     bool macosLogoutWithoutRedirection = true,
     Duration timeout = const Duration(seconds: 30),
   }) async {
+    // Always reset invitation dedup on logout, even when there is no active
+    // session. A failed invitation login (e.g. expired code) may never
+    // establish a session, so this must run before the early return below.
+    _lastHandledInvitationCode = null;
+
     if (authState == null) {
       kindeDebugPrint(methodName: 'logout', message: 'No active session');
       return;
@@ -416,6 +442,20 @@ class KindeFlutterSDK with TokenUtils {
   //MacOs, Android, IOS
   Future<String?> _handleOtherLogin(
     AuthFlowType? type, InternalAdditionalParameters params) async {
+    // Reject concurrent authorization attempts. Starting a second browser
+    // flow while one is already pending supersedes the first request's state
+    // and leads to "state did not match" / "This link has expired" errors.
+    if (_loginInProgress) {
+      kindeDebugPrint(
+        methodName: '_handleOtherLogin',
+        message: 'Authorization already in progress; ignoring concurrent request',
+      );
+      throw KindeError(
+        code: KindeErrorCode.loginInProcess.code,
+        message: 'An authentication flow is already in progress',
+      );
+    }
+    _loginInProgress = true;
     const appAuth = FlutterAppAuth();
     TokenResponse tokenResponse;
     try {
@@ -448,6 +488,8 @@ class KindeFlutterSDK with TokenUtils {
         context: {'flowType': type?.name ?? 'default', 'error': e.toString()},
       );
       throw KindeError.fromError(e, st);
+    } finally {
+      _loginInProgress = false;
     }
   }
 
@@ -768,7 +810,16 @@ class KindeFlutterSDK with TokenUtils {
         return;
       }
 
+      if (invitationCode == _lastHandledInvitationCode) {
+        kindeDebugPrint(
+          methodName: "_handleInvitationCode",
+          message: "Invitation code already handled previously. Skipping.",
+        );
+        return;
+      }
+
       _handlingInvitationCode = true;
+      _lastHandledInvitationCode = invitationCode;
 
       kindeDebugPrint(
         methodName: "_handleInvitationCode",
