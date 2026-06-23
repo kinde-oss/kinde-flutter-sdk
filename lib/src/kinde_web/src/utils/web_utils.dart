@@ -1,16 +1,16 @@
-import 'package:web/web.dart' as web;
+import 'package:web/web.dart';
 
 abstract class WebUtils {
   const WebUtils._();
 
-  static void openPage(String url) => web.window.location.assign(url);
+  static void openPage(String url) => window.location.assign(url);
 
-  static void replacePage(String url) => web.window.location.replace(url);
+  static void replacePage(String url) => window.location.replace(url);
 
-  static String? get getCurrentUrl => web.window.location.href;
+  static String? get getCurrentUrl => window.location.href;
 
-  static String? get getOriginUrl => web.window.location.origin;
+  static String? get getOriginUrl => window.location.origin;
 
   static String get temporaryDirectory =>
-      web.window.localStorage.getItem('temporary_directory') ?? "";
+      window.localStorage.getItem('temporary_directory') ?? "";
 }
