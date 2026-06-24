@@ -601,11 +601,14 @@ class KindeFlutterSDK with TokenUtils {
   }
 
   Future<String?> getToken({bool forceRefresh = false}) async {
-    /// This is important to ensure we have the latest tokens before performing
-    /// checks or refresh operations with the tokens.
-    /// This is especially important for apps with concurrent background tasks
-    /// using isolates that don't have access to the latest cached state
-    await _store.reloadAuthState();
+    // Only read from disk when there is no cached state (cold start / isolate
+    // with no shared memory). Reloading unconditionally overwrites a freshly
+    // rotated token that is still being written to disk by the fire-and-forget
+    // write in Store.authState, causing the stale token to be sent to Kinde
+    // and triggering an invalid_grant error.
+    if (_store.authState == null) {
+      await _store.reloadAuthState();
+    }
 
     // Return existing token if authenticated and not forcing refresh
     if (!forceRefresh && await isAuthenticated()) {
