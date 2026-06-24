@@ -1,6 +1,4 @@
-// ignore_for_file: avoid_web_libraries_in_flutter
-
-import 'dart:html';
+import 'package:web/web.dart';
 
 abstract class WebUtils {
   const WebUtils._();
@@ -13,5 +11,6 @@ abstract class WebUtils {
 
   static String? get getOriginUrl => window.location.origin;
 
-  static String get temporaryDirectory => window.localStorage['temporary_directory'] ?? "";
+  static String get temporaryDirectory =>
+      window.localStorage.getItem('temporary_directory') ?? "";
 }
