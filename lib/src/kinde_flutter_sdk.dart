@@ -60,13 +60,14 @@ class KindeFlutterSDK with TokenUtils {
   bool _handlingInvitationCode = false;
   StreamSubscription<Uri>? _deepLinkSubscription;
 
-  /// The last invitation code that was processed by the deep-link listener.
+  /// The last invitation code successfully processed by the deep-link listener.
   ///
   /// The OS may re-deliver the same invitation deep link (app resume, link
   /// re-open, redelivery after a successful sign-in). Without this, each
   /// redelivery re-triggers `login()` with an already-consumed code, producing
-  /// the hosted "This link has expired" page. Cleared on logout so a fresh
-  /// invitation can be processed again.
+  /// the hosted "This link has expired" page. Set only after login succeeds so
+  /// transient failures can be retried. Cleared on logout so a fresh invitation
+  /// can be processed again.
   String? _lastHandledInvitationCode;
 
   /// Guards against concurrent native authorization flows.
@@ -789,7 +790,7 @@ class KindeFlutterSDK with TokenUtils {
 
           if (invitationCode == null || invitationCode.isEmpty) return;
 
-          _handleInvitationCode(invitationCode);
+          handleInvitationCode(invitationCode);
         }),
       );
     } catch (e) {
@@ -800,7 +801,9 @@ class KindeFlutterSDK with TokenUtils {
     }
   }
 
-  Future<void> _handleInvitationCode(String invitationCode) async {
+  /// Exposed for regression tests of invitation deep-link handling.
+  @visibleForTesting
+  Future<void> handleInvitationCode(String invitationCode) async {
     try {
       if (_handlingInvitationCode)  {
         kindeDebugPrint(
@@ -819,7 +822,6 @@ class KindeFlutterSDK with TokenUtils {
       }
 
       _handlingInvitationCode = true;
-      _lastHandledInvitationCode = invitationCode;
 
       kindeDebugPrint(
         methodName: "_handleInvitationCode",
@@ -829,6 +831,7 @@ class KindeFlutterSDK with TokenUtils {
       await login(
         additionalParams: AdditionalParameters(invitationCode: invitationCode),
       );
+      _lastHandledInvitationCode = invitationCode;
     } catch (e) {
       kindeDebugPrint(
         methodName: "_handleInvitationCode",
