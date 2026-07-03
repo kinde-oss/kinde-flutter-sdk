@@ -1,6 +1,6 @@
 name: kinde_flutter_sdk
 description: The Kinde SDK For Flutter.
-version: 2.1.0
+version: 2.1.1
 homepage: https://github.com/kinde-oss/kinde-flutter-sdk
 
 platforms:
@@ -33,6 +33,7 @@ dependencies:
   built_collection: ^5.1.1
   http_mock_adapter: ^0.6.1
   app_links: ^7.0.0
+  web: ^1.1.1
 
 dev_dependencies:
   flutter_test:
