@@ -13,4 +13,13 @@ abstract class WebUtils {
 
   static String get temporaryDirectory =>
       window.localStorage.getItem('temporary_directory') ?? "";
+
+  static String? getSessionItem(String key) =>
+      window.sessionStorage.getItem(key);
+
+  static void setSessionItem(String key, String value) =>
+      window.sessionStorage.setItem(key, value);
+
+  static void removeSessionItem(String key) =>
+      window.sessionStorage.removeItem(key);
 }

@@ -4,6 +4,7 @@ import 'dart:math';
 
 import 'package:kinde_flutter_sdk/src/additional_params.dart';
 import 'package:kinde_flutter_sdk/src/kinde_secure_storage/kinde_secure_storage_i.dart';
+import 'package:kinde_flutter_sdk/src/utils/app_lifecycle_util.dart';
 import 'package:kinde_flutter_sdk/src/utils/deep_link_util.dart';
 import 'package:kinde_flutter_sdk/src/utils/kinde_custom_types.dart';
 import 'package:kinde_flutter_sdk/src/utils/kinde_debug_print.dart';
@@ -59,6 +60,9 @@ class KindeFlutterSDK with TokenUtils {
 
   bool _handlingInvitationCode = false;
   StreamSubscription<Uri>? _deepLinkSubscription;
+
+  /// SessionStorage key used to prevent infinite reauth retries on Web.
+  static const _webAuthRetriedFlag = 'kinde_web_auth_retried';
 
   static KindeFlutterSDK get instance {
     return _instance ??= KindeFlutterSDK._internal();
@@ -409,14 +413,18 @@ class KindeFlutterSDK with TokenUtils {
     if (kIsWeb) {
       _handleWebLogin(internalAdditionalParameters);
     } else {
-      return _handleOtherLogin(type, internalAdditionalParameters);
+      return _handleOtherLogin(type, internalAdditionalParameters, isRetrying: false,);
     }
     return null;
   }
 
-  //MacOs, Android, IOS
+  /// Handles login for macOS, Android and iOS
+  ///
+  /// [isRetrying] tracks if we are retrying the authentication flow.
+  /// We currently only retry once if the login link has expired.
+  ///
   Future<String?> _handleOtherLogin(
-    AuthFlowType? type, InternalAdditionalParameters params) async {
+    AuthFlowType? type, InternalAdditionalParameters params, {required bool isRetrying,}) async {
     const appAuth = FlutterAppAuth();
     TokenResponse tokenResponse;
     try {
@@ -443,12 +451,40 @@ class KindeFlutterSDK with TokenUtils {
       _saveState(tokenResponse);
       return tokenResponse.accessToken;
     } catch (e, st) {
+      final kindeError = KindeError.fromError(e, st);
+
+      // Only retry once if the login link has expired
+      // If we're already in a retry, do not retry again.
+      if (kindeError is LoginLinkExpiredKindeError && !isRetrying) {
+        /// Currently On Android, `reauthState` is null,
+        /// but this is fine since have the original `params` object.
+        /// See `LoginLinkExpiredKindeError._extractReauthState` for more details.
+        final reauthState = kindeError.reauthState;
+
+        params.reauthState = reauthState;
+
+        // Since the app is being reopened from the expired login link,
+        // we need to ensure it is in the foreground before attempting to
+        // retry the authentication flow.
+        final isForeground = await AppLifecycleUtil.ensureAppIsInForeground();
+
+        if (isForeground) {
+          return _handleOtherLogin(type, params, isRetrying: true);
+        } else {
+          kindeDebugPrint(
+            methodName: '_handleOtherLogin',
+            message:
+                'App did not return to foreground in time. Aborting retry.',
+          );
+        }
+      }
+
       kindeDebugPrint(
         methodName: '_handleOtherLogin',
         message: 'Authentication failed',
         context: {'flowType': type?.name ?? 'default', 'error': e.toString()},
       );
-      throw KindeError.fromError(e, st);
+      throw kindeError;
     }
   }
 
@@ -708,7 +744,21 @@ class KindeFlutterSDK with TokenUtils {
   ///
   /// Call this **before** checking authentication status.
   Future<bool> completePendingLoginIfNeeded() async {
-    final finishLoginUri = _isCurrentUrlContainWebAuthParams();
+    final currentUrl = WebUtils.getCurrentUrl ?? "";
+    final currentUri = Uri.tryParse(currentUrl);
+
+    /// Check if this is an expired login link, retrieving the reauth_state
+    if (currentUri?.queryParameters case {
+      'error': 'login_link_expired',
+      'reauth_state': String reauthState,
+    }) {
+      _handleExpiredWebLogin(reauthState: reauthState);
+      /// Returning false because we aren't actually completing the auth process here
+      /// We're rather retrying the flow if expired
+      return false;
+    }
+
+    final finishLoginUri = _isCurrentUrlContainWebAuthParams(currentUrl: currentUrl);
     if (finishLoginUri != null) {
       final storedState = await _kindeSecureStorage.getAuthRequestState();
       if (storedState != null) {
@@ -718,10 +768,39 @@ class KindeFlutterSDK with TokenUtils {
     return false;
   }
 
+  void _handleExpiredWebLogin({required String reauthState}) {
+    final hasAlreadyRetried =
+        WebUtils.getSessionItem(_webAuthRetriedFlag) == 'true';
+
+    // Clear retry flag after retrieval
+    WebUtils.removeSessionItem(_webAuthRetriedFlag);
+
+    if (hasAlreadyRetried) {
+      kindeDebugPrint(
+        methodName: "_handleExpiredWebLogin",
+        message:
+            "Reauth retry already attempted. Aborting to prevent infinite loop.",
+      );
+      return;
+    }
+
+    kindeDebugPrint(
+      methodName: "_handleExpiredWebLogin",
+      message: "Login link expired on Web. Retrying login with reauth_state...",
+    );
+    WebUtils.setSessionItem(_webAuthRetriedFlag, 'true');
+
+    _handleWebLogin(
+      InternalAdditionalParameters(
+        supportsReauth: true,
+        reauthState: reauthState,
+      ),
+    );
+  }
+
   ///returns current url if it contain required params for finishing auth flow
-  String? _isCurrentUrlContainWebAuthParams() {
+  String? _isCurrentUrlContainWebAuthParams({required String currentUrl}) {
     if (kIsWeb && authState == null) {
-      final currentUrl = WebUtils.getCurrentUrl ?? "";
       if (currentUrl.isEmpty) return null;
       final currentUri = Uri.tryParse(currentUrl);
       if (currentUri == null || !currentUri.hasScheme) return null;
