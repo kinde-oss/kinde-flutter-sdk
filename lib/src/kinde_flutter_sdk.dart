@@ -790,12 +790,12 @@ class KindeFlutterSDK with TokenUtils {
     );
     WebUtils.setSessionItem(_webAuthRetriedFlag, 'true');
 
-    _handleWebLogin(
-      InternalAdditionalParameters(
-        supportsReauth: true,
-        reauthState: reauthState,
-      ),
+    final params = _prepareInternalAdditionalParameters(
+      const AdditionalParameters(),
     );
+    params.reauthState = reauthState;
+
+    _handleWebLogin(params);
   }
 
   ///returns current url if it contain required params for finishing auth flow
