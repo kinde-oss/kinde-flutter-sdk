@@ -397,6 +397,7 @@ class KindeFlutterSDK with TokenUtils {
         InternalAdditionalParameters.fromUserAdditionalParams(additionalParams);
     internalAdditionalParams.audience = _config!.audience;
     internalAdditionalParams.scopes = _config!.scopes;
+    internalAdditionalParams.supportsReauth = true;
     return internalAdditionalParams;
   }
 

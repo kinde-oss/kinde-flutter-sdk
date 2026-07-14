@@ -13,7 +13,9 @@ enum Parameter {
   planInterest("plan_interest"),
   pricingTableKey("pricing_table_key"),
   invitationCode("invitation_code"),
-  isInvitation("is_invitation");
+  isInvitation("is_invitation"),
+  supportsReauth("supports_reauth"),
+  reauthState("reauth_state");
 
   const Parameter(this.value);
 
@@ -102,6 +104,8 @@ class InternalAdditionalParameters extends BaseAdditionalParameters {
   String? registrationPage;
   bool? createOrg;
   String? orgName;
+  bool? supportsReauth;
+  String? reauthState;
 
   InternalAdditionalParameters(
       {this.audience,
@@ -111,6 +115,8 @@ class InternalAdditionalParameters extends BaseAdditionalParameters {
       this.registrationPage,
       this.createOrg,
       this.orgName,
+      this.supportsReauth,
+      this.reauthState,
       super.lang,
       super.connectionId,
       super.loginHint,
@@ -156,6 +162,12 @@ class InternalAdditionalParameters extends BaseAdditionalParameters {
     }
     if (orgName != null) {
       result[Parameter.orgName.name] = orgName!;
+    }
+    if (supportsReauth != null) {
+      result[Parameter.supportsReauth.name] = supportsReauth!.toString();
+    }
+    if (reauthState != null) {
+      result[Parameter.reauthState.name] = reauthState!;
     }
     return result;
   }
