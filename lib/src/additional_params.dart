@@ -94,6 +94,27 @@ class AdditionalParameters extends BaseAdditionalParameters {
       super.planInterest,
       super.pricingTableKey,
       super.invitationCode});
+
+  Map<String, dynamic> toJson() => {
+        if (lang != null) 'lang': lang,
+        if (connectionId != null) 'connectionId': connectionId,
+        if (loginHint != null) 'loginHint': loginHint,
+        if (orgCode != null) 'orgCode': orgCode,
+        if (planInterest != null) 'planInterest': planInterest,
+        if (pricingTableKey != null) 'pricingTableKey': pricingTableKey,
+        if (invitationCode != null) 'invitationCode': invitationCode,
+      };
+
+  factory AdditionalParameters.fromJson(Map<String, dynamic> json) =>
+      AdditionalParameters(
+        lang: json['lang'] as String?,
+        connectionId: json['connectionId'] as String?,
+        loginHint: json['loginHint'] as String?,
+        orgCode: json['orgCode'] as String?,
+        planInterest: json['planInterest'] as String?,
+        pricingTableKey: json['pricingTableKey'] as String?,
+        invitationCode: json['invitationCode'] as String?,
+      );
 }
 
 class InternalAdditionalParameters extends BaseAdditionalParameters {
@@ -136,6 +157,18 @@ class InternalAdditionalParameters extends BaseAdditionalParameters {
       planInterest: userParams.planInterest,
       pricingTableKey: userParams.pricingTableKey,
       invitationCode: userParams.invitationCode,
+    );
+  }
+
+  AdditionalParameters toUserAdditionalParams() {
+    return AdditionalParameters(
+      lang: lang,
+      connectionId: connectionId,
+      loginHint: loginHint,
+      orgCode: orgCode,
+      planInterest: planInterest,
+      pricingTableKey: pricingTableKey,
+      invitationCode: invitationCode,
     );
   }
 

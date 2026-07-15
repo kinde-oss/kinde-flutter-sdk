@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
@@ -63,6 +64,9 @@ class KindeFlutterSDK with TokenUtils {
 
   /// SessionStorage key used to prevent infinite reauth retries on Web.
   static const _webAuthRetriedFlag = 'kinde_web_auth_retried';
+
+  /// SessionStorage key used to preserve custom AdditionalParameters across Web redirects/retries.
+  static const _webSavedParamsKey = 'kinde_web_saved_additional_params';
 
   static KindeFlutterSDK get instance {
     return _instance ??= KindeFlutterSDK._internal();
@@ -536,6 +540,10 @@ class KindeFlutterSDK with TokenUtils {
   void _handleWebLogin(
     InternalAdditionalParameters params,
   ) {
+    WebUtils.setSessionItem(
+      _webSavedParamsKey,
+      jsonEncode(params.toUserAdditionalParams().toJson()),
+    );
     KindeWeb.instance.startLoginFlow(
         AuthorizationRequest(
           _config!.authClientId,
@@ -548,6 +556,7 @@ class KindeFlutterSDK with TokenUtils {
   }
 
   Future<bool> _finishWebLogin(String responseUrl) async {
+    WebUtils.removeSessionItem(_webSavedParamsKey);
     final credentials = await KindeWeb.instance.finishLoginFlow(
         scopes: _config!.scopes,
         redirectUrl: _config!.loginRedirectUri,
@@ -790,9 +799,14 @@ class KindeFlutterSDK with TokenUtils {
     );
     WebUtils.setSessionItem(_webAuthRetriedFlag, 'true');
 
-    final params = _prepareInternalAdditionalParameters(
-      const AdditionalParameters(),
-    );
+    final savedParamsJson = WebUtils.getSessionItem(_webSavedParamsKey);
+    final recoveredUserParams =
+        savedParamsJson != null && savedParamsJson.isNotEmpty
+            ? AdditionalParameters.fromJson(
+                jsonDecode(savedParamsJson) as Map<String, dynamic>)
+            : const AdditionalParameters();
+
+    final params = _prepareInternalAdditionalParameters(recoveredUserParams);
     params.reauthState = reauthState;
 
     _handleWebLogin(params);
