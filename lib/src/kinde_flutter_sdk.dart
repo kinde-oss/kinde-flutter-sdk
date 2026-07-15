@@ -557,6 +557,7 @@ class KindeFlutterSDK with TokenUtils {
 
   Future<bool> _finishWebLogin(String responseUrl) async {
     WebUtils.removeSessionItem(_webSavedParamsKey);
+    WebUtils.removeSessionItem(_webAuthRetriedFlag);
     final credentials = await KindeWeb.instance.finishLoginFlow(
         scopes: _config!.scopes,
         redirectUrl: _config!.loginRedirectUri,
