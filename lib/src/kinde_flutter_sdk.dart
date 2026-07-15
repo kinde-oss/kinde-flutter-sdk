@@ -785,12 +785,16 @@ class KindeFlutterSDK with TokenUtils {
     WebUtils.removeSessionItem(_webAuthRetriedFlag);
 
     if (hasAlreadyRetried) {
+      const errorMessage =
+          "Reauth retry already attempted. Aborting to prevent infinite loop.";
       kindeDebugPrint(
         methodName: "_handleExpiredWebLogin",
-        message:
-            "Reauth retry already attempted. Aborting to prevent infinite loop.",
+        message: errorMessage,
       );
-      return;
+      throw LoginLinkExpiredKindeError(
+        message: errorMessage,
+        details: {'reauth_state': reauthState},
+      );
     }
 
     kindeDebugPrint(
