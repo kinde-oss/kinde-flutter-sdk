@@ -4,8 +4,8 @@ import 'package:kinde_flutter_sdk/src/error/kinde_error.dart';
 void main() {
   group('KindeErrorCode Enum', () {
     group('Basic Enum Properties', () {
-      test('should have exactly 17 error codes', () {
-        expect(KindeErrorCode.values.length, 17);
+      test('should have exactly 18 error codes', () {
+        expect(KindeErrorCode.values.length, 18);
       });
 
       test('should convert camelCase enum names to kebab-case strings', () {
@@ -31,6 +31,7 @@ void main() {
         expect(KindeErrorCode.unsupportedScheme.code, 'unsupported-scheme');
         expect(KindeErrorCode.portalLinkUrlIsNull.code, 'portal-link-url-is-null');
         expect(KindeErrorCode.loginInProcess.code, 'login-in-process');
+        expect(KindeErrorCode.loginLinkExpired.code, 'login-link-expired');
         expect(KindeErrorCode.unknown.code, 'unknown');
       });
 
@@ -81,6 +82,8 @@ void main() {
             KindeErrorCode.refreshTokenExpired);
         expect(KindeErrorCode.fromString('session-expired-or-invalid'),
             KindeErrorCode.sessionExpiredOrInvalid);
+        expect(KindeErrorCode.fromString('login-link-expired'),
+            KindeErrorCode.loginLinkExpired);
         expect(
             KindeErrorCode.fromString('unknown'), KindeErrorCode.unknown);
       });

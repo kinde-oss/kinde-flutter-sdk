@@ -13,7 +13,9 @@ enum Parameter {
   planInterest("plan_interest"),
   pricingTableKey("pricing_table_key"),
   invitationCode("invitation_code"),
-  isInvitation("is_invitation");
+  isInvitation("is_invitation"),
+  supportsReauth("supports_reauth"),
+  reauthState("reauth_state");
 
   const Parameter(this.value);
 
@@ -92,6 +94,27 @@ class AdditionalParameters extends BaseAdditionalParameters {
       super.planInterest,
       super.pricingTableKey,
       super.invitationCode});
+
+  Map<String, dynamic> toJson() => {
+        if (lang != null) 'lang': lang,
+        if (connectionId != null) 'connectionId': connectionId,
+        if (loginHint != null) 'loginHint': loginHint,
+        if (orgCode != null) 'orgCode': orgCode,
+        if (planInterest != null) 'planInterest': planInterest,
+        if (pricingTableKey != null) 'pricingTableKey': pricingTableKey,
+        if (invitationCode != null) 'invitationCode': invitationCode,
+      };
+
+  factory AdditionalParameters.fromJson(Map<String, dynamic> json) =>
+      AdditionalParameters(
+        lang: json['lang'] as String?,
+        connectionId: json['connectionId'] as String?,
+        loginHint: json['loginHint'] as String?,
+        orgCode: json['orgCode'] as String?,
+        planInterest: json['planInterest'] as String?,
+        pricingTableKey: json['pricingTableKey'] as String?,
+        invitationCode: json['invitationCode'] as String?,
+      );
 }
 
 class InternalAdditionalParameters extends BaseAdditionalParameters {
@@ -102,6 +125,8 @@ class InternalAdditionalParameters extends BaseAdditionalParameters {
   String? registrationPage;
   bool? createOrg;
   String? orgName;
+  bool? supportsReauth;
+  String? reauthState;
 
   InternalAdditionalParameters(
       {this.audience,
@@ -111,6 +136,8 @@ class InternalAdditionalParameters extends BaseAdditionalParameters {
       this.registrationPage,
       this.createOrg,
       this.orgName,
+      this.supportsReauth,
+      this.reauthState,
       super.lang,
       super.connectionId,
       super.loginHint,
@@ -130,6 +157,18 @@ class InternalAdditionalParameters extends BaseAdditionalParameters {
       planInterest: userParams.planInterest,
       pricingTableKey: userParams.pricingTableKey,
       invitationCode: userParams.invitationCode,
+    );
+  }
+
+  AdditionalParameters toUserAdditionalParams() {
+    return AdditionalParameters(
+      lang: lang,
+      connectionId: connectionId,
+      loginHint: loginHint,
+      orgCode: orgCode,
+      planInterest: planInterest,
+      pricingTableKey: pricingTableKey,
+      invitationCode: invitationCode,
     );
   }
 
@@ -156,6 +195,12 @@ class InternalAdditionalParameters extends BaseAdditionalParameters {
     }
     if (orgName != null) {
       result[Parameter.orgName.name] = orgName!;
+    }
+    if (supportsReauth != null) {
+      result[Parameter.supportsReauth.name] = supportsReauth!.toString();
+    }
+    if (reauthState != null) {
+      result[Parameter.reauthState.name] = reauthState!;
     }
     return result;
   }

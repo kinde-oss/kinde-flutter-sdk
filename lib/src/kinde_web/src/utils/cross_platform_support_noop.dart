@@ -9,4 +9,10 @@ abstract class WebUtils {
   static String? get getOriginUrl => null;
 
   static String get temporaryDirectory => "";
+
+  static String? getSessionItem(String key) => null;
+
+  static void setSessionItem(String key, String value) {}
+
+  static void removeSessionItem(String key) {}
 }

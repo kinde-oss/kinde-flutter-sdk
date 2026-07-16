@@ -9,6 +9,7 @@ import 'package:oauth2/oauth2.dart';
 
 part 'kinde_error_code.dart';
 part 'authorization_kinde_error.dart';
+part 'login_link_expired_kinde_error.dart';
 
 @immutable
 class KindeError implements Exception {
@@ -158,6 +159,18 @@ KindeError _flutterAppAuthExceptionMapper(
       stackTrace: stackTrace,
     );
   }
+
+  final message = platformException.message;
+  final details = platformException.details as Object?;
+
+  if (details case {'error': 'login_link_expired'}) {
+    return LoginLinkExpiredKindeError(
+      message: message,
+      details: details,
+      stackTrace: stackTrace,
+    );
+  }
+
   return KindeError(
     code: platformException.code,
     message: platformException.message,

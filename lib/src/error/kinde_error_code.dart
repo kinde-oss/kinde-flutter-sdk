@@ -25,6 +25,7 @@ enum KindeErrorCode {
   refreshTokenExpired,
   sessionExpiredOrInvalid,
   userCanceled,
+  loginLinkExpired,
 
   // Configuration Errors
   missingConfig,
