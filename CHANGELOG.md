@@ -1,5 +1,43 @@
 # Changelog
 
+## [3.0.0] - 2026-07-16
+
+### Breaking Changes
+
+#### SDK Requirements
+
+- Dart SDK requirement changed from >=3.9.2 <4.0.0 to >=3.10.0 <4.0.0
+- Flutter SDK requirement changed from >=3.35.6 to >=3.38.1
+
+#### Dependencies
+
+- flutter_appauth from ^8.0.3 to ^12.0.1. Apps that depend on flutter_appauth directly will need to upgrade and migrate their own usage
+- flutter_secure_storage from ^9.0.0 to ^10.3.0. Existing sessions may not be readable after upgrading, and affected users will need to sign in again. The deprecated encryptedSharedPreferences option is no longer set
+
+#### Authentication Flow
+
+- supports_reauth=true is now sent on every authorization request. Expired login links redirect back to the app instead of rendering Kinde's hosted "This link has expired" page
+- The SDK retries the flow once, then throws LoginLinkExpiredKindeError. Applications must handle this from login(), register() and createOrg()
+- KindeErrorCode has a new value, loginLinkExpired. Exhaustive switches over KindeErrorCode need a new case
+
+#### Deep Links
+
+- The SDK registers a deep link listener during initialization and starts a login flow when it receives a link containing an invitation_code. Adds app_links as a dependency
+
+#### Removed
+
+- KindeEndSessionRequest. It was listed under Added in 2.1.0 but was never exported from the public API, and the flutter_appauth v12 upgrade removes the need for it
+
+### Added
+
+- LoginLinkExpiredKindeError, exposing reauthState from the error response. On Android the reauth_state is unavailable because AppAuth-Android does not return error query parameters, so the retry reuses the original request parameters
+- invitationCode parameter on AdditionalParameters
+
+### Fixed
+
+- Web authentication now works under dart2wasm (package:web is now a direct dependency)
+- Web: the reauth retry flag is cleared on successful login, so a later expired link still gets its retry
+
 ## [2.1.1] - 2026-06-02
 
 ### Fixed
