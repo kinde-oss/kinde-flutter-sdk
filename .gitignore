@@ -56,10 +56,13 @@ web/build/
 *.hive
 
 # VSCode settings
-.vscode/
 
 # IDE files
 .idea/
 
 example/ios/.symlinks/plugins
 example/android/.gradle/
+branch_structure.json
+temp_auto_push.bat
+temp_interactive_push.bat
+.gitignore
