@@ -1,5 +1,22 @@
 # Changelog
 
+## [2.2.0] - 2026-07-17
+
+### Added
+
+- **Deep Links**: The SDK automatically registers a deep link listener during initialization (`initializeSDK`) to handle links containing an `invitation_code` and initiate login. Adds `app_links` as a dependency
+- **Expired Login Links**: Added `LoginLinkExpiredKindeError` (exposing `reauthState`) and `KindeErrorCode.loginLinkExpired` for when an expired login link retry fails
+- `invitationCode` parameter on `AdditionalParameters`
+
+### Changed
+
+- **Authentication Flow**: `supports_reauth=true` is now sent on every authorization request. When a login link has expired on web, the SDK automatically retries the flow once with `reauth_state` instead of showing a hosted error page
+- **Dependencies**: Updated `flutter_secure_storage` from `^9.0.0` to `^10.3.0`. *(Note: The deprecated `encryptedSharedPreferences` option is no longer set. Existing sessions on some devices may not be readable after upgrading, requiring users to log in once)*
+
+### Fixed
+
+- Web authentication now works under `dart2wasm` (`package:web` is now a direct dependency)
+
 ## [2.1.1] - 2026-06-02
 
 ### Fixed
