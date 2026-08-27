@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:kinde_flutter_sdk/kinde_flutter_sdk_platform_interface.dart';
 import 'package:kinde_flutter_sdk/src/additional_params.dart';
 import 'package:kinde_flutter_sdk/src/auth/kinde_end_session_request.dart';
 import 'package:kinde_flutter_sdk/src/kinde_secure_storage/kinde_secure_storage_i.dart';
@@ -190,6 +191,8 @@ class KindeFlutterSDK with TokenUtils {
       _instance =
           KindeFlutterSDK._internal(secureStorage: kindeSecureStorage, dio: dio);
 
+      await _instance!._checkAndRecoverAndroidLogin();
+
       kindeDebugPrint(
         methodName: 'initializeSDK',
         message: 'SDK initialized',
@@ -375,6 +378,96 @@ class KindeFlutterSDK with TokenUtils {
         context: {'error': error.toString()},
       );
       throw KindeError.fromError(error, st);
+    }
+  }
+
+  /// Checks if there's any pending login flow that was interrupted by an Android Activity death.
+  ///
+  /// If a pending login flow is found, it is recovered and the user is logged in.
+  Future<void> _checkAndRecoverAndroidLogin() async {
+    try {
+      if (!kIsWeb && Platform.isAndroid) {
+        final Map<dynamic, dynamic>? result = await KindeFlutterSdkPlatform.instance.getRescuedAuthJson();
+        final resultResponse = result?['response'];
+        if (resultResponse is String ) {
+          kindeDebugPrint(
+            methodName: '_checkAndRecoverAndroidLogin',
+            message: 'Found rescued Android auth JSON state. Attempting recovery...'
+          );
+          await _recoverAndroidLogin(rescuedAuthJson: resultResponse);
+          return;
+        }
+
+         final resultException = result?['exception'];
+         if (resultException is String) {
+           kindeDebugPrint(
+             methodName: '_checkAndRecoverAndroidLogin',
+             message: 'Recovered Android auth failure: $resultException'
+           );
+        }
+      }
+    } catch (e) {
+      kindeDebugPrint(
+        methodName: '_checkAndRecoverAndroidLogin',
+        message: 'Failed to recover Android login: $e'
+      );
+    }
+  }
+
+  /// Recovers a login flow that was interrupted by Android Activity death.
+  Future<void> _recoverAndroidLogin({required String rescuedAuthJson}) async {
+    try {
+      final json = jsonDecode(rescuedAuthJson) as Map<String, dynamic>;
+
+      // This JSON structure is from the AppAuth-Android's AuthorizationResponse's jsonSerialize() method
+      final request = json['request'] as Map<String, dynamic>;
+      final authorizationCode = json['code'] as String?;
+
+      // This JSON structure is from the AppAuth-Android's AuthorizationRequest's jsonSerialize() method
+      final config = request['configuration'] as Map<String, dynamic>;
+      final clientId = request['clientId'] as String;
+      final redirectUri = request['redirectUri'] as String;
+      final codeVerifier = request['codeVerifier'] as String?;
+      final nonce = request['nonce'] as String?;
+      final scopes = (request['scope'] as String?)?.split(' ') ?? [];
+
+      // This JSON structure is from the AppAuth-Android's AuthorizationServiceConfiguration's toJson() method
+      final authorizationEndpoint = config['authorizationEndpoint'] as String?;
+      final tokenEndpoint = config['tokenEndpoint'] as String?;
+      final endSessionEndpoint = config['endSessionEndpoint'] as String?;
+
+      final serviceConfig = (authorizationEndpoint != null && tokenEndpoint != null)
+        ? AuthorizationServiceConfiguration(
+            authorizationEndpoint: authorizationEndpoint,
+            tokenEndpoint: tokenEndpoint,
+            endSessionEndpoint: endSessionEndpoint,
+          )
+        : null;
+
+      final tokenRequest = TokenRequest(
+        clientId,
+        redirectUri,
+        codeVerifier: codeVerifier,
+        authorizationCode: authorizationCode,
+        serviceConfiguration: serviceConfig,
+        nonce: nonce,
+        scopes: scopes,
+      );
+
+      const appAuth = FlutterAppAuth();
+      final tokenResponse = await appAuth.token(tokenRequest);
+
+      _saveState(tokenResponse);
+      kindeDebugPrint(
+        methodName: '_recoverAndroidLogin',
+        message: 'Successfully recovered lost Android login!'
+      );
+    } catch (e, st) {
+      kindeDebugPrint(
+        methodName: '_recoverAndroidLogin',
+        message: 'Failed to recover login: $e',
+      );
+      throw KindeError.fromError(e, st);
     }
   }
 
@@ -888,7 +981,7 @@ class KindeFlutterSDK with TokenUtils {
     }
   }
 
-  _saveState(TokenResponse? tokenResponse) {
+  void _saveState(TokenResponse? tokenResponse) {
     _store.authState = AuthState(
         accessToken: tokenResponse?.accessToken,
         idToken: tokenResponse?.idToken,

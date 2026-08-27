@@ -47,3 +47,8 @@ dev_dependencies:
 flutter:
   assets:
     - pubspec.yaml
+  plugin:
+    platforms:
+      android:
+        package: com.kinde.kinde_flutter_sdk
+        pluginClass: KindeFlutterSdkPlugin
