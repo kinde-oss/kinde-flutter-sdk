@@ -44,8 +44,9 @@ class _$CreateSubscriberSuccessResponse
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'CreateSubscriberSuccessResponse')
-      ..add('subscriber', subscriber)).toString();
+    return (newBuiltValueToStringHelper(
+      r'CreateSubscriberSuccessResponse',
+    )..add('subscriber', subscriber)).toString();
   }
 }
 

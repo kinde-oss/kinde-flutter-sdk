@@ -41,8 +41,9 @@ class _$AddOrganizationUsersRequest extends AddOrganizationUsersRequest {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'AddOrganizationUsersRequest')
-      ..add('users', users)).toString();
+    return (newBuiltValueToStringHelper(
+      r'AddOrganizationUsersRequest',
+    )..add('users', users)).toString();
   }
 }
 

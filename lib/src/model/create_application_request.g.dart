@@ -29,13 +29,14 @@ CreateApplicationRequestTypeEnum _$createApplicationRequestTypeEnumValueOf(
 }
 
 final BuiltSet<CreateApplicationRequestTypeEnum>
-_$createApplicationRequestTypeEnumValues = new BuiltSet<
-  CreateApplicationRequestTypeEnum
->(const <CreateApplicationRequestTypeEnum>[
-  _$createApplicationRequestTypeEnum_reg,
-  _$createApplicationRequestTypeEnum_spa,
-  _$createApplicationRequestTypeEnum_m2m,
-]);
+_$createApplicationRequestTypeEnumValues =
+    new BuiltSet<CreateApplicationRequestTypeEnum>(
+      const <CreateApplicationRequestTypeEnum>[
+        _$createApplicationRequestTypeEnum_reg,
+        _$createApplicationRequestTypeEnum_spa,
+        _$createApplicationRequestTypeEnum_m2m,
+      ],
+    );
 
 Serializer<CreateApplicationRequestTypeEnum>
 _$createApplicationRequestTypeEnumSerializer =

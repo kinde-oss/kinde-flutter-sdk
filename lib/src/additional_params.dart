@@ -47,14 +47,15 @@ abstract class BaseAdditionalParameters {
   /// When provided, initiates an invitation acceptance flow.
   final String? invitationCode;
 
-  const BaseAdditionalParameters(
-      {this.lang,
-      this.connectionId,
-      this.loginHint,
-      this.orgCode,
-      this.planInterest,
-      this.pricingTableKey,
-      this.invitationCode});
+  const BaseAdditionalParameters({
+    this.lang,
+    this.connectionId,
+    this.loginHint,
+    this.orgCode,
+    this.planInterest,
+    this.pricingTableKey,
+    this.invitationCode,
+  });
 
   Map<String, String> toWebParams() {
     final params = <String, String>{};
@@ -86,24 +87,25 @@ abstract class BaseAdditionalParameters {
 }
 
 class AdditionalParameters extends BaseAdditionalParameters {
-  const AdditionalParameters(
-      {super.lang,
-      super.connectionId,
-      super.loginHint,
-      super.orgCode,
-      super.planInterest,
-      super.pricingTableKey,
-      super.invitationCode});
+  const AdditionalParameters({
+    super.lang,
+    super.connectionId,
+    super.loginHint,
+    super.orgCode,
+    super.planInterest,
+    super.pricingTableKey,
+    super.invitationCode,
+  });
 
   Map<String, dynamic> toJson() => {
-        if (lang != null) 'lang': lang,
-        if (connectionId != null) 'connectionId': connectionId,
-        if (loginHint != null) 'loginHint': loginHint,
-        if (orgCode != null) 'orgCode': orgCode,
-        if (planInterest != null) 'planInterest': planInterest,
-        if (pricingTableKey != null) 'pricingTableKey': pricingTableKey,
-        if (invitationCode != null) 'invitationCode': invitationCode,
-      };
+    if (lang != null) 'lang': lang,
+    if (connectionId != null) 'connectionId': connectionId,
+    if (loginHint != null) 'loginHint': loginHint,
+    if (orgCode != null) 'orgCode': orgCode,
+    if (planInterest != null) 'planInterest': planInterest,
+    if (pricingTableKey != null) 'pricingTableKey': pricingTableKey,
+    if (invitationCode != null) 'invitationCode': invitationCode,
+  };
 
   factory AdditionalParameters.fromJson(Map<String, dynamic> json) =>
       AdditionalParameters(
@@ -128,27 +130,28 @@ class InternalAdditionalParameters extends BaseAdditionalParameters {
   bool? supportsReauth;
   String? reauthState;
 
-  InternalAdditionalParameters(
-      {this.audience,
-      this.promptValues,
-      this.scopes,
-      this.state,
-      this.registrationPage,
-      this.createOrg,
-      this.orgName,
-      this.supportsReauth,
-      this.reauthState,
-      super.lang,
-      super.connectionId,
-      super.loginHint,
-      super.orgCode,
-      super.planInterest,
-      super.pricingTableKey,
-      super.invitationCode,
-      });
+  InternalAdditionalParameters({
+    this.audience,
+    this.promptValues,
+    this.scopes,
+    this.state,
+    this.registrationPage,
+    this.createOrg,
+    this.orgName,
+    this.supportsReauth,
+    this.reauthState,
+    super.lang,
+    super.connectionId,
+    super.loginHint,
+    super.orgCode,
+    super.planInterest,
+    super.pricingTableKey,
+    super.invitationCode,
+  });
 
   factory InternalAdditionalParameters.fromUserAdditionalParams(
-      AdditionalParameters userParams) {
+    AdditionalParameters userParams,
+  ) {
     return InternalAdditionalParameters(
       lang: userParams.lang,
       connectionId: userParams.connectionId,

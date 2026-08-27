@@ -36,9 +36,10 @@ class KindeWeb {
 
   late final CodeVerifierStorage _codeVerifierStorage;
 
-  static Future<void> initialize(
-      {String? appBaseUrl,
-      required KindeSecureStorageInterface secureStorage}) async {
+  static Future<void> initialize({
+    String? appBaseUrl,
+    required KindeSecureStorageInterface secureStorage,
+  }) async {
     try {
       String? tempAppBaseUrl = appBaseUrl;
 
@@ -48,14 +49,16 @@ class KindeWeb {
         // Log when using fallback strategy
         if (urlStrategy == null) {
           kindeDebugPrint(
-              methodName: 'KindeWeb.initialize',
-              message:
-                  '[Kinde] No urlStrategy detected. Defaulting to path strategy.');
+            methodName: 'KindeWeb.initialize',
+            message:
+                '[Kinde] No urlStrategy detected. Defaulting to path strategy.',
+          );
         } else {
           kindeDebugPrint(
-              methodName: 'KindeWeb.initialize',
-              message:
-                  '[Kinde] Using custom urlStrategy: ${urlStrategy.runtimeType}');
+            methodName: 'KindeWeb.initialize',
+            message:
+                '[Kinde] Using custom urlStrategy: ${urlStrategy.runtimeType}',
+          );
         }
 
         tempAppBaseUrl ??= Uri.base.origin;
@@ -65,12 +68,14 @@ class KindeWeb {
       final isBaseUrlValid = isSafeWebUrl(tempAppBaseUrl);
       if (!isBaseUrlValid) {
         throw ArgumentError(
-            'Invalid appBaseUrl: must be a valid HTTP/HTTPS URL');
+          'Invalid appBaseUrl: must be a valid HTTP/HTTPS URL',
+        );
       }
 
       kindeDebugPrint(
-          methodName: 'KindeWeb.initialize',
-          message: 'Successfully validated base URL: $tempAppBaseUrl');
+        methodName: 'KindeWeb.initialize',
+        message: 'Successfully validated base URL: $tempAppBaseUrl',
+      );
 
       // Proceed
       _instance = KindeWeb._(secureStorage);
@@ -98,8 +103,9 @@ class KindeWeb {
     }
     if (!isSafeWebUrl(logoutUrl)) {
       throw KindeError(
-          code: KindeErrorCode.invalidRedirect.code,
-          message: 'Unsafe or untrusted logout URL detected');
+        code: KindeErrorCode.invalidRedirect.code,
+        message: 'Unsafe or untrusted logout URL detected',
+      );
     }
     await _clear();
     WebUtils.replacePage(logoutUrl);
@@ -109,8 +115,10 @@ class KindeWeb {
 
   ///Starts the OAuth login flow. Only one login can be in progress at a time.
   ///Throws [KindeError] with [KindeErrorCode.loginInProcess] if a login is already in progress.
-  Future<void> startLoginFlow(AuthorizationRequest configuration,
-      {required InternalAdditionalParameters additionalParameters}) async {
+  Future<void> startLoginFlow(
+    AuthorizationRequest configuration, {
+    required InternalAdditionalParameters additionalParameters,
+  }) async {
     if (_loginInProgress) {
       throw KindeError(code: KindeErrorCode.loginInProcess.code);
     }
@@ -125,39 +133,44 @@ class KindeWeb {
         additionalParameters.state = authState;
       } catch (e, st) {
         throw KindeError(
-            code: KindeErrorCode.unknown.code,
-            message: e.toString(),
-            stackTrace: st);
+          code: KindeErrorCode.unknown.code,
+          message: e.toString(),
+          stackTrace: st,
+        );
       }
       WebOAuthFlow.login(
-          configuration: configuration,
-          additionalParameters: additionalParameters,
-          codeVerifier: codeVerifier);
+        configuration: configuration,
+        additionalParameters: additionalParameters,
+        codeVerifier: codeVerifier,
+      );
     } catch (e, st) {
       await _clear();
       throw e is KindeError ? e : KindeError.fromError(e, st);
     }
   }
 
-  Future<Credentials?> finishLoginFlow(
-      {required String redirectUrl,
-      required String responseUrl,
-      required String clientId,
-      required String authorizationEndpoint,
-      required String tokenEndpoint,
-      required List<String> scopes}) async {
+  Future<Credentials?> finishLoginFlow({
+    required String redirectUrl,
+    required String responseUrl,
+    required String clientId,
+    required String authorizationEndpoint,
+    required String tokenEndpoint,
+    required List<String> scopes,
+  }) async {
     final codeVerifier = _codeVerifierStorage.restore();
     if (codeVerifier == null) {
       throw KindeError(
-          code: KindeErrorCode.noCodeVerifier.code,
-          message: "No code verifier in storage.");
+        code: KindeErrorCode.noCodeVerifier.code,
+        message: "No code verifier in storage.",
+      );
     }
 
     final authRequestState = await _kindeSecureStorage.getAuthRequestState();
     if (authRequestState == null) {
       throw KindeError(
-          code: KindeErrorCode.noAuthRequestStateStored.code,
-          message: "No auth request state in storage.");
+        code: KindeErrorCode.noAuthRequestStateStored.code,
+        message: "No auth request state in storage.",
+      );
     }
 
     final authorizationCodeGrant = AuthorizationCodeGrant(
@@ -170,11 +183,12 @@ class KindeWeb {
 
     try {
       final credentials = await WebOAuthFlow.finishLogin(
-          authRequestState: authRequestState,
-          responseUrl: responseUrl,
-          authorizationCodeGrant: authorizationCodeGrant,
-          redirectUrl: redirectUrl,
-          scopes: scopes);
+        authRequestState: authRequestState,
+        responseUrl: responseUrl,
+        authorizationCodeGrant: authorizationCodeGrant,
+        redirectUrl: redirectUrl,
+        scopes: scopes,
+      );
       await _clear();
       return credentials;
     } catch (e, st) {

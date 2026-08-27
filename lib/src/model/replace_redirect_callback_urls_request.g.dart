@@ -13,9 +13,8 @@ class _$ReplaceRedirectCallbackURLsRequest
 
   factory _$ReplaceRedirectCallbackURLsRequest([
     void Function(ReplaceRedirectCallbackURLsRequestBuilder)? updates,
-  ]) =>
-      (new ReplaceRedirectCallbackURLsRequestBuilder()..update(updates))
-          ._build();
+  ]) => (new ReplaceRedirectCallbackURLsRequestBuilder()..update(updates))
+      ._build();
 
   _$ReplaceRedirectCallbackURLsRequest._({this.urls}) : super._();
 
@@ -44,8 +43,9 @@ class _$ReplaceRedirectCallbackURLsRequest
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'ReplaceRedirectCallbackURLsRequest')
-      ..add('urls', urls)).toString();
+    return (newBuiltValueToStringHelper(
+      r'ReplaceRedirectCallbackURLsRequest',
+    )..add('urls', urls)).toString();
   }
 }
 

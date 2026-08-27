@@ -60,13 +60,12 @@ class PermissionsApi {
 
     try {
       const type = FullType(CreatePermissionRequest);
-      bodyData =
-          createPermissionRequest == null
-              ? null
-              : _serializers.serialize(
-                createPermissionRequest,
-                specifiedType: type,
-              );
+      bodyData = createPermissionRequest == null
+          ? null
+          : _serializers.serialize(
+              createPermissionRequest,
+              specifiedType: type,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: options.compose(_dio.options, path),
@@ -89,14 +88,13 @@ class PermissionsApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(SuccessResponse),
-                  )
-                  as SuccessResponse;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(SuccessResponse),
+                )
+                as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -176,14 +174,13 @@ class PermissionsApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(SuccessResponse),
-                  )
-                  as SuccessResponse;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(SuccessResponse),
+                )
+                as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -273,14 +270,13 @@ class PermissionsApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(GetPermissionsResponse),
-                  )
-                  as GetPermissionsResponse;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(GetPermissionsResponse),
+                )
+                as GetPermissionsResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -355,13 +351,12 @@ class PermissionsApi {
 
     try {
       const type = FullType(CreatePermissionRequest);
-      bodyData =
-          createPermissionRequest == null
-              ? null
-              : _serializers.serialize(
-                createPermissionRequest,
-                specifiedType: type,
-              );
+      bodyData = createPermissionRequest == null
+          ? null
+          : _serializers.serialize(
+              createPermissionRequest,
+              specifiedType: type,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: options.compose(_dio.options, path),
@@ -384,14 +379,13 @@ class PermissionsApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(SuccessResponse),
-                  )
-                  as SuccessResponse;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(SuccessResponse),
+                )
+                as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,

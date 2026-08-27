@@ -31,13 +31,14 @@ _$createOrganizationRequestFeatureFlagsEnumValueOf(String name) {
 }
 
 final BuiltSet<CreateOrganizationRequestFeatureFlagsEnum>
-_$createOrganizationRequestFeatureFlagsEnumValues = new BuiltSet<
-  CreateOrganizationRequestFeatureFlagsEnum
->(const <CreateOrganizationRequestFeatureFlagsEnum>[
-  _$createOrganizationRequestFeatureFlagsEnum_str,
-  _$createOrganizationRequestFeatureFlagsEnum_int_,
-  _$createOrganizationRequestFeatureFlagsEnum_bool_,
-]);
+_$createOrganizationRequestFeatureFlagsEnumValues =
+    new BuiltSet<CreateOrganizationRequestFeatureFlagsEnum>(
+      const <CreateOrganizationRequestFeatureFlagsEnum>[
+        _$createOrganizationRequestFeatureFlagsEnum_str,
+        _$createOrganizationRequestFeatureFlagsEnum_int_,
+        _$createOrganizationRequestFeatureFlagsEnum_bool_,
+      ],
+    );
 
 Serializer<CreateOrganizationRequestFeatureFlagsEnum>
 _$createOrganizationRequestFeatureFlagsEnumSerializer =
@@ -172,9 +173,8 @@ class CreateOrganizationRequestBuilder
 
   MapBuilder<String, CreateOrganizationRequestFeatureFlagsEnum>? _featureFlags;
   MapBuilder<String, CreateOrganizationRequestFeatureFlagsEnum>
-  get featureFlags =>
-      _$this._featureFlags ??=
-          new MapBuilder<String, CreateOrganizationRequestFeatureFlagsEnum>();
+  get featureFlags => _$this._featureFlags ??=
+      new MapBuilder<String, CreateOrganizationRequestFeatureFlagsEnum>();
   set featureFlags(
     MapBuilder<String, CreateOrganizationRequestFeatureFlagsEnum>? featureFlags,
   ) => _$this._featureFlags = featureFlags;

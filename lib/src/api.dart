@@ -80,7 +80,10 @@ class KindeApi {
     if (dio.interceptors.any((i) => i is BasicAuthInterceptor)) {
       (dio.interceptors.firstWhere((i) => i is BasicAuthInterceptor)
               as BasicAuthInterceptor)
-          .authInfo[name] = BasicAuthInfo(username, password);
+          .authInfo[name] = BasicAuthInfo(
+        username,
+        password,
+      );
     }
   }
 

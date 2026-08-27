@@ -27,8 +27,8 @@ class AuthState {
     return {
       'access_token': accessToken,
       'refresh_token': refreshToken,
-      'access_token_expiration_date_time':
-          accessTokenExpirationDateTime?.toIso8601String(),
+      'access_token_expiration_date_time': accessTokenExpirationDateTime
+          ?.toIso8601String(),
       'id_token': idToken,
       'grant_type': grantType,
       'scope': scope,

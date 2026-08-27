@@ -43,8 +43,9 @@ class _$ReplaceLogoutRedirectURLsRequest
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'ReplaceLogoutRedirectURLsRequest')
-      ..add('urls', urls)).toString();
+    return (newBuiltValueToStringHelper(
+      r'ReplaceLogoutRedirectURLsRequest',
+    )..add('urls', urls)).toString();
   }
 }
 

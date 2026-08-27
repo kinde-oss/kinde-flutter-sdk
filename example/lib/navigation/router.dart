@@ -8,26 +8,29 @@ import '../screens/home/home_screen.dart';
 import '../screens/routes.dart';
 
 GoRouter createRouter() => GoRouter(
-      debugLogDiagnostics: kDebugMode,
-      initialLocation: AppRoutes.SPLASH,
-      errorBuilder: (context, state) {
-        return const UnknownScreen();
+  debugLogDiagnostics: kDebugMode,
+  initialLocation: AppRoutes.SPLASH,
+  errorBuilder: (context, state) {
+    return const UnknownScreen();
+  },
+  routes: [
+    GoRoute(
+      path: AppRoutes.HOME,
+      builder: (context, state) {
+        return const HomeScreen();
       },
-      routes: [
-        GoRoute(
-            path: AppRoutes.HOME,
-            builder: (context, state) {
-              return const HomeScreen();
-            }),
-        GoRoute(
-            path: AppRoutes.SPLASH,
-            builder: (context, state) {
-              return const SplashScreen();
-            }),
-        GoRoute(
-            path: AppRoutes.WELCOME,
-            builder: (context, state) {
-              return const WelcomeScreen();
-            }),
-      ],
-    );
+    ),
+    GoRoute(
+      path: AppRoutes.SPLASH,
+      builder: (context, state) {
+        return const SplashScreen();
+      },
+    ),
+    GoRoute(
+      path: AppRoutes.WELCOME,
+      builder: (context, state) {
+        return const WelcomeScreen();
+      },
+    ),
+  ],
+);

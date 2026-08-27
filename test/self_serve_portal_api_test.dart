@@ -9,9 +9,7 @@ void main() {
   Dio dioSuccess = DioAdapterMock();
   final dioError = DioAdapterMockError();
 
-  SelfServePortalApi getInstance({
-    Dio? dioInstance,
-  }) {
+  SelfServePortalApi getInstance({Dio? dioInstance}) {
     return KindeApi(dio: dioInstance ?? dioSuccess).getSelfServePortalApi();
   }
 
@@ -22,19 +20,24 @@ void main() {
     });
 
     test('test generatePortalUrl with subnav', () async {
-      final responseData = await getInstance().generatePortalUrl(subnav: 'subnav');
+      final responseData = await getInstance().generatePortalUrl(
+        subnav: 'subnav',
+      );
       expect(responseData, isNotNull);
     });
 
     test('test generatePortalUrl with returnUrl', () async {
-      final responseData =
-          await getInstance().generatePortalUrl(returnUrl: 'returnUrl');
+      final responseData = await getInstance().generatePortalUrl(
+        returnUrl: 'returnUrl',
+      );
       expect(responseData, isNotNull);
     });
 
     test('test generatePortalUrl with subnav and returnUrl', () async {
-      final responseData = await getInstance()
-          .generatePortalUrl(subnav: 'subnav', returnUrl: 'returnUrl');
+      final responseData = await getInstance().generatePortalUrl(
+        subnav: 'subnav',
+        returnUrl: 'returnUrl',
+      );
       expect(responseData, isNotNull);
     });
 
@@ -45,8 +48,10 @@ void main() {
 
     test('test generatePortalUrl in error case throws DioException', () async {
       expect(
-          () async => await getInstance(dioInstance: dioError).generatePortalUrl(),
-          throwsA(isA<DioException>()));
+        () async =>
+            await getInstance(dioInstance: dioError).generatePortalUrl(),
+        throwsA(isA<DioException>()),
+      );
     });
   });
 }

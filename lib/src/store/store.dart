@@ -22,9 +22,7 @@ class Store {
   static Future<void> init() async {
     _instance = Store._internal();
     _instance!._storage = const FlutterSecureStorage(
-      iOptions: IOSOptions(
-        accessibility: KeychainAccessibility.first_unlock,
-      ),
+      iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock),
       webOptions: WebOptions(
         dbName: 'kinde_secure_storage',
         publicKey: 'kinde_public_key',
@@ -104,7 +102,9 @@ class Store {
       if (currentData == null || currentData.toLowerCase() == "null") {
         _cachedKeys = null;
       } else {
-        _cachedKeys = Keys.fromJson(jsonDecode(currentData) as Map<String, dynamic>);
+        _cachedKeys = Keys.fromJson(
+          jsonDecode(currentData) as Map<String, dynamic>,
+        );
       }
     } catch (e) {
       kindeDebugPrint(

@@ -21,10 +21,7 @@ enum TokenType {
   /// to the client application.
   ///
   /// See: https://oauth.net/2/access-tokens/
-  accessToken(
-    'access_token',
-    'Access Token for authenticating API requests',
-  );
+  accessToken('access_token', 'Access Token for authenticating API requests');
 
   /// Creates a token type with associated metadata.
   const TokenType(this.value, this.description);

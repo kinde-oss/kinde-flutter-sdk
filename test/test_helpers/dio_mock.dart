@@ -36,11 +36,13 @@ class DioAdapterMockError extends Mock implements Dio {
     ProgressCallback? onReceiveProgress,
   }) {
     throw DioException.badResponse(
+      requestOptions: RequestOptions(path: 'path'),
+      response: Response(
+        data: {"message": "error", "code": "400"},
         requestOptions: RequestOptions(path: 'path'),
-        response: Response(
-            data: {"message": "error", "code": "400"},
-            requestOptions: RequestOptions(path: 'path')),
-        statusCode: 400);
+      ),
+      statusCode: 400,
+    );
   }
 
   @override

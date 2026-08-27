@@ -19,9 +19,8 @@ class _$UpdateOrganizationUsersRequestUsersInner
 
   factory _$UpdateOrganizationUsersRequestUsersInner([
     void Function(UpdateOrganizationUsersRequestUsersInnerBuilder)? updates,
-  ]) =>
-      (new UpdateOrganizationUsersRequestUsersInnerBuilder()..update(updates))
-          ._build();
+  ]) => (new UpdateOrganizationUsersRequestUsersInnerBuilder()..update(updates))
+      ._build();
 
   _$UpdateOrganizationUsersRequestUsersInner._({
     this.id,

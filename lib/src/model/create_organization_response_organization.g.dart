@@ -13,9 +13,8 @@ class _$CreateOrganizationResponseOrganization
 
   factory _$CreateOrganizationResponseOrganization([
     void Function(CreateOrganizationResponseOrganizationBuilder)? updates,
-  ]) =>
-      (new CreateOrganizationResponseOrganizationBuilder()..update(updates))
-          ._build();
+  ]) => (new CreateOrganizationResponseOrganizationBuilder()..update(updates))
+      ._build();
 
   _$CreateOrganizationResponseOrganization._({this.code}) : super._();
 

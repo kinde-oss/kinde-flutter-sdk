@@ -65,10 +65,9 @@ class RolesApi {
 
     try {
       const type = FullType(CreateRoleRequest);
-      bodyData =
-          createRoleRequest == null
-              ? null
-              : _serializers.serialize(createRoleRequest, specifiedType: type);
+      bodyData = createRoleRequest == null
+          ? null
+          : _serializers.serialize(createRoleRequest, specifiedType: type);
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: options.compose(_dio.options, path),
@@ -91,14 +90,13 @@ class RolesApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(SuccessResponse),
-                  )
-                  as SuccessResponse;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(SuccessResponse),
+                )
+                as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -178,14 +176,13 @@ class RolesApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(SuccessResponse),
-                  )
-                  as SuccessResponse;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(SuccessResponse),
+                )
+                as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -286,16 +283,15 @@ class RolesApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(RolesPermissionResponseInner),
-                    ]),
-                  )
-                  as BuiltList<RolesPermissionResponseInner>;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(BuiltList, [
+                    FullType(RolesPermissionResponseInner),
+                  ]),
+                )
+                as BuiltList<RolesPermissionResponseInner>;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -385,14 +381,13 @@ class RolesApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(GetRolesResponse),
-                  )
-                  as GetRolesResponse;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(GetRolesResponse),
+                )
+                as GetRolesResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -485,14 +480,13 @@ class RolesApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(SuccessResponse),
-                  )
-                  as SuccessResponse;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(SuccessResponse),
+                )
+                as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -593,16 +587,13 @@ class RolesApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(
-                      UpdateRolePermissionsResponse,
-                    ),
-                  )
-                  as UpdateRolePermissionsResponse;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(UpdateRolePermissionsResponse),
+                )
+                as UpdateRolePermissionsResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -677,10 +668,9 @@ class RolesApi {
 
     try {
       const type = FullType(UpdateRolesRequest);
-      bodyData =
-          updateRolesRequest == null
-              ? null
-              : _serializers.serialize(updateRolesRequest, specifiedType: type);
+      bodyData = updateRolesRequest == null
+          ? null
+          : _serializers.serialize(updateRolesRequest, specifiedType: type);
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: options.compose(_dio.options, path),
@@ -703,14 +693,13 @@ class RolesApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(SuccessResponse),
-                  )
-                  as SuccessResponse;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(SuccessResponse),
+                )
+                as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,

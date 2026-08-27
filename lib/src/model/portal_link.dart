@@ -56,7 +56,11 @@ class _$PortalLinkSerializer implements PrimitiveSerializer<PortalLink> {
     PortalLink object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -72,10 +76,12 @@ class _$PortalLinkSerializer implements PrimitiveSerializer<PortalLink> {
       final value = serializedList[i + 1];
       switch (key) {
         case r'url':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.url = valueDes;
           break;
         default:
@@ -106,4 +112,3 @@ class _$PortalLinkSerializer implements PrimitiveSerializer<PortalLink> {
     return result.build();
   }
 }
-

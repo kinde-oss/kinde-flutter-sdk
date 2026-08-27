@@ -37,8 +37,9 @@ class _$PortalLink extends PortalLink {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'PortalLink')..add('url', url))
-        .toString();
+    return (newBuiltValueToStringHelper(
+      r'PortalLink',
+    )..add('url', url)).toString();
   }
 }
 
@@ -76,10 +77,7 @@ class PortalLinkBuilder implements Builder<PortalLink, PortalLinkBuilder> {
   PortalLink build() => _build();
 
   _$PortalLink _build() {
-    final _$result = _$v ??
-        _$PortalLink._(
-          url: url,
-        );
+    final _$result = _$v ?? _$PortalLink._(url: url);
     replace(_$result);
     return _$result;
   }

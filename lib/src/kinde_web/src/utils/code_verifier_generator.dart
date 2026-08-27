@@ -6,7 +6,9 @@ import 'dart:math';
 /// [RFC 7636]: https://tools.ietf.org/html/rfc7636#section-4.1
 String generateCodeVerifier() {
   return List.generate(
-      128, (i) => _charset[Random.secure().nextInt(_charset.length)]).join();
+    128,
+    (i) => _charset[Random.secure().nextInt(_charset.length)],
+  ).join();
 }
 
 /// Allowed characters for generating a codeVerifier

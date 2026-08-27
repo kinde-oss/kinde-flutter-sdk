@@ -17,9 +17,9 @@ Dio setupDioMock() {
           "kid":
               "9e: ea: ac: 9a: 8c: 7c: d4: 6c: d3: 6c: 8d: f6: 6c: 8b: c5: 68",
           "kty": "RSA",
-          "use": "sig"
-        }
-      ]
+          "use": "sig",
+        },
+      ],
     }),
   );
 

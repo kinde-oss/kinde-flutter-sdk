@@ -11,7 +11,6 @@ import 'package:kinde_flutter_sdk/src/utils/api_util.dart';
 import 'package:kinde_flutter_sdk/src/model/portal_link.dart';
 
 class SelfServePortalApi {
-
   final Dio _dio;
 
   final Serializers _serializers;
@@ -46,16 +45,10 @@ class SelfServePortalApi {
     final _path = r'/account_api/v1/portal_link';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'kindeBearerAuth',
-          },
+          {'type': 'http', 'scheme': 'bearer', 'name': 'kindeBearerAuth'},
         ],
         ...?extra,
       },
@@ -63,8 +56,16 @@ class SelfServePortalApi {
     );
 
     final _queryParameters = <String, dynamic>{
-      r'subnav': encodeQueryParameter(_serializers, subnav, const FullType(String)),
-      r'return_url': encodeQueryParameter(_serializers, returnUrl, const FullType(String)),
+      r'subnav': encodeQueryParameter(
+        _serializers,
+        subnav,
+        const FullType(String),
+      ),
+      r'return_url': encodeQueryParameter(
+        _serializers,
+        returnUrl,
+        const FullType(String),
+      ),
     };
 
     final _response = await _dio.request<Object>(
@@ -80,11 +81,13 @@ class SelfServePortalApi {
 
     try {
       final rawResponse = _response.data;
-      _responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(PortalLink),
-      ) as PortalLink;
-
+      _responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(PortalLink),
+                )
+                as PortalLink;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -106,5 +109,4 @@ class SelfServePortalApi {
       extra: _response.extra,
     );
   }
-
 }

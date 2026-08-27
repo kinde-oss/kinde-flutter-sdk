@@ -10,14 +10,16 @@ const int _httpDefaultPort = 80;
 const int _httpsDefaultPort = 443;
 
 abstract class WebOAuthFlow {
-  static Future<void> login(
-      {required AuthorizationRequest configuration,
-      required InternalAdditionalParameters additionalParameters,
-      required String codeVerifier}) async {
+  static Future<void> login({
+    required AuthorizationRequest configuration,
+    required InternalAdditionalParameters additionalParameters,
+    required String codeVerifier,
+  }) async {
     final initialUri = _getInitialUrl(
-        configuration: configuration,
-        additionalParameters: additionalParameters,
-        codeVerifier: codeVerifier);
+      configuration: configuration,
+      additionalParameters: additionalParameters,
+      codeVerifier: codeVerifier,
+    );
     WebUtils.replacePage(initialUri.toString());
   }
 
@@ -32,16 +34,22 @@ abstract class WebOAuthFlow {
       final Uri responseUri = Uri.parse(responseUrl);
 
       ///preparing for handling authorization response
-      authorizationCodeGrant.getAuthorizationUrl(Uri.parse(redirectUrl),
-          scopes: scopes, state: authRequestState);
+      authorizationCodeGrant.getAuthorizationUrl(
+        Uri.parse(redirectUrl),
+        scopes: scopes,
+        state: authRequestState,
+      );
 
       /// throws KindeError with code=notRedirectUrl
       _compareActualRedirectUriWithExpected(
-          actual: responseUri, expected: redirectUrl);
+        actual: responseUri,
+        expected: redirectUrl,
+      );
 
       ///Get client credentials
-      final client = await authorizationCodeGrant
-          .handleAuthorizationResponse(responseUri.queryParameters);
+      final client = await authorizationCodeGrant.handleAuthorizationResponse(
+        responseUri.queryParameters,
+      );
       return client.credentials;
     } catch (e, st) {
       throw KindeError.fromError(e, st);
@@ -50,22 +58,27 @@ abstract class WebOAuthFlow {
 
   /// Ensures the responseRedirect matches a known valid redirect URL,
   /// throws KindeError with code=not=redirect-url
-  static void _compareActualRedirectUriWithExpected(
-      {required Uri actual, required String expected}) {
+  static void _compareActualRedirectUriWithExpected({
+    required Uri actual,
+    required String expected,
+  }) {
     final Uri validUri = Uri.parse(expected);
 
     if (_urisMatch(actual, validUri)) {
       return;
     }
 
-    final comparingSummary = '''
+    final comparingSummary =
+        '''
     Expected: $validUri,
     Actual: ${actual.toString()}
   ''';
 
     kindeDebugPrint(methodName: "isValidRedirect", message: comparingSummary);
     throw KindeError(
-        code: KindeErrorCode.notRedirectUrl.code, message: comparingSummary);
+      code: KindeErrorCode.notRedirectUrl.code,
+      message: comparingSummary,
+    );
   }
 
   /// Ignoring query parameters.
@@ -112,14 +125,15 @@ abstract class WebOAuthFlow {
     Uri initialUri = authorizationCodeGrant.getAuthorizationUrl(
       Uri.parse(redirectUrl),
       state: additionalParameters.state,
-      scopes: additionalParameters.scopes
+      scopes: additionalParameters.scopes,
     );
 
     additionalParameters.state = null;
     additionalParameters.scopes = null;
 
-    final Map<String, String> queryParameters =
-        Map.from(initialUri.queryParameters);
+    final Map<String, String> queryParameters = Map.from(
+      initialUri.queryParameters,
+    );
 
     for (final param in additionalParameters.toWebParams().entries) {
       queryParameters.putIfAbsent(param.key, () => param.value);

@@ -65,14 +65,13 @@ class OAuthApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(UserProfile),
-                  )
-                  as UserProfile;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(UserProfile),
+                )
+                as UserProfile;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -100,18 +99,13 @@ class OAuthApi {
       throw ArgumentError('URL cannot be empty');
     }
 
-    final options = Options(
-      method: r'GET',
-    );
+    final options = Options(method: r'GET');
     var dioClient = dio ?? Dio();
 
     try {
-    final response = await dioClient.request<Object>(
-      url,
-      options: options,
-    );
+      final response = await dioClient.request<Object>(url, options: options);
 
-    return response.statusCode == 200;
+      return response.statusCode == 200;
     } on DioException {
       return false;
     }
@@ -163,14 +157,13 @@ class OAuthApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(UserProfileV2),
-                  )
-                  as UserProfileV2;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(UserProfileV2),
+                )
+                as UserProfileV2;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -271,14 +264,13 @@ class OAuthApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(TokenIntrospect),
-                  )
-                  as TokenIntrospect;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(TokenIntrospect),
+                )
+                as TokenIntrospect;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,

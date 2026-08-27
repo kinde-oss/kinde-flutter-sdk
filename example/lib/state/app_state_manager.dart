@@ -10,7 +10,7 @@ class AppStateManager {
   late final EncryptedBox _encryptedBox;
 
   late final StreamController<(UserProfileV2?, UserProfileV2?)>
-      userProfileStream;
+  userProfileStream;
 
   UserProfileV2? _userProfile;
   UserProfileV2? get userProfile => _userProfile;

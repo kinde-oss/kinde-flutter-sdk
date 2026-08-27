@@ -17,9 +17,8 @@ class _$GetOrganizationsUserPermissionsResponse
 
   factory _$GetOrganizationsUserPermissionsResponse([
     void Function(GetOrganizationsUserPermissionsResponseBuilder)? updates,
-  ]) =>
-      (new GetOrganizationsUserPermissionsResponseBuilder()..update(updates))
-          ._build();
+  ]) => (new GetOrganizationsUserPermissionsResponseBuilder()..update(updates))
+      ._build();
 
   _$GetOrganizationsUserPermissionsResponse._({
     this.code,

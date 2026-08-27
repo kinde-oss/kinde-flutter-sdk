@@ -30,13 +30,14 @@ CreateFeatureFlagRequestTypeEnum _$createFeatureFlagRequestTypeEnumValueOf(
 }
 
 final BuiltSet<CreateFeatureFlagRequestTypeEnum>
-_$createFeatureFlagRequestTypeEnumValues = new BuiltSet<
-  CreateFeatureFlagRequestTypeEnum
->(const <CreateFeatureFlagRequestTypeEnum>[
-  _$createFeatureFlagRequestTypeEnum_str,
-  _$createFeatureFlagRequestTypeEnum_int_,
-  _$createFeatureFlagRequestTypeEnum_bool_,
-]);
+_$createFeatureFlagRequestTypeEnumValues =
+    new BuiltSet<CreateFeatureFlagRequestTypeEnum>(
+      const <CreateFeatureFlagRequestTypeEnum>[
+        _$createFeatureFlagRequestTypeEnum_str,
+        _$createFeatureFlagRequestTypeEnum_int_,
+        _$createFeatureFlagRequestTypeEnum_bool_,
+      ],
+    );
 
 const CreateFeatureFlagRequestAllowOverrideLevelEnum
 _$createFeatureFlagRequestAllowOverrideLevelEnum_env =
@@ -58,12 +59,13 @@ _$createFeatureFlagRequestAllowOverrideLevelEnumValueOf(String name) {
 }
 
 final BuiltSet<CreateFeatureFlagRequestAllowOverrideLevelEnum>
-_$createFeatureFlagRequestAllowOverrideLevelEnumValues = new BuiltSet<
-  CreateFeatureFlagRequestAllowOverrideLevelEnum
->(const <CreateFeatureFlagRequestAllowOverrideLevelEnum>[
-  _$createFeatureFlagRequestAllowOverrideLevelEnum_env,
-  _$createFeatureFlagRequestAllowOverrideLevelEnum_org,
-]);
+_$createFeatureFlagRequestAllowOverrideLevelEnumValues =
+    new BuiltSet<CreateFeatureFlagRequestAllowOverrideLevelEnum>(
+      const <CreateFeatureFlagRequestAllowOverrideLevelEnum>[
+        _$createFeatureFlagRequestAllowOverrideLevelEnum_env,
+        _$createFeatureFlagRequestAllowOverrideLevelEnum_org,
+      ],
+    );
 
 Serializer<CreateFeatureFlagRequestTypeEnum>
 _$createFeatureFlagRequestTypeEnumSerializer =

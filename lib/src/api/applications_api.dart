@@ -63,13 +63,12 @@ class ApplicationsApi {
 
     try {
       const type = FullType(CreateApplicationRequest);
-      bodyData =
-          createApplicationRequest == null
-              ? null
-              : _serializers.serialize(
-                createApplicationRequest,
-                specifiedType: type,
-              );
+      bodyData = createApplicationRequest == null
+          ? null
+          : _serializers.serialize(
+              createApplicationRequest,
+              specifiedType: type,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: options.compose(_dio.options, path),
@@ -92,14 +91,13 @@ class ApplicationsApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(CreateApplicationResponse),
-                  )
-                  as CreateApplicationResponse;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(CreateApplicationResponse),
+                )
+                as CreateApplicationResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -179,14 +177,13 @@ class ApplicationsApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(SuccessResponse),
-                  )
-                  as SuccessResponse;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(SuccessResponse),
+                )
+                as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -266,14 +263,13 @@ class ApplicationsApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(GetApplicationResponse),
-                  )
-                  as GetApplicationResponse;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(GetApplicationResponse),
+                )
+                as GetApplicationResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -363,14 +359,13 @@ class ApplicationsApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(GetApplicationsResponse),
-                  )
-                  as GetApplicationsResponse;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(GetApplicationsResponse),
+                )
+                as GetApplicationsResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -445,13 +440,12 @@ class ApplicationsApi {
 
     try {
       const type = FullType(UpdateApplicationRequest);
-      bodyData =
-          updateApplicationRequest == null
-              ? null
-              : _serializers.serialize(
-                updateApplicationRequest,
-                specifiedType: type,
-              );
+      bodyData = updateApplicationRequest == null
+          ? null
+          : _serializers.serialize(
+              updateApplicationRequest,
+              specifiedType: type,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: options.compose(_dio.options, path),

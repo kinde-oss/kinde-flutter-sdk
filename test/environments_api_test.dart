@@ -30,8 +30,8 @@ void main() {
     //Future<SuccessResponse> deleteEnvironementFeatureFlagOverrides() async
     test('test deleteEnvironementFeatureFlagOverrides', () async {
       // TODO
-      final responseData =
-          await instance.deleteEnvironementFeatureFlagOverrides();
+      final responseData = await instance
+          .deleteEnvironementFeatureFlagOverrides();
       expect(responseData, isNotNull);
     });
 
