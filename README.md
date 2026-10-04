@@ -7,6 +7,24 @@ The Kinde SDK For Flutter
 
 For details on integrating this SDK into your project, head over to the [Kinde docs](https://kinde.com/docs/) and see the [Flutter SDK](https://kinde.com/docs/developer-tools/flutter-sdk/) doc 👍🏼.
 
+## Upgrade requirements
+
+- Flutter 3.38.1 or later and Dart 3.10 or later.
+- Android API 24+, iOS 13+, and macOS 10.15+.
+- The example uses go_router 18 and requires Flutter 3.44+ and Dart 3.12+.
+
+This SDK uses flutter_secure_storage 11.2+. Android data encrypted with legacy
+algorithms or EncryptedSharedPreferences must have been migrated by running a
+version of the app using flutter_secure_storage 10 before upgrading. Users who
+skip that intermediate version may lose their saved session and need to log in
+again. Account data on Kinde is not deleted by this local storage upgrade.
+
+If your app also stores other secrets using flutter_secure_storage, review the
+[upstream migration notes](https://github.com/mogol/flutter_secure_storage/blob/flutter_secure_storage-v11.2.0/flutter_secure_storage/CHANGELOG.md)
+before upgrading: logging in again does not restore unrelated encrypted data.
+Test upgrading an existing installation, logging in, restarting the app,
+refreshing tokens, and logging out on your supported platforms.
+
 ## Publishing
 
 The core team handles publishing.
