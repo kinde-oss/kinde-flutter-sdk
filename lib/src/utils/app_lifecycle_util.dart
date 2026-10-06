@@ -55,4 +55,3 @@ class _ResumedLifecycleObserver extends WidgetsBindingObserver {
     }
   }
 }
-

@@ -21,9 +21,8 @@ class _$GetApplicationResponseApplication
 
   factory _$GetApplicationResponseApplication([
     void Function(GetApplicationResponseApplicationBuilder)? updates,
-  ]) =>
-      (new GetApplicationResponseApplicationBuilder()..update(updates))
-          ._build();
+  ]) => (new GetApplicationResponseApplicationBuilder()..update(updates))
+      ._build();
 
   _$GetApplicationResponseApplication._({
     this.id,

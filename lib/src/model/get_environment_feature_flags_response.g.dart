@@ -20,9 +20,8 @@ class _$GetEnvironmentFeatureFlagsResponse
 
   factory _$GetEnvironmentFeatureFlagsResponse([
     void Function(GetEnvironmentFeatureFlagsResponseBuilder)? updates,
-  ]) =>
-      (new GetEnvironmentFeatureFlagsResponseBuilder()..update(updates))
-          ._build();
+  ]) => (new GetEnvironmentFeatureFlagsResponseBuilder()..update(updates))
+      ._build();
 
   _$GetEnvironmentFeatureFlagsResponse._({
     this.code,
@@ -91,12 +90,11 @@ class GetEnvironmentFeatureFlagsResponseBuilder
   MapBuilder<String, GetOrganizationFeatureFlagsResponseFeatureFlagsValue>?
   _featureFlags;
   MapBuilder<String, GetOrganizationFeatureFlagsResponseFeatureFlagsValue>
-  get featureFlags =>
-      _$this._featureFlags ??=
-          new MapBuilder<
-            String,
-            GetOrganizationFeatureFlagsResponseFeatureFlagsValue
-          >();
+  get featureFlags => _$this._featureFlags ??=
+      new MapBuilder<
+        String,
+        GetOrganizationFeatureFlagsResponseFeatureFlagsValue
+      >();
   set featureFlags(
     MapBuilder<String, GetOrganizationFeatureFlagsResponseFeatureFlagsValue>?
     featureFlags,

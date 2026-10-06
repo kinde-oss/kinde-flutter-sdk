@@ -17,9 +17,8 @@ class _$CreateApplicationResponseApplication
 
   factory _$CreateApplicationResponseApplication([
     void Function(CreateApplicationResponseApplicationBuilder)? updates,
-  ]) =>
-      (new CreateApplicationResponseApplicationBuilder()..update(updates))
-          ._build();
+  ]) => (new CreateApplicationResponseApplicationBuilder()..update(updates))
+      ._build();
 
   _$CreateApplicationResponseApplication._({
     this.id,

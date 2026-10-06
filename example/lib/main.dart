@@ -19,12 +19,12 @@ void main() async {
   usePathUrlStrategy();
   await dotenv.load(fileName: ".env");
   await KindeFlutterSDK.initializeSDK(
-      authDomain: dotenv.env['KINDE_AUTH_DOMAIN']!,
-      authClientId: dotenv.env['KINDE_AUTH_CLIENT_ID']!,
-      loginRedirectUri: dotenv.env['KINDE_LOGIN_REDIRECT_URI']!,
-      logoutRedirectUri: dotenv.env['KINDE_LOGOUT_REDIRECT_URI']!,
-      scopes: ["email", "profile", "offline", "openid"] // optional
-      );
+    authDomain: dotenv.env['KINDE_AUTH_DOMAIN']!,
+    authClientId: dotenv.env['KINDE_AUTH_CLIENT_ID']!,
+    loginRedirectUri: dotenv.env['KINDE_LOGIN_REDIRECT_URI']!,
+    logoutRedirectUri: dotenv.env['KINDE_LOGOUT_REDIRECT_URI']!,
+    scopes: ["email", "profile", "offline", "openid"], // optional
+  );
 
   await EncryptedBox.init();
   runApp(const MyApp());
@@ -52,15 +52,15 @@ class _MyAppState extends State<MyApp> {
     if (kIsWeb) return;
     _userStreamSubscription = AppStateManager.instance.userProfileStream.stream
         .listen((userProfileChanges) {
-      final oldUser = userProfileChanges.$1;
-      final newUser = userProfileChanges.$2;
-      if (oldUser == null && newUser != null) {
-        _navigateToHome();
-      }
-      if (oldUser != null && newUser == null) {
-        _navigateToWelcome();
-      }
-    });
+          final oldUser = userProfileChanges.$1;
+          final newUser = userProfileChanges.$2;
+          if (oldUser == null && newUser != null) {
+            _navigateToHome();
+          }
+          if (oldUser != null && newUser == null) {
+            _navigateToWelcome();
+          }
+        });
   }
 
   void _navigateToHome() {

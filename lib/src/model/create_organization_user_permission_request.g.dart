@@ -13,9 +13,8 @@ class _$CreateOrganizationUserPermissionRequest
 
   factory _$CreateOrganizationUserPermissionRequest([
     void Function(CreateOrganizationUserPermissionRequestBuilder)? updates,
-  ]) =>
-      (new CreateOrganizationUserPermissionRequestBuilder()..update(updates))
-          ._build();
+  ]) => (new CreateOrganizationUserPermissionRequestBuilder()..update(updates))
+      ._build();
 
   _$CreateOrganizationUserPermissionRequest._({this.permissionId}) : super._();
 

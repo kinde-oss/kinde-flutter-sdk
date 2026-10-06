@@ -41,8 +41,9 @@ class _$UpdateOrganizationUsersRequest extends UpdateOrganizationUsersRequest {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'UpdateOrganizationUsersRequest')
-      ..add('users', users)).toString();
+    return (newBuiltValueToStringHelper(
+      r'UpdateOrganizationUsersRequest',
+    )..add('users', users)).toString();
   }
 }
 

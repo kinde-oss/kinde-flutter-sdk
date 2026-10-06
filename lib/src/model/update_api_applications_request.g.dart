@@ -48,8 +48,9 @@ class _$UpdateAPIApplicationsRequest extends UpdateAPIApplicationsRequest {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'UpdateAPIApplicationsRequest')
-      ..add('applications', applications)).toString();
+    return (newBuiltValueToStringHelper(
+      r'UpdateAPIApplicationsRequest',
+    )..add('applications', applications)).toString();
   }
 }
 

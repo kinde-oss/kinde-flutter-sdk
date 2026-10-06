@@ -64,10 +64,9 @@ class UsersApi {
 
     try {
       const type = FullType(CreateUserRequest);
-      bodyData =
-          createUserRequest == null
-              ? null
-              : _serializers.serialize(createUserRequest, specifiedType: type);
+      bodyData = createUserRequest == null
+          ? null
+          : _serializers.serialize(createUserRequest, specifiedType: type);
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: options.compose(_dio.options, path),
@@ -90,14 +89,13 @@ class UsersApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(CreateUserResponse),
-                  )
-                  as CreateUserResponse;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(CreateUserResponse),
+                )
+                as CreateUserResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -181,14 +179,13 @@ class UsersApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(SuccessResponse),
-                  )
-                  as SuccessResponse;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(SuccessResponse),
+                )
+                as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -271,14 +268,13 @@ class UsersApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(User),
-                  )
-                  as User;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(User),
+                )
+                as User;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -389,14 +385,13 @@ class UsersApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(UsersResponse),
-                  )
-                  as UsersResponse;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(UsersResponse),
+                )
+                as UsersResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -476,14 +471,13 @@ class UsersApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(SuccessResponse),
-                  )
-                  as SuccessResponse;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(SuccessResponse),
+                )
+                as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -582,14 +576,13 @@ class UsersApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(UpdateUserResponse),
-                  )
-                  as UpdateUserResponse;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(UpdateUserResponse),
+                )
+                as UpdateUserResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,

@@ -12,7 +12,7 @@ class AuthConfig {
     required this.loginRedirectUri,
     required this.logoutRedirectUri,
     required this.scopes,
-    this.audience
+    this.audience,
   }) {
     _validateUrls();
   }
@@ -26,7 +26,9 @@ class AuthConfig {
     try {
       Uri.parse(logoutRedirectUri);
     } catch (e) {
-      throw ArgumentError('Invalid logoutRedirectUri format: $logoutRedirectUri');
+      throw ArgumentError(
+        'Invalid logoutRedirectUri format: $logoutRedirectUri',
+      );
     }
   }
 }

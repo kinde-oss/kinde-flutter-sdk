@@ -38,8 +38,9 @@ class _$ErrorResponse extends ErrorResponse {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'ErrorResponse')
-      ..add('errors', errors)).toString();
+    return (newBuiltValueToStringHelper(
+      r'ErrorResponse',
+    )..add('errors', errors)).toString();
   }
 }
 

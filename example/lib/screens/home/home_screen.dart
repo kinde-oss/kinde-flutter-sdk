@@ -30,10 +30,11 @@ class _HomeScreenState extends State<HomeScreen> {
       extendBodyBehindAppBar: true,
       body: Padding(
         padding: EdgeInsets.only(
-            top: MediaQuery.viewPaddingOf(context).top,
-            left: 16.w,
-            right: 16.w,
-            bottom: MediaQuery.viewPaddingOf(context).bottom),
+          top: MediaQuery.viewPaddingOf(context).top,
+          left: 16.w,
+          right: 16.w,
+          bottom: MediaQuery.viewPaddingOf(context).bottom,
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -58,8 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           SchedulerBinding.instance.addPostFrameCallback((_) {
                             context.pushReplacement(AppRoutes.WELCOME);
                           });
-                          return const SizedBox
-                              .shrink(); // Return empty widget while navigating
+                          return const SizedBox.shrink(); // Return empty widget while navigating
                         } else {
                           return Text(
                             '${user.givenName} ${user.familyName}',
@@ -69,61 +69,62 @@ class _HomeScreenState extends State<HomeScreen> {
                         }
                       }
                       return const Center(
-                          child: CircularProgressIndicator.adaptive());
+                        child: CircularProgressIndicator.adaptive(),
+                      );
                     },
                   ),
                   const SizedBox(height: 10),
                   InkWell(
-                      onTap: AppStateManager.instance.signOut,
-                      child: const Text('Sign out')),
+                    onTap: AppStateManager.instance.signOut,
+                    child: const Text('Sign out'),
+                  ),
                 ],
               ),
             ),
             Expanded(
-                child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  verticalSpaceMedium,
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: double.infinity,
-                        padding: EdgeInsets.all(32.w),
-                        decoration: roundedBoxRegular,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            verticalSpaceMedium,
-                            Text(
-                              "Woohoo!",
-                              textAlign: TextAlign.center,
-                              style: kTitleText.copyWith(color: Colors.white),
-                            ),
-                            verticalSpaceMedium,
-                            Text(
-                              "Your\nauthentication is\nall sorted.\nBuild the\nimportant stuff.",
-                              textAlign: TextAlign.center,
-                              style: kRobotoText.copyWith(
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    verticalSpaceMedium,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          padding: EdgeInsets.all(32.w),
+                          decoration: roundedBoxRegular,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              verticalSpaceMedium,
+                              Text(
+                                "Woohoo!",
+                                textAlign: TextAlign.center,
+                                style: kTitleText.copyWith(color: Colors.white),
+                              ),
+                              verticalSpaceMedium,
+                              Text(
+                                "Your\nauthentication is\nall sorted.\nBuild the\nimportant stuff.",
+                                textAlign: TextAlign.center,
+                                style: kRobotoText.copyWith(
                                   fontWeight: kFwBlack,
                                   color: Colors.white,
-                                  fontSize: kTitleLarge),
-                            ),
-                          ],
+                                  fontSize: kTitleLarge,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      verticalSpaceRegular,
-                      Text(
-                        "Next steps for you",
-                        style: kTitleText,
-                      ),
-                    ],
-                  ),
-                  const PageFooter(),
-                ],
+                        verticalSpaceRegular,
+                        Text("Next steps for you", style: kTitleText),
+                      ],
+                    ),
+                    const PageFooter(),
+                  ],
+                ),
               ),
-            ))
+            ),
           ],
         ),
       ),

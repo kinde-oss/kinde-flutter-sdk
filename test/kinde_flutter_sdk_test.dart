@@ -6,7 +6,6 @@ import 'mock_channels.dart';
 import 'test_helpers/dio_adapter.dart';
 
 void main() async {
-
   TestWidgetsFlutterBinding.ensureInitialized();
 
   mockChannels.setupMockChannel();
@@ -16,38 +15,35 @@ void main() async {
   group(KindeFlutterSDK, () {
     test('test initializeSDK', () async {
       await initializeKindeFlutterSdkForTest(
-          authDomain: "authDomain",
-          authClientId: "authClientId",
-          loginRedirectUri: "loginRedirectUri",
-          logoutRedirectUri: "logoutRedirectUri",
-          dio: mockDio);
+        authDomain: "authDomain",
+        authClientId: "authClientId",
+        loginRedirectUri: "loginRedirectUri",
+        logoutRedirectUri: "logoutRedirectUri",
+        dio: mockDio,
+      );
 
       expect(() => KindeFlutterSDK.instance, returnsNormally);
     });
 
     test('test sdk login', () async {
-
       await KindeFlutterSDK.instance.login();
 
       expect(KindeFlutterSDK.instance.authState, isNotNull);
     });
 
     test('test sdk login pkce', () async {
-
       await KindeFlutterSDK.instance.login(type: AuthFlowType.pkce);
 
       expect(KindeFlutterSDK.instance.authState, isNotNull);
     });
 
     test('test sdk register', () async {
-
       await KindeFlutterSDK.instance.register(type: AuthFlowType.pkce);
 
       expect(KindeFlutterSDK.instance.authState, isNotNull);
     });
 
     test('test sdk register pkce', () async {
-
       await KindeFlutterSDK.instance.register(type: AuthFlowType.pkce);
 
       expect(KindeFlutterSDK.instance.authState, isNotNull);
@@ -59,9 +55,7 @@ void main() async {
     });
 
     test('test create org', () async {
-
       await KindeFlutterSDK.instance.createOrg(orgName: 'test');
-
     });
 
     test('test create org pkce', () async {

@@ -85,14 +85,13 @@ class FeatureFlagsApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(SuccessResponse),
-                  )
-                  as SuccessResponse;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(SuccessResponse),
+                )
+                as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -172,14 +171,13 @@ class FeatureFlagsApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(SuccessResponse),
-                  )
-                  as SuccessResponse;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(SuccessResponse),
+                )
+                as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -290,14 +288,13 @@ class FeatureFlagsApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(SuccessResponse),
-                  )
-                  as SuccessResponse;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(SuccessResponse),
+                )
+                as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,

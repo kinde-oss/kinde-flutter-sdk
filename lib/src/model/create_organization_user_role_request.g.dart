@@ -13,9 +13,8 @@ class _$CreateOrganizationUserRoleRequest
 
   factory _$CreateOrganizationUserRoleRequest([
     void Function(CreateOrganizationUserRoleRequestBuilder)? updates,
-  ]) =>
-      (new CreateOrganizationUserRoleRequestBuilder()..update(updates))
-          ._build();
+  ]) => (new CreateOrganizationUserRoleRequestBuilder()..update(updates))
+      ._build();
 
   _$CreateOrganizationUserRoleRequest._({this.roleId}) : super._();
 
@@ -44,8 +43,9 @@ class _$CreateOrganizationUserRoleRequest
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'CreateOrganizationUserRoleRequest')
-      ..add('roleId', roleId)).toString();
+    return (newBuiltValueToStringHelper(
+      r'CreateOrganizationUserRoleRequest',
+    )..add('roleId', roleId)).toString();
   }
 }
 

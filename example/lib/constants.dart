@@ -22,7 +22,10 @@ FontWeight kFwMedium = FontWeight.w500;
 FontWeight kFwBlack = FontWeight.w900;
 
 TextStyle kTitleText = kRobotoText.copyWith(
-    fontWeight: kFwMedium, color: Colors.black, fontSize: kTitle);
+  fontWeight: kFwMedium,
+  color: Colors.black,
+  fontSize: kTitle,
+);
 
 // Vertical Spacing
 Widget get verticalSpaceSmall => SizedBox(height: 8.0.h);
@@ -31,7 +34,9 @@ Widget get verticalSpaceMedium => SizedBox(height: 24.0.h);
 
 //Box Decoration
 BoxDecoration roundedBoxRegular = BoxDecoration(
-    color: Colors.black, borderRadius: BorderRadius.all(Radius.circular(16.r)));
+  color: Colors.black,
+  borderRadius: BorderRadius.all(Radius.circular(16.r)),
+);
 
 //color
 const kColorGrey = Color(0xFF676767);

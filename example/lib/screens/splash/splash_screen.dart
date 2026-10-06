@@ -29,23 +29,24 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: Colors.white,
       extendBodyBehindAppBar: true,
       body: FutureBuilder(
-          future: future,
-          builder: (context, asyncSnapshot) {
-            if (asyncSnapshot.connectionState == ConnectionState.done) {
-              final user = asyncSnapshot.data;
-              final route = user == null ? AppRoutes.WELCOME : AppRoutes.HOME;
-              SchedulerBinding.instance.addPostFrameCallback((_) {
-                context.pushReplacement(route);
-              });
-            }
-            return Center(
-              child: Text(
-                "K",
-                style: TextStyle(fontSize: 48.h, color: Colors.black),
-                textAlign: TextAlign.center,
-              ),
-            );
-          }),
+        future: future,
+        builder: (context, asyncSnapshot) {
+          if (asyncSnapshot.connectionState == ConnectionState.done) {
+            final user = asyncSnapshot.data;
+            final route = user == null ? AppRoutes.WELCOME : AppRoutes.HOME;
+            SchedulerBinding.instance.addPostFrameCallback((_) {
+              context.pushReplacement(route);
+            });
+          }
+          return Center(
+            child: Text(
+              "K",
+              style: TextStyle(fontSize: 48.h, color: Colors.black),
+              textAlign: TextAlign.center,
+            ),
+          );
+        },
+      ),
     );
   }
 }

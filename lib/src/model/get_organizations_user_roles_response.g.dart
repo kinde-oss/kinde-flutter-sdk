@@ -19,9 +19,8 @@ class _$GetOrganizationsUserRolesResponse
 
   factory _$GetOrganizationsUserRolesResponse([
     void Function(GetOrganizationsUserRolesResponseBuilder)? updates,
-  ]) =>
-      (new GetOrganizationsUserRolesResponseBuilder()..update(updates))
-          ._build();
+  ]) => (new GetOrganizationsUserRolesResponseBuilder()..update(updates))
+      ._build();
 
   _$GetOrganizationsUserRolesResponse._({
     this.code,

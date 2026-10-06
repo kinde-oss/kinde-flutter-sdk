@@ -13,9 +13,8 @@ class _$CreateUserRequestIdentitiesInnerDetails
 
   factory _$CreateUserRequestIdentitiesInnerDetails([
     void Function(CreateUserRequestIdentitiesInnerDetailsBuilder)? updates,
-  ]) =>
-      (new CreateUserRequestIdentitiesInnerDetailsBuilder()..update(updates))
-          ._build();
+  ]) => (new CreateUserRequestIdentitiesInnerDetailsBuilder()..update(updates))
+      ._build();
 
   _$CreateUserRequestIdentitiesInnerDetails._({this.email}) : super._();
 

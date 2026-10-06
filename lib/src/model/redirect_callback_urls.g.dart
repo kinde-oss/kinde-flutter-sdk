@@ -41,8 +41,9 @@ class _$RedirectCallbackUrls extends RedirectCallbackUrls {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'RedirectCallbackUrls')
-      ..add('redirectUrls', redirectUrls)).toString();
+    return (newBuiltValueToStringHelper(
+      r'RedirectCallbackUrls',
+    )..add('redirectUrls', redirectUrls)).toString();
   }
 }
 

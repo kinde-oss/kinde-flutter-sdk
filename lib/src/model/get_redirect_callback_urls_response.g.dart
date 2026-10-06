@@ -44,8 +44,9 @@ class _$GetRedirectCallbackUrlsResponse
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'GetRedirectCallbackUrlsResponse')
-      ..add('redirectUrls', redirectUrls)).toString();
+    return (newBuiltValueToStringHelper(
+      r'GetRedirectCallbackUrlsResponse',
+    )..add('redirectUrls', redirectUrls)).toString();
   }
 }
 

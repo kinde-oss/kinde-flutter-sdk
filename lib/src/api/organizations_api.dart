@@ -84,13 +84,12 @@ class OrganizationsApi {
 
     try {
       const type = FullType(AddOrganizationUsersRequest);
-      bodyData =
-          addOrganizationUsersRequest == null
-              ? null
-              : _serializers.serialize(
-                addOrganizationUsersRequest,
-                specifiedType: type,
-              );
+      bodyData = addOrganizationUsersRequest == null
+          ? null
+          : _serializers.serialize(
+              addOrganizationUsersRequest,
+              specifiedType: type,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: options.compose(_dio.options, path),
@@ -113,14 +112,13 @@ class OrganizationsApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(AddOrganizationUsersResponse),
-                  )
-                  as AddOrganizationUsersResponse;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(AddOrganizationUsersResponse),
+                )
+                as AddOrganizationUsersResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -184,13 +182,12 @@ class OrganizationsApi {
 
     try {
       const type = FullType(CreateOrganizationRequest);
-      bodyData =
-          createOrganizationRequest == null
-              ? null
-              : _serializers.serialize(
-                createOrganizationRequest,
-                specifiedType: type,
-              );
+      bodyData = createOrganizationRequest == null
+          ? null
+          : _serializers.serialize(
+              createOrganizationRequest,
+              specifiedType: type,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: options.compose(_dio.options, path),
@@ -213,14 +210,13 @@ class OrganizationsApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(CreateOrganizationResponse),
-                  )
-                  as CreateOrganizationResponse;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(CreateOrganizationResponse),
+                )
+                as CreateOrganizationResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -335,14 +331,13 @@ class OrganizationsApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(SuccessResponse),
-                  )
-                  as SuccessResponse;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(SuccessResponse),
+                )
+                as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -457,14 +452,13 @@ class OrganizationsApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(SuccessResponse),
-                  )
-                  as SuccessResponse;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(SuccessResponse),
+                )
+                as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -614,14 +608,13 @@ class OrganizationsApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(SuccessResponse),
-                  )
-                  as SuccessResponse;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(SuccessResponse),
+                )
+                as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -701,14 +694,13 @@ class OrganizationsApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(SuccessResponse),
-                  )
-                  as SuccessResponse;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(SuccessResponse),
+                )
+                as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -814,14 +806,13 @@ class OrganizationsApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(SuccessResponse),
-                  )
-                  as SuccessResponse;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(SuccessResponse),
+                )
+                as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -927,14 +918,13 @@ class OrganizationsApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(SuccessResponse),
-                  )
-                  as SuccessResponse;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(SuccessResponse),
+                )
+                as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -1015,14 +1005,13 @@ class OrganizationsApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(Organization),
-                  )
-                  as Organization;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(Organization),
+                )
+                as Organization;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -1103,16 +1092,15 @@ class OrganizationsApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(
-                      GetOrganizationFeatureFlagsResponse,
-                    ),
-                  )
-                  as GetOrganizationFeatureFlagsResponse;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(
+                    GetOrganizationFeatureFlagsResponse,
+                  ),
+                )
+                as GetOrganizationFeatureFlagsResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -1217,16 +1205,15 @@ class OrganizationsApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(
-                      GetOrganizationsUserPermissionsResponse,
-                    ),
-                  )
-                  as GetOrganizationsUserPermissionsResponse;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(
+                    GetOrganizationsUserPermissionsResponse,
+                  ),
+                )
+                as GetOrganizationsUserPermissionsResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -1319,16 +1306,15 @@ class OrganizationsApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(
-                      GetOrganizationsUserRolesResponse,
-                    ),
-                  )
-                  as GetOrganizationsUserRolesResponse;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(
+                    GetOrganizationsUserRolesResponse,
+                  ),
+                )
+                as GetOrganizationsUserRolesResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -1445,14 +1431,13 @@ class OrganizationsApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(GetOrganizationUsersResponse),
-                  )
-                  as GetOrganizationUsersResponse;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(GetOrganizationUsersResponse),
+                )
+                as GetOrganizationUsersResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -1542,14 +1527,13 @@ class OrganizationsApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(GetOrganizationsResponse),
-                  )
-                  as GetOrganizationsResponse;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(GetOrganizationsResponse),
+                )
+                as GetOrganizationsResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -1642,14 +1626,13 @@ class OrganizationsApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(SuccessResponse),
-                  )
-                  as SuccessResponse;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(SuccessResponse),
+                )
+                as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -1724,13 +1707,12 @@ class OrganizationsApi {
 
     try {
       const type = FullType(UpdateOrganizationRequest);
-      bodyData =
-          updateOrganizationRequest == null
-              ? null
-              : _serializers.serialize(
-                updateOrganizationRequest,
-                specifiedType: type,
-              );
+      bodyData = updateOrganizationRequest == null
+          ? null
+          : _serializers.serialize(
+              updateOrganizationRequest,
+              specifiedType: type,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: options.compose(_dio.options, path),
@@ -1753,14 +1735,13 @@ class OrganizationsApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(SuccessResponse),
-                  )
-                  as SuccessResponse;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(SuccessResponse),
+                )
+                as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -1865,14 +1846,13 @@ class OrganizationsApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(SuccessResponse),
-                  )
-                  as SuccessResponse;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(SuccessResponse),
+                )
+                as SuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -1947,13 +1927,12 @@ class OrganizationsApi {
 
     try {
       const type = FullType(UpdateOrganizationUsersRequest);
-      bodyData =
-          updateOrganizationUsersRequest == null
-              ? null
-              : _serializers.serialize(
-                updateOrganizationUsersRequest,
-                specifiedType: type,
-              );
+      bodyData = updateOrganizationUsersRequest == null
+          ? null
+          : _serializers.serialize(
+              updateOrganizationUsersRequest,
+              specifiedType: type,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: options.compose(_dio.options, path),
@@ -1976,16 +1955,15 @@ class OrganizationsApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(
-                      UpdateOrganizationUsersResponse,
-                    ),
-                  )
-                  as UpdateOrganizationUsersResponse;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(
+                    UpdateOrganizationUsersResponse,
+                  ),
+                )
+                as UpdateOrganizationUsersResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,

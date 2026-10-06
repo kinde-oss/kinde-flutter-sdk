@@ -44,30 +44,32 @@ void main() {
 
     group('BaseAdditionalParameters.toWebParams()', () {
       test('should include invitation_code in web params when provided', () {
-        const params = AdditionalParameters(
-          invitationCode: 'test-code-xyz',
-        );
+        const params = AdditionalParameters(invitationCode: 'test-code-xyz');
         final webParams = params.toWebParams();
 
         expect(webParams['invitation_code'], 'test-code-xyz');
       });
 
-      test('should auto-derive is_invitation=true when invitation_code is present', () {
-        const params = AdditionalParameters(
-          invitationCode: 'test-code-xyz',
-        );
-        final webParams = params.toWebParams();
+      test(
+        'should auto-derive is_invitation=true when invitation_code is present',
+        () {
+          const params = AdditionalParameters(invitationCode: 'test-code-xyz');
+          final webParams = params.toWebParams();
 
-        expect(webParams['is_invitation'], 'true');
-      });
+          expect(webParams['is_invitation'], 'true');
+        },
+      );
 
-      test('should not include invitation params when invitationCode is null', () {
-        const params = AdditionalParameters();
-        final webParams = params.toWebParams();
+      test(
+        'should not include invitation params when invitationCode is null',
+        () {
+          const params = AdditionalParameters();
+          final webParams = params.toWebParams();
 
-        expect(webParams.containsKey('invitation_code'), isFalse);
-        expect(webParams.containsKey('is_invitation'), isFalse);
-      });
+          expect(webParams.containsKey('invitation_code'), isFalse);
+          expect(webParams.containsKey('is_invitation'), isFalse);
+        },
+      );
 
       test('should include both invitation params alongside other params', () {
         const params = AdditionalParameters(
@@ -92,18 +94,21 @@ void main() {
         expect(params.invitationCode, 'internal-invite-code');
       });
 
-      test('should copy invitationCode from AdditionalParameters via factory', () {
-        const userParams = AdditionalParameters(
-          invitationCode: 'user-invite-code',
-          orgCode: 'org_456',
-        );
+      test(
+        'should copy invitationCode from AdditionalParameters via factory',
+        () {
+          const userParams = AdditionalParameters(
+            invitationCode: 'user-invite-code',
+            orgCode: 'org_456',
+          );
 
-        final internalParams =
-            InternalAdditionalParameters.fromUserAdditionalParams(userParams);
+          final internalParams =
+              InternalAdditionalParameters.fromUserAdditionalParams(userParams);
 
-        expect(internalParams.invitationCode, 'user-invite-code');
-        expect(internalParams.orgCode, 'org_456');
-      });
+          expect(internalParams.invitationCode, 'user-invite-code');
+          expect(internalParams.orgCode, 'org_456');
+        },
+      );
 
       test('should include invitation params in toWebParams()', () {
         final params = InternalAdditionalParameters(
@@ -117,21 +122,24 @@ void main() {
         expect(webParams['audience'], 'https://api.example.com');
       });
 
-      test('should include invitation params in toAuthorizationRequestParams()', () {
-        final params = InternalAdditionalParameters(
-          invitationCode: 'auth-invite-code',
-          promptValues: ['create'],
-          scopes: ['openid', 'profile'],
-        );
-        final authParams = params.toAuthorizationRequestParams();
+      test(
+        'should include invitation params in toAuthorizationRequestParams()',
+        () {
+          final params = InternalAdditionalParameters(
+            invitationCode: 'auth-invite-code',
+            promptValues: ['create'],
+            scopes: ['openid', 'profile'],
+          );
+          final authParams = params.toAuthorizationRequestParams();
 
-        // invitation params should be included
-        expect(authParams['invitation_code'], 'auth-invite-code');
-        expect(authParams['is_invitation'], 'true');
-        // scope and prompt should be removed (set via builder)
-        expect(authParams.containsKey('scope'), isFalse);
-        expect(authParams.containsKey('prompt'), isFalse);
-      });
+          // invitation params should be included
+          expect(authParams['invitation_code'], 'auth-invite-code');
+          expect(authParams['is_invitation'], 'true');
+          // scope and prompt should be removed (set via builder)
+          expect(authParams.containsKey('scope'), isFalse);
+          expect(authParams.containsKey('prompt'), isFalse);
+        },
+      );
     });
 
     group('Parameter Serialization', () {
@@ -143,20 +151,25 @@ void main() {
         expect(Parameter.isInvitation.name, 'is_invitation');
       });
 
-      test('is_invitation is automatically set when invitationCode is present', () {
-        const params = AdditionalParameters(invitationCode: 'any-code');
-        final webParams = params.toWebParams();
-        expect(webParams['is_invitation'], 'true');
-      });
+      test(
+        'is_invitation is automatically set when invitationCode is present',
+        () {
+          const params = AdditionalParameters(invitationCode: 'any-code');
+          final webParams = params.toWebParams();
+          expect(webParams['is_invitation'], 'true');
+        },
+      );
 
       test('is_invitation is not set when invitationCode is absent', () {
         const paramsWithCode = AdditionalParameters(invitationCode: 'code');
         const paramsWithoutCode = AdditionalParameters();
 
         expect(paramsWithCode.toWebParams()['is_invitation'], 'true');
-        expect(paramsWithoutCode.toWebParams().containsKey('is_invitation'), isFalse);
+        expect(
+          paramsWithoutCode.toWebParams().containsKey('is_invitation'),
+          isFalse,
+        );
       });
     });
   });
 }
-

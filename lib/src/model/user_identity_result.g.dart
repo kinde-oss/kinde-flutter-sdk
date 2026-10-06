@@ -41,8 +41,9 @@ class _$UserIdentityResult extends UserIdentityResult {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'UserIdentityResult')
-      ..add('created', created)).toString();
+    return (newBuiltValueToStringHelper(
+      r'UserIdentityResult',
+    )..add('created', created)).toString();
   }
 }
 

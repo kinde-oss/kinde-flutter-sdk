@@ -90,16 +90,15 @@ class SubscribersApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(
-                      CreateSubscriberSuccessResponse,
-                    ),
-                  )
-                  as CreateSubscriberSuccessResponse;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(
+                    CreateSubscriberSuccessResponse,
+                  ),
+                )
+                as CreateSubscriberSuccessResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -179,14 +178,13 @@ class SubscribersApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(GetSubscriberResponse),
-                  )
-                  as GetSubscriberResponse;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(GetSubscriberResponse),
+                )
+                as GetSubscriberResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -276,14 +274,13 @@ class SubscribersApi {
 
     try {
       final rawResponse = response.data;
-      responseData =
-          rawResponse == null
-              ? null
-              : _serializers.deserialize(
-                    rawResponse,
-                    specifiedType: const FullType(GetSubscribersResponse),
-                  )
-                  as GetSubscribersResponse;
+      responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(GetSubscribersResponse),
+                )
+                as GetSubscribersResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: response.requestOptions,

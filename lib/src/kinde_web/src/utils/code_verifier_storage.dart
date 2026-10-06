@@ -15,10 +15,10 @@ class CodeVerifierStorage {
     try {
       instance._sharedPreferences = await SharedPreferences.getInstance();
       _instance = instance;
-        } catch (e) {
-          debugPrint('Failed to initialize SharedPreferences: $e');
-          rethrow;
-        }
+    } catch (e) {
+      debugPrint('Failed to initialize SharedPreferences: $e');
+      rethrow;
+    }
     return instance;
   }
 

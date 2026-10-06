@@ -6,10 +6,7 @@ enum AuthFlowType {
   ///
   /// Used as a default or placeholder value when no specific
   /// flow is required or selected.
-  none(
-    'none',
-    'No specific authentication flow',
-  ),
+  none('none', 'No specific authentication flow'),
 
   /// Proof Key for Code Exchange (PKCE) flow.
   ///

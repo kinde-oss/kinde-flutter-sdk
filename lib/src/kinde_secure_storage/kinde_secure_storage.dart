@@ -12,15 +12,16 @@ abstract class SecureStorageKey {
 
 class KindeSecureStorage implements KindeSecureStorageInterface {
   KindeSecureStorage({FlutterSecureStorage? secureStorage})
-      : _secureStorage = secureStorage ?? const FlutterSecureStorage();
+    : _secureStorage = secureStorage ?? const FlutterSecureStorage();
 
   final FlutterSecureStorage _secureStorage;
 
   @override
   Future<List<int>?> getSecureKey() async {
     try {
-      final base64 =
-      await _secureStorage.read(key: SecureStorageKey.encryption);
+      final base64 = await _secureStorage.read(
+        key: SecureStorageKey.encryption,
+      );
       if (base64 == null) return null;
       return base64Url.decode(base64);
     } catch (e) {
@@ -40,10 +41,7 @@ class KindeSecureStorage implements KindeSecureStorageInterface {
         value: base64UrlEncode(secureKey),
       );
     } catch (e) {
-      kindeDebugPrint(
-        methodName: "saveSecureKey",
-        message: e.toString(),
-      );
+      kindeDebugPrint(methodName: "saveSecureKey", message: e.toString());
     }
   }
 
@@ -52,10 +50,7 @@ class KindeSecureStorage implements KindeSecureStorageInterface {
     try {
       return await _secureStorage.read(key: SecureStorageKey.authRequestState);
     } catch (e) {
-      kindeDebugPrint(
-        methodName: "getAuthRequestState",
-        message: e.toString(),
-      );
+      kindeDebugPrint(methodName: "getAuthRequestState", message: e.toString());
       return null;
     }
   }
@@ -89,7 +84,9 @@ class KindeSecureStorage implements KindeSecureStorageInterface {
 }
 
 String generateAuthState() {
-  final randomBytes =
-      List<int>.generate(32, (i) => Random.secure().nextInt(256));
+  final randomBytes = List<int>.generate(
+    32,
+    (i) => Random.secure().nextInt(256),
+  );
   return base64UrlEncode(randomBytes);
 }

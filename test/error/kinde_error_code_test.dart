@@ -10,26 +10,41 @@ void main() {
 
       test('should convert camelCase enum names to kebab-case strings', () {
         expect(KindeErrorCode.userCanceled.code, 'user-canceled');
-        expect(KindeErrorCode.sessionExpiredOrInvalid.code,
-            'session-expired-or-invalid');
-        expect(KindeErrorCode.refreshTokenExpired.code,
-            'refresh-token-expired');
+        expect(
+          KindeErrorCode.sessionExpiredOrInvalid.code,
+          'session-expired-or-invalid',
+        );
+        expect(
+          KindeErrorCode.refreshTokenExpired.code,
+          'refresh-token-expired',
+        );
         expect(KindeErrorCode.missingConfig.code, 'missing-config');
-        expect(KindeErrorCode.webInitializingFailed.code,
-            'web-initializing-failed');
+        expect(
+          KindeErrorCode.webInitializingFailed.code,
+          'web-initializing-failed',
+        );
         expect(KindeErrorCode.initializingFailed.code, 'initializing-failed');
         expect(
-            KindeErrorCode.logoutRequestFailed.code, 'logout-request-failed');
+          KindeErrorCode.logoutRequestFailed.code,
+          'logout-request-failed',
+        );
         expect(KindeErrorCode.requestTimedOut.code, 'request-timed-out');
         expect(KindeErrorCode.noCodeVerifier.code, 'no-code-verifier');
-        expect(KindeErrorCode.noAuthRequestStateStored.code,
-            'no-auth-request-state-stored');
-        expect(KindeErrorCode.authRequestStateNotMatch.code,
-            'auth-request-state-not-match');
+        expect(
+          KindeErrorCode.noAuthRequestStateStored.code,
+          'no-auth-request-state-stored',
+        );
+        expect(
+          KindeErrorCode.authRequestStateNotMatch.code,
+          'auth-request-state-not-match',
+        );
         expect(KindeErrorCode.notRedirectUrl.code, 'not-redirect-url');
         expect(KindeErrorCode.invalidRedirect.code, 'invalid-redirect');
         expect(KindeErrorCode.unsupportedScheme.code, 'unsupported-scheme');
-        expect(KindeErrorCode.portalLinkUrlIsNull.code, 'portal-link-url-is-null');
+        expect(
+          KindeErrorCode.portalLinkUrlIsNull.code,
+          'portal-link-url-is-null',
+        );
         expect(KindeErrorCode.loginInProcess.code, 'login-in-process');
         expect(KindeErrorCode.loginLinkExpired.code, 'login-link-expired');
         expect(KindeErrorCode.unknown.code, 'unknown');
@@ -37,8 +52,10 @@ void main() {
 
       test('toString() should return the kebab-case code string', () {
         expect(KindeErrorCode.userCanceled.toString(), 'user-canceled');
-        expect(KindeErrorCode.sessionExpiredOrInvalid.toString(),
-            'session-expired-or-invalid');
+        expect(
+          KindeErrorCode.sessionExpiredOrInvalid.toString(),
+          'session-expired-or-invalid',
+        );
         expect(KindeErrorCode.unknown.toString(), 'unknown');
       });
 
@@ -69,23 +86,32 @@ void main() {
         for (final errorCode in KindeErrorCode.values) {
           final codeString = errorCode.code;
           final found = KindeErrorCode.fromString(codeString);
-          expect(found, errorCode,
-              reason:
-                  'Should find ${errorCode.code} correctly via fromString()');
+          expect(
+            found,
+            errorCode,
+            reason: 'Should find ${errorCode.code} correctly via fromString()',
+          );
         }
       });
 
       test('should work with common error codes', () {
-        expect(KindeErrorCode.fromString('user-canceled'),
-            KindeErrorCode.userCanceled);
-        expect(KindeErrorCode.fromString('refresh-token-expired'),
-            KindeErrorCode.refreshTokenExpired);
-        expect(KindeErrorCode.fromString('session-expired-or-invalid'),
-            KindeErrorCode.sessionExpiredOrInvalid);
-        expect(KindeErrorCode.fromString('login-link-expired'),
-            KindeErrorCode.loginLinkExpired);
         expect(
-            KindeErrorCode.fromString('unknown'), KindeErrorCode.unknown);
+          KindeErrorCode.fromString('user-canceled'),
+          KindeErrorCode.userCanceled,
+        );
+        expect(
+          KindeErrorCode.fromString('refresh-token-expired'),
+          KindeErrorCode.refreshTokenExpired,
+        );
+        expect(
+          KindeErrorCode.fromString('session-expired-or-invalid'),
+          KindeErrorCode.sessionExpiredOrInvalid,
+        );
+        expect(
+          KindeErrorCode.fromString('login-link-expired'),
+          KindeErrorCode.loginLinkExpired,
+        );
+        expect(KindeErrorCode.fromString('unknown'), KindeErrorCode.unknown);
       });
     });
 
@@ -122,13 +148,22 @@ void main() {
         // All error codes should use kebab-case (hyphen-separated, lowercase)
         // matching TypeScript, Python, and other Kinde SDKs
         for (final code in KindeErrorCode.values) {
-          expect(code.code, isNot(contains('_')),
-              reason: '${code.code} should not contain underscores');
-          expect(code.code, isNot(matches(RegExp(r'[A-Z]'))),
-              reason: '${code.code} should not contain uppercase letters');
-          expect(code.code, matches(RegExp(r'^[a-z0-9-]+$')),
-              reason:
-                  '${code.code} should only contain lowercase letters, numbers, and hyphens');
+          expect(
+            code.code,
+            isNot(contains('_')),
+            reason: '${code.code} should not contain underscores',
+          );
+          expect(
+            code.code,
+            isNot(matches(RegExp(r'[A-Z]'))),
+            reason: '${code.code} should not contain uppercase letters',
+          );
+          expect(
+            code.code,
+            matches(RegExp(r'^[a-z0-9-]+$')),
+            reason:
+                '${code.code} should only contain lowercase letters, numbers, and hyphens',
+          );
         }
       });
 
@@ -136,16 +171,19 @@ void main() {
         // These error codes are expected to exist across multiple Kinde SDKs
         expect(KindeErrorCode.values.any((e) => e.code == 'unknown'), isTrue);
         expect(
-            KindeErrorCode.values.any((e) => e.code == 'user-canceled'),
-            isTrue);
+          KindeErrorCode.values.any((e) => e.code == 'user-canceled'),
+          isTrue,
+        );
         expect(
-            KindeErrorCode.values
-                .any((e) => e.code == 'refresh-token-expired'),
-            isTrue);
+          KindeErrorCode.values.any((e) => e.code == 'refresh-token-expired'),
+          isTrue,
+        );
         expect(
-            KindeErrorCode.values
-                .any((e) => e.code == 'session-expired-or-invalid'),
-            isTrue);
+          KindeErrorCode.values.any(
+            (e) => e.code == 'session-expired-or-invalid',
+          ),
+          isTrue,
+        );
       });
 
       test('error codes use simple string pattern', () {
@@ -184,4 +222,3 @@ void main() {
     });
   });
 }
-

@@ -41,8 +41,9 @@ class _$LogoutRedirectUrls extends LogoutRedirectUrls {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'LogoutRedirectUrls')
-      ..add('redirectUrls', redirectUrls)).toString();
+    return (newBuiltValueToStringHelper(
+      r'LogoutRedirectUrls',
+    )..add('redirectUrls', redirectUrls)).toString();
   }
 }
 

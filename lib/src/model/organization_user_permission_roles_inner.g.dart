@@ -15,9 +15,8 @@ class _$OrganizationUserPermissionRolesInner
 
   factory _$OrganizationUserPermissionRolesInner([
     void Function(OrganizationUserPermissionRolesInnerBuilder)? updates,
-  ]) =>
-      (new OrganizationUserPermissionRolesInnerBuilder()..update(updates))
-          ._build();
+  ]) => (new OrganizationUserPermissionRolesInnerBuilder()..update(updates))
+      ._build();
 
   _$OrganizationUserPermissionRolesInner._({this.id, this.key}) : super._();
 

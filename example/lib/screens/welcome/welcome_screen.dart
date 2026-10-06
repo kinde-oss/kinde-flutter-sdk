@@ -14,10 +14,11 @@ class WelcomeScreen extends StatelessWidget {
       extendBodyBehindAppBar: true,
       body: Padding(
         padding: EdgeInsets.only(
-            top: MediaQuery.viewPaddingOf(context).top,
-            left: 16.w,
-            right: 16.w,
-            bottom: MediaQuery.viewPaddingOf(context).bottom),
+          top: MediaQuery.viewPaddingOf(context).top,
+          left: 16.w,
+          right: 16.w,
+          bottom: MediaQuery.viewPaddingOf(context).bottom,
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -34,7 +35,9 @@ class WelcomeScreen extends StatelessWidget {
                   child: Text(
                     'Sign in',
                     style: kRobotoText.copyWith(
-                        fontWeight: kFwBold, color: kColorGrey),
+                      fontWeight: kFwBold,
+                      color: kColorGrey,
+                    ),
                   ),
                 ),
                 MaterialButton(
@@ -45,9 +48,11 @@ class WelcomeScreen extends StatelessWidget {
                   child: Text(
                     'Sign up',
                     style: kRobotoText.copyWith(
-                        fontWeight: kFwBold, color: Colors.white),
+                      fontWeight: kFwBold,
+                      color: Colors.white,
+                    ),
                   ),
-                )
+                ),
               ],
             ),
             Expanded(
@@ -69,16 +74,19 @@ class WelcomeScreen extends StatelessWidget {
                               "Let's Start\nauthenticating\nwith KindeAuth",
                               textAlign: TextAlign.center,
                               style: kRobotoText.copyWith(
-                                  fontWeight: kFwBlack,
-                                  color: Colors.white,
-                                  fontSize: kTitleLarge),
+                                fontWeight: kFwBlack,
+                                color: Colors.white,
+                                fontSize: kTitleLarge,
+                              ),
                             ),
                             verticalSpaceMedium,
                             Text(
                               "Configure your app",
                               textAlign: TextAlign.center,
                               style: kTitleText.copyWith(
-                                  fontWeight: kFwBlack, color: Colors.white),
+                                fontWeight: kFwBlack,
+                                color: Colors.white,
+                              ),
                             ),
                             verticalSpaceMedium,
                             ElevatedButton(
@@ -94,8 +102,10 @@ class WelcomeScreen extends StatelessWidget {
                                   } else {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
-                                          content: Text(
-                                              'Could not open documentation')),
+                                        content: Text(
+                                          'Could not open documentation',
+                                        ),
+                                      ),
                                     );
                                   }
                                 });
@@ -104,9 +114,10 @@ class WelcomeScreen extends StatelessWidget {
                                 'Go to docs',
                                 textAlign: TextAlign.center,
                                 style: kRobotoText.copyWith(
-                                    fontWeight: kFwBlack,
-                                    color: Colors.black,
-                                    fontSize: kHeadingTwo),
+                                  fontWeight: kFwBlack,
+                                  color: Colors.black,
+                                  fontSize: kHeadingTwo,
+                                ),
                               ),
                             ),
                           ],
@@ -117,7 +128,7 @@ class WelcomeScreen extends StatelessWidget {
                   ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

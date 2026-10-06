@@ -42,8 +42,9 @@ class _$UpdateRolePermissionsRequest extends UpdateRolePermissionsRequest {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'UpdateRolePermissionsRequest')
-      ..add('permissions', permissions)).toString();
+    return (newBuiltValueToStringHelper(
+      r'UpdateRolePermissionsRequest',
+    )..add('permissions', permissions)).toString();
   }
 }
 
