@@ -1,3 +1,5 @@
+import 'model/kinde_prompt.dart';
+
 enum Parameter {
   scope("scope"),
   prompt("prompt"),
@@ -47,6 +49,10 @@ abstract class BaseAdditionalParameters {
   /// When provided, initiates an invitation acceptance flow.
   final String? invitationCode;
 
+  /// Prompt behaviour for login. Defaults to [KindePrompt.login] when unset.
+  /// Use [KindePrompt.useSession] to reuse an existing Kinde session.
+  final KindePrompt? prompt;
+
   const BaseAdditionalParameters(
       {this.lang,
       this.connectionId,
@@ -54,7 +60,8 @@ abstract class BaseAdditionalParameters {
       this.orgCode,
       this.planInterest,
       this.pricingTableKey,
-      this.invitationCode});
+      this.invitationCode,
+      this.prompt});
 
   Map<String, String> toWebParams() {
     final params = <String, String>{};
@@ -93,7 +100,8 @@ class AdditionalParameters extends BaseAdditionalParameters {
       super.orgCode,
       super.planInterest,
       super.pricingTableKey,
-      super.invitationCode});
+      super.invitationCode,
+      super.prompt});
 
   Map<String, dynamic> toJson() => {
         if (lang != null) 'lang': lang,
@@ -103,6 +111,7 @@ class AdditionalParameters extends BaseAdditionalParameters {
         if (planInterest != null) 'planInterest': planInterest,
         if (pricingTableKey != null) 'pricingTableKey': pricingTableKey,
         if (invitationCode != null) 'invitationCode': invitationCode,
+        if (prompt != null) 'prompt': prompt!.name,
       };
 
   factory AdditionalParameters.fromJson(Map<String, dynamic> json) =>
@@ -114,6 +123,9 @@ class AdditionalParameters extends BaseAdditionalParameters {
         planInterest: json['planInterest'] as String?,
         pricingTableKey: json['pricingTableKey'] as String?,
         invitationCode: json['invitationCode'] as String?,
+        prompt: json['prompt'] == null
+            ? null
+            : KindePrompt.values.byName(json['prompt'] as String),
       );
 }
 
@@ -145,11 +157,15 @@ class InternalAdditionalParameters extends BaseAdditionalParameters {
       super.planInterest,
       super.pricingTableKey,
       super.invitationCode,
+      super.prompt,
       });
 
   factory InternalAdditionalParameters.fromUserAdditionalParams(
       AdditionalParameters userParams) {
+    final promptValue = userParams.prompt?.value;
     return InternalAdditionalParameters(
+      promptValues: promptValue == null ? null : [promptValue],
+      prompt: userParams.prompt,
       lang: userParams.lang,
       connectionId: userParams.connectionId,
       loginHint: userParams.loginHint,
@@ -162,6 +178,7 @@ class InternalAdditionalParameters extends BaseAdditionalParameters {
 
   AdditionalParameters toUserAdditionalParams() {
     return AdditionalParameters(
+      prompt: prompt,
       lang: lang,
       connectionId: connectionId,
       loginHint: loginHint,

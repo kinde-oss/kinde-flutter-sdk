@@ -393,8 +393,11 @@ class KindeFlutterSDK with TokenUtils {
     );
     final internalAdditionalParams =
         _prepareInternalAdditionalParameters(additionalParams);
-    internalAdditionalParams.promptValues =
-        additionalParams.invitationCode != null ? ['create'] : ['login'];
+    if (additionalParams.invitationCode != null) {
+      internalAdditionalParams.promptValues = [KindePrompt.create.value!];
+    } else if (additionalParams.prompt == null) {
+      internalAdditionalParams.promptValues = [KindePrompt.login.value!];
+    }
     return _redirectToKinde(
       type: type,
       internalAdditionalParameters: internalAdditionalParams,
