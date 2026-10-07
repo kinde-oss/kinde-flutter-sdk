@@ -58,6 +58,7 @@ class KindeFlutterSDK with TokenUtils {
   late KindeApi _kindeApi;
   late KeysApi _keysApi;
   late TokenApi _tokenApi;
+  Future<String?>? _tokenRefresh;
   late AuthorizationServiceConfiguration _serviceConfiguration;
 
   bool _handlingInvitationCode = false;
@@ -393,8 +394,11 @@ class KindeFlutterSDK with TokenUtils {
     );
     final internalAdditionalParams =
         _prepareInternalAdditionalParameters(additionalParams);
-    internalAdditionalParams.promptValues =
-        additionalParams.invitationCode != null ? ['create'] : ['login'];
+    if (additionalParams.invitationCode != null) {
+      internalAdditionalParams.promptValues = [KindePrompt.create.value!];
+    } else if (additionalParams.prompt == null) {
+      internalAdditionalParams.promptValues = [KindePrompt.login.value!];
+    }
     return _redirectToKinde(
       type: type,
       internalAdditionalParameters: internalAdditionalParams,
@@ -662,7 +666,13 @@ class KindeFlutterSDK with TokenUtils {
       return _store.authState?.accessToken;
     }
 
-    // Proceed with token refresh
+    return _tokenRefresh ??= _refreshToken(forceRefresh: forceRefresh)
+        .whenComplete(() => _tokenRefresh = null);
+  }
+
+  /// Exchanges the refresh token for new tokens. Callers share one request,
+  /// so a timer and a manual refresh never send the same refresh token twice.
+  Future<String?> _refreshToken({required bool forceRefresh}) async {
     kindeDebugPrint(
       methodName: 'getToken',
       message: 'Token refresh initiated',
@@ -682,11 +692,15 @@ class KindeFlutterSDK with TokenUtils {
         );
         throw KindeError(code: KindeErrorCode.sessionExpiredOrInvalid.code);
       }
+      final previousRefreshToken = _store.authState!.refreshToken;
       final data = await _tokenApi.retrieveToken(
           versionParam,
           _store.authState!.createRequestTokenParam()
             ..putIfAbsent(_clientIdParamName, () => _config!.authClientId));
-      _store.authState = AuthState.fromJson(data as Map<String, dynamic>);
+      // RFC 6749 section 6: a response without a refresh token keeps the old one.
+      final tokens = Map<String, dynamic>.from(data);
+      tokens['refresh_token'] ??= previousRefreshToken;
+      _store.authState = AuthState.fromJson(tokens);
       _kindeApi.setBearerAuth(_bearerAuth, _store.authState?.accessToken ?? '');
 
       kindeDebugPrint(
