@@ -26,6 +26,7 @@ void main() {
       final key = arguments['key'] as String?;
       switch (call.method) {
         case 'write':
+          await Future<void>.delayed(const Duration(milliseconds: 20));
           secureStorage[key!] = arguments['value'] as String;
           return null;
         case 'read':
@@ -71,6 +72,17 @@ void main() {
         (server) => server.reply(status, body),
         data: Matchers.any,
       );
+
+  test('a token read straight after sign-in sees the new tokens', () async {
+    secureStorage.clear();
+    await KindeFlutterSDK.instance.login();
+
+    expect(KindeFlutterSDK.instance.authState?.refreshToken, 'refreshToken');
+    expect(await KindeFlutterSDK.instance.isAuthenticated(), isFalse);
+    replyToRefresh(200, {'access_token': 'newAccessToken', 'expires_in': 3600});
+
+    expect(await KindeFlutterSDK.instance.getToken(), 'newAccessToken');
+  });
 
   test('keeps the refresh token when the response leaves it out', () async {
     replyToRefresh(200, {'access_token': 'newAccessToken', 'expires_in': 3600});
