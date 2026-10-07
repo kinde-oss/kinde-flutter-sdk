@@ -78,11 +78,15 @@ KindeError _handleError(Exception error, StackTrace stackTrace) => switch (error
   _ => KindeError(message: error.toString(), stackTrace: stackTrace),
 };
 
+const _rejectedTokenStatuses = {400, 401};
+
 /// Handles [DioException] types with exhaustive pattern matching.
 ///
 /// Uses switch expressions to handle different [DioExceptionType] cases:
 /// - For network errors, checks if the underlying error is already a [KindeError]
-/// - For bad responses on token endpoint, creates a refresh token expired error
+/// - For a 400 or 401 from the token endpoint (the refresh token was
+///   rejected), creates a refresh token expired error; a 429 or 5xx means
+///   Kinde could not answer, so it stays a generic error
 /// - Falls back to generic error for other cases
 /// Preserves stack trace for debugging.
 KindeError _handleDioException(DioException dioError, StackTrace stackTrace) => switch (dioError.type) {
@@ -94,7 +98,9 @@ KindeError _handleDioException(DioException dioError, StackTrace stackTrace) => 
   DioExceptionType.badCertificate ||
   DioExceptionType.unknown when dioError.error is KindeError =>
     dioError.error as KindeError,
-  DioExceptionType.badResponse when dioError.requestOptions.path == "/oauth2/token" =>
+  DioExceptionType.badResponse
+      when dioError.requestOptions.path == "/oauth2/token" &&
+          _rejectedTokenStatuses.contains(dioError.response?.statusCode) =>
     KindeError(
       code: KindeErrorCode.refreshTokenExpired.code,
       message: dioError.message,
