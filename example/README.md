@@ -15,10 +15,15 @@ To get started set up an account on [Kinde](https://app.kinde.com/register).
 This SDK is suitable for:
 - Flutter 3.44.0 or later.
 - Dart 3.12.0 or later.
+- iOS 15.0 or later when running the example on iOS.
 
 The SDK itself requires Flutter 3.38.1+ and Dart 3.10+. The example has higher
 requirements because it uses go_router 18. Routing remains case-insensitive to
 preserve existing deep-link behavior.
+
+The example's iOS minimum is 15.0. This does not change the SDK's iOS 13+
+minimum; applications consuming the SDK can use their own deployment targets
+with compatible build tooling.
 
 The example now uses flutter_secure_storage 11.2+. Existing Android installations
 that did not run the version 10 storage migration may need to log in again.
