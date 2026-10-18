@@ -31,6 +31,20 @@ jobs:
       - name: Test SDK
         run: flutter test --no-pub
 
+  example_storage_compatibility:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
       - name: Prepare compatible example
         working-directory: example
         run: |
