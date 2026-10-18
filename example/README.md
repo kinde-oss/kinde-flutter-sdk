@@ -13,30 +13,10 @@ To get started set up an account on [Kinde](https://app.kinde.com/register).
 ### Prerequisites
 
 This SDK is suitable for:
-- Flutter 3.38.1 or later.
-- Dart 3.10.0 or later.
-
-The example now uses flutter_secure_storage 11.2+. Existing Android installations
-that did not run the version 10 storage migration may need to log in again.
-See the SDK's [upgrade requirements](../README.md#upgrade-requirements).
+- Flutter 3.10.0 or later.
+- Dart 3.0.6 or later.
 
 Follow [the installation instructions for your chosen OS](https://docs.flutter.dev/get-started/install) to install dependencies
-
-### Regression tests
-
-From the example directory, use the example's minimum Flutter version or later:
-
-```shell
-test -f .env || cp .env.example .env
-flutter pub get
-flutter analyze --no-pub --no-fatal-infos --no-fatal-warnings
-flutter test --no-pub
-```
-
-The environment file is required to build the asset bundle, but these tests do
-not contact Kinde. They cover token persistence and scoped token deletion.
-Secure storage is mocked; test native login, logout,
-and upgrades of existing installations separately before release.
 
 ### Initial set up
 

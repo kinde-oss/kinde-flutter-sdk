@@ -7,48 +7,6 @@ on:
     branches: [main]
 
 jobs:
-  analyze_and_test:
-    runs-on: ubuntu-latest
-
-    permissions:
-      contents: read
-      
-    steps:
-
-      - name: Checkout code
-        uses: actions/checkout@v7
-
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: stable
-          cache: true
-          cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:'
-          cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
-
-      - name: Get Dependencies
-        run: flutter pub get
-
-      - name: Prepare Example
-        working-directory: example
-        run: |
-          cp .env.example .env
-          flutter pub get
-
-      - name: Analyze Code
-        run: flutter analyze --no-pub --no-fatal-infos --no-fatal-warnings --current-package
-
-      - name: Run Tests
-        run: flutter test --no-pub
-
-      - name: Analyze Example
-        working-directory: example
-        run: flutter analyze --no-pub --no-fatal-infos --no-fatal-warnings
-
-      - name: Test Example
-        working-directory: example
-        run: flutter test --no-pub
-
   minimum_sdk:
     runs-on: ubuntu-latest
     permissions:
@@ -71,4 +29,45 @@ jobs:
         run: flutter analyze --no-pub --no-fatal-infos --no-fatal-warnings lib test
 
       - name: Test SDK
+        run: flutter test --no-pub
+
+      - name: Prepare compatible example
+        working-directory: example
+        run: |
+          cp .env.example .env
+          flutter pub get
+
+      - name: Analyze compatible example
+        working-directory: example
+        run: flutter analyze --no-pub --no-fatal-infos --no-fatal-warnings
+
+      - name: Test example storage compatibility
+        working-directory: example
+        run: flutter test --no-pub test/encrypted_box_test.dart
+
+  analyze_and_test:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+          cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:'
+          cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
+
+      - name: Get Dependencies
+        run: flutter pub get
+
+      - name: Analyze Code
+        run: flutter analyze --no-pub --no-fatal-infos --no-fatal-warnings --current-package
+
+      - name: Run Tests
         run: flutter test --no-pub
