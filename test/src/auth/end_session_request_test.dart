@@ -1,17 +1,14 @@
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kinde_flutter_sdk/src/auth/kinde_end_session_request.dart';
 
 void main() {
-  group("KindeEndSessionRequest", () {
+  group("EndSessionRequest logout compatibility", () {
     group("constructor", () {
       test("does not throw assertion error if both "
           "idTokenHint and postLogoutRedirectUrl are null", () {
         expect(
-          () => KindeEndSessionRequest(
-            idTokenHint: null,
-            postLogoutRedirectUrl: null,
-          ),
+          () =>
+              EndSessionRequest(idTokenHint: null, postLogoutRedirectUrl: null),
           isNot(throwsAssertionError),
         );
       });
@@ -19,7 +16,7 @@ void main() {
       test("does not throw assertion error if idTokenHint is non-null but "
           "postLogoutRedirectUrl is null", () {
         expect(
-          () => KindeEndSessionRequest(
+          () => EndSessionRequest(
             idTokenHint: 'idTokenHint',
             postLogoutRedirectUrl: null,
           ),
@@ -32,7 +29,7 @@ void main() {
         "idTokenHint is null",
         () {
           expect(
-            () => KindeEndSessionRequest(
+            () => EndSessionRequest(
               idTokenHint: null,
               postLogoutRedirectUrl: 'postLogoutRedirectUrl',
             ),
@@ -44,7 +41,7 @@ void main() {
       test("does not throw assertion error if both "
           "idTokenHint and postLogoutRedirectUrl are non-null", () {
         expect(
-          () => KindeEndSessionRequest(
+          () => EndSessionRequest(
             idTokenHint: 'idTokenHint',
             postLogoutRedirectUrl: 'postLogoutRedirectUrl',
           ),
@@ -57,23 +54,21 @@ void main() {
       test("throws exception if no configuration "
           "information is provided", () {
         expect(
-          () => KindeEndSessionRequest().assertConfigurationInfo(),
+          () => EndSessionRequest().assertConfigurationInfo(),
           throwsAssertionError,
         );
       });
 
       test("does not throw exception if issuer is provided", () {
         expect(
-          () => KindeEndSessionRequest(
-            issuer: 'issuer',
-          ).assertConfigurationInfo(),
+          () => EndSessionRequest(issuer: 'issuer').assertConfigurationInfo(),
           isNot(throwsAssertionError),
         );
       });
 
       test("does not throw exception if discoveryUrl is provided", () {
         expect(
-          () => KindeEndSessionRequest(
+          () => EndSessionRequest(
             discoveryUrl: 'discoveryUrl',
           ).assertConfigurationInfo(),
           isNot(throwsAssertionError),
@@ -82,7 +77,7 @@ void main() {
 
       test("does not throw exception if serviceConfiguration is provided", () {
         expect(
-          () => KindeEndSessionRequest(
+          () => EndSessionRequest(
             serviceConfiguration: const AuthorizationServiceConfiguration(
               authorizationEndpoint: 'authorizationEndpoint',
               tokenEndpoint: 'tokenEndpoint',
