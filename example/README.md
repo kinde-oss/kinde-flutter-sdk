@@ -13,45 +13,14 @@ To get started set up an account on [Kinde](https://app.kinde.com/register).
 ### Prerequisites
 
 This SDK is suitable for:
-- Flutter 3.44.0 or later.
-- Dart 3.12.0 or later.
-- iOS 15.0 or later when running the example on iOS.
-
-The SDK itself requires Flutter 3.38.1+ and Dart 3.10+. The example has higher
-requirements because it uses go_router 18. Routing remains case-insensitive to
-preserve existing deep-link behavior.
-
-The example's iOS minimum is 15.0. This does not change the SDK's iOS 13+
-minimum; applications consuming the SDK can use their own deployment targets
-with compatible build tooling.
+- Flutter 3.38.1 or later.
+- Dart 3.10.0 or later.
 
 The example now uses flutter_secure_storage 11.2+. Existing Android installations
 that did not run the version 10 storage migration may need to log in again.
 See the SDK's [upgrade requirements](../README.md#upgrade-requirements).
 
 Follow [the installation instructions for your chosen OS](https://docs.flutter.dev/get-started/install) to install dependencies
-
-### Android Java and Gradle setup
-
-Use JDK 17 to run the example's Android build. Android Gradle Plugin 8.13.2
-requires Gradle 8.13 or later; the wrapper is configured to use Gradle 8.13.
-Java 25 cannot run Gradle 8.x.
-
-For VS Code, set `java.import.gradle.java.home` in your User Settings
-to your JDK 17 home directory (not its `bin` directory). This selects the Gradle
-daemon's JVM without changing the Java language server's runtime.
-Reload VS Code after changing the setting.
-
-For terminal builds, set `JAVA_HOME` to the same JDK home and add
-`$JAVA_HOME/bin` to `PATH`. If Flutter selects a different Java installation,
-use `flutter config --jdk-dir="/absolute/path/to/jdk-17"` and verify the selection
-with `flutter doctor -v`. Note that this Flutter setting affects other Flutter
-projects too.
-
-From `example/android`, run `./gradlew --version` to confirm Gradle 8.13 and
-JDK 17, then `./gradlew help` to check project configuration. The latter also
-requires Flutter and Android SDK setup, including a `local.properties` file
-with the SDK paths.
 
 ### Regression tests
 
@@ -65,8 +34,8 @@ flutter test --no-pub
 ```
 
 The environment file is required to build the asset bundle, but these tests do
-not contact Kinde. They cover route matching, the 404 screen, token persistence,
-and scoped token deletion. Secure storage is mocked; test native login, logout,
+not contact Kinde. They cover token persistence and scoped token deletion.
+Secure storage is mocked; test native login, logout,
 and upgrades of existing installations separately before release.
 
 ### Initial set up

@@ -11,7 +11,6 @@ For details on integrating this SDK into your project, head over to the [Kinde d
 
 - Flutter 3.38.1 or later and Dart 3.10 or later.
 - Android API 24+, iOS 13+, and macOS 10.15+.
-- The example uses go_router 18 and requires Flutter 3.44+ and Dart 3.12+.
 
 This SDK uses flutter_secure_storage 11.2+. Android data encrypted with legacy
 algorithms or EncryptedSharedPreferences must have been migrated by running a
