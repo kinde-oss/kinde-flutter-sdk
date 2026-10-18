@@ -29,8 +29,22 @@ jobs:
       - name: Get Dependencies
         run: flutter pub get
 
+      - name: Prepare Example
+        working-directory: example
+        run: |
+          cp .env.example .env
+          flutter pub get
+
       - name: Analyze Code
         run: flutter analyze --no-pub --no-fatal-infos --no-fatal-warnings --current-package
 
       - name: Run Tests
+        run: flutter test --no-pub
+
+      - name: Analyze Example
+        working-directory: example
+        run: flutter analyze --no-pub --no-fatal-infos --no-fatal-warnings
+
+      - name: Test Example
+        working-directory: example
         run: flutter test --no-pub
