@@ -4,7 +4,6 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:kinde_flutter_sdk/src/additional_params.dart';
-import 'package:kinde_flutter_sdk/src/auth/kinde_end_session_request.dart';
 import 'package:kinde_flutter_sdk/src/kinde_secure_storage/kinde_secure_storage_i.dart';
 import 'package:kinde_flutter_sdk/src/utils/app_lifecycle_util.dart';
 import 'package:kinde_flutter_sdk/src/utils/deep_link_util.dart';
@@ -300,8 +299,8 @@ class KindeFlutterSDK with TokenUtils {
       //
       // We instead pass the `client_id` as part of `additionalParameters`.
       //
-      // See the [KindeEndSessionRequest] class documentation for more information.
-      final endSessionRequest = KindeEndSessionRequest(
+      // flutter_appauth >=12.0.1 allows a redirect without an ID-token hint.
+      final endSessionRequest = EndSessionRequest(
         externalUserAgent:
             ExternalUserAgent.ephemeralAsWebAuthenticationSession,
         postLogoutRedirectUrl: _config!.logoutRedirectUri,

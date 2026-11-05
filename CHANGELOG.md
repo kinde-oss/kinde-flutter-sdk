@@ -1,5 +1,22 @@
 # Changelog
 
+## [Unreleased]
+
+### Breaking Changes
+
+- Minimum SDK versions are now Flutter 3.38.1 and Dart 3.10.
+- Upgraded flutter_secure_storage to ^11.2.0. Legacy Android encryption and
+  EncryptedSharedPreferences are no longer supported. Installations that skipped
+  the version 10 storage migration may need to log in again. Applications storing
+  other secrets must review upstream migration requirements separately.
+
+### Changed
+
+- Upgraded flutter_appauth to ^12.0.1 and replaced the internal
+  KindeEndSessionRequest workaround with upstream EndSessionRequest. Logout still
+  omits the ID-token hint and sends client_id and the logout redirect URI.
+- Removed the example's obsolete encryptedSharedPreferences option.
+
 ## [2.2.0] - 2026-07-17
 
 ### Added

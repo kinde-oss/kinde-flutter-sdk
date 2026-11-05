@@ -22,9 +22,6 @@ class EncryptedBox {
   static Future<void> init() async {
     _instance = EncryptedBox._privateConstructor();
     _instance!._secureStorage = const FlutterSecureStorage(
-      aOptions: AndroidOptions(
-        encryptedSharedPreferences: true,
-      ),
       iOptions: IOSOptions(
         accessibility: KeychainAccessibility.first_unlock,
       ),
