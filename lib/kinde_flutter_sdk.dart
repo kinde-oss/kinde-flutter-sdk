@@ -6,6 +6,7 @@ export './src/additional_params.dart' show AdditionalParameters;
 export './src/kinde_flutter_sdk.dart' hide initializeKindeFlutterSdkForTest;
 export 'src/error/kinde_error.dart';
 export './src/model/auth_flow_type.dart';
+export './src/model/kinde_prompt.dart';
 export './src/model/claim/claim.dart';
 export './src/model/claim/claim_organization.dart';
 export './src/model/claim/claim_organizations.dart';
