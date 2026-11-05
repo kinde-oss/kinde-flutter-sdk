@@ -16,16 +16,19 @@ GoRouter createRouter() => GoRouter(
       routes: [
         GoRoute(
             path: AppRoutes.HOME,
+            caseSensitive: false,
             builder: (context, state) {
               return const HomeScreen();
             }),
         GoRoute(
             path: AppRoutes.SPLASH,
+            caseSensitive: false,
             builder: (context, state) {
               return const SplashScreen();
             }),
         GoRoute(
             path: AppRoutes.WELCOME,
+            caseSensitive: false,
             builder: (context, state) {
               return const WelcomeScreen();
             }),
